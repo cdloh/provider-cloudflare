@@ -27,19 +27,19 @@ const (
 	errUnmarshalCredentials = "cannot unmarshal cloudflare credentials as JSON"
 
 	// Configuration options
-	accountID = "account_id"
-	apiBasePath = "api_base_path"
-	apiClientLogging = "api_client_logging"
-	apiHostname = "api_hostname"
-	apiKey = "api_key"
-	apiToken = "api_token"
+	accountID         = "account_id"
+	apiBasePath       = "api_base_path"
+	apiClientLogging  = "api_client_logging"
+	apiHostname       = "api_hostname"
+	apiKey            = "api_key"
+	apiToken          = "api_token"
 	apiUserServiceKey = "api_user_service_key"
-	email = "email"
+	email             = "email"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
-func TerraformSetupBuilder(version, providerSource, providerVersion string) terraform.SetupFn {
+func TerraformSetupBuilder(version, providerSource, providerVersion string) terraform.SetupFn { //nolint:gocyclo
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{
 			Version: version,
