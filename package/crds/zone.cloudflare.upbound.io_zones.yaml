@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: resources.null.template.upbound.io
+  name: zones.zone.cloudflare.upbound.io
 spec:
-  group: null.template.upbound.io
+  group: zone.cloudflare.upbound.io
   names:
     categories:
     - crossplane
     - managed
-    - template
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    - cloudflare
+    kind: Zone
+    listKind: ZoneList
+    plural: zones
+    singular: zone
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API. <no value>
+        description: Zone is the Schema for the Zones API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: ZoneSpec defines the desired state of Zone
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,13 +63,34 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  accountId:
+                    description: Account ID to manage the zone resource in.
+                    type: string
+                  jumpStart:
+                    description: Whether to scan for DNS records on creation. Ignored
+                      after zone is created.
+                    type: boolean
+                  paused:
+                    description: Whether this zone is paused (traffic bypasses Cloudflare).
+                      Defaults to `false`.
+                    type: boolean
+                  plan:
+                    description: 'The name of the commercial plan to apply to the
+                      zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`,
+                      `enterprise`, `partners_free`, `partners_pro`, `partners_business`,
+                      `partners_enterprise`.'
+                    type: string
+                  type:
+                    description: 'A full zone implies that DNS is hosted with Cloudflare.
+                      A partial zone is typically a partner-hosted zone or a CNAME
+                      setup. Available values: `full`, `partial`. Defaults to `full`.'
+                    type: string
+                  zone:
+                    description: The DNS zone name which will be added. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                required:
+                - zone
                 type: object
               providerConfigRef:
                 default:
@@ -243,11 +264,34 @@ spec:
             - forProvider
             type: object
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: ZoneStatus defines the observed state of Zone.
             properties:
               atProvider:
                 properties:
                   id:
+                    type: string
+                  meta:
+                    additionalProperties:
+                      type: boolean
+                    type: object
+                  nameServers:
+                    description: Cloudflare-assigned name servers. This is only populated
+                      for zones that use Cloudflare DNS.
+                    items:
+                      type: string
+                    type: array
+                  status:
+                    description: 'Status of the zone. Available values: `active`,
+                      `pending`, `initializing`, `moved`, `deleted`, `deactivated`.'
+                    type: string
+                  vanityNameServers:
+                    description: List of Vanity Nameservers (if set).
+                    items:
+                      type: string
+                    type: array
+                  verificationKey:
+                    description: Contains the TXT record value to validate domain
+                      ownership. This is only populated for zones of type `partial`.
                     type: string
                 type: object
               conditions:

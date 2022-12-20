@@ -15,7 +15,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/terraform"
 
-	"github.com/upbound/upjet-provider-template/apis/v1beta1"
+	"github.com/cdloh/provider-cloudflare/apis/v1beta1"
 )
 
 const (
@@ -24,7 +24,17 @@ const (
 	errGetProviderConfig    = "cannot get referenced ProviderConfig"
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal template credentials as JSON"
+	errUnmarshalCredentials = "cannot unmarshal cloudflare credentials as JSON"
+
+	// Configuration options
+	accountID = "account_id"
+	apiBasePath = "api_base_path"
+	apiClientLogging = "api_client_logging"
+	apiHostname = "api_hostname"
+	apiKey = "api_key"
+	apiToken = "api_token"
+	apiUserServiceKey = "api_user_service_key"
+	email = "email"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -63,10 +73,31 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 
 		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
+		ps.Configuration = map[string]any{}
+		if v, ok := creds[accountID]; ok {
+			ps.Configuration[accountID] = v
+		}
+		if v, ok := creds[apiBasePath]; ok {
+			ps.Configuration[apiBasePath] = v
+		}
+		if v, ok := creds[apiClientLogging]; ok {
+			ps.Configuration[apiClientLogging] = v
+		}
+		if v, ok := creds[apiHostname]; ok {
+			ps.Configuration[apiHostname] = v
+		}
+		if v, ok := creds[apiKey]; ok {
+			ps.Configuration[apiKey] = v
+		}
+		if v, ok := creds[apiToken]; ok {
+			ps.Configuration[apiToken] = v
+		}
+		if v, ok := creds[apiUserServiceKey]; ok {
+			ps.Configuration[apiUserServiceKey] = v
+		}
+		if v, ok := creds[email]; ok {
+			ps.Configuration[email] = v
+		}
 		return ps, nil
 	}
 }

@@ -1,0 +1,9 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: Zone
+metadata:
+  name: example
+  labels:
+    testing.upbound.io/example-name: example
+spec:
+  forProvider:
+    zone: cloudflare-test.crossplane.io

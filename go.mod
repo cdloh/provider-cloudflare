@@ -1,4 +1,4 @@
-module github.com/upbound/upjet-provider-template
+module github.com/cdloh/provider-cloudflare
 
 go 1.19
 
