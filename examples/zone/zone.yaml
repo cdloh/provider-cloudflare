@@ -4,6 +4,7 @@ metadata:
   name: example
   labels:
     testing.upbound.io/example-name: example
+    cloudflare-zone: zone
 spec:
   forProvider:
     zone: cloudflare-test.crossplane.io

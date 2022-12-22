@@ -11,6 +11,7 @@ import "github.com/upbound/upjet/pkg/config"
 var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_zone":                   config.IdentifierFromProvider,
 	"cloudflare_zone_settings_override": config.IdentifierFromProvider,
+	"cloudflare_zone_dnssec":            config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

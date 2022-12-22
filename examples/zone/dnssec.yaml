@@ -1,0 +1,13 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: DNSSEC
+metadata:
+  name: example
+  labels:
+    testing.upbound.io/example-name: example
+  annotations:
+    uptest.upbound.io/pre-assert-hook: ../../cluster/test/install-zone.sh
+    uptest.upbound.io/post-delete-hook: ../../cluster/test/cleanup-zone.sh
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
