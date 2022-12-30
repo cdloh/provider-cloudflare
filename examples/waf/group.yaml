@@ -1,0 +1,13 @@
+apiVersion: waf.cloudflare.upbound.io/v1alpha1
+kind: Group
+metadata:
+  name: example
+  labels:
+    testing.upbound.io/example-name: example
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    groupId: 18ae91632f12c93ed523786a605936be
+    mode: "on"

@@ -1,0 +1,15 @@
+apiVersion: waf.cloudflare.upbound.io/v1alpha1
+kind: Override
+metadata:
+  name: example
+  labels:
+    testing.upbound.io/example-name: example
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    urls:
+      - "*.crossplane.io/no-waf-here"
+    rules:
+      "100015": disable
