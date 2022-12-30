@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-echo "Cleanup zone"
+echo "Cleanup resources that need a zone priror to deleting the zone"
 
-# Cleanup the zones once all the others are gone
-kubectl wait managed --selector='!cloudflare-zone' --for=delete
-kubectl delete zone.zone.cloudflare.upbound.io/example --wait --ignore-not-found
+# Cleanup the resources that require a Cloudflare zone priror to deleting the zone
+${KUBECTL} delete managed --selector='testing.cloudflare.upbound.io/require-zone=true' --wait
