@@ -12,6 +12,7 @@ import (
 
 	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/v1alpha1"
 	v1beta1 "github.com/cdloh/provider-cloudflare/apis/v1beta1"
+	v1alpha1waf "github.com/cdloh/provider-cloudflare/apis/waf/v1alpha1"
 	v1alpha1zone "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1"
 )
 
@@ -20,6 +21,7 @@ func init() {
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
+		v1alpha1waf.SchemeBuilder.AddToScheme,
 		v1alpha1zone.SchemeBuilder.AddToScheme,
 	)
 }

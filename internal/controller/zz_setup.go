@@ -10,6 +10,10 @@ import (
 	"github.com/upbound/upjet/pkg/controller"
 
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
+	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
+	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
+	rule "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
+	wafpackage "github.com/cdloh/provider-cloudflare/internal/controller/waf/wafpackage"
 	dnssec "github.com/cdloh/provider-cloudflare/internal/controller/zone/dnssec"
 	settingsoverride "github.com/cdloh/provider-cloudflare/internal/controller/zone/settingsoverride"
 	zone "github.com/cdloh/provider-cloudflare/internal/controller/zone/zone"
@@ -20,6 +24,10 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		providerconfig.Setup,
+		group.Setup,
+		override.Setup,
+		rule.Setup,
+		wafpackage.Setup,
 		dnssec.Setup,
 		settingsoverride.Setup,
 		zone.Setup,

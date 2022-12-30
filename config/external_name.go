@@ -12,6 +12,10 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_zone":                   config.IdentifierFromProvider,
 	"cloudflare_zone_settings_override": config.IdentifierFromProvider,
 	"cloudflare_zone_dnssec":            config.IdentifierFromProvider,
+	"cloudflare_waf_group":              config.IdentifierFromProvider,
+	"cloudflare_waf_override":           config.IdentifierFromProvider,
+	"cloudflare_waf_package":            config.IdentifierFromProvider,
+	"cloudflare_waf_rule":               config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
