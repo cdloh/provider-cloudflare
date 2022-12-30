@@ -1,0 +1,14 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: SettingsOverride
+metadata:
+  name: example
+  labels:
+    testing.upbound.io/example-name: example
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    settings:
+      - alwaysOnline: "off"
+        emailObfuscation: "on"

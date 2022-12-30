@@ -4,6 +4,9 @@ metadata:
   name: example
   labels:
     testing.upbound.io/example-name: example
+    cloudflare-zone: zone
+  annotations:
+    uptest.upbound.io/pre-delete-hook: ../../cluster/test/cleanup-zone.sh
 spec:
   forProvider:
     zone: cloudflare-test.crossplane.io

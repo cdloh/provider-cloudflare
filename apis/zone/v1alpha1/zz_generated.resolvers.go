@@ -12,6 +12,32 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ResolveReferences of this DNSSEC.
+func (mg *DNSSEC) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRefs,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRefs = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this SettingsOverride.
 func (mg *SettingsOverride) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -22,8 +48,8 @@ func (mg *SettingsOverride) ResolveReferences(ctx context.Context, c client.Read
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.ZoneRefs,
-		Selector:     mg.Spec.ForProvider.ZoneSelector,
+		Reference:    mg.Spec.ForProvider.ZoneIDRefs,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
 		To: reference.To{
 			List:    &ZoneList{},
 			Managed: &Zone{},
@@ -33,7 +59,7 @@ func (mg *SettingsOverride) ResolveReferences(ctx context.Context, c client.Read
 		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
 	}
 	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.ZoneRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.ZoneIDRefs = rsp.ResolvedReference
 
 	return nil
 }

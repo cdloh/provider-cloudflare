@@ -1,0 +1,11 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: DNSSEC
+metadata:
+  name: example
+  labels:
+    testing.upbound.io/example-name: example
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example

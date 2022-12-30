@@ -5,7 +5,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: settingsoverrides.zone.cloudflare.upbound.io
+  name: dnssecs.zone.cloudflare.upbound.io
 spec:
   group: zone.cloudflare.upbound.io
   names:
@@ -13,10 +13,10 @@ spec:
     - crossplane
     - managed
     - cloudflare
-    kind: SettingsOverride
-    listKind: SettingsOverrideList
-    plural: settingsoverrides
-    singular: settingsoverride
+    kind: DNSSEC
+    listKind: DNSSECList
+    plural: dnssecs
+    singular: dnssec
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SettingsOverride is the Schema for the SettingsOverrides API.
-          <no value>
+        description: DNSSEC is the Schema for the DNSSECs API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: SettingsOverrideSpec defines the desired state of SettingsOverride
+            description: DNSSECSpec defines the desired state of DNSSEC
             properties:
               deletionPolicy:
                 default: Delete
@@ -64,162 +63,8 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  settings:
-                    items:
-                      properties:
-                        alwaysOnline:
-                          type: string
-                        alwaysUseHttps:
-                          type: string
-                        automaticHttpsRewrites:
-                          type: string
-                        binaryAst:
-                          type: string
-                        brotli:
-                          type: string
-                        browserCacheTtl:
-                          type: number
-                        browserCheck:
-                          type: string
-                        cacheLevel:
-                          type: string
-                        challengeTtl:
-                          type: number
-                        ciphers:
-                          items:
-                            type: string
-                          type: array
-                        cnameFlattening:
-                          type: string
-                        developmentMode:
-                          type: string
-                        earlyHints:
-                          type: string
-                        emailObfuscation:
-                          type: string
-                        filterLogsToCloudflare:
-                          type: string
-                        h2Prioritization:
-                          type: string
-                        hotlinkProtection:
-                          type: string
-                        http2:
-                          type: string
-                        http3:
-                          type: string
-                        imageResizing:
-                          type: string
-                        ipGeolocation:
-                          type: string
-                        ipv6:
-                          type: string
-                        logToCloudflare:
-                          type: string
-                        maxUpload:
-                          type: number
-                        minTlsVersion:
-                          type: string
-                        minify:
-                          items:
-                            properties:
-                              css:
-                                type: string
-                              html:
-                                type: string
-                              js:
-                                type: string
-                            required:
-                            - css
-                            - html
-                            - js
-                            type: object
-                          type: array
-                        mirage:
-                          type: string
-                        mobileRedirect:
-                          items:
-                            properties:
-                              mobileSubdomain:
-                                type: string
-                              status:
-                                type: string
-                              stripUri:
-                                type: boolean
-                            required:
-                            - mobileSubdomain
-                            - status
-                            - stripUri
-                            type: object
-                          type: array
-                        opportunisticEncryption:
-                          type: string
-                        opportunisticOnion:
-                          type: string
-                        orangeToOrange:
-                          type: string
-                        originErrorPagePassThru:
-                          type: string
-                        originMaxHttpVersion:
-                          type: string
-                        polish:
-                          type: string
-                        prefetchPreload:
-                          type: string
-                        privacyPass:
-                          type: string
-                        proxyReadTimeout:
-                          type: string
-                        pseudoIpv4:
-                          type: string
-                        responseBuffering:
-                          type: string
-                        rocketLoader:
-                          type: string
-                        securityHeader:
-                          items:
-                            properties:
-                              enabled:
-                                type: boolean
-                              includeSubdomains:
-                                type: boolean
-                              maxAge:
-                                type: number
-                              nosniff:
-                                type: boolean
-                              preload:
-                                type: boolean
-                            type: object
-                          type: array
-                        securityLevel:
-                          type: string
-                        serverSideExclude:
-                          type: string
-                        sortQueryStringForCache:
-                          type: string
-                        ssl:
-                          type: string
-                        tls12Only:
-                          type: string
-                        tls13:
-                          type: string
-                        tlsClientAuth:
-                          type: string
-                        trueClientIpHeader:
-                          type: string
-                        universalSsl:
-                          type: string
-                        visitorIp:
-                          type: string
-                        waf:
-                          type: string
-                        webp:
-                          type: string
-                        websockets:
-                          type: string
-                        zeroRtt:
-                          type: string
-                      type: object
-                    type: array
+                  modifiedOn:
+                    type: string
                   zoneId:
                     description: The zone identifier to target for the resource. **Modifying
                       this attribute will force creation of a new resource.**
@@ -470,169 +315,31 @@ spec:
             - forProvider
             type: object
           status:
-            description: SettingsOverrideStatus defines the observed state of SettingsOverride.
+            description: DNSSECStatus defines the observed state of DNSSEC.
             properties:
               atProvider:
                 properties:
+                  algorithm:
+                    type: string
+                  digest:
+                    type: string
+                  digestAlgorithm:
+                    type: string
+                  digestType:
+                    type: string
+                  ds:
+                    type: string
+                  flags:
+                    type: number
                   id:
                     type: string
-                  initialSettings:
-                    items:
-                      properties:
-                        alwaysOnline:
-                          type: string
-                        alwaysUseHttps:
-                          type: string
-                        automaticHttpsRewrites:
-                          type: string
-                        binaryAst:
-                          type: string
-                        brotli:
-                          type: string
-                        browserCacheTtl:
-                          type: number
-                        browserCheck:
-                          type: string
-                        cacheLevel:
-                          type: string
-                        challengeTtl:
-                          type: number
-                        ciphers:
-                          items:
-                            type: string
-                          type: array
-                        cnameFlattening:
-                          type: string
-                        developmentMode:
-                          type: string
-                        earlyHints:
-                          type: string
-                        emailObfuscation:
-                          type: string
-                        filterLogsToCloudflare:
-                          type: string
-                        h2Prioritization:
-                          type: string
-                        hotlinkProtection:
-                          type: string
-                        http2:
-                          type: string
-                        http3:
-                          type: string
-                        imageResizing:
-                          type: string
-                        ipGeolocation:
-                          type: string
-                        ipv6:
-                          type: string
-                        logToCloudflare:
-                          type: string
-                        maxUpload:
-                          type: number
-                        minTlsVersion:
-                          type: string
-                        minify:
-                          items:
-                            properties:
-                              css:
-                                type: string
-                              html:
-                                type: string
-                              js:
-                                type: string
-                            type: object
-                          type: array
-                        mirage:
-                          type: string
-                        mobileRedirect:
-                          items:
-                            properties:
-                              mobileSubdomain:
-                                type: string
-                              status:
-                                type: string
-                              stripUri:
-                                type: boolean
-                            type: object
-                          type: array
-                        opportunisticEncryption:
-                          type: string
-                        opportunisticOnion:
-                          type: string
-                        orangeToOrange:
-                          type: string
-                        originErrorPagePassThru:
-                          type: string
-                        originMaxHttpVersion:
-                          type: string
-                        polish:
-                          type: string
-                        prefetchPreload:
-                          type: string
-                        privacyPass:
-                          type: string
-                        proxyReadTimeout:
-                          type: string
-                        pseudoIpv4:
-                          type: string
-                        responseBuffering:
-                          type: string
-                        rocketLoader:
-                          type: string
-                        securityHeader:
-                          items:
-                            properties:
-                              enabled:
-                                type: boolean
-                              includeSubdomains:
-                                type: boolean
-                              maxAge:
-                                type: number
-                              nosniff:
-                                type: boolean
-                              preload:
-                                type: boolean
-                            type: object
-                          type: array
-                        securityLevel:
-                          type: string
-                        serverSideExclude:
-                          type: string
-                        sortQueryStringForCache:
-                          type: string
-                        ssl:
-                          type: string
-                        tls12Only:
-                          type: string
-                        tls13:
-                          type: string
-                        tlsClientAuth:
-                          type: string
-                        trueClientIpHeader:
-                          type: string
-                        universalSsl:
-                          type: string
-                        visitorIp:
-                          type: string
-                        waf:
-                          type: string
-                        webp:
-                          type: string
-                        websockets:
-                          type: string
-                        zeroRtt:
-                          type: string
-                      type: object
-                    type: array
-                  initialSettingsReadAt:
+                  keyTag:
+                    type: number
+                  keyType:
                     type: string
-                  readonlySettings:
-                    items:
-                      type: string
-                    type: array
-                  zoneStatus:
+                  publicKey:
                     type: string
-                  zoneType:
+                  status:
                     type: string
                 type: object
               conditions:
