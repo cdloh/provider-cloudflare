@@ -1,0 +1,13 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: Route
+metadata:
+  name: example-worker-route
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    pattern: "*/*"
+    scriptNameRefs:
+      name: example-worker-script

@@ -1,0 +1,12 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: Kv
+metadata:
+  name: example-worker-kv
+  labels:
+    testing.cloudflare.upbound.io/require-kvnamespace: "true"
+spec:
+  forProvider:
+    namespaceIdRef:
+      name: example-worker-kv-namespace
+    key: test-key
+    value: test-value
