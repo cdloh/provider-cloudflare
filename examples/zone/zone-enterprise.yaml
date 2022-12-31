@@ -6,7 +6,7 @@ metadata:
     testing.upbound.io/example-name: example
     cloudflare-zone: zone
   annotations:
-    uptest.upbound.io/pre-delete-hook: ../../cluster/test/cleanup-zone.sh
+    uptest.upbound.io/pre-delete-hook: ../../cluster/test/cleanup-children.sh zone
 spec:
   forProvider:
     zone: cloudflare-test-enterprise.crossplane.io
