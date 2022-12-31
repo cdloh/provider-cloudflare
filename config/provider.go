@@ -10,6 +10,7 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
+	"github.com/cdloh/provider-cloudflare/config/dns"
 	"github.com/cdloh/provider-cloudflare/config/waf"
 	"github.com/cdloh/provider-cloudflare/config/worker"
 	"github.com/cdloh/provider-cloudflare/config/zone"
@@ -39,6 +40,7 @@ func GetProvider() *ujconfig.Provider {
 		zone.Configure,
 		waf.Configure,
 		worker.Configure,
+		dns.Configure,
 	} {
 		configure(pc)
 	}

@@ -9,6 +9,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
+	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
@@ -28,6 +29,7 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		record.Setup,
 		providerconfig.Setup,
 		group.Setup,
 		override.Setup,
