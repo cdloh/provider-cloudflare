@@ -21,6 +21,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_worker_script":          config.IdentifierFromProvider,
 	"cloudflare_workers_kv":             config.IdentifierFromProvider,
 	"cloudflare_workers_kv_namespace":   config.IdentifierFromProvider,
+	"cloudflare_record":                 config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

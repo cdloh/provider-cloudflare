@@ -1,0 +1,39 @@
+---
+
+apiVersion: dns.cloudflare.upbound.io/v1alpha1
+kind: Record
+metadata:
+  name: example-foobar
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    name: crossplane-example
+    value: 192.168.0.11
+    type: A
+    ttl: 3600
+
+---
+
+apiVersion: dns.cloudflare.upbound.io/v1alpha1
+kind: Record
+metadata:
+  name: example-sip-tls
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    name: _sip._tls
+    type: SRV
+    data:
+      - service: _sip
+        proto: _tls
+        name: crossplane-srv
+        priority: 0
+        weight: 0
+        port: 443
+        target: "example.com"
