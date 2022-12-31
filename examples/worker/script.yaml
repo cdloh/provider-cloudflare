@@ -1,0 +1,18 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: Script
+metadata:
+  name: example-worker-script
+spec:
+  forProvider:
+    name: crossplane-test-script
+    module: true
+    content: |
+      export default {
+        async fetch(request, env) {
+          return await handleRequest(request)
+        }
+      }
+
+      async function handleRequest(request) {
+        return new Response("Hello world")
+      }

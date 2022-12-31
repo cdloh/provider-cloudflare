@@ -1,0 +1,12 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: CronTrigger
+metadata:
+  name: example-worker-cron-trigger
+spec:
+  forProvider:
+    accountId: 00000000dfdafd
+    schedules:
+      - "*/5 * * * *"
+      - "10 7 * * mon-fri"
+    scriptNameRefs:
+      name: example-worker-script

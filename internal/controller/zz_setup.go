@@ -14,6 +14,11 @@ import (
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
 	rule "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
 	wafpackage "github.com/cdloh/provider-cloudflare/internal/controller/waf/wafpackage"
+	crontrigger "github.com/cdloh/provider-cloudflare/internal/controller/worker/crontrigger"
+	kv "github.com/cdloh/provider-cloudflare/internal/controller/worker/kv"
+	kvnamespace "github.com/cdloh/provider-cloudflare/internal/controller/worker/kvnamespace"
+	route "github.com/cdloh/provider-cloudflare/internal/controller/worker/route"
+	script "github.com/cdloh/provider-cloudflare/internal/controller/worker/script"
 	dnssec "github.com/cdloh/provider-cloudflare/internal/controller/zone/dnssec"
 	settingsoverride "github.com/cdloh/provider-cloudflare/internal/controller/zone/settingsoverride"
 	zone "github.com/cdloh/provider-cloudflare/internal/controller/zone/zone"
@@ -28,6 +33,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		override.Setup,
 		rule.Setup,
 		wafpackage.Setup,
+		crontrigger.Setup,
+		kv.Setup,
+		kvnamespace.Setup,
+		route.Setup,
+		script.Setup,
 		dnssec.Setup,
 		settingsoverride.Setup,
 		zone.Setup,
