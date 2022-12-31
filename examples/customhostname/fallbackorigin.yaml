@@ -1,0 +1,29 @@
+---
+
+apiVersion: dns.cloudflare.upbound.io/v1alpha1
+kind: Record
+metadata:
+  name: example-fallback
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    name: cloudflare-test
+    value: upbound.io
+    type: CNAME
+    proxied: true
+
+---
+apiVersion: customhostname.cloudflare.upbound.io/v1alpha1
+kind: FallbackOrigin
+metadata:
+  name: example-fallback-origin
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    origin: cloudflare-test.cloudflare-test-enterprise.crossplane.io

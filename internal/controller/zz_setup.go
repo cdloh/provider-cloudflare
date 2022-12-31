@@ -9,6 +9,8 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
+	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
+	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
@@ -29,6 +31,8 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		fallbackorigin.Setup,
+		hostname.Setup,
 		record.Setup,
 		providerconfig.Setup,
 		group.Setup,

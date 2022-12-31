@@ -1,0 +1,15 @@
+---
+
+apiVersion: customhostname.cloudflare.upbound.io/v1alpha1
+kind: Hostname
+metadata:
+  name: example-hostname
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    hostname: custom-hostname.upbound.io
+    ssl:
+      - method: txt

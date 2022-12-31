@@ -9,19 +9,21 @@ import "github.com/upbound/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	"cloudflare_zone":                   config.IdentifierFromProvider,
-	"cloudflare_zone_settings_override": config.IdentifierFromProvider,
-	"cloudflare_zone_dnssec":            config.IdentifierFromProvider,
-	"cloudflare_waf_group":              config.IdentifierFromProvider,
-	"cloudflare_waf_override":           config.IdentifierFromProvider,
-	"cloudflare_waf_package":            config.IdentifierFromProvider,
-	"cloudflare_waf_rule":               config.IdentifierFromProvider,
-	"cloudflare_worker_cron_trigger":    config.IdentifierFromProvider,
-	"cloudflare_worker_route":           config.IdentifierFromProvider,
-	"cloudflare_worker_script":          config.IdentifierFromProvider,
-	"cloudflare_workers_kv":             config.IdentifierFromProvider,
-	"cloudflare_workers_kv_namespace":   config.IdentifierFromProvider,
-	"cloudflare_record":                 config.IdentifierFromProvider,
+	"cloudflare_zone":                            config.IdentifierFromProvider,
+	"cloudflare_zone_settings_override":          config.IdentifierFromProvider,
+	"cloudflare_zone_dnssec":                     config.IdentifierFromProvider,
+	"cloudflare_waf_group":                       config.IdentifierFromProvider,
+	"cloudflare_waf_override":                    config.IdentifierFromProvider,
+	"cloudflare_waf_package":                     config.IdentifierFromProvider,
+	"cloudflare_waf_rule":                        config.IdentifierFromProvider,
+	"cloudflare_worker_cron_trigger":             config.IdentifierFromProvider,
+	"cloudflare_worker_route":                    config.IdentifierFromProvider,
+	"cloudflare_worker_script":                   config.IdentifierFromProvider,
+	"cloudflare_workers_kv":                      config.IdentifierFromProvider,
+	"cloudflare_workers_kv_namespace":            config.IdentifierFromProvider,
+	"cloudflare_record":                          config.IdentifierFromProvider,
+	"cloudflare_custom_hostname":                 config.IdentifierFromProvider,
+	"cloudflare_custom_hostname_fallback_origin": config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
