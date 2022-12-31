@@ -4,6 +4,7 @@ metadata:
   name: example-worker-route
   labels:
     testing.cloudflare.upbound.io/require-zone: "true"
+    testing.cloudflare.upbound.io/require-script: "true"
 spec:
   forProvider:
     zoneIdRefs:

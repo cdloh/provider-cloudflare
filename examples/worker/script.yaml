@@ -2,6 +2,8 @@ apiVersion: worker.cloudflare.upbound.io/v1alpha1
 kind: Script
 metadata:
   name: example-worker-script
+  annotations:
+    uptest.upbound.io/pre-delete-hook: ../../cluster/test/cleanup-children.sh script
 spec:
   forProvider:
     name: crossplane-test-script
