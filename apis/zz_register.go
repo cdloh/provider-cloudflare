@@ -12,6 +12,7 @@ import (
 
 	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/customhostname/v1alpha1"
 	v1alpha1dns "github.com/cdloh/provider-cloudflare/apis/dns/v1alpha1"
+	v1alpha1page "github.com/cdloh/provider-cloudflare/apis/page/v1alpha1"
 	v1alpha1apis "github.com/cdloh/provider-cloudflare/apis/v1alpha1"
 	v1beta1 "github.com/cdloh/provider-cloudflare/apis/v1beta1"
 	v1alpha1waf "github.com/cdloh/provider-cloudflare/apis/waf/v1alpha1"
@@ -24,6 +25,7 @@ func init() {
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1dns.SchemeBuilder.AddToScheme,
+		v1alpha1page.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 		v1alpha1waf.SchemeBuilder.AddToScheme,

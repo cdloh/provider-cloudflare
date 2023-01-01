@@ -12,6 +12,7 @@ import (
 
 	"github.com/cdloh/provider-cloudflare/config/customhostname"
 	"github.com/cdloh/provider-cloudflare/config/dns"
+	"github.com/cdloh/provider-cloudflare/config/page"
 	"github.com/cdloh/provider-cloudflare/config/waf"
 	"github.com/cdloh/provider-cloudflare/config/worker"
 	"github.com/cdloh/provider-cloudflare/config/zone"
@@ -43,6 +44,7 @@ func GetProvider() *ujconfig.Provider {
 		worker.Configure,
 		dns.Configure,
 		customhostname.Configure,
+		page.Configure,
 	} {
 		configure(pc)
 	}

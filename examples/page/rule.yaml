@@ -1,0 +1,19 @@
+apiVersion: page.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  name: example-page-rule
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    target: "*/page-rule"
+    priority: 1
+    actions:
+      - ssl: flexible
+        emailObfuscation: "on"
+        minify:
+          - html: "off"
+            css: "on"
+            js: "on"

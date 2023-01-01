@@ -12,10 +12,11 @@ import (
 	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
 	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
+	rule "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
-	rule "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
+	rulewaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
 	wafpackage "github.com/cdloh/provider-cloudflare/internal/controller/waf/wafpackage"
 	crontrigger "github.com/cdloh/provider-cloudflare/internal/controller/worker/crontrigger"
 	kv "github.com/cdloh/provider-cloudflare/internal/controller/worker/kv"
@@ -34,10 +35,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		fallbackorigin.Setup,
 		hostname.Setup,
 		record.Setup,
+		rule.Setup,
 		providerconfig.Setup,
 		group.Setup,
 		override.Setup,
-		rule.Setup,
+		rulewaf.Setup,
 		wafpackage.Setup,
 		crontrigger.Setup,
 		kv.Setup,
