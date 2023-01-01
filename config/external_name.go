@@ -24,6 +24,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_record":                          config.IdentifierFromProvider,
 	"cloudflare_custom_hostname":                 config.IdentifierFromProvider,
 	"cloudflare_custom_hostname_fallback_origin": config.IdentifierFromProvider,
+	"cloudflare_page_rule":                       config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
