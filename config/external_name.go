@@ -9,6 +9,17 @@ import "github.com/upbound/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
+	"cloudflare_access_application":                     config.IdentifierFromProvider,
+	"cloudflare_access_bookmark":                        config.IdentifierFromProvider,
+	"cloudflare_access_ca_certificate":                  config.IdentifierFromProvider,
+	"cloudflare_access_group":                           config.IdentifierFromProvider,
+	"cloudflare_access_identity_provider":               config.IdentifierFromProvider,
+	"cloudflare_access_keys_configuration":              config.IdentifierFromProvider,
+	"cloudflare_access_mutual_tls_certificate":          config.IdentifierFromProvider,
+	"cloudflare_access_organization":                    config.IdentifierFromProvider,
+	"cloudflare_access_policy":                          config.IdentifierFromProvider,
+	"cloudflare_access_rule":                            config.IdentifierFromProvider,
+	"cloudflare_access_service_token":                   config.IdentifierFromProvider,
 	"cloudflare_account_member":                         config.IdentifierFromProvider,
 	"cloudflare_account":                                config.IdentifierFromProvider,
 	"cloudflare_api_shield":                             config.IdentifierFromProvider,

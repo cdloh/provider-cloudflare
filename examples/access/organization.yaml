@@ -1,0 +1,17 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Organization
+metadata:
+  name: example-access-organization
+spec:
+  forProvider:
+    zomeIdRef:
+      name: example-account
+    name: example.cloudflareaccess.com
+    authDomain: example.cloudflareaccess.com
+    isUiReadOnly: false
+    loginDesign:
+      - backgroundColor: "#ffffff"
+        textColor: "#000000"
+        logoPath: "https://example.com/logo.png"
+        headerText: "My header text"
+        footerText: "My footer text"

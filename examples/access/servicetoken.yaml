@@ -1,0 +1,10 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: ServiceToken
+metadata:
+  name: example-access-service-token
+spec:
+  forProvider:
+    accountIdRef:
+      name: example
+    name: CI/CD App
+

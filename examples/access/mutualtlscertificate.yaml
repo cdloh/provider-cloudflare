@@ -1,0 +1,12 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: MutualTLSCertificate
+metadata:
+  name: example-access-mutual-tls-certificate
+spec:
+  forProvider:
+    zomeIdRef:
+      name: example-account
+    name: accessCertificate
+    certificate: LONG_CERTIFICATE_STRING_HERE
+    associatedHostnames:
+      - staging.example.com

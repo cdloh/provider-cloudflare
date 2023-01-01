@@ -1,0 +1,13 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  name: example-access-rule
+spec:
+  forProvider:
+    zomeIdRef:
+      name: example-account
+    notes: "Requests coming from known Tor exit nodes"
+    mode: challenge
+    configuration:
+      - target: country
+        value: T1

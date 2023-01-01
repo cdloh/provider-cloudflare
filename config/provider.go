@@ -10,6 +10,7 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
+	"github.com/cdloh/provider-cloudflare/config/access"
 	"github.com/cdloh/provider-cloudflare/config/account"
 	"github.com/cdloh/provider-cloudflare/config/apishield"
 	"github.com/cdloh/provider-cloudflare/config/argo"
@@ -63,6 +64,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		access.Configure,
 		account.Configure,
 		apishield.Configure,
 		argo.Configure,
