@@ -13,11 +13,11 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type KvNamespaceObservation struct {
+type KVNamespaceObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
-type KvNamespaceParameters struct {
+type KVNamespaceParameters struct {
 
 	// The account identifier to target for the resource.
 	// +kubebuilder:validation:Optional
@@ -27,51 +27,51 @@ type KvNamespaceParameters struct {
 	Title *string `json:"title" tf:"title,omitempty"`
 }
 
-// KvNamespaceSpec defines the desired state of KvNamespace
-type KvNamespaceSpec struct {
+// KVNamespaceSpec defines the desired state of KVNamespace
+type KVNamespaceSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     KvNamespaceParameters `json:"forProvider"`
+	ForProvider     KVNamespaceParameters `json:"forProvider"`
 }
 
-// KvNamespaceStatus defines the observed state of KvNamespace.
-type KvNamespaceStatus struct {
+// KVNamespaceStatus defines the observed state of KVNamespace.
+type KVNamespaceStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        KvNamespaceObservation `json:"atProvider,omitempty"`
+	AtProvider        KVNamespaceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// KvNamespace is the Schema for the KvNamespaces API. <no value>
+// KVNamespace is the Schema for the KVNamespaces API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
-type KvNamespace struct {
+type KVNamespace struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              KvNamespaceSpec   `json:"spec"`
-	Status            KvNamespaceStatus `json:"status,omitempty"`
+	Spec              KVNamespaceSpec   `json:"spec"`
+	Status            KVNamespaceStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// KvNamespaceList contains a list of KvNamespaces
-type KvNamespaceList struct {
+// KVNamespaceList contains a list of KVNamespaces
+type KVNamespaceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []KvNamespace `json:"items"`
+	Items           []KVNamespace `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	KvNamespace_Kind             = "KvNamespace"
-	KvNamespace_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: KvNamespace_Kind}.String()
-	KvNamespace_KindAPIVersion   = KvNamespace_Kind + "." + CRDGroupVersion.String()
-	KvNamespace_GroupVersionKind = CRDGroupVersion.WithKind(KvNamespace_Kind)
+	KVNamespace_Kind             = "KVNamespace"
+	KVNamespace_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: KVNamespace_Kind}.String()
+	KVNamespace_KindAPIVersion   = KVNamespace_Kind + "." + CRDGroupVersion.String()
+	KVNamespace_GroupVersionKind = CRDGroupVersion.WithKind(KVNamespace_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&KvNamespace{}, &KvNamespaceList{})
+	SchemeBuilder.Register(&KVNamespace{}, &KVNamespaceList{})
 }

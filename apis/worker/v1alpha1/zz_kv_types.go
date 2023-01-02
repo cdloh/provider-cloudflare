@@ -28,15 +28,15 @@ type KvParameters struct {
 	Key *string `json:"key" tf:"key,omitempty"`
 
 	// The ID of the Workers KV namespace in which you want to create the KV pair. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=KvNamespace
+	// +crossplane:generate:reference:type=KVNamespace
 	// +kubebuilder:validation:Optional
 	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
 
-	// Reference to a KvNamespace to populate namespaceId.
+	// Reference to a KVNamespace to populate namespaceId.
 	// +kubebuilder:validation:Optional
 	NamespaceIDRef *v1.Reference `json:"namespaceIdRef,omitempty" tf:"-"`
 
-	// Selector for a KvNamespace to populate namespaceId.
+	// Selector for a KVNamespace to populate namespaceId.
 	// +kubebuilder:validation:Optional
 	NamespaceIDSelector *v1.Selector `json:"namespaceIdSelector,omitempty" tf:"-"`
 

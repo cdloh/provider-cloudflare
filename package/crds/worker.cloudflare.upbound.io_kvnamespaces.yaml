@@ -13,8 +13,8 @@ spec:
     - crossplane
     - managed
     - cloudflare
-    kind: KvNamespace
-    listKind: KvNamespaceList
+    kind: KVNamespace
+    listKind: KVNamespaceList
     plural: kvnamespaces
     singular: kvnamespace
   scope: Cluster
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: KvNamespace is the Schema for the KvNamespaces API. <no value>
+        description: KVNamespace is the Schema for the KVNamespaces API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: KvNamespaceSpec defines the desired state of KvNamespace
+            description: KVNamespaceSpec defines the desired state of KVNamespace
             properties:
               deletionPolicy:
                 default: Delete
@@ -243,7 +243,7 @@ spec:
             - forProvider
             type: object
           status:
-            description: KvNamespaceStatus defines the observed state of KvNamespace.
+            description: KVNamespaceStatus defines the observed state of KVNamespace.
             properties:
               atProvider:
                 properties:

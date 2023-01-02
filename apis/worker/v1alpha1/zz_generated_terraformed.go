@@ -309,18 +309,18 @@ func (tr *Kv) GetTerraformSchemaVersion() int {
 	return 0
 }
 
-// GetTerraformResourceType returns Terraform resource type for this KvNamespace
-func (mg *KvNamespace) GetTerraformResourceType() string {
+// GetTerraformResourceType returns Terraform resource type for this KVNamespace
+func (mg *KVNamespace) GetTerraformResourceType() string {
 	return "cloudflare_workers_kv_namespace"
 }
 
-// GetConnectionDetailsMapping for this KvNamespace
-func (tr *KvNamespace) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this KVNamespace
+func (tr *KVNamespace) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this KvNamespace
-func (tr *KvNamespace) GetObservation() (map[string]any, error) {
+// GetObservation of this KVNamespace
+func (tr *KVNamespace) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -329,8 +329,8 @@ func (tr *KvNamespace) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this KvNamespace
-func (tr *KvNamespace) SetObservation(obs map[string]any) error {
+// SetObservation for this KVNamespace
+func (tr *KVNamespace) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -338,16 +338,16 @@ func (tr *KvNamespace) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this KvNamespace
-func (tr *KvNamespace) GetID() string {
+// GetID returns ID of underlying Terraform resource of this KVNamespace
+func (tr *KVNamespace) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this KvNamespace
-func (tr *KvNamespace) GetParameters() (map[string]any, error) {
+// GetParameters of this KVNamespace
+func (tr *KVNamespace) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -356,8 +356,8 @@ func (tr *KvNamespace) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this KvNamespace
-func (tr *KvNamespace) SetParameters(params map[string]any) error {
+// SetParameters for this KVNamespace
+func (tr *KVNamespace) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -365,10 +365,10 @@ func (tr *KvNamespace) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// LateInitialize this KvNamespace using its observed tfState.
+// LateInitialize this KVNamespace using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *KvNamespace) LateInitialize(attrs []byte) (bool, error) {
-	params := &KvNamespaceParameters{}
+func (tr *KVNamespace) LateInitialize(attrs []byte) (bool, error) {
+	params := &KVNamespaceParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -379,6 +379,6 @@ func (tr *KvNamespace) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *KvNamespace) GetTerraformSchemaVersion() int {
+func (tr *KVNamespace) GetTerraformSchemaVersion() int {
 	return 0
 }

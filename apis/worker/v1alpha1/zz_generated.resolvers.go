@@ -52,8 +52,8 @@ func (mg *Kv) ResolveReferences(ctx context.Context, c client.Reader) error {
 		Reference:    mg.Spec.ForProvider.NamespaceIDRef,
 		Selector:     mg.Spec.ForProvider.NamespaceIDSelector,
 		To: reference.To{
-			List:    &KvNamespaceList{},
-			Managed: &KvNamespace{},
+			List:    &KVNamespaceList{},
+			Managed: &KVNamespace{},
 		},
 	})
 	if err != nil {
@@ -121,8 +121,8 @@ func (mg *Script) ResolveReferences(ctx context.Context, c client.Reader) error 
 			Reference:    mg.Spec.ForProvider.KvNamespaceBinding[i3].NamespaceIDRef,
 			Selector:     mg.Spec.ForProvider.KvNamespaceBinding[i3].NamespaceIDSelector,
 			To: reference.To{
-				List:    &KvNamespaceList{},
-				Managed: &KvNamespace{},
+				List:    &KVNamespaceList{},
+				Managed: &KVNamespace{},
 			},
 		})
 		if err != nil {

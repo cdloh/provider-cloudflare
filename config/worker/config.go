@@ -32,16 +32,17 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_worker_script", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.References["kv_namespace_binding.namespace_id"] = config.Reference{
-			Type: "KvNamespace",
+			Type: "KVNamespace",
 		}
 	})
 	p.AddResourceConfigurator("cloudflare_workers_kv_namespace", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
+		r.Kind = "KVNamespace"
 	})
 	p.AddResourceConfigurator("cloudflare_workers_kv", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.References["namespace_id"] = config.Reference{
-			Type: "KvNamespace",
+			Type: "KVNamespace",
 		}
 	})
 }
