@@ -93,7 +93,7 @@ spec:
                           description: ID of the KV namespace you want to use.
                           type: string
                         namespaceIdRef:
-                          description: Reference to a KvNamespace to populate namespaceId.
+                          description: Reference to a KVNamespace to populate namespaceId.
                           properties:
                             name:
                               description: Name of the referenced object.
@@ -128,7 +128,7 @@ spec:
                           - name
                           type: object
                         namespaceIdSelector:
-                          description: Selector for a KvNamespace to populate namespaceId.
+                          description: Selector for a KVNamespace to populate namespaceId.
                           properties:
                             matchControllerRef:
                               description: MatchControllerRef ensures an object with

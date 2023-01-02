@@ -1,5 +1,5 @@
 apiVersion: worker.cloudflare.upbound.io/v1alpha1
-kind: KvNamespace
+kind: KVNamespace
 metadata:
   name: example-worker-kv-namespace
   annotations:

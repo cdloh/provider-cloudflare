@@ -16,8 +16,8 @@ func (l *CronTriggerList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this KvList.
-func (l *KvList) GetItems() []resource.Managed {
+// GetItems of this KVNamespaceList.
+func (l *KVNamespaceList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -25,8 +25,8 @@ func (l *KvList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this KvNamespaceList.
-func (l *KvNamespaceList) GetItems() []resource.Managed {
+// GetItems of this KvList.
+func (l *KvList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
