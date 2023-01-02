@@ -9,6 +9,9 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
+	account "github.com/cdloh/provider-cloudflare/internal/controller/account/account"
+	apitoken "github.com/cdloh/provider-cloudflare/internal/controller/account/apitoken"
+	member "github.com/cdloh/provider-cloudflare/internal/controller/account/member"
 	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
 	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
@@ -32,6 +35,9 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		account.Setup,
+		apitoken.Setup,
+		member.Setup,
 		fallbackorigin.Setup,
 		hostname.Setup,
 		record.Setup,
