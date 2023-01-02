@@ -12,6 +12,8 @@ import (
 	account "github.com/cdloh/provider-cloudflare/internal/controller/account/account"
 	apitoken "github.com/cdloh/provider-cloudflare/internal/controller/account/apitoken"
 	member "github.com/cdloh/provider-cloudflare/internal/controller/account/member"
+	authenticatedoriginspulls "github.com/cdloh/provider-cloudflare/internal/controller/authenticatedoriginpulls/authenticatedoriginspulls"
+	certificate "github.com/cdloh/provider-cloudflare/internal/controller/authenticatedoriginpulls/certificate"
 	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
 	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
@@ -38,6 +40,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		account.Setup,
 		apitoken.Setup,
 		member.Setup,
+		authenticatedoriginspulls.Setup,
+		certificate.Setup,
 		fallbackorigin.Setup,
 		hostname.Setup,
 		record.Setup,

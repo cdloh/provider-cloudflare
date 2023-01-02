@@ -1,0 +1,115 @@
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: origin-pull-certificate
+  namespace: default
+type: Opaque
+stringData:
+  private-key: |
+    -----BEGIN PRIVATE KEY-----
+    MIIJQwIBADANBgkqhkiG9w0BAQEFAASCCS0wggkpAgEAAoICAQCcDV8rOazQ0qcj
+    VrCTlN+2aM7l9PSAS35qucDDzDym9WkoAj6j5OKKmXPGjzljyUwcjcy1qEiL3VTm
+    MVfNYhcODlrQOUQgje0M+1+yeFaVNfDGzj1FVPx9JYcxcekj2Ji7tG7cLHwoqazE
+    AjdpV5GTBz33GcKTj+FI5EMyxNA896fA5VK7Dab5S9m9VXfTScs7RqK5UMSmaaTl
+    CujeerFmU9TRkwM64vfP6yvPm9uzPutw+JzYXFEqPfqxTUNr/3uzN9kjDYvrfKpH
+    cpZWKt8/68hPf3NdueqxLIN1mn/KZAcPvyQyTKjwRMy2p5usmSi6sSDhOQxXKypu
+    /BVdWKIts/6V7wfyzQtQ4cYjryZFUffwySt22wTar/6RbeUgqbzAwn/lYzl61zH/
+    5zSTrLFRQXnOc6bWcLe8Eb3ieuUKr1olalKgARH5fzkUTRtxyvO27YF5DYedQ/Sp
+    gCAYOGNuh+jf3S44f98fTWNGJdGbertX60EjyQzu59Ap7ZN8lIQaa4HCfdHtAMlJ
+    4JwKKvyg+/VUJql9x2HzPP7Iu6eR/sSJzSckl5u6GoqBKgLbBCffWX+hGPFolNl8
+    ShSZPZDvRQlz3OY+tBiz1TlQVnwyZJEoI8EZ7KoCJCLfYbQtsTHOVdUjGcDuV6GD
+    WoU6brIk/ofOpgQ9D7rX49l6zh8kvwIDAQABAoICAG3I0n08dCHtMPyhjlQlVkWj
+    8nrBHAnuEp/O0phs5PaojDRDcAIpkl7jmhnExSE4ir1D3RKns3ICYioX6KdrLMEM
+    xELdJtqoPm71oduS4YbTjfKvQVe3dHIupq/YbaZ0SO80/xESkr6gsBStYoJPwvBn
+    FebzTno1rM51F/ltkPpzWKdSLiO+dQvJmwOiT0xsC/hFt1EcS1yv0fv48t8h/g/5
+    Ri2yeYFCEAlMb2P9SFEQIN83aFCmkctgEzANJTOjZ0ksLyyD6T3gVIMzUCSKwMjd
+    fey/w0/a7gt7P3jLGsAuIvGnDTX9zJRMMqEFxXVlwsuktXb9hXsFuTKfUgB7zIu1
+    a3jvHRWRv/5pQOnyKIyL6h6Z11acuetE049fA4ATJY0N4TebJTjw+sBaIhFXcBnR
+    LscnI0b6on6To6H/gtt33UgU5GBz2F0y9H4A3+f9u9SVfR/k0ktIY5e4ZaY/sIkz
+    BEPYzW2RW75Uj3PXSa3drXK20Ov+sqhNRNKk1p1oes+ZHIu6meqCRdCRHqhyNpRq
+    XcSA3FyveVvwc89D6ttfoj1wr6gcwjV+sL867l2gp+z4nARX2mw24YDZHcdF8azw
+    alkLdUFHQkMB04jM4V0KdoG3LTK85xOQwjz+kzUotr+jsRdbJh80h7jy49aQVqnT
+    LEwxDwB0AvInSK6ISvaxAoIBAQDI+V7W8ZnlQY124MuUg65xHcm1zJRZRxE8f2BY
+    t/Az8v+dGNeu55zXCmUnSQrJ1k8JPUz9uaSJoTjPGo3AcoldzpRgTYLwg3HSZx5l
+    U7Z4rWXP9NhVUSd5u/pqPtFy0NVF8/BHwtT8d2+DucJuumtQ8xZobYml32Td+6wz
+    7thNFTj+UaobAe8QdWyZFDRnyM6qnK4GasL8afGXskn9SkGHXrGb5kA8U43oLIxY
+    R1Xqt7jOahHVgvc/ydKQG+ngU3d/JlrIbEhUfGHdWRY90JMR5OzPXWbtTLTUQ2HX
+    fcDz6wqRL+u5T+DLSaKB+4bvGC5NSGnwl8fwcJNY4XWb49d7AoIBAQDGx1kgj2iU
+    sWjW6py/jOim3rxvoUoMSybRChnkgp+6ISBUMmWvoQLNCnJmn6iBH/Z5h4+98GdR
+    RoBLaOCILpf1EisvPam9V/dQ3NaG0C1+B1yaA5jyTRdZvE8eEViCh0F0QOvpw8rW
+    6tNVKZWfijSqDAmm9rjjiyLrUZwh0mGWnt06tFaT7mE3DXR6UT754IJvc1Q8PySf
+    eImDuBpEu4JyUzc49xtjzwRykBKrvry6ncV2NnU+10LOjL0F8oIw9bbs/cCqDpi+
+    5Itsm2VH4yWjEwoXr29KbFMCfAO58Kpk1oPVyYX5uYVr4O/sPp/UrhAAUD4zXkHS
+    xRvPGoB6D4KNAoIBAQCuZvjOPkr2j7RbfSgtcThoIRlyEl6KOwnSHhdV5gkki7MW
+    eQByX7vTQMoXFWOvU7KyqeeuJvOKG8ZYswpf/wUFyscn6xu969NSavoNpF+syYyY
+    sjkpkItZMK9Wk7zejisF0XKqU4DQtjSncwQvYsbOMKU5ahURRJMbr9L4HkTGX6xd
+    xjB/z2XOOphLHyV7Ct+NXvoFx4/9y1JD+gwLKe1DtAEc8Oq9bySuXjpMQVtlnJlb
+    RuDDECvPxyxasl56tPP1+yq80nrSFj42/6A1dFKsLKT0LnGra+1gZjj5778J7OX2
+    qEc/QPoqb3P+qG+n/KvxlO2aQ5zWIls7vit5ZHcRAoIBADgmvf2dpSxDxVrYoXjW
+    xC3HQ7HA/Rrl68wnL1NGtvosO2atad4n/JORPOnSdhYrwkNoUOmVzInAAaPLt4mg
+    p9pZzIsmvxk2jS1xhMRGcGNmjvkOxRjFQDBgKnVS7w7ISGwfnsTFQzpc0WAARDzy
+    HJhgmCVrEqVse2u//Pvs4xZaQCJCKSbWsu2LRnj7FHAfxJjZGlV+fMjzktz7l6gM
+    0/eZnELiQwF5zEbUfgG3+rY4tTwEfDBJPJz+UrMoYzCTaJ4fvFoNj4Z1JxGCACVD
+    fDFJwpMYQrbiTLyp7Z+L5YZgtpMgv1Dg4FiuDPhOZHX+yZRdFoUKPkvc1FM3qE1S
+    rk0CggEBALPzDCe8SeJRJUHAOFQwoCKEmTUpS8zOV8bWo2TkyrjoyCsUMNqVGd7g
+    HgJpnQx8zaA35jn21jlyEyncm8A8QTIEaiM+qFo+e7AAlfCPfw0NRBCBC+MpG2N/
+    8HujnoGL6QxMqdAoNmVaE8eGiI3FoN2L7C/rNAjawvMaXddakrmJTcxVhIy3qQV9
+    M5EMG//0Q+8w9du/FOnVxHbJPyunnVzWnjtSmh/SoYnTMwOFPGbtva37LVMtowsz
+    cysVLIyZf0ulyilGSezjzGw/auE0AI/EIb5gtYGnlvnc4YRCeENBsZk7QuWa3xyC
+    GIC7kqti27pPqmVwWzC8lUpiOr8Y9n4=
+    -----END PRIVATE KEY-----
+
+
+
+
+---
+apiVersion: authenticatedoriginpulls.cloudflare.upbound.io/v1alpha1
+kind: Certificate
+metadata:
+  name: example-origin-pulls-certificate
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    type: "per-zone"
+    certificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIE4DCCAsigAwIBAgIJALpAtwIrfFOeMA0GCSqGSIb3DQEBCwUAMBYxFDASBgNV
+      BAMMC2V4YW1wbGUuY29tMB4XDTIzMDEwMzAwMTcwM1oXDTMyMTIzMTAwMTcwM1ow
+      FjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAw
+      ggIKAoICAQCcDV8rOazQ0qcjVrCTlN+2aM7l9PSAS35qucDDzDym9WkoAj6j5OKK
+      mXPGjzljyUwcjcy1qEiL3VTmMVfNYhcODlrQOUQgje0M+1+yeFaVNfDGzj1FVPx9
+      JYcxcekj2Ji7tG7cLHwoqazEAjdpV5GTBz33GcKTj+FI5EMyxNA896fA5VK7Dab5
+      S9m9VXfTScs7RqK5UMSmaaTlCujeerFmU9TRkwM64vfP6yvPm9uzPutw+JzYXFEq
+      PfqxTUNr/3uzN9kjDYvrfKpHcpZWKt8/68hPf3NdueqxLIN1mn/KZAcPvyQyTKjw
+      RMy2p5usmSi6sSDhOQxXKypu/BVdWKIts/6V7wfyzQtQ4cYjryZFUffwySt22wTa
+      r/6RbeUgqbzAwn/lYzl61zH/5zSTrLFRQXnOc6bWcLe8Eb3ieuUKr1olalKgARH5
+      fzkUTRtxyvO27YF5DYedQ/SpgCAYOGNuh+jf3S44f98fTWNGJdGbertX60EjyQzu
+      59Ap7ZN8lIQaa4HCfdHtAMlJ4JwKKvyg+/VUJql9x2HzPP7Iu6eR/sSJzSckl5u6
+      GoqBKgLbBCffWX+hGPFolNl8ShSZPZDvRQlz3OY+tBiz1TlQVnwyZJEoI8EZ7KoC
+      JCLfYbQtsTHOVdUjGcDuV6GDWoU6brIk/ofOpgQ9D7rX49l6zh8kvwIDAQABozEw
+      LzAtBgNVHREEJjAkggtleGFtcGxlLmNvbYIPd3d3LmV4YW1wbGUubmV0hwQKAAAB
+      MA0GCSqGSIb3DQEBCwUAA4ICAQBcjnDfkirtRQTsKYGT/xx5O+F7Qi2Vw9QgZRz3
+      4PY1DeRGBat0pJoR2tyUoB5TB6u+h+VdXOx4eWJcxCSprqNe6Ikg0hORL5cSdzVm
+      zbqR5mBgjz6yGWrC5Dh9HjFhk6O2UfdIHGCiXAYfT25x4sRUWzKoeGZeRO9TTpbZ
+      9GkGhzXTFfSYgFThvvz2JR5VGWouHrhAA9OYMafJ9M7lCrOpJjslRXnZWM2iEVJO
+      WyXMdAphOOLIWOxE+H4Ys++hw7rrE2hGDlOIyu1JzM5g0qYAQK2NqRq3fm/GrQqC
+      PDUeVcyBUiwfR/qAoj4hBzZNPTYM9bKne/bW04T39TLNk92m9P/N+bSR9LqRMjgZ
+      MsH8dkAz6Csw0s4qdNMarSVJwMl3MqhWVXgzupEaz2hbAN+4gk7JYt3JrUhWLqhN
+      jFy6oLzTeB5bQu8Sf2Auu5Zk6b2ejlcjnwJNu6QGRwjO+LfXZ/F4X+OXYr0YvlLF
+      I/MW0uEKMaZdm38N943R0jCL6YCaC12e6bMCFiMf1jURtutYnCogUvGXhkPe9kBf
+      6GWwunk+HM0Z7v4NVgy+oeKpgP+gYkvuiyP4fRxFKXRZQQAoGfBvK/v+/lxZ8S2N
+      FjyKPNU7CWaSCDHBBh5GxwyuU9sOgDzwApv2X6PKCHAY2Iph4s6IW8mqF1bSopFS
+      cbvxDg==
+      -----END CERTIFICATE-----
+
+    privateKeySecretRef:
+      namespace: default
+      key: private-key
+      name: origin-pull-certificate
+
+
