@@ -1,0 +1,9 @@
+apiVersion: account.cloudflare.upbound.io/v1alpha1
+kind: Account
+metadata:
+  name: example-account
+spec:
+  forProvider:
+    name: Test Account
+    type: enterprise
+    enforceTwofactor: true
