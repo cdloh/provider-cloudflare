@@ -1,0 +1,19 @@
+apiVersion: certificate.cloudflare.upbound.io/v1alpha1
+kind: Pack
+metadata:
+  name: example-certificate-pack
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    type: advanced
+    hosts:
+      - cloudflare-test.crossplane.io
+      - sub.cloudflare-test.crossplane.io
+    validationMethod: http
+    validityDays: 90
+    certificateAuthority: lets_encrypt
+    cloudflareBranding: false
+    waitForActiveStatus: false
