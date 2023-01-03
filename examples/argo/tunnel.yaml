@@ -1,0 +1,26 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: Tunnel
+metadata:
+  name: example-argo-tunnel
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    accountId: d41d8cd98f00b204e9800998ecf8427e
+    name: example-tunnel
+    secretSecretRef:
+      namespace: default
+      key: secret
+      name: argo-tunnel-secret
+
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argo-tunnel-secret
+  namespace: default
+type: Opaque
+stringData:
+  secret: AQIDBAUGBwgBAgMEBQYHCAECAwQFBgcIAQIDBAUGBwg=
