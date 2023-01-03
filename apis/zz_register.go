@@ -11,6 +11,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 
 	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1"
+	v1alpha1apishield "github.com/cdloh/provider-cloudflare/apis/apishield/v1alpha1"
 	v1alpha1authenticatedoriginpulls "github.com/cdloh/provider-cloudflare/apis/authenticatedoriginpulls/v1alpha1"
 	v1alpha1customhostname "github.com/cdloh/provider-cloudflare/apis/customhostname/v1alpha1"
 	v1alpha1dns "github.com/cdloh/provider-cloudflare/apis/dns/v1alpha1"
@@ -26,6 +27,7 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
+		v1alpha1apishield.SchemeBuilder.AddToScheme,
 		v1alpha1authenticatedoriginpulls.SchemeBuilder.AddToScheme,
 		v1alpha1customhostname.SchemeBuilder.AddToScheme,
 		v1alpha1dns.SchemeBuilder.AddToScheme,
