@@ -15,6 +15,7 @@ import (
 	v1alpha1argo "github.com/cdloh/provider-cloudflare/apis/argo/v1alpha1"
 	v1alpha1authenticatedoriginpulls "github.com/cdloh/provider-cloudflare/apis/authenticatedoriginpulls/v1alpha1"
 	v1alpha1byoip "github.com/cdloh/provider-cloudflare/apis/byoip/v1alpha1"
+	v1alpha1certificate "github.com/cdloh/provider-cloudflare/apis/certificate/v1alpha1"
 	v1alpha1customhostname "github.com/cdloh/provider-cloudflare/apis/customhostname/v1alpha1"
 	v1alpha1dns "github.com/cdloh/provider-cloudflare/apis/dns/v1alpha1"
 	v1alpha1page "github.com/cdloh/provider-cloudflare/apis/page/v1alpha1"
@@ -33,6 +34,7 @@ func init() {
 		v1alpha1argo.SchemeBuilder.AddToScheme,
 		v1alpha1authenticatedoriginpulls.SchemeBuilder.AddToScheme,
 		v1alpha1byoip.SchemeBuilder.AddToScheme,
+		v1alpha1certificate.SchemeBuilder.AddToScheme,
 		v1alpha1customhostname.SchemeBuilder.AddToScheme,
 		v1alpha1dns.SchemeBuilder.AddToScheme,
 		v1alpha1page.SchemeBuilder.AddToScheme,
