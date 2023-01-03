@@ -1,0 +1,10 @@
+apiVersion: byoip.cloudflare.upbound.io/v1alpha1
+kind: IPPrefix
+metadata:
+  name: example-byo-ip-prefix
+spec:
+  forProvider:
+    accountId: f037e56e89293a057740de681ac9abbe
+    prefixId: d41d8cd98f00b204e9800998ecf8427e
+    description: Example IP Prefix
+    advertisement: "on"

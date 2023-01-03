@@ -14,6 +14,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/apishield"
 	"github.com/cdloh/provider-cloudflare/config/argo"
 	"github.com/cdloh/provider-cloudflare/config/authenticatedoriginpulls"
+	"github.com/cdloh/provider-cloudflare/config/byoip"
 	"github.com/cdloh/provider-cloudflare/config/customhostname"
 	"github.com/cdloh/provider-cloudflare/config/dns"
 	"github.com/cdloh/provider-cloudflare/config/page"
@@ -47,6 +48,7 @@ func GetProvider() *ujconfig.Provider {
 		apishield.Configure,
 		argo.Configure,
 		authenticatedoriginpulls.Configure,
+		byoip.Configure,
 		zone.Configure,
 		waf.Configure,
 		worker.Configure,
