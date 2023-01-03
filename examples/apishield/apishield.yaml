@@ -1,0 +1,13 @@
+apiVersion: apishield.cloudflare.upbound.io/v1alpha1
+kind: APIShield
+metadata:
+  name: example-api-shield
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    authIdCharacteristics:
+      - name: my-example-header
+        type: header
