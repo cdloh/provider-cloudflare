@@ -1,0 +1,11 @@
+apiVersion: authenticatedoriginpulls.cloudflare.upbound.io/v1alpha1
+kind: AuthenticatedOriginsPulls
+metadata:
+  name: example-origin-pulls
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    enabled: true
