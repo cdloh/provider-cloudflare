@@ -17,6 +17,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_argo_tunnel":                            config.IdentifierFromProvider,
 	"cloudflare_authenticated_origin_pulls":             config.IdentifierFromProvider,
 	"cloudflare_authenticated_origin_pulls_certificate": config.IdentifierFromProvider,
+	"cloudflare_byo_ip_prefix":                          config.IdentifierFromProvider,
 	"cloudflare_zone":                                   config.IdentifierFromProvider,
 	"cloudflare_zone_settings_override":                 config.IdentifierFromProvider,
 	"cloudflare_zone_dnssec":                            config.IdentifierFromProvider,

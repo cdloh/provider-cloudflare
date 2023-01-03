@@ -17,6 +17,7 @@ import (
 	tunnel "github.com/cdloh/provider-cloudflare/internal/controller/argo/tunnel"
 	authenticatedoriginspulls "github.com/cdloh/provider-cloudflare/internal/controller/authenticatedoriginpulls/authenticatedoriginspulls"
 	certificate "github.com/cdloh/provider-cloudflare/internal/controller/authenticatedoriginpulls/certificate"
+	ipprefix "github.com/cdloh/provider-cloudflare/internal/controller/byoip/ipprefix"
 	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
 	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
@@ -48,6 +49,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		tunnel.Setup,
 		authenticatedoriginspulls.Setup,
 		certificate.Setup,
+		ipprefix.Setup,
 		fallbackorigin.Setup,
 		hostname.Setup,
 		record.Setup,
