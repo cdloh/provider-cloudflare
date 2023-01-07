@@ -1,0 +1,15 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: DevicePostureIntegration
+metadata:
+  name: example
+spec:
+  forProvider:
+    accountId: 12321321321fdafdsa
+    name: Device posture integration
+    type: workspace_one
+    interval: 24h
+    config:
+      - apiUrl: "https://example.com/api"
+        authUrl: "https://example.com/connect/token"
+        clientId: client-id
+        clientSecret: client-secret

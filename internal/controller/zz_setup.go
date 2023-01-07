@@ -28,6 +28,11 @@ import (
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
 	rulewaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
 	wafpackage "github.com/cdloh/provider-cloudflare/internal/controller/waf/wafpackage"
+	devicepolicycertificates "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicepolicycertificates"
+	devicepostureintegration "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicepostureintegration"
+	deviceposturerule "github.com/cdloh/provider-cloudflare/internal/controller/warp/deviceposturerule"
+	devicesettingspolicy "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicesettingspolicy"
+	splittunnel "github.com/cdloh/provider-cloudflare/internal/controller/warp/splittunnel"
 	crontrigger "github.com/cdloh/provider-cloudflare/internal/controller/worker/crontrigger"
 	kv "github.com/cdloh/provider-cloudflare/internal/controller/worker/kv"
 	kvnamespace "github.com/cdloh/provider-cloudflare/internal/controller/worker/kvnamespace"
@@ -61,6 +66,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		override.Setup,
 		rulewaf.Setup,
 		wafpackage.Setup,
+		devicepolicycertificates.Setup,
+		devicepostureintegration.Setup,
+		deviceposturerule.Setup,
+		devicesettingspolicy.Setup,
+		splittunnel.Setup,
 		crontrigger.Setup,
 		kv.Setup,
 		kvnamespace.Setup,

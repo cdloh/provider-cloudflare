@@ -20,6 +20,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/dns"
 	"github.com/cdloh/provider-cloudflare/config/page"
 	"github.com/cdloh/provider-cloudflare/config/waf"
+	"github.com/cdloh/provider-cloudflare/config/warp"
 	"github.com/cdloh/provider-cloudflare/config/worker"
 	"github.com/cdloh/provider-cloudflare/config/zone"
 )
@@ -51,12 +52,13 @@ func GetProvider() *ujconfig.Provider {
 		authenticatedoriginpulls.Configure,
 		byoip.Configure,
 		certificate.Configure,
-		zone.Configure,
-		waf.Configure,
-		worker.Configure,
-		dns.Configure,
 		customhostname.Configure,
+		dns.Configure,
 		page.Configure,
+		waf.Configure,
+		warp.Configure,
+		worker.Configure,
+		zone.Configure,
 	} {
 		configure(pc)
 	}

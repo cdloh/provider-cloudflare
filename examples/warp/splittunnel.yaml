@@ -1,0 +1,11 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: SplitTunnel
+metadata:
+  name: example
+spec:
+  forProvider:
+    accountId: 123213213213213gdsafdsa
+    mode: exclude
+    tunnels:
+      - host: "*.example.com"
+        description: example domain
