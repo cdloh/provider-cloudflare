@@ -16,6 +16,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/authenticatedoriginpulls"
 	"github.com/cdloh/provider-cloudflare/config/byoip"
 	"github.com/cdloh/provider-cloudflare/config/certificate"
+	"github.com/cdloh/provider-cloudflare/config/custom"
 	"github.com/cdloh/provider-cloudflare/config/customhostname"
 	"github.com/cdloh/provider-cloudflare/config/dns"
 	"github.com/cdloh/provider-cloudflare/config/page"
@@ -52,6 +53,7 @@ func GetProvider() *ujconfig.Provider {
 		authenticatedoriginpulls.Configure,
 		byoip.Configure,
 		certificate.Configure,
+		custom.Configure,
 		customhostname.Configure,
 		dns.Configure,
 		page.Configure,

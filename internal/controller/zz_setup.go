@@ -19,6 +19,8 @@ import (
 	certificate "github.com/cdloh/provider-cloudflare/internal/controller/authenticatedoriginpulls/certificate"
 	ipprefix "github.com/cdloh/provider-cloudflare/internal/controller/byoip/ipprefix"
 	pack "github.com/cdloh/provider-cloudflare/internal/controller/certificate/pack"
+	pages "github.com/cdloh/provider-cloudflare/internal/controller/custom/pages"
+	ssl "github.com/cdloh/provider-cloudflare/internal/controller/custom/ssl"
 	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
 	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
@@ -57,6 +59,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		certificate.Setup,
 		ipprefix.Setup,
 		pack.Setup,
+		pages.Setup,
+		ssl.Setup,
 		fallbackorigin.Setup,
 		hostname.Setup,
 		record.Setup,

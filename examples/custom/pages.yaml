@@ -1,0 +1,13 @@
+apiVersion: custom.cloudflare.upbound.io/v1alpha1
+kind: Pages
+metadata:
+  name: example
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    type: basic_challenge
+    url: "https://example.com/index.html"
+    state: customized
