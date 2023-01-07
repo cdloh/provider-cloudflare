@@ -21,6 +21,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_certificate_pack":                       config.IdentifierFromProvider,
 	"cloudflare_custom_hostname_fallback_origin":        config.IdentifierFromProvider,
 	"cloudflare_custom_hostname":                        config.IdentifierFromProvider,
+	"cloudflare_custom_pages":                           config.IdentifierFromProvider,
+	"cloudflare_custom_ssl":                             config.IdentifierFromProvider,
 	"cloudflare_device_policy_certificates":             config.IdentifierFromProvider,
 	"cloudflare_device_posture_integration":             config.IdentifierFromProvider,
 	"cloudflare_device_posture_rule":                    config.IdentifierFromProvider,
