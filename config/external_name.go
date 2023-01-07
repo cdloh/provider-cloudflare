@@ -90,6 +90,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_waiting_room":                           config.IdentifierFromProvider,
 	"cloudflare_waiting_room_event":                     config.IdentifierFromProvider,
 	"cloudflare_waiting_room_rules":                     config.IdentifierFromProvider,
+	"cloudflare_web3_hostname":                          config.IdentifierFromProvider,
 	"cloudflare_worker_cron_trigger":                    config.IdentifierFromProvider,
 	"cloudflare_worker_route":                           config.IdentifierFromProvider,
 	"cloudflare_worker_script":                          config.IdentifierFromProvider,
