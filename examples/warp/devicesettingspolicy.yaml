@@ -1,0 +1,22 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: DeviceSettingsPolicy
+metadata:
+  name: example
+spec:
+  forProvider:
+    accountId: f037e56e89293a057740de681ac9abbe
+    name: Developers WARP Settings Policy
+    precedence: 10
+    match: "any(identity.groups.name[*] in {\"Developers\"})"
+    default: false
+    enabled: true
+    allowModeSwitch: true
+    allowUpdates: true
+    allowedToLeave: true
+    autoConnect: 0
+    captivePortal: 5
+    disableAutoFallback: true
+    supportUrl: "https://cloudflare.com"
+    switchLocked: true
+    serviceModeV2Mode: warp
+    serviceModeV2Port: 3000
