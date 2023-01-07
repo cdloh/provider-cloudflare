@@ -24,7 +24,11 @@ import (
 	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
 	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
-	rule "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
+	address "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/address"
+	catchall "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/catchall"
+	rule "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/rule"
+	settings "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/settings"
+	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
@@ -64,7 +68,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		fallbackorigin.Setup,
 		hostname.Setup,
 		record.Setup,
+		address.Setup,
+		catchall.Setup,
 		rule.Setup,
+		settings.Setup,
+		rulepage.Setup,
 		providerconfig.Setup,
 		group.Setup,
 		override.Setup,

@@ -1,0 +1,21 @@
+
+apiVersion: emailrouting.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  name: example
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    name: crossplane rule
+    enabled: true
+    matcher:
+      - type: literal
+        field: to
+        value: test@example.com
+    action:
+      - type: forward
+        value:
+          - destinationaddress@example.net

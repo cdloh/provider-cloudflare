@@ -1,0 +1,9 @@
+
+apiVersion: emailrouting.cloudflare.upbound.io/v1alpha1
+kind: Address
+metadata:
+  name: example
+spec:
+  forProvider:
+    accountId: f037e56e89293a057740de681ac9abbe
+    email: "user@example.com"

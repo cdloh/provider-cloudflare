@@ -1,0 +1,19 @@
+
+apiVersion: emailrouting.cloudflare.upbound.io/v1alpha1
+kind: CatchAll
+metadata:
+  name: example
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRefs:
+      name: example
+    name: example catch all
+    enabled: true
+    matcher:
+      - type: all
+    action:
+      - type: forward
+        value:
+          - destinationaddress@example.net

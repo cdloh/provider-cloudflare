@@ -19,6 +19,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/custom"
 	"github.com/cdloh/provider-cloudflare/config/customhostname"
 	"github.com/cdloh/provider-cloudflare/config/dns"
+	"github.com/cdloh/provider-cloudflare/config/emailrouting"
 	"github.com/cdloh/provider-cloudflare/config/page"
 	"github.com/cdloh/provider-cloudflare/config/waf"
 	"github.com/cdloh/provider-cloudflare/config/warp"
@@ -56,6 +57,7 @@ func GetProvider() *ujconfig.Provider {
 		custom.Configure,
 		customhostname.Configure,
 		dns.Configure,
+		emailrouting.Configure,
 		page.Configure,
 		waf.Configure,
 		warp.Configure,
