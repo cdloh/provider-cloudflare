@@ -1,0 +1,16 @@
+apiVersion: logpush.cloudflare.upbound.io/v1alpha1
+kind: Job
+metadata:
+  name: example-logpush-job
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    enabled: true
+    name: "My-logpush-job"
+    logpullOptions: fields=RayID,ClientIP,EdgeStartTimestamp&timestamps=rfc3339
+    destinationConf: s3://logs-test-bucket?region=us-east-1
+    ownershipChallenge: LONGSTRINGHERE
+    dataset: http_requests
