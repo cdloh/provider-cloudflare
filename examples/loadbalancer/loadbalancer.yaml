@@ -1,0 +1,38 @@
+apiVersion: loadbalancer.cloudflare.upbound.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  name: example-lb
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    name: example-load-balancer.cloudflare-test.crossplane.io
+    fallbackPoolIdRef:
+      name: example-pool
+    defaultPoolIdsRefs:
+      - name: example-pool
+    description: example load balancer using geo-balancing
+    proxied: true
+    steeringPolicy: geo
+    popPools:
+      - pop: LAX
+        poolIdsRefs:
+          - name: example-pool
+    countryPools:
+      - country: US
+        poolIdsRefs:
+          - name: example-pool
+    regionPools:
+      - region: WNAM
+        poolIdsRefs:
+          - name: example-pool
+    rules:
+      - name: example rule
+        condition: "http.request.uri.path contains \"testing\""
+        fixedResponse:
+          - messageBody: hello
+            statusCode: 200
+            contentType: html
+            location: "cloudflare-test.crossplane.io"
