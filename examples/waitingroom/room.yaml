@@ -1,0 +1,17 @@
+apiVersion: waitingroom.cloudflare.upbound.io/v1alpha1
+kind: Room
+metadata:
+  name: example-waiting-room
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+  annotations:
+    uptest.upbound.io/pre-delete-hook: ../../cluster/test/cleanup-children.sh waiting-room
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    name: "foo"
+    host: room.cloudflare-test-enterprise.crossplane.io
+    path: /
+    newUsersPerMinute: 200
+    totalActiveUsers: 200

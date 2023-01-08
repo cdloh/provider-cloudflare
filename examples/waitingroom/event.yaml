@@ -1,0 +1,16 @@
+apiVersion: waitingroom.cloudflare.upbound.io/v1alpha1
+kind: Event
+metadata:
+  name: example-waiting-room-event
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+    testing.cloudflare.upbound.io/require-waiting-room: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    waitingRoomIdRef:
+      name: example-waiting-room
+    name: foo
+    eventStartTime: "2006-01-02T15:04:05Z"
+    eventEndTime: "2006-01-02T20:04:05Z"

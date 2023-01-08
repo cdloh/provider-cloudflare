@@ -1,0 +1,22 @@
+apiVersion: waitingroom.cloudflare.upbound.io/v1alpha1
+kind: Rules
+metadata:
+  name: example-waiting-room-rules
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+    testing.cloudflare.upbound.io/require-waiting-room: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    waitingRoomIdRef:
+      name: example-waiting-room
+    rules:
+      - description: "bypass ip list"
+        expression: "ip.src in {192.0.2.0 192.0.2.1}"
+        action: bypass_waiting_room
+        status: enabled
+      - description: "bypass query string"
+        expression: "http.request.uri.query contains \"bypass=true\""
+        action: bypass_waiting_room
+        status: enabled
