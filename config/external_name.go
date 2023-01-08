@@ -27,6 +27,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_device_posture_integration":             config.IdentifierFromProvider,
 	"cloudflare_device_posture_rule":                    config.IdentifierFromProvider,
 	"cloudflare_device_settings_policy":                 config.IdentifierFromProvider,
+	"cloudflare_dlp_profile":                            config.IdentifierFromProvider,
 	"cloudflare_email_routing_address":                  config.IdentifierFromProvider,
 	"cloudflare_email_routing_catch_all":                config.IdentifierFromProvider,
 	"cloudflare_email_routing_rule":                     config.IdentifierFromProvider,

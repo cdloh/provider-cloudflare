@@ -23,6 +23,7 @@ import (
 	ssl "github.com/cdloh/provider-cloudflare/internal/controller/custom/ssl"
 	fallbackorigin "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/fallbackorigin"
 	hostname "github.com/cdloh/provider-cloudflare/internal/controller/customhostname/hostname"
+	profile "github.com/cdloh/provider-cloudflare/internal/controller/dlp/profile"
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
 	address "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/address"
 	catchall "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/catchall"
@@ -70,6 +71,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		ssl.Setup,
 		fallbackorigin.Setup,
 		hostname.Setup,
+		profile.Setup,
 		record.Setup,
 		address.Setup,
 		catchall.Setup,
