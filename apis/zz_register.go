@@ -18,6 +18,7 @@ import (
 	v1alpha1certificate "github.com/cdloh/provider-cloudflare/apis/certificate/v1alpha1"
 	v1alpha1custom "github.com/cdloh/provider-cloudflare/apis/custom/v1alpha1"
 	v1alpha1customhostname "github.com/cdloh/provider-cloudflare/apis/customhostname/v1alpha1"
+	v1alpha1dlp "github.com/cdloh/provider-cloudflare/apis/dlp/v1alpha1"
 	v1alpha1dns "github.com/cdloh/provider-cloudflare/apis/dns/v1alpha1"
 	v1alpha1emailrouting "github.com/cdloh/provider-cloudflare/apis/emailrouting/v1alpha1"
 	v1alpha1page "github.com/cdloh/provider-cloudflare/apis/page/v1alpha1"
@@ -41,6 +42,7 @@ func init() {
 		v1alpha1certificate.SchemeBuilder.AddToScheme,
 		v1alpha1custom.SchemeBuilder.AddToScheme,
 		v1alpha1customhostname.SchemeBuilder.AddToScheme,
+		v1alpha1dlp.SchemeBuilder.AddToScheme,
 		v1alpha1dns.SchemeBuilder.AddToScheme,
 		v1alpha1emailrouting.SchemeBuilder.AddToScheme,
 		v1alpha1page.SchemeBuilder.AddToScheme,

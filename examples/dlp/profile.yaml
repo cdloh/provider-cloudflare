@@ -1,0 +1,15 @@
+apiVersion: dlp.cloudflare.upbound.io/v1alpha1
+kind: Profile
+metadata:
+  name: example-dlp-profile-custom
+spec:
+  forProvider:
+    accountId: jE2de7nfY5c6WkvqHCXgmybV4xTPhsBz
+    name: "Example Custom Profile"
+    type: "custom"
+    entry:
+      - name: "Matches visa credit cards"
+        enabled: false
+        pattern:
+          - regex: "4\\d{3}([-\\. ])?\\d{4}([-\\. ])?\\d{4}([-\\. ])?\\d{4}"
+            validation: luhn
