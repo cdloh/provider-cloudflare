@@ -1,0 +1,11 @@
+apiVersion: logpush.cloudflare.upbound.io/v1alpha1
+kind: OwnershipChallenge
+metadata:
+  name: example-logpush-job
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    destinationConf: s3://logs-test-bucket?region=us-east-1

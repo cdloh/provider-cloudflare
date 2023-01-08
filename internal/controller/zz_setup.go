@@ -32,6 +32,8 @@ import (
 	loadbalancer "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/loadbalancer"
 	monitor "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/monitor"
 	pool "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/pool"
+	job "github.com/cdloh/provider-cloudflare/internal/controller/logpush/job"
+	ownershipchallenge "github.com/cdloh/provider-cloudflare/internal/controller/logpush/ownershipchallenge"
 	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
@@ -83,6 +85,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		loadbalancer.Setup,
 		monitor.Setup,
 		pool.Setup,
+		job.Setup,
+		ownershipchallenge.Setup,
 		rulepage.Setup,
 		providerconfig.Setup,
 		group.Setup,
