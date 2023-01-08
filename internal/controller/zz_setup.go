@@ -29,6 +29,9 @@ import (
 	catchall "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/catchall"
 	rule "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/rule"
 	settings "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/settings"
+	loadbalancer "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/loadbalancer"
+	monitor "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/monitor"
+	pool "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/pool"
 	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
@@ -77,6 +80,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		catchall.Setup,
 		rule.Setup,
 		settings.Setup,
+		loadbalancer.Setup,
+		monitor.Setup,
+		pool.Setup,
 		rulepage.Setup,
 		providerconfig.Setup,
 		group.Setup,

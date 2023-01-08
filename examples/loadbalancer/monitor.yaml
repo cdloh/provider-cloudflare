@@ -1,0 +1,39 @@
+---
+
+apiVersion: loadbalancer.cloudflare.upbound.io/v1alpha1
+kind: Monitor
+metadata:
+  name: example-monitor-http
+spec:
+  forProvider:
+    type: http
+    expectedBody: alive
+    expectedCodes: 2xx
+    method: GET
+    timeout: 7
+    path: /health
+    interval: 60
+    retries: 5
+    description: example http load balancer
+    header:
+      - header: Host
+        values:
+          - cloudflare-test.crossplane.io
+    allowInsecure: false
+    followRedirects: true
+
+---
+
+apiVersion: loadbalancer.cloudflare.upbound.io/v1alpha1
+kind: Monitor
+metadata:
+  name: example-monitor-tcp
+spec:
+  forProvider:
+    type: tcp
+    method: connection_established
+    timeout: 7
+    port: 8080
+    interval: 60
+    retries: 5
+    description: example tcp load balancer

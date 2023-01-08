@@ -1,0 +1,26 @@
+apiVersion: loadbalancer.cloudflare.upbound.io/v1alpha1
+kind: Pool
+metadata:
+  name: example-pool
+spec:
+  forProvider:
+    name: "example-pool"
+    origins:
+      - name: "example-1"
+        address: "8.8.8.8"
+        enabled: false
+      - name: "example-2"
+        address: "8.8.4.4"
+    latitude: 55
+    longitude: -12
+    description: "example load balancer pool"
+    enabled: false
+    minimumOrigins: 1
+    notificationEmail: "someone@example.com"
+    loadShedding:
+      - defaultPercent: 55
+        defaultPolicy: "random"
+        sessionPercent: 12
+        sessionPolicy: "hash"
+    originSteering:
+      - policy: "random"
