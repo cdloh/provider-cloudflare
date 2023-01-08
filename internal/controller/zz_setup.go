@@ -34,6 +34,9 @@ import (
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
 	rulewaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
 	wafpackage "github.com/cdloh/provider-cloudflare/internal/controller/waf/wafpackage"
+	event "github.com/cdloh/provider-cloudflare/internal/controller/waitingroom/event"
+	room "github.com/cdloh/provider-cloudflare/internal/controller/waitingroom/room"
+	rules "github.com/cdloh/provider-cloudflare/internal/controller/waitingroom/rules"
 	devicepolicycertificates "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicepolicycertificates"
 	devicepostureintegration "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicepostureintegration"
 	deviceposturerule "github.com/cdloh/provider-cloudflare/internal/controller/warp/deviceposturerule"
@@ -78,6 +81,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		override.Setup,
 		rulewaf.Setup,
 		wafpackage.Setup,
+		event.Setup,
+		room.Setup,
+		rules.Setup,
 		devicepolicycertificates.Setup,
 		devicepostureintegration.Setup,
 		deviceposturerule.Setup,

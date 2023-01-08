@@ -24,6 +24,7 @@ import (
 	v1alpha1apis "github.com/cdloh/provider-cloudflare/apis/v1alpha1"
 	v1beta1 "github.com/cdloh/provider-cloudflare/apis/v1beta1"
 	v1alpha1waf "github.com/cdloh/provider-cloudflare/apis/waf/v1alpha1"
+	v1alpha1waitingroom "github.com/cdloh/provider-cloudflare/apis/waitingroom/v1alpha1"
 	v1alpha1warp "github.com/cdloh/provider-cloudflare/apis/warp/v1alpha1"
 	v1alpha1worker "github.com/cdloh/provider-cloudflare/apis/worker/v1alpha1"
 	v1alpha1zone "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1"
@@ -46,6 +47,7 @@ func init() {
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 		v1alpha1waf.SchemeBuilder.AddToScheme,
+		v1alpha1waitingroom.SchemeBuilder.AddToScheme,
 		v1alpha1warp.SchemeBuilder.AddToScheme,
 		v1alpha1worker.SchemeBuilder.AddToScheme,
 		v1alpha1zone.SchemeBuilder.AddToScheme,
