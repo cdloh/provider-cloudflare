@@ -38,6 +38,8 @@ import (
 	job "github.com/cdloh/provider-cloudflare/internal/controller/logpush/job"
 	ownershipchallenge "github.com/cdloh/provider-cloudflare/internal/controller/logpush/ownershipchallenge"
 	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
+	domain "github.com/cdloh/provider-cloudflare/internal/controller/pages/domain"
+	project "github.com/cdloh/provider-cloudflare/internal/controller/pages/project"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	accountteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/account"
 	list "github.com/cdloh/provider-cloudflare/internal/controller/teams/list"
@@ -99,6 +101,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		job.Setup,
 		ownershipchallenge.Setup,
 		rulepage.Setup,
+		domain.Setup,
+		project.Setup,
 		providerconfig.Setup,
 		accountteams.Setup,
 		list.Setup,

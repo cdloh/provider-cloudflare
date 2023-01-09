@@ -38,6 +38,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_logpush_job":                            config.IdentifierFromProvider,
 	"cloudflare_logpush_ownership_challenge":            config.IdentifierFromProvider,
 	"cloudflare_page_rule":                              config.IdentifierFromProvider,
+	"cloudflare_pages_domain":                           config.IdentifierFromProvider,
+	"cloudflare_pages_project":                          config.IdentifierFromProvider,
 	"cloudflare_record":                                 config.IdentifierFromProvider,
 	"cloudflare_split_tunnel":                           config.IdentifierFromProvider,
 	"cloudflare_teams_account":                          config.IdentifierFromProvider,
