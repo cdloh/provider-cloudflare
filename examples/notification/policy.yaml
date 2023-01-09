@@ -1,0 +1,19 @@
+apiVersion: notification.cloudflare.upbound.io/v1alpha1
+kind: Policy
+metadata:
+  name: example-notification-policy
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: Policy for Healthcheck notification
+    description: "Notification policy to alert on unhealthy Healthcheck status"
+    enabled: false
+    alertType: health_check_status_notification
+    emailIntegration:
+      - id: devnull@crossplane.io
+    filters:
+      - healthCheckId:
+          - 699d98642c564d2e855e9661899b7252
+        status:
+          - Unhealthy
