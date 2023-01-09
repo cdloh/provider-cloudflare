@@ -50,6 +50,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_tunnel_config":                          config.IdentifierFromProvider,
 	"cloudflare_tunnel_route":                           config.IdentifierFromProvider,
 	"cloudflare_tunnel_virtual_network":                 config.IdentifierFromProvider,
+	"cloudflare_url_normalization_settings":             config.IdentifierFromProvider,
+	"cloudflare_user_agent_blocking_rule":               config.IdentifierFromProvider,
 	"cloudflare_waf_group":                              config.IdentifierFromProvider,
 	"cloudflare_waf_override":                           config.IdentifierFromProvider,
 	"cloudflare_waf_package":                            config.IdentifierFromProvider,

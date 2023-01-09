@@ -46,6 +46,8 @@ import (
 	location "github.com/cdloh/provider-cloudflare/internal/controller/teams/location"
 	proxyendpoint "github.com/cdloh/provider-cloudflare/internal/controller/teams/proxyendpoint"
 	ruleteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/rule"
+	settingsurlnormalization "github.com/cdloh/provider-cloudflare/internal/controller/urlnormalization/settings"
+	blockingrule "github.com/cdloh/provider-cloudflare/internal/controller/useragent/blockingrule"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
 	rulewaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
@@ -109,6 +111,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		location.Setup,
 		proxyendpoint.Setup,
 		ruleteams.Setup,
+		settingsurlnormalization.Setup,
+		blockingrule.Setup,
 		group.Setup,
 		override.Setup,
 		rulewaf.Setup,

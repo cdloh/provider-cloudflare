@@ -1,0 +1,12 @@
+apiVersion: urlnormalization.cloudflare.upbound.io/v1alpha1
+kind: Settings
+metadata:
+  name: example-url-normalization-settings
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    type: cloudflare
+    scope: incoming
