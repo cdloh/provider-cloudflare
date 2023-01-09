@@ -15,6 +15,9 @@ import (
 	apishield "github.com/cdloh/provider-cloudflare/internal/controller/apishield/apishield"
 	argo "github.com/cdloh/provider-cloudflare/internal/controller/argo/argo"
 	tunnel "github.com/cdloh/provider-cloudflare/internal/controller/argo/tunnel"
+	tunnelconfig "github.com/cdloh/provider-cloudflare/internal/controller/argo/tunnelconfig"
+	tunnelroute "github.com/cdloh/provider-cloudflare/internal/controller/argo/tunnelroute"
+	tunnelvirtualnetwork "github.com/cdloh/provider-cloudflare/internal/controller/argo/tunnelvirtualnetwork"
 	authenticatedoriginspulls "github.com/cdloh/provider-cloudflare/internal/controller/authenticatedoriginpulls/authenticatedoriginspulls"
 	certificate "github.com/cdloh/provider-cloudflare/internal/controller/authenticatedoriginpulls/certificate"
 	ipprefix "github.com/cdloh/provider-cloudflare/internal/controller/byoip/ipprefix"
@@ -68,6 +71,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		apishield.Setup,
 		argo.Setup,
 		tunnel.Setup,
+		tunnelconfig.Setup,
+		tunnelroute.Setup,
+		tunnelvirtualnetwork.Setup,
 		authenticatedoriginspulls.Setup,
 		certificate.Setup,
 		ipprefix.Setup,

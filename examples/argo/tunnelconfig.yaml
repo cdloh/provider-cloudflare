@@ -1,0 +1,69 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: Tunnel
+metadata:
+  name: example-argo-tunnel-for-config
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    accountId: d41d8cd98f00b204e9800998ecf8427e
+    name: example-tunnel-for-config
+    secretSecretRef:
+      namespace: default
+      key: secret
+      name: argo-tunnel-secret-for-config
+
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argo-tunnel-secret-for-config
+  namespace: default
+type: Opaque
+stringData:
+  secret: AQIDBAUGBwgBAgMEBQYHCAECAwQFBgcIAQIDBAUGBwg=
+
+
+---
+
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: TunnelConfig
+metadata:
+  name: example-argo-tunnel-config
+spec:
+  forProvider:
+    accountId: d41d8cd98f00b204e9800998ecf8427e
+    tunnelIdRef:
+      name: example-argo-tunnel-for-config
+    config:
+      - warpRouting:
+          - enabled: true
+        originRequest:
+          - connectTimeout: "1m0s"
+            tlsTimeout: "1m0s"
+            tcpKeepAlive: "1m0s"
+            noHappyEyeballs: false
+            keepAliveConnections: 1024
+            keepAliveTimeout: "1m0s"
+            httpHostHeader: "baz"
+            originServerName: "foobar"
+            noTlsVerify: false
+            disableChunkedEncoding: false
+            bastionMode: false
+            proxyAddress: "10.0.0.1"
+            proxyPort: 8123
+            proxyType: "socks"
+            ipRules:
+              - prefix: "/web"
+                ports:
+                  - 80
+                  - 443
+                allow: false
+        ingressRule:
+          - hostname: "foo"
+            path: "/bar"
+            service: "http://10.0.0.2:8080"
+        ingressRule:
+          - service: "https://10.0.0.3:8085"
