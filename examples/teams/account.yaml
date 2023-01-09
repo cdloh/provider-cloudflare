@@ -1,0 +1,36 @@
+apiVersion: teams.cloudflare.upbound.io/v1alpha1
+kind: Account
+metadata:
+  name: example-teams-account
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    tlsDecryptEnabled: true
+    blockPage:
+      - footerText: hello
+        headerText: hello
+        logoPath: "https://google.com"
+        backgroundColor: "#000000"
+    antivirus:
+      - enabledDownloadPhase: true
+        enabledUploadPhase: false
+        failClosed: true
+    fips:
+      - tls: true
+    proxy:
+      - tcp: true
+        udp: true
+    urlBrowserIsolationEnabled: true
+    logging:
+      - redactPii: true
+        settingsByRuleType:
+          - dns:
+            - logAll: false
+              logBlocks: true
+            http:
+              - logAll: true
+                logBlocks: true
+            l4:
+              - logAll: false
+                logBlocks: true

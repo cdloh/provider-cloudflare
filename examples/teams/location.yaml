@@ -1,0 +1,13 @@
+apiVersion: teams.cloudflare.upbound.io/v1alpha1
+kind: Location
+metadata:
+  name: example-teams-location
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: office
+    clientDefault: true
+    networks:
+      - network: 203.0.113.1/32
+      - network: 203.0.113.2/32

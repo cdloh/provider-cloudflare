@@ -23,6 +23,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/loadbalancer"
 	"github.com/cdloh/provider-cloudflare/config/logpush"
 	"github.com/cdloh/provider-cloudflare/config/page"
+	"github.com/cdloh/provider-cloudflare/config/teams"
 	"github.com/cdloh/provider-cloudflare/config/waf"
 	"github.com/cdloh/provider-cloudflare/config/waitingroom"
 	"github.com/cdloh/provider-cloudflare/config/warp"
@@ -64,6 +65,7 @@ func GetProvider() *ujconfig.Provider {
 		loadbalancer.Configure,
 		logpush.Configure,
 		page.Configure,
+		teams.Configure,
 		waf.Configure,
 		waitingroom.Configure,
 		warp.Configure,

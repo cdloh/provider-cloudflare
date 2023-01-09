@@ -1,0 +1,18 @@
+apiVersion: teams.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  name: example-teams-rule
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: office
+    description: Example Description
+    precedence: 1
+    action: block
+    filters:
+      - http
+    traffic: "http.request.uri == \"https://www.example.com/malicious\""
+    ruleSettings:
+      - blockPageEnabled: true
+        blockPageReason: access not permitted

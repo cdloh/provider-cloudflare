@@ -39,6 +39,11 @@ import (
 	ownershipchallenge "github.com/cdloh/provider-cloudflare/internal/controller/logpush/ownershipchallenge"
 	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
+	accountteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/account"
+	list "github.com/cdloh/provider-cloudflare/internal/controller/teams/list"
+	location "github.com/cdloh/provider-cloudflare/internal/controller/teams/location"
+	proxyendpoint "github.com/cdloh/provider-cloudflare/internal/controller/teams/proxyendpoint"
+	ruleteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/rule"
 	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
 	rulewaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
@@ -95,6 +100,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		ownershipchallenge.Setup,
 		rulepage.Setup,
 		providerconfig.Setup,
+		accountteams.Setup,
+		list.Setup,
+		location.Setup,
+		proxyendpoint.Setup,
+		ruleteams.Setup,
 		group.Setup,
 		override.Setup,
 		rulewaf.Setup,
