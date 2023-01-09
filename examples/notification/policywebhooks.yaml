@@ -1,0 +1,11 @@
+apiVersion: notification.cloudflare.upbound.io/v1alpha1
+kind: PolicyWebhooks
+metadata:
+  name: example-notification-policy-webhooks
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: Webhooks destination
+    url: "https://example.com"
+    secret: "my-secret"

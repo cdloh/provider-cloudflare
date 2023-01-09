@@ -37,6 +37,8 @@ import (
 	pool "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/pool"
 	job "github.com/cdloh/provider-cloudflare/internal/controller/logpush/job"
 	ownershipchallenge "github.com/cdloh/provider-cloudflare/internal/controller/logpush/ownershipchallenge"
+	policy "github.com/cdloh/provider-cloudflare/internal/controller/notification/policy"
+	policywebhooks "github.com/cdloh/provider-cloudflare/internal/controller/notification/policywebhooks"
 	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
 	domain "github.com/cdloh/provider-cloudflare/internal/controller/pages/domain"
 	project "github.com/cdloh/provider-cloudflare/internal/controller/pages/project"
@@ -102,6 +104,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		pool.Setup,
 		job.Setup,
 		ownershipchallenge.Setup,
+		policy.Setup,
+		policywebhooks.Setup,
 		rulepage.Setup,
 		domain.Setup,
 		project.Setup,
