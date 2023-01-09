@@ -25,6 +25,8 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/page"
 	"github.com/cdloh/provider-cloudflare/config/pages"
 	"github.com/cdloh/provider-cloudflare/config/teams"
+	"github.com/cdloh/provider-cloudflare/config/urlnormalization"
+	"github.com/cdloh/provider-cloudflare/config/useragent"
 	"github.com/cdloh/provider-cloudflare/config/waf"
 	"github.com/cdloh/provider-cloudflare/config/waitingroom"
 	"github.com/cdloh/provider-cloudflare/config/warp"
@@ -68,6 +70,8 @@ func GetProvider() *ujconfig.Provider {
 		page.Configure,
 		pages.Configure,
 		teams.Configure,
+		urlnormalization.Configure,
+		useragent.Configure,
 		waf.Configure,
 		waitingroom.Configure,
 		warp.Configure,
