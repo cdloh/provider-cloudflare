@@ -1,0 +1,10 @@
+apiVersion: pages.cloudflare.upbound.io/v1alpha1
+kind: Project
+metadata:
+  name: example-pages-project
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: this-is-my-project-01
+    productionBranch: main
