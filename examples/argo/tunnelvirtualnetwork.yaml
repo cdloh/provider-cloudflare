@@ -1,0 +1,9 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: TunnelVirtualNetwork
+metadata:
+  name: example-argo-tunnel-route
+spec:
+  forProvider:
+    accountId: d41d8cd98f00b204e9800998ecf8427e
+    name: vnet-for-documentation
+    comment: New tunnel virtual network for documentation

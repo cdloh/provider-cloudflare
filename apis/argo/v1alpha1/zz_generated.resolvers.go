@@ -38,3 +38,71 @@ func (mg *Argo) ResolveReferences(ctx context.Context, c client.Reader) error {
 
 	return nil
 }
+
+// ResolveReferences of this TunnelConfig.
+func (mg *TunnelConfig) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TunnelID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.TunnelIDRef,
+		Selector:     mg.Spec.ForProvider.TunnelIDSelector,
+		To: reference.To{
+			List:    &TunnelList{},
+			Managed: &Tunnel{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TunnelID")
+	}
+	mg.Spec.ForProvider.TunnelID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TunnelIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TunnelRoute.
+func (mg *TunnelRoute) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TunnelID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.TunnelIDRef,
+		Selector:     mg.Spec.ForProvider.TunnelIDSelector,
+		To: reference.To{
+			List:    &TunnelList{},
+			Managed: &Tunnel{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TunnelID")
+	}
+	mg.Spec.ForProvider.TunnelID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TunnelIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VirtualNetworkID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VirtualNetworkIDRef,
+		Selector:     mg.Spec.ForProvider.VirtualNetworkIDSelector,
+		To: reference.To{
+			List:    &TunnelVirtualNetworkList{},
+			Managed: &TunnelVirtualNetwork{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VirtualNetworkID")
+	}
+	mg.Spec.ForProvider.VirtualNetworkID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VirtualNetworkIDRef = rsp.ResolvedReference
+
+	return nil
+}
