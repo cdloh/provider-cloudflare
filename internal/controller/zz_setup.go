@@ -39,6 +39,7 @@ import (
 	ownershipchallenge "github.com/cdloh/provider-cloudflare/internal/controller/logpush/ownershipchallenge"
 	policy "github.com/cdloh/provider-cloudflare/internal/controller/notification/policy"
 	policywebhooks "github.com/cdloh/provider-cloudflare/internal/controller/notification/policywebhooks"
+	certificateoriginca "github.com/cdloh/provider-cloudflare/internal/controller/originca/certificate"
 	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
 	domain "github.com/cdloh/provider-cloudflare/internal/controller/pages/domain"
 	project "github.com/cdloh/provider-cloudflare/internal/controller/pages/project"
@@ -110,6 +111,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		ownershipchallenge.Setup,
 		policy.Setup,
 		policywebhooks.Setup,
+		certificateoriginca.Setup,
 		rulepage.Setup,
 		domain.Setup,
 		project.Setup,
