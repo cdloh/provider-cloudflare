@@ -24,6 +24,7 @@ import (
 	v1alpha1loadbalancer "github.com/cdloh/provider-cloudflare/apis/loadbalancer/v1alpha1"
 	v1alpha1logpush "github.com/cdloh/provider-cloudflare/apis/logpush/v1alpha1"
 	v1alpha1notification "github.com/cdloh/provider-cloudflare/apis/notification/v1alpha1"
+	v1alpha1originca "github.com/cdloh/provider-cloudflare/apis/originca/v1alpha1"
 	v1alpha1page "github.com/cdloh/provider-cloudflare/apis/page/v1alpha1"
 	v1alpha1pages "github.com/cdloh/provider-cloudflare/apis/pages/v1alpha1"
 	v1alpha1spectrum "github.com/cdloh/provider-cloudflare/apis/spectrum/v1alpha1"
@@ -56,6 +57,7 @@ func init() {
 		v1alpha1loadbalancer.SchemeBuilder.AddToScheme,
 		v1alpha1logpush.SchemeBuilder.AddToScheme,
 		v1alpha1notification.SchemeBuilder.AddToScheme,
+		v1alpha1originca.SchemeBuilder.AddToScheme,
 		v1alpha1page.SchemeBuilder.AddToScheme,
 		v1alpha1pages.SchemeBuilder.AddToScheme,
 		v1alpha1spectrum.SchemeBuilder.AddToScheme,

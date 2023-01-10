@@ -23,6 +23,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/loadbalancer"
 	"github.com/cdloh/provider-cloudflare/config/logpush"
 	"github.com/cdloh/provider-cloudflare/config/notification"
+	"github.com/cdloh/provider-cloudflare/config/originca"
 	"github.com/cdloh/provider-cloudflare/config/page"
 	"github.com/cdloh/provider-cloudflare/config/pages"
 	"github.com/cdloh/provider-cloudflare/config/spectrum"
@@ -70,6 +71,7 @@ func GetProvider() *ujconfig.Provider {
 		loadbalancer.Configure,
 		logpush.Configure,
 		notification.Configure,
+		originca.Configure,
 		page.Configure,
 		pages.Configure,
 		spectrum.Configure,

@@ -41,6 +41,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_page_rule":                              config.IdentifierFromProvider,
 	"cloudflare_notification_policy":                    config.IdentifierFromProvider,
 	"cloudflare_notification_policy_webhooks":           config.IdentifierFromProvider,
+	"cloudflare_origin_ca_certificate":                  config.IdentifierFromProvider,
 	"cloudflare_pages_domain":                           config.IdentifierFromProvider,
 	"cloudflare_pages_project":                          config.IdentifierFromProvider,
 	"cloudflare_record":                                 config.IdentifierFromProvider,
