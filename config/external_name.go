@@ -49,6 +49,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_teams_location":                         config.IdentifierFromProvider,
 	"cloudflare_teams_proxy_endpoint":                   config.IdentifierFromProvider,
 	"cloudflare_teams_rule":                             config.IdentifierFromProvider,
+	"cloudflare_tiered_cache":                           config.IdentifierFromProvider,
+	"cloudflare_total_tls":                              config.IdentifierFromProvider,
 	"cloudflare_tunnel_config":                          config.IdentifierFromProvider,
 	"cloudflare_tunnel_route":                           config.IdentifierFromProvider,
 	"cloudflare_tunnel_virtual_network":                 config.IdentifierFromProvider,

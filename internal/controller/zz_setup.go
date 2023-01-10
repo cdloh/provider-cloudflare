@@ -69,6 +69,8 @@ import (
 	script "github.com/cdloh/provider-cloudflare/internal/controller/worker/script"
 	dnssec "github.com/cdloh/provider-cloudflare/internal/controller/zone/dnssec"
 	settingsoverride "github.com/cdloh/provider-cloudflare/internal/controller/zone/settingsoverride"
+	tieredcache "github.com/cdloh/provider-cloudflare/internal/controller/zone/tieredcache"
+	totaltls "github.com/cdloh/provider-cloudflare/internal/controller/zone/totaltls"
 	zone "github.com/cdloh/provider-cloudflare/internal/controller/zone/zone"
 )
 
@@ -136,6 +138,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		script.Setup,
 		dnssec.Setup,
 		settingsoverride.Setup,
+		tieredcache.Setup,
+		totaltls.Setup,
 		zone.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
