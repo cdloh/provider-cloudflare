@@ -20,8 +20,8 @@ type APIShieldObservation struct {
 type APIShieldParameters struct {
 
 	// Characteristics define properties across which auth-ids can be computed in a privacy-preserving manner.
-	// +kubebuilder:validation:Required
-	AuthIDCharacteristics []AuthIDCharacteristicsParameters `json:"authIdCharacteristics" tf:"auth_id_characteristics,omitempty"`
+	// +kubebuilder:validation:Optional
+	AuthIDCharacteristics []AuthIDCharacteristicsParameters `json:"authIdCharacteristics,omitempty" tf:"auth_id_characteristics,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
@@ -45,12 +45,12 @@ type AuthIDCharacteristicsObservation struct {
 type AuthIDCharacteristicsParameters struct {
 
 	// The name of the characteristic.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The type of characteristic. Available values: `header`, `cookie`.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // APIShieldSpec defines the desired state of APIShield

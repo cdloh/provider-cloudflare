@@ -64,6 +64,7 @@ spec:
               forProvider:
                 properties:
                   modifiedOn:
+                    description: Zone DNSSEC updated time.
                     type: string
                   zoneId:
                     description: The zone identifier to target for the resource. **Modifying
@@ -320,26 +321,36 @@ spec:
               atProvider:
                 properties:
                   algorithm:
+                    description: Zone DNSSEC algorithm.
                     type: string
                   digest:
+                    description: Zone DNSSEC digest.
                     type: string
                   digestAlgorithm:
+                    description: Digest algorithm use for Zone DNSSEC.
                     type: string
                   digestType:
+                    description: Digest Type for Zone DNSSEC.
                     type: string
                   ds:
+                    description: DS for the Zone DNSSEC.
                     type: string
                   flags:
+                    description: Zone DNSSEC flags.
                     type: number
                   id:
                     type: string
                   keyTag:
+                    description: Key Tag for the Zone DNSSEC.
                     type: number
                   keyType:
+                    description: Key type used for Zone DNSSEC.
                     type: string
                   publicKey:
+                    description: Public Key for the Zone DNSSEC.
                     type: string
                   status:
+                    description: The status of the Zone DNSSEC.
                     type: string
                 type: object
               conditions:

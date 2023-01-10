@@ -67,10 +67,12 @@ spec:
                     description: The account identifier to target for the resource.
                     type: string
                   schedules:
+                    description: Cron expressions to execute the Worker script.
                     items:
                       type: string
                     type: array
                   scriptName:
+                    description: Worker script to target for the schedules.
                     type: string
                   scriptNameRefs:
                     description: Reference to a Script to populate scriptName.

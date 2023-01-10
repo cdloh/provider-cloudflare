@@ -63,6 +63,13 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  customMetadata:
+                    additionalProperties:
+                      type: string
+                    description: Custom metadata associated with custom hostname.
+                      Only supports primitive string values, all other values are
+                      accessible via the API directly.
+                    type: object
                   customOriginServer:
                     description: The custom origin server used for certificates.
                     type: string

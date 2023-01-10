@@ -75,9 +75,6 @@ spec:
                           description: 'The type of characteristic. Available values:
                             `header`, `cookie`.'
                           type: string
-                      required:
-                      - name
-                      - type
                       type: object
                     type: array
                   zoneId:
@@ -157,8 +154,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - authIdCharacteristics
                 type: object
               providerConfigRef:
                 default:
