@@ -23,6 +23,7 @@ type KVNamespaceParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
+	// Title value of the Worker KV Namespace.
 	// +kubebuilder:validation:Required
 	Title *string `json:"title" tf:"title,omitempty"`
 }

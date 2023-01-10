@@ -84,6 +84,10 @@ type ScriptObservation struct {
 
 type ScriptParameters struct {
 
+	// The account identifier to target for the resource.
+	// +kubebuilder:validation:Optional
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
 	// +kubebuilder:validation:Optional
 	AnalyticsEngineBinding []AnalyticsEngineBindingParameters `json:"analyticsEngineBinding,omitempty" tf:"analytics_engine_binding,omitempty"`
 

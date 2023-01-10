@@ -19,9 +19,11 @@ type RouteObservation struct {
 
 type RouteParameters struct {
 
+	// The [route pattern](https://developers.cloudflare.com/workers/about/routes/) to associate the Worker with.
 	// +kubebuilder:validation:Required
 	Pattern *string `json:"pattern" tf:"pattern,omitempty"`
 
+	// Worker script name to invoke for requests that match the route pattern.
 	// +crossplane:generate:reference:type=Script
 	// +crossplane:generate:reference:refFieldName=ScriptNameRefs
 	// +crossplane:generate:reference:selectorFieldName=ScriptNameSelector

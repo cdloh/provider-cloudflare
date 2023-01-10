@@ -30,6 +30,10 @@ type HostnameObservation struct {
 
 type HostnameParameters struct {
 
+	// Custom metadata associated with custom hostname. Only supports primitive string values, all other values are accessible via the API directly.
+	// +kubebuilder:validation:Optional
+	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
 	// The custom origin server used for certificates.
 	// +kubebuilder:validation:Optional
 	CustomOriginServer *string `json:"customOriginServer,omitempty" tf:"custom_origin_server,omitempty"`

@@ -64,8 +64,12 @@ spec:
               forProvider:
                 properties:
                   pattern:
+                    description: The [route pattern](https://developers.cloudflare.com/workers/about/routes/)
+                      to associate the Worker with.
                     type: string
                   scriptName:
+                    description: Worker script name to invoke for requests that match
+                      the route pattern.
                     type: string
                   scriptNameRefs:
                     description: Reference to a Script to populate scriptName.

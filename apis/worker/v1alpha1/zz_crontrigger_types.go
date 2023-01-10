@@ -23,9 +23,11 @@ type CronTriggerParameters struct {
 	// +kubebuilder:validation:Required
 	AccountID *string `json:"accountId" tf:"account_id,omitempty"`
 
+	// Cron expressions to execute the Worker script.
 	// +kubebuilder:validation:Required
 	Schedules []*string `json:"schedules" tf:"schedules,omitempty"`
 
+	// Worker script to target for the schedules.
 	// +crossplane:generate:reference:type=Script
 	// +crossplane:generate:reference:refFieldName=ScriptNameRefs
 	// +crossplane:generate:reference:selectorFieldName=ScriptNameSelector

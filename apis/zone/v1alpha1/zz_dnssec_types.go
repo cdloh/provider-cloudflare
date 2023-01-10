@@ -14,31 +14,43 @@ import (
 )
 
 type DNSSECObservation struct {
+
+	// Zone DNSSEC algorithm.
 	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
 
+	// Zone DNSSEC digest.
 	Digest *string `json:"digest,omitempty" tf:"digest,omitempty"`
 
+	// Digest algorithm use for Zone DNSSEC.
 	DigestAlgorithm *string `json:"digestAlgorithm,omitempty" tf:"digest_algorithm,omitempty"`
 
+	// Digest Type for Zone DNSSEC.
 	DigestType *string `json:"digestType,omitempty" tf:"digest_type,omitempty"`
 
+	// DS for the Zone DNSSEC.
 	Ds *string `json:"ds,omitempty" tf:"ds,omitempty"`
 
+	// Zone DNSSEC flags.
 	Flags *float64 `json:"flags,omitempty" tf:"flags,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Key Tag for the Zone DNSSEC.
 	KeyTag *float64 `json:"keyTag,omitempty" tf:"key_tag,omitempty"`
 
+	// Key type used for Zone DNSSEC.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Public Key for the Zone DNSSEC.
 	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 
+	// The status of the Zone DNSSEC.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type DNSSECParameters struct {
 
+	// Zone DNSSEC updated time.
 	// +kubebuilder:validation:Optional
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
 

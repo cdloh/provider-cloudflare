@@ -67,6 +67,7 @@ spec:
                     description: The account identifier to target for the resource.
                     type: string
                   title:
+                    description: Title value of the Worker KV Namespace.
                     type: string
                 required:
                 - title

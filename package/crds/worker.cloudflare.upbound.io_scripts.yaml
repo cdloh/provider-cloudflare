@@ -63,6 +63,9 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
                   analyticsEngineBinding:
                     items:
                       properties:
