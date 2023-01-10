@@ -1,0 +1,11 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: LogpullRetention
+metadata:
+  name: example
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    enabled: true

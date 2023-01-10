@@ -43,4 +43,11 @@ func Configure(p *config.Provider) {
 			Type: "Zone",
 		}
 	})
+	p.AddResourceConfigurator("cloudflare_logpull_retention", func(r *config.Resource) {
+		r.ShortGroup = shortGroupName
+		r.Kind = "LogpullRetention"
+		r.References["zone_id"] = config.Reference{
+			Type: "Zone",
+		}
+	})
 }

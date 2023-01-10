@@ -68,6 +68,7 @@ import (
 	route "github.com/cdloh/provider-cloudflare/internal/controller/worker/route"
 	script "github.com/cdloh/provider-cloudflare/internal/controller/worker/script"
 	dnssec "github.com/cdloh/provider-cloudflare/internal/controller/zone/dnssec"
+	logpullretention "github.com/cdloh/provider-cloudflare/internal/controller/zone/logpullretention"
 	settingsoverride "github.com/cdloh/provider-cloudflare/internal/controller/zone/settingsoverride"
 	tieredcache "github.com/cdloh/provider-cloudflare/internal/controller/zone/tieredcache"
 	totaltls "github.com/cdloh/provider-cloudflare/internal/controller/zone/totaltls"
@@ -137,6 +138,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		route.Setup,
 		script.Setup,
 		dnssec.Setup,
+		logpullretention.Setup,
 		settingsoverride.Setup,
 		tieredcache.Setup,
 		totaltls.Setup,
