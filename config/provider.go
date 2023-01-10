@@ -22,6 +22,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/emailrouting"
 	"github.com/cdloh/provider-cloudflare/config/loadbalancer"
 	"github.com/cdloh/provider-cloudflare/config/logpush"
+	"github.com/cdloh/provider-cloudflare/config/magic"
 	"github.com/cdloh/provider-cloudflare/config/notification"
 	"github.com/cdloh/provider-cloudflare/config/originca"
 	"github.com/cdloh/provider-cloudflare/config/page"
@@ -70,6 +71,7 @@ func GetProvider() *ujconfig.Provider {
 		emailrouting.Configure,
 		loadbalancer.Configure,
 		logpush.Configure,
+		magic.Configure,
 		notification.Configure,
 		originca.Configure,
 		page.Configure,

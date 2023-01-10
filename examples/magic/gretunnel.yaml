@@ -1,0 +1,18 @@
+apiVersion: magic.cloudflare.upbound.io/v1alpha1
+kind: GRETunnel
+metadata:
+  name: example-gre-tunnel
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: GRE_1
+    customerGreEndpoint: "203.0.113.1"
+    cloudflareGreEndpoint: "203.0.113.1"
+    interfaceAddress: "192.0.2.0/31"
+    description: "Tunnel for ISP X"
+    ttl: 64
+    mtu: 1476
+    healthCheckEnabled: true
+    healthCheckTarget: "203.0.113.1"
+    healthCheckType: reply

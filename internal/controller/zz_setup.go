@@ -37,6 +37,10 @@ import (
 	pool "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/pool"
 	job "github.com/cdloh/provider-cloudflare/internal/controller/logpush/job"
 	ownershipchallenge "github.com/cdloh/provider-cloudflare/internal/controller/logpush/ownershipchallenge"
+	firewallruleset "github.com/cdloh/provider-cloudflare/internal/controller/magic/firewallruleset"
+	gretunnel "github.com/cdloh/provider-cloudflare/internal/controller/magic/gretunnel"
+	ipsectunnel "github.com/cdloh/provider-cloudflare/internal/controller/magic/ipsectunnel"
+	staticroute "github.com/cdloh/provider-cloudflare/internal/controller/magic/staticroute"
 	policy "github.com/cdloh/provider-cloudflare/internal/controller/notification/policy"
 	policywebhooks "github.com/cdloh/provider-cloudflare/internal/controller/notification/policywebhooks"
 	certificateoriginca "github.com/cdloh/provider-cloudflare/internal/controller/originca/certificate"
@@ -109,6 +113,10 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		pool.Setup,
 		job.Setup,
 		ownershipchallenge.Setup,
+		firewallruleset.Setup,
+		gretunnel.Setup,
+		ipsectunnel.Setup,
+		staticroute.Setup,
 		policy.Setup,
 		policywebhooks.Setup,
 		certificateoriginca.Setup,
