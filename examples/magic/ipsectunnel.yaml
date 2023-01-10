@@ -1,0 +1,18 @@
+apiVersion: magic.cloudflare.upbound.io/v1alpha1
+kind: IPsecTunnel
+metadata:
+  name: example-ipsec-tunnel
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: IPsec_1
+    customerEndpoint: "203.0.113.1"
+    cloudflareEndpoint: "203.0.113.1"
+    interfaceAddress: "192.0.2.0/31"
+    description: "Tunnel for ISP X"
+    healthCheckEnabled: true
+    healthCheckTarget: "203.0.113.1"
+    healthCheckType: reply
+    psk: asdf12341234
+    allowNullCipher: false
