@@ -1,0 +1,48 @@
+apiVersion: lists.cloudflare.upbound.io/v1alpha1
+kind: List
+metadata:
+  name: example-list-ip
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: example_list_ips
+    description: example IPs for a list
+    kind: ip
+    item:
+      - value:
+        - ip: "192.0.2.0"
+        comment: one
+      - value:
+        - ip: 192.0.2.1
+        comment: two
+
+---
+
+apiVersion: lists.cloudflare.upbound.io/v1alpha1
+kind: List
+metadata:
+  name: example-list-redirect
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: example_redirect_list
+    description: example redirects for a list
+    kind: redirect
+    item:
+      - value:
+        - redirect:
+          - targetUrl: "https://blog.cloudflare-test.crossplane.io"
+            sourceUrl: "cloudflare-test.crossplane.io/blog"
+        comment: one
+      - value:
+        - redirect:
+          - targetUrl: "https://foo.cloudflare-test.crossplane.io"
+            sourceUrl: "cloudflare-test.crossplane.io/foo"
+            includeSubdomains: "enabled"
+            subpathMatching: "enabled"
+            statusCode: 301
+            preserveQueryString: enabled
+            preservePathSuffix: disabled
+        comment: two

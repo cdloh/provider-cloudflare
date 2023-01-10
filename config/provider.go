@@ -20,6 +20,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/customhostname"
 	"github.com/cdloh/provider-cloudflare/config/dns"
 	"github.com/cdloh/provider-cloudflare/config/emailrouting"
+	"github.com/cdloh/provider-cloudflare/config/lists"
 	"github.com/cdloh/provider-cloudflare/config/loadbalancer"
 	"github.com/cdloh/provider-cloudflare/config/logpush"
 	"github.com/cdloh/provider-cloudflare/config/magic"
@@ -69,6 +70,7 @@ func GetProvider() *ujconfig.Provider {
 		customhostname.Configure,
 		dns.Configure,
 		emailrouting.Configure,
+		lists.Configure,
 		loadbalancer.Configure,
 		logpush.Configure,
 		magic.Configure,

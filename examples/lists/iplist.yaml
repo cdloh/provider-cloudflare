@@ -1,0 +1,16 @@
+apiVersion: lists.cloudflare.upbound.io/v1alpha1
+kind: IPList
+metadata:
+  name: example-ip-list
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    name: example_iplist_list
+    description: example IPs for a IP list
+    kind: ip
+    item:
+      - value: "192.0.2.1"
+        comment: one
+      - value: "203.0.113.0/24"
+        comment: two
