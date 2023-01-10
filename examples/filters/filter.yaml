@@ -1,0 +1,12 @@
+apiVersion: filters.cloudflare.upbound.io/v1alpha1
+kind: Filter
+metadata:
+  name: example-filter
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    description: Wordpress break-in attempts that are outside of the office
+    expression: "(http.request.uri.path ~ \".*wp-login.php\" or http.request.uri.path ~ \".*xmlrpc.php\") and ip.src ne 192.0.2.1"
