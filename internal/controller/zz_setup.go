@@ -32,6 +32,8 @@ import (
 	catchall "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/catchall"
 	rule "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/rule"
 	settings "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/settings"
+	iplist "github.com/cdloh/provider-cloudflare/internal/controller/lists/iplist"
+	list "github.com/cdloh/provider-cloudflare/internal/controller/lists/list"
 	loadbalancer "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/loadbalancer"
 	monitor "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/monitor"
 	pool "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/pool"
@@ -50,7 +52,7 @@ import (
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	application "github.com/cdloh/provider-cloudflare/internal/controller/spectrum/application"
 	accountteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/account"
-	list "github.com/cdloh/provider-cloudflare/internal/controller/teams/list"
+	listteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/list"
 	location "github.com/cdloh/provider-cloudflare/internal/controller/teams/location"
 	proxyendpoint "github.com/cdloh/provider-cloudflare/internal/controller/teams/proxyendpoint"
 	ruleteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/rule"
@@ -108,6 +110,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		catchall.Setup,
 		rule.Setup,
 		settings.Setup,
+		iplist.Setup,
+		list.Setup,
 		loadbalancer.Setup,
 		monitor.Setup,
 		pool.Setup,
@@ -126,7 +130,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		providerconfig.Setup,
 		application.Setup,
 		accountteams.Setup,
-		list.Setup,
+		listteams.Setup,
 		location.Setup,
 		proxyendpoint.Setup,
 		ruleteams.Setup,

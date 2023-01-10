@@ -21,6 +21,7 @@ import (
 	v1alpha1dlp "github.com/cdloh/provider-cloudflare/apis/dlp/v1alpha1"
 	v1alpha1dns "github.com/cdloh/provider-cloudflare/apis/dns/v1alpha1"
 	v1alpha1emailrouting "github.com/cdloh/provider-cloudflare/apis/emailrouting/v1alpha1"
+	v1alpha1lists "github.com/cdloh/provider-cloudflare/apis/lists/v1alpha1"
 	v1alpha1loadbalancer "github.com/cdloh/provider-cloudflare/apis/loadbalancer/v1alpha1"
 	v1alpha1logpush "github.com/cdloh/provider-cloudflare/apis/logpush/v1alpha1"
 	v1alpha1magic "github.com/cdloh/provider-cloudflare/apis/magic/v1alpha1"
@@ -55,6 +56,7 @@ func init() {
 		v1alpha1dlp.SchemeBuilder.AddToScheme,
 		v1alpha1dns.SchemeBuilder.AddToScheme,
 		v1alpha1emailrouting.SchemeBuilder.AddToScheme,
+		v1alpha1lists.SchemeBuilder.AddToScheme,
 		v1alpha1loadbalancer.SchemeBuilder.AddToScheme,
 		v1alpha1logpush.SchemeBuilder.AddToScheme,
 		v1alpha1magic.SchemeBuilder.AddToScheme,
