@@ -25,6 +25,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/notification"
 	"github.com/cdloh/provider-cloudflare/config/page"
 	"github.com/cdloh/provider-cloudflare/config/pages"
+	"github.com/cdloh/provider-cloudflare/config/spectrum"
 	"github.com/cdloh/provider-cloudflare/config/teams"
 	"github.com/cdloh/provider-cloudflare/config/urlnormalization"
 	"github.com/cdloh/provider-cloudflare/config/useragent"
@@ -71,6 +72,7 @@ func GetProvider() *ujconfig.Provider {
 		notification.Configure,
 		page.Configure,
 		pages.Configure,
+		spectrum.Configure,
 		teams.Configure,
 		urlnormalization.Configure,
 		useragent.Configure,

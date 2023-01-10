@@ -43,6 +43,7 @@ import (
 	domain "github.com/cdloh/provider-cloudflare/internal/controller/pages/domain"
 	project "github.com/cdloh/provider-cloudflare/internal/controller/pages/project"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
+	application "github.com/cdloh/provider-cloudflare/internal/controller/spectrum/application"
 	accountteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/account"
 	list "github.com/cdloh/provider-cloudflare/internal/controller/teams/list"
 	location "github.com/cdloh/provider-cloudflare/internal/controller/teams/location"
@@ -113,6 +114,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		domain.Setup,
 		project.Setup,
 		providerconfig.Setup,
+		application.Setup,
 		accountteams.Setup,
 		list.Setup,
 		location.Setup,

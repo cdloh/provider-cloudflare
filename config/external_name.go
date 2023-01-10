@@ -44,6 +44,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_pages_domain":                           config.IdentifierFromProvider,
 	"cloudflare_pages_project":                          config.IdentifierFromProvider,
 	"cloudflare_record":                                 config.IdentifierFromProvider,
+	"cloudflare_spectrum_application":                   config.IdentifierFromProvider,
 	"cloudflare_split_tunnel":                           config.IdentifierFromProvider,
 	"cloudflare_teams_account":                          config.IdentifierFromProvider,
 	"cloudflare_teams_list":                             config.IdentifierFromProvider,
