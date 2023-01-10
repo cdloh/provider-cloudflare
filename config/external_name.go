@@ -35,6 +35,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_load_balancer":                          config.IdentifierFromProvider,
 	"cloudflare_load_balancer_monitor":                  config.IdentifierFromProvider,
 	"cloudflare_load_balancer_pool":                     config.IdentifierFromProvider,
+	"cloudflare_logpull_retention":                      config.IdentifierFromProvider,
 	"cloudflare_logpush_job":                            config.IdentifierFromProvider,
 	"cloudflare_logpush_ownership_challenge":            config.IdentifierFromProvider,
 	"cloudflare_page_rule":                              config.IdentifierFromProvider,
