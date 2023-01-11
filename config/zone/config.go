@@ -50,4 +50,11 @@ func Configure(p *config.Provider) {
 			Type: "Zone",
 		}
 	})
+	p.AddResourceConfigurator("cloudflare_rate_limit", func(r *config.Resource) {
+		r.ShortGroup = shortGroupName
+		r.Kind = "RateLimit"
+		r.References["zone_id"] = config.Reference{
+			Type: "Zone",
+		}
+	})
 }

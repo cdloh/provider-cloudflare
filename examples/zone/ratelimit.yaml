@@ -1,0 +1,46 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: RateLimit
+metadata:
+  name: example
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    threshold: 2000
+    period: 2
+    match:
+      - request:
+        - urlPattern: "cloudflare-test.crossplane.io/*"
+          schemes:
+            - HTTP
+            - HTTPS
+        response:
+          - statuses:
+              - 200
+              - 201
+              - 202
+              - 301
+              - 429
+            originTraffic: false
+            headers:
+              - name: Host
+                op: eq
+                value: localhost
+              - name: X-Example
+                op: ne
+                value: my-example
+    action:
+      - mode: simulate
+        timeout: 43200
+        response:
+          - contentType: text/plain
+            body: custom response body
+    correlate:
+      - by: nat
+    disabled: false
+    description: example rate limit for a zone
+    bypassUrlPatterns:
+      - cloudflare-test.crossplane.io/bypass1
+      - cloudflare-test.crossplane.io/bypass2
