@@ -36,6 +36,9 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_load_balancer_monitor", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "Monitor"
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
 		r.References["zone_id"] = config.Reference{
 			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
@@ -43,6 +46,9 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_load_balancer_pool", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "Pool"
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
 		r.References["zone_id"] = config.Reference{
 			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
