@@ -39,6 +39,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/waf"
 	"github.com/cdloh/provider-cloudflare/config/waitingroom"
 	"github.com/cdloh/provider-cloudflare/config/warp"
+	"github.com/cdloh/provider-cloudflare/config/web3"
 	"github.com/cdloh/provider-cloudflare/config/worker"
 	"github.com/cdloh/provider-cloudflare/config/zone"
 )
@@ -93,6 +94,7 @@ func GetProvider() *ujconfig.Provider {
 		waf.Configure,
 		waitingroom.Configure,
 		warp.Configure,
+		web3.Configure,
 		worker.Configure,
 		zone.Configure,
 	} {

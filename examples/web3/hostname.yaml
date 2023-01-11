@@ -1,0 +1,10 @@
+apiVersion: web3.cloudflare.upbound.io/v1alpha1
+kind: Hostname
+metadata:
+  name: example
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    name: web3.cloudflare-test.crossplane.io
+    target: ipfs

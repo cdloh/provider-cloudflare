@@ -85,6 +85,7 @@ import (
 	devicesettingspolicy "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicesettingspolicy"
 	fallbackdomain "github.com/cdloh/provider-cloudflare/internal/controller/warp/fallbackdomain"
 	splittunnel "github.com/cdloh/provider-cloudflare/internal/controller/warp/splittunnel"
+	hostnameweb3 "github.com/cdloh/provider-cloudflare/internal/controller/web3/hostname"
 	crontrigger "github.com/cdloh/provider-cloudflare/internal/controller/worker/crontrigger"
 	kv "github.com/cdloh/provider-cloudflare/internal/controller/worker/kv"
 	kvnamespace "github.com/cdloh/provider-cloudflare/internal/controller/worker/kvnamespace"
@@ -181,6 +182,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		devicesettingspolicy.Setup,
 		fallbackdomain.Setup,
 		splittunnel.Setup,
+		hostnameweb3.Setup,
 		crontrigger.Setup,
 		kv.Setup,
 		kvnamespace.Setup,
