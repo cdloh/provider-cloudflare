@@ -33,6 +33,7 @@ import (
 	rule "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/rule"
 	settings "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/settings"
 	filter "github.com/cdloh/provider-cloudflare/internal/controller/filters/filter"
+	rulefirewall "github.com/cdloh/provider-cloudflare/internal/controller/firewall/rule"
 	iplist "github.com/cdloh/provider-cloudflare/internal/controller/lists/iplist"
 	list "github.com/cdloh/provider-cloudflare/internal/controller/lists/list"
 	loadbalancer "github.com/cdloh/provider-cloudflare/internal/controller/loadbalancer/loadbalancer"
@@ -116,6 +117,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		rule.Setup,
 		settings.Setup,
 		filter.Setup,
+		rulefirewall.Setup,
 		iplist.Setup,
 		list.Setup,
 		loadbalancer.Setup,

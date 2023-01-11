@@ -21,6 +21,7 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/dns"
 	"github.com/cdloh/provider-cloudflare/config/emailrouting"
 	"github.com/cdloh/provider-cloudflare/config/filters"
+	"github.com/cdloh/provider-cloudflare/config/firewall"
 	"github.com/cdloh/provider-cloudflare/config/lists"
 	"github.com/cdloh/provider-cloudflare/config/loadbalancer"
 	"github.com/cdloh/provider-cloudflare/config/logpush"
@@ -72,6 +73,7 @@ func GetProvider() *ujconfig.Provider {
 		dns.Configure,
 		emailrouting.Configure,
 		filters.Configure,
+		firewall.Configure,
 		lists.Configure,
 		loadbalancer.Configure,
 		logpush.Configure,
