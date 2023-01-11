@@ -31,6 +31,7 @@ import (
 	v1alpha1originca "github.com/cdloh/provider-cloudflare/apis/originca/v1alpha1"
 	v1alpha1page "github.com/cdloh/provider-cloudflare/apis/page/v1alpha1"
 	v1alpha1pages "github.com/cdloh/provider-cloudflare/apis/pages/v1alpha1"
+	v1alpha1ruleset "github.com/cdloh/provider-cloudflare/apis/ruleset/v1alpha1"
 	v1alpha1spectrum "github.com/cdloh/provider-cloudflare/apis/spectrum/v1alpha1"
 	v1alpha1teams "github.com/cdloh/provider-cloudflare/apis/teams/v1alpha1"
 	v1alpha1urlnormalization "github.com/cdloh/provider-cloudflare/apis/urlnormalization/v1alpha1"
@@ -68,6 +69,7 @@ func init() {
 		v1alpha1originca.SchemeBuilder.AddToScheme,
 		v1alpha1page.SchemeBuilder.AddToScheme,
 		v1alpha1pages.SchemeBuilder.AddToScheme,
+		v1alpha1ruleset.SchemeBuilder.AddToScheme,
 		v1alpha1spectrum.SchemeBuilder.AddToScheme,
 		v1alpha1teams.SchemeBuilder.AddToScheme,
 		v1alpha1urlnormalization.SchemeBuilder.AddToScheme,
