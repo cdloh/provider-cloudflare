@@ -2,7 +2,7 @@ package customhostname
 
 import "github.com/upbound/upjet/pkg/config"
 
-// Configure adds configurations for customhostnames group.
+// Configure adds configurations for customhostname group.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_custom_hostname", func(r *config.Resource) {
 		r.ShortGroup = "customhostname"

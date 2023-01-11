@@ -2,7 +2,7 @@ package dns
 
 import "github.com/upbound/upjet/pkg/config"
 
-// Configure adds configurations for zone group.
+// Configure adds configurations for dns group.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_record", func(r *config.Resource) {
 		r.ShortGroup = "dns"

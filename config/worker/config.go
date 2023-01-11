@@ -6,7 +6,7 @@ const (
 	shortGroupName = "worker"
 )
 
-// Configure adds configurations for zone group.
+// Configure adds configurations for worker group.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_worker_cron_trigger", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName

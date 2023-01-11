@@ -2,7 +2,7 @@ package apishield
 
 import "github.com/upbound/upjet/pkg/config"
 
-// Configure adds configurations for customhostnames group.
+// Configure adds configurations for apishield group.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_api_shield", func(r *config.Resource) {
 		r.ShortGroup = "APIShield"
