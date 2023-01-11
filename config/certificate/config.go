@@ -8,9 +8,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "Certificate"
 		r.Kind = "Pack"
 		r.References["zone_id"] = config.Reference{
-			Type:              "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
-			RefFieldName:      "ZoneIDRefs",
-			SelectorFieldName: "ZoneIDSelector",
+			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 	})
 }

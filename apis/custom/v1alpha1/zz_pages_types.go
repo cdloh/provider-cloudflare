@@ -34,14 +34,12 @@ type PagesParameters struct {
 
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
-	// +crossplane:generate:reference:refFieldName=ZoneIDRefs
-	// +crossplane:generate:reference:selectorFieldName=ZoneIDSelector
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
 	// Reference to a Zone in zone to populate zoneId.
 	// +kubebuilder:validation:Optional
-	ZoneIDRefs *v1.Reference `json:"zoneIdRefs,omitempty" tf:"-"`
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
 
 	// Selector for a Zone in zone to populate zoneId.
 	// +kubebuilder:validation:Optional

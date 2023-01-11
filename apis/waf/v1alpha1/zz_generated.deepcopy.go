@@ -116,8 +116,8 @@ func (in *GroupParameters) DeepCopyInto(out *GroupParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -335,8 +335,8 @@ func (in *OverrideParameters) DeepCopyInto(out *OverrideParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -498,8 +498,8 @@ func (in *RuleParameters) DeepCopyInto(out *RuleParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -656,8 +656,8 @@ func (in *WAFPackageParameters) DeepCopyInto(out *WAFPackageParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}

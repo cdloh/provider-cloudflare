@@ -219,14 +219,12 @@ type SettingsOverrideParameters struct {
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=Zone
-	// +crossplane:generate:reference:refFieldName=ZoneIDRefs
-	// +crossplane:generate:reference:selectorFieldName=ZoneIDSelector
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
 	// Reference to a Zone to populate zoneId.
 	// +kubebuilder:validation:Optional
-	ZoneIDRefs *v1.Reference `json:"zoneIdRefs,omitempty" tf:"-"`
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
 
 	// Selector for a Zone to populate zoneId.
 	// +kubebuilder:validation:Optional

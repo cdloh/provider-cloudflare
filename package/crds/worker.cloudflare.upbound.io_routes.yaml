@@ -71,7 +71,7 @@ spec:
                     description: Worker script name to invoke for requests that match
                       the route pattern.
                     type: string
-                  scriptNameRefs:
+                  scriptNameRef:
                     description: Reference to a Script to populate scriptName.
                     properties:
                       name:
@@ -148,7 +148,7 @@ spec:
                     description: The zone identifier to target for the resource. **Modifying
                       this attribute will force creation of a new resource.**
                     type: string
-                  zoneIdRefs:
+                  zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
                     properties:
                       name:

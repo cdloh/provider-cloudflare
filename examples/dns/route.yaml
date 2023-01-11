@@ -8,7 +8,7 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     name: crossplane-example
     value: 192.168.0.11
@@ -25,7 +25,7 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     name: _sip._tls
     type: SRV

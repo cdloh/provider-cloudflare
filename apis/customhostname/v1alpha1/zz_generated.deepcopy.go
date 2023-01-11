@@ -111,8 +111,8 @@ func (in *FallbackOriginParameters) DeepCopyInto(out *FallbackOriginParameters) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -338,8 +338,8 @@ func (in *HostnameParameters) DeepCopyInto(out *HostnameParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}

@@ -23,7 +23,7 @@ func (mg *Group) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.ZoneIDRefs,
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
 		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
 		To: reference.To{
 			List:    &v1alpha1.ZoneList{},
@@ -34,7 +34,7 @@ func (mg *Group) ResolveReferences(ctx context.Context, c client.Reader) error {
 		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
 	}
 	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.ZoneIDRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -49,7 +49,7 @@ func (mg *Override) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.ZoneIDRefs,
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
 		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
 		To: reference.To{
 			List:    &v1alpha1.ZoneList{},
@@ -60,7 +60,7 @@ func (mg *Override) ResolveReferences(ctx context.Context, c client.Reader) erro
 		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
 	}
 	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.ZoneIDRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -75,7 +75,7 @@ func (mg *Rule) ResolveReferences(ctx context.Context, c client.Reader) error {
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.ZoneIDRefs,
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
 		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
 		To: reference.To{
 			List:    &v1alpha1.ZoneList{},
@@ -86,7 +86,7 @@ func (mg *Rule) ResolveReferences(ctx context.Context, c client.Reader) error {
 		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
 	}
 	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.ZoneIDRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -101,7 +101,7 @@ func (mg *WAFPackage) ResolveReferences(ctx context.Context, c client.Reader) er
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.ZoneIDRefs,
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
 		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
 		To: reference.To{
 			List:    &v1alpha1.ZoneList{},
@@ -112,7 +112,7 @@ func (mg *WAFPackage) ResolveReferences(ctx context.Context, c client.Reader) er
 		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
 	}
 	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.ZoneIDRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
 
 	return nil
 }

@@ -4,6 +4,6 @@ metadata:
   name: example
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     enabled: true

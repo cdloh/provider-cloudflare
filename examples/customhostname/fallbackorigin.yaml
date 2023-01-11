@@ -8,7 +8,7 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     name: cloudflare-test
     value: upbound.io
@@ -24,6 +24,6 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     origin: cloudflare-test.cloudflare-test-enterprise.crossplane.io

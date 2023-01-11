@@ -73,7 +73,7 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     type: "per-zone"
     certificate: |

@@ -6,6 +6,6 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     enabled: true

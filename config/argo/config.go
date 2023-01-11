@@ -12,9 +12,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "Argo"
 		r.References["zone_id"] = config.Reference{
-			Type:              "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
-			RefFieldName:      "ZoneIDRefs",
-			SelectorFieldName: "ZoneIDSelector",
+			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 	})
 	p.AddResourceConfigurator("cloudflare_argo_tunnel", func(r *config.Resource) {

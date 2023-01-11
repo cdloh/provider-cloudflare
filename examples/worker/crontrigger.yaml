@@ -8,5 +8,5 @@ spec:
     schedules:
       - "*/5 * * * *"
       - "10 7 * * mon-fri"
-    scriptNameRefs:
+    scriptNameRef:
       name: example-worker-script

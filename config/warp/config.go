@@ -12,9 +12,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "DevicePolicyCertificates"
 		r.References["zone_id"] = config.Reference{
-			Type:              "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
-			RefFieldName:      "ZoneIDRefs",
-			SelectorFieldName: "ZoneIDSelector",
+			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 	})
 	p.AddResourceConfigurator("cloudflare_device_posture_integration", func(r *config.Resource) {

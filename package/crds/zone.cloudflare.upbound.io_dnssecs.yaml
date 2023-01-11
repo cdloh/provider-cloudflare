@@ -70,7 +70,7 @@ spec:
                     description: The zone identifier to target for the resource. **Modifying
                       this attribute will force creation of a new resource.**
                     type: string
-                  zoneIdRefs:
+                  zoneIdRef:
                     description: Reference to a Zone to populate zoneId.
                     properties:
                       name:
