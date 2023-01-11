@@ -1,0 +1,22 @@
+apiVersion: ruleset.cloudflare.upbound.io/v1alpha1
+kind: Ruleset
+metadata:
+  name: example-ruleset
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    name: set config rules
+    description: set config rules for request
+    kind: zone
+    phase: http_config_settings
+    rules:
+      - action: set_config
+        actionParameters:
+          - emailObfuscation: true
+            bic: true
+        expression: "(http.request.uri.path matches \"^/api/\")"
+        description: set config rules for matching request
+        enabled: true
