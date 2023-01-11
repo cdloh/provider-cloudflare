@@ -1,0 +1,9 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: KeysConfiguration
+metadata:
+  name: example-access-keys-configuration
+spec:
+  forProvider:
+    accountIdRef:
+      name: example-account
+    keysRotationIntervalDays: 5

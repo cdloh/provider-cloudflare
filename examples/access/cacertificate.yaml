@@ -1,0 +1,13 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: CACertificate
+metadata:
+  name: example-access-ca-certificate
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+    testing.cloudflare.upbound.io/require-access-application: "true"
+spec:
+  forProvider:
+    zoneIdReffdsfdsa:
+      name: example
+    applicationIdReffdasfdsa:
+      name: example-application

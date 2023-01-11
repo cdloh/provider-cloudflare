@@ -1,0 +1,19 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Policy
+metadata:
+  name: example-access-policy
+spec:
+  forProvider:
+    zomeIdRef:
+      name: example-account
+    applicationIdRef:
+      name: example-application
+    name: staging policy
+    precedence: 1
+    decision: allow
+    include:
+      - email:
+        - test@example.com
+    require:
+      - ip:
+        - "192.168.0.1"

@@ -9,6 +9,17 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
+	application "github.com/cdloh/provider-cloudflare/internal/controller/access/application"
+	bookmark "github.com/cdloh/provider-cloudflare/internal/controller/access/bookmark"
+	cacertificate "github.com/cdloh/provider-cloudflare/internal/controller/access/cacertificate"
+	group "github.com/cdloh/provider-cloudflare/internal/controller/access/group"
+	identityprovider "github.com/cdloh/provider-cloudflare/internal/controller/access/identityprovider"
+	keysconfiguration "github.com/cdloh/provider-cloudflare/internal/controller/access/keysconfiguration"
+	mutualtlscertificate "github.com/cdloh/provider-cloudflare/internal/controller/access/mutualtlscertificate"
+	organization "github.com/cdloh/provider-cloudflare/internal/controller/access/organization"
+	policy "github.com/cdloh/provider-cloudflare/internal/controller/access/policy"
+	rule "github.com/cdloh/provider-cloudflare/internal/controller/access/rule"
+	servicetoken "github.com/cdloh/provider-cloudflare/internal/controller/access/servicetoken"
 	account "github.com/cdloh/provider-cloudflare/internal/controller/account/account"
 	apitoken "github.com/cdloh/provider-cloudflare/internal/controller/account/apitoken"
 	member "github.com/cdloh/provider-cloudflare/internal/controller/account/member"
@@ -30,7 +41,7 @@ import (
 	record "github.com/cdloh/provider-cloudflare/internal/controller/dns/record"
 	address "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/address"
 	catchall "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/catchall"
-	rule "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/rule"
+	ruleemailrouting "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/rule"
 	settings "github.com/cdloh/provider-cloudflare/internal/controller/emailrouting/settings"
 	filter "github.com/cdloh/provider-cloudflare/internal/controller/filters/filter"
 	rulefirewall "github.com/cdloh/provider-cloudflare/internal/controller/firewall/rule"
@@ -45,7 +56,7 @@ import (
 	gretunnel "github.com/cdloh/provider-cloudflare/internal/controller/magic/gretunnel"
 	ipsectunnel "github.com/cdloh/provider-cloudflare/internal/controller/magic/ipsectunnel"
 	staticroute "github.com/cdloh/provider-cloudflare/internal/controller/magic/staticroute"
-	policy "github.com/cdloh/provider-cloudflare/internal/controller/notification/policy"
+	policynotification "github.com/cdloh/provider-cloudflare/internal/controller/notification/policy"
 	policywebhooks "github.com/cdloh/provider-cloudflare/internal/controller/notification/policywebhooks"
 	certificateoriginca "github.com/cdloh/provider-cloudflare/internal/controller/originca/certificate"
 	rulepage "github.com/cdloh/provider-cloudflare/internal/controller/page/rule"
@@ -53,7 +64,7 @@ import (
 	project "github.com/cdloh/provider-cloudflare/internal/controller/pages/project"
 	providerconfig "github.com/cdloh/provider-cloudflare/internal/controller/providerconfig"
 	ruleset "github.com/cdloh/provider-cloudflare/internal/controller/ruleset/ruleset"
-	application "github.com/cdloh/provider-cloudflare/internal/controller/spectrum/application"
+	applicationspectrum "github.com/cdloh/provider-cloudflare/internal/controller/spectrum/application"
 	accountteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/account"
 	listteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/list"
 	location "github.com/cdloh/provider-cloudflare/internal/controller/teams/location"
@@ -61,7 +72,7 @@ import (
 	ruleteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/rule"
 	settingsurlnormalization "github.com/cdloh/provider-cloudflare/internal/controller/urlnormalization/settings"
 	blockingrule "github.com/cdloh/provider-cloudflare/internal/controller/useragent/blockingrule"
-	group "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
+	groupwaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
 	rulewaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
 	wafpackage "github.com/cdloh/provider-cloudflare/internal/controller/waf/wafpackage"
@@ -94,6 +105,17 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		application.Setup,
+		bookmark.Setup,
+		cacertificate.Setup,
+		group.Setup,
+		identityprovider.Setup,
+		keysconfiguration.Setup,
+		mutualtlscertificate.Setup,
+		organization.Setup,
+		policy.Setup,
+		rule.Setup,
+		servicetoken.Setup,
 		account.Setup,
 		apitoken.Setup,
 		member.Setup,
@@ -115,7 +137,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		record.Setup,
 		address.Setup,
 		catchall.Setup,
-		rule.Setup,
+		ruleemailrouting.Setup,
 		settings.Setup,
 		filter.Setup,
 		rulefirewall.Setup,
@@ -130,7 +152,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		gretunnel.Setup,
 		ipsectunnel.Setup,
 		staticroute.Setup,
-		policy.Setup,
+		policynotification.Setup,
 		policywebhooks.Setup,
 		certificateoriginca.Setup,
 		rulepage.Setup,
@@ -138,7 +160,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		project.Setup,
 		providerconfig.Setup,
 		ruleset.Setup,
-		application.Setup,
+		applicationspectrum.Setup,
 		accountteams.Setup,
 		listteams.Setup,
 		location.Setup,
@@ -146,7 +168,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		ruleteams.Setup,
 		settingsurlnormalization.Setup,
 		blockingrule.Setup,
-		group.Setup,
+		groupwaf.Setup,
 		override.Setup,
 		rulewaf.Setup,
 		wafpackage.Setup,

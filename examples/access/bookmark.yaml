@@ -1,0 +1,16 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Application
+metadata:
+  name: example-access-application
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+  annotations:
+    uptest.upbound.io/pre-delete-hook: ../../cluster/test/cleanup-children.sh access-application
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    name: My Bookmark App
+    doain: example.com
+    logoUrl: https://example.com/example.png
+    appLauncherVisible: true

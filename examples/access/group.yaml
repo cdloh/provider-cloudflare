@@ -1,0 +1,18 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Group
+metadata:
+  name: example-access-ca-certificate
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+    testing.cloudflare.upbound.io/require-access-application: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    name: staging group
+    include:
+      - email:
+        - test@example.com
+    require:
+      - ip:
+          - "192.168.0.1"

@@ -1,0 +1,17 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: IdentityProvider
+metadata:
+  name: example-access-identity-provider
+  labels:
+    testing.cloudflare.upbound.io/require-zone: "true"
+spec:
+  forProvider:
+    zoneIdRef:
+      name: example
+    name: Okta
+    type: okta
+    config:
+      - clientId: example
+        clientSecret: secret!
+        apiToken: API_TOKEN_HERE
+        oktaAccount: https://example.com
