@@ -77,7 +77,7 @@ spec:
                     description: The zone identifier to target for the resource. Conflicts
                       with `account_id`.
                     type: string
-                  zoneIdRefs:
+                  zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
                     properties:
                       name:

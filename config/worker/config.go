@@ -11,22 +11,16 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_worker_cron_trigger", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.References["script_name"] = config.Reference{
-			Type:              "Script",
-			RefFieldName:      "ScriptNameRefs",
-			SelectorFieldName: "ScriptNameSelector",
+			Type: "Script",
 		}
 	})
 	p.AddResourceConfigurator("cloudflare_worker_route", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.References["script_name"] = config.Reference{
-			Type:              "Script",
-			RefFieldName:      "ScriptNameRefs",
-			SelectorFieldName: "ScriptNameSelector",
+			Type: "Script",
 		}
 		r.References["zone_id"] = config.Reference{
-			Type:              "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
-			RefFieldName:      "ZoneIDRefs",
-			SelectorFieldName: "ZoneIDSelector",
+			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 	})
 	p.AddResourceConfigurator("cloudflare_worker_script", func(r *config.Resource) {

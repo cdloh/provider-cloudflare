@@ -7,7 +7,7 @@ metadata:
     testing.cloudflare.upbound.io/require-script: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     pattern: "*/*"
     scriptNameRefs:

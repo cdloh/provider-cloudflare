@@ -29,14 +29,12 @@ type CronTriggerParameters struct {
 
 	// Worker script to target for the schedules.
 	// +crossplane:generate:reference:type=Script
-	// +crossplane:generate:reference:refFieldName=ScriptNameRefs
-	// +crossplane:generate:reference:selectorFieldName=ScriptNameSelector
 	// +kubebuilder:validation:Optional
 	ScriptName *string `json:"scriptName,omitempty" tf:"script_name,omitempty"`
 
 	// Reference to a Script to populate scriptName.
 	// +kubebuilder:validation:Optional
-	ScriptNameRefs *v1.Reference `json:"scriptNameRefs,omitempty" tf:"-"`
+	ScriptNameRef *v1.Reference `json:"scriptNameRef,omitempty" tf:"-"`
 
 	// Selector for a Script to populate scriptName.
 	// +kubebuilder:validation:Optional

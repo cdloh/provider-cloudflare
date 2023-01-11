@@ -25,14 +25,12 @@ type RouteParameters struct {
 
 	// Worker script name to invoke for requests that match the route pattern.
 	// +crossplane:generate:reference:type=Script
-	// +crossplane:generate:reference:refFieldName=ScriptNameRefs
-	// +crossplane:generate:reference:selectorFieldName=ScriptNameSelector
 	// +kubebuilder:validation:Optional
 	ScriptName *string `json:"scriptName,omitempty" tf:"script_name,omitempty"`
 
 	// Reference to a Script to populate scriptName.
 	// +kubebuilder:validation:Optional
-	ScriptNameRefs *v1.Reference `json:"scriptNameRefs,omitempty" tf:"-"`
+	ScriptNameRef *v1.Reference `json:"scriptNameRef,omitempty" tf:"-"`
 
 	// Selector for a Script to populate scriptName.
 	// +kubebuilder:validation:Optional
@@ -40,14 +38,12 @@ type RouteParameters struct {
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
-	// +crossplane:generate:reference:refFieldName=ZoneIDRefs
-	// +crossplane:generate:reference:selectorFieldName=ZoneIDSelector
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
 	// Reference to a Zone in zone to populate zoneId.
 	// +kubebuilder:validation:Optional
-	ZoneIDRefs *v1.Reference `json:"zoneIdRefs,omitempty" tf:"-"`
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
 
 	// Selector for a Zone in zone to populate zoneId.
 	// +kubebuilder:validation:Optional

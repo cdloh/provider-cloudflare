@@ -8,7 +8,7 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     hostname: custom-hostname.upbound.io
     ssl:

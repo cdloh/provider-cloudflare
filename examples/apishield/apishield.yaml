@@ -6,7 +6,7 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     authIdCharacteristics:
       - name: my-example-header

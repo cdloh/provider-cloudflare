@@ -14,18 +14,14 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_zone_settings_override", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.References["zone_id"] = config.Reference{
-			Type:              "Zone",
-			RefFieldName:      "ZoneIDRefs",
-			SelectorFieldName: "ZoneIDSelector",
+			Type: "Zone",
 		}
 
 	})
 	p.AddResourceConfigurator("cloudflare_zone_dnssec", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.References["zone_id"] = config.Reference{
-			Type:              "Zone",
-			RefFieldName:      "ZoneIDRefs",
-			SelectorFieldName: "ZoneIDSelector",
+			Type: "Zone",
 		}
 
 	})

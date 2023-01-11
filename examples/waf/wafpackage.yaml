@@ -7,7 +7,7 @@ metadata:
     testing.cloudflare.upbound.io/require-zone: "true"
 spec:
   forProvider:
-    zoneIdRefs:
+    zoneIdRef:
       name: example
     packageId: c504870194831cd12c3fc0284f294abb
     sensitivity: medium

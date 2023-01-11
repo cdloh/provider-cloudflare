@@ -161,8 +161,8 @@ func (in *PackParameters) DeepCopyInto(out *PackParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}

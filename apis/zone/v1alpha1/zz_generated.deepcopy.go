@@ -238,8 +238,8 @@ func (in *DNSSECParameters) DeepCopyInto(out *DNSSECParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -2084,8 +2084,8 @@ func (in *SettingsOverrideParameters) DeepCopyInto(out *SettingsOverrideParamete
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}

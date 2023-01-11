@@ -157,8 +157,8 @@ func (in *CronTriggerParameters) DeepCopyInto(out *CronTriggerParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ScriptNameRefs != nil {
-		in, out := &in.ScriptNameRefs, &out.ScriptNameRefs
+	if in.ScriptNameRef != nil {
+		in, out := &in.ScriptNameRef, &out.ScriptNameRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -731,8 +731,8 @@ func (in *RouteParameters) DeepCopyInto(out *RouteParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ScriptNameRefs != nil {
-		in, out := &in.ScriptNameRefs, &out.ScriptNameRefs
+	if in.ScriptNameRef != nil {
+		in, out := &in.ScriptNameRef, &out.ScriptNameRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -746,8 +746,8 @@ func (in *RouteParameters) DeepCopyInto(out *RouteParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ZoneIDRefs != nil {
-		in, out := &in.ZoneIDRefs, &out.ZoneIDRefs
+	if in.ZoneIDRef != nil {
+		in, out := &in.ZoneIDRef, &out.ZoneIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}

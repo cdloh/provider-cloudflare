@@ -74,7 +74,7 @@ spec:
                   scriptName:
                     description: Worker script to target for the schedules.
                     type: string
-                  scriptNameRefs:
+                  scriptNameRef:
                     description: Reference to a Script to populate scriptName.
                     properties:
                       name:
