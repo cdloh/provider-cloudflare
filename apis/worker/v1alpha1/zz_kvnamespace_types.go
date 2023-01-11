@@ -20,8 +20,17 @@ type KVNamespaceObservation struct {
 type KVNamespaceParameters struct {
 
 	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
 	// Title value of the Worker KV Namespace.
 	// +kubebuilder:validation:Required

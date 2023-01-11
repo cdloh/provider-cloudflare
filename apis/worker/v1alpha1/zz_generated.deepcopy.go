@@ -141,6 +141,16 @@ func (in *CronTriggerParameters) DeepCopyInto(out *CronTriggerParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Schedules != nil {
 		in, out := &in.Schedules, &out.Schedules
 		*out = make([]*string, len(*in))
@@ -299,6 +309,16 @@ func (in *KVNamespaceParameters) DeepCopyInto(out *KVNamespaceParameters) {
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(string)
 		**out = **in
+	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Title != nil {
 		in, out := &in.Title, &out.Title
@@ -487,6 +507,16 @@ func (in *KvParameters) DeepCopyInto(out *KvParameters) {
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(string)
 		**out = **in
+	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Key != nil {
 		in, out := &in.Key, &out.Key

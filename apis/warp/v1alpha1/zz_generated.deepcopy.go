@@ -309,6 +309,16 @@ func (in *DevicePostureIntegrationParameters) DeepCopyInto(out *DevicePostureInt
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Config != nil {
 		in, out := &in.Config, &out.Config
 		*out = make([]ConfigParameters, len(*in))
@@ -468,6 +478,16 @@ func (in *DevicePostureRuleParameters) DeepCopyInto(out *DevicePostureRuleParame
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(string)
 		**out = **in
+	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
@@ -640,6 +660,16 @@ func (in *DeviceSettingsPolicyParameters) DeepCopyInto(out *DeviceSettingsPolicy
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(string)
 		**out = **in
+	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.AllowModeSwitch != nil {
 		in, out := &in.AllowModeSwitch, &out.AllowModeSwitch
@@ -1204,6 +1234,16 @@ func (in *SplitTunnelParameters) DeepCopyInto(out *SplitTunnelParameters) {
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(string)
 		**out = **in
+	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Mode != nil {
 		in, out := &in.Mode, &out.Mode

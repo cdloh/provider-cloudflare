@@ -7,6 +7,9 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_email_routing_address", func(r *config.Resource) {
 		r.ShortGroup = "emailrouting"
 		r.Kind = "Address"
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
 	})
 	p.AddResourceConfigurator("cloudflare_email_routing_catch_all", func(r *config.Resource) {
 		r.ShortGroup = "emailrouting"

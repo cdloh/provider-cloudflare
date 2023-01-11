@@ -101,6 +101,16 @@ func (in *JobParameters) DeepCopyInto(out *JobParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Dataset != nil {
 		in, out := &in.Dataset, &out.Dataset
 		*out = new(string)
@@ -298,6 +308,16 @@ func (in *OwnershipChallengeParameters) DeepCopyInto(out *OwnershipChallengePara
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(string)
 		**out = **in
+	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DestinationConf != nil {
 		in, out := &in.DestinationConf, &out.DestinationConf

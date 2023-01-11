@@ -40,6 +40,84 @@ func (mg *DevicePolicyCertificates) ResolveReferences(ctx context.Context, c cli
 	return nil
 }
 
+// ResolveReferences of this DevicePostureIntegration.
+func (mg *DevicePostureIntegration) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.AccountIDRef,
+		Selector:     mg.Spec.ForProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AccountID")
+	}
+	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this DevicePostureRule.
+func (mg *DevicePostureRule) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.AccountIDRef,
+		Selector:     mg.Spec.ForProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AccountID")
+	}
+	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this DeviceSettingsPolicy.
+func (mg *DeviceSettingsPolicy) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.AccountIDRef,
+		Selector:     mg.Spec.ForProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AccountID")
+	}
+	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this FallbackDomain.
 func (mg *FallbackDomain) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -88,6 +166,22 @@ func (mg *SplitTunnel) ResolveReferences(ctx context.Context, c client.Reader) e
 
 	var rsp reference.ResolutionResponse
 	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.AccountIDRef,
+		Selector:     mg.Spec.ForProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AccountID")
+	}
+	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.PolicyID),

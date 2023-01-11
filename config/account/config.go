@@ -10,6 +10,9 @@ func Configure(p *config.Provider) {
 	})
 	p.AddResourceConfigurator("cloudflare_account_member", func(r *config.Resource) {
 		r.ShortGroup = "account"
+		r.References["account_id"] = config.Reference{
+			Type: "Account",
+		}
 	})
 	p.AddResourceConfigurator("cloudflare_api_token", func(r *config.Resource) {
 		r.ShortGroup = "account"

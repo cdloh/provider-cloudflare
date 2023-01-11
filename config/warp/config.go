@@ -18,14 +18,23 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_device_posture_integration", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "DevicePostureIntegration"
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
 	})
 	p.AddResourceConfigurator("cloudflare_device_posture_rule", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "DevicePostureRule"
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
 	})
 	p.AddResourceConfigurator("cloudflare_device_settings_policy", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "DeviceSettingsPolicy"
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
 	})
 	p.AddResourceConfigurator("cloudflare_fallback_domain", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
@@ -40,6 +49,9 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("cloudflare_split_tunnel", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "SplitTunnel"
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
 		r.References["policy_id"] = config.Reference{
 			Type: "DeviceSettingsPolicy",
 		}

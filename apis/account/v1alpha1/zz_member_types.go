@@ -20,8 +20,17 @@ type MemberObservation struct {
 type MemberParameters struct {
 
 	// Account ID to create the account member in.
+	// +crossplane:generate:reference:type=Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
 	// The email address of the user who you wish to manage. Following creation, this field becomes read only via the API and cannot be updated.
 	// +kubebuilder:validation:Required

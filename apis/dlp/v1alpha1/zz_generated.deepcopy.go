@@ -10,6 +10,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -191,6 +192,16 @@ func (in *ProfileParameters) DeepCopyInto(out *ProfileParameters) {
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(string)
 		**out = **in
+	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description

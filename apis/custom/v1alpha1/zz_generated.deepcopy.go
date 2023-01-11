@@ -196,6 +196,16 @@ func (in *PagesParameters) DeepCopyInto(out *PagesParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AccountIDRef != nil {
+		in, out := &in.AccountIDRef, &out.AccountIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.AccountIDSelector != nil {
+		in, out := &in.AccountIDSelector, &out.AccountIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.State != nil {
 		in, out := &in.State, &out.State
 		*out = new(string)

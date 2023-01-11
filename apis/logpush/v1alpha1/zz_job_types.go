@@ -20,8 +20,17 @@ type JobObservation struct {
 type JobParameters struct {
 
 	// The account identifier to target for the resource. Must provide only one of `account_id`, `zone_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
 	// Uniquely identifies a resource (such as an s3 bucket) where data will be pushed. Additional configuration parameters supported by the destination may be included. See [Logpush destination documentation](https://developers.cloudflare.com/logs/reference/logpush-api-configuration#destination). Available values: `access_requests`, `firewall_events`, `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`, `workers_trace_events`.
 	// +kubebuilder:validation:Required
