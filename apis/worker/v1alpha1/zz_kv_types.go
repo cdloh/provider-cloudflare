@@ -13,11 +13,11 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type KvObservation struct {
+type KVObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
-type KvParameters struct {
+type KVParameters struct {
 
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
@@ -54,51 +54,51 @@ type KvParameters struct {
 	Value *string `json:"value" tf:"value,omitempty"`
 }
 
-// KvSpec defines the desired state of Kv
-type KvSpec struct {
+// KVSpec defines the desired state of KV
+type KVSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     KvParameters `json:"forProvider"`
+	ForProvider     KVParameters `json:"forProvider"`
 }
 
-// KvStatus defines the observed state of Kv.
-type KvStatus struct {
+// KVStatus defines the observed state of KV.
+type KVStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        KvObservation `json:"atProvider,omitempty"`
+	AtProvider        KVObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Kv is the Schema for the Kvs API. <no value>
+// KV is the Schema for the KVs API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
-type Kv struct {
+type KV struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              KvSpec   `json:"spec"`
-	Status            KvStatus `json:"status,omitempty"`
+	Spec              KVSpec   `json:"spec"`
+	Status            KVStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// KvList contains a list of Kvs
-type KvList struct {
+// KVList contains a list of KVs
+type KVList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Kv `json:"items"`
+	Items           []KV `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Kv_Kind             = "Kv"
-	Kv_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Kv_Kind}.String()
-	Kv_KindAPIVersion   = Kv_Kind + "." + CRDGroupVersion.String()
-	Kv_GroupVersionKind = CRDGroupVersion.WithKind(Kv_Kind)
+	KV_Kind             = "KV"
+	KV_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: KV_Kind}.String()
+	KV_KindAPIVersion   = KV_Kind + "." + CRDGroupVersion.String()
+	KV_GroupVersionKind = CRDGroupVersion.WithKind(KV_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Kv{}, &KvList{})
+	SchemeBuilder.Register(&KV{}, &KVList{})
 }

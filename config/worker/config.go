@@ -44,6 +44,7 @@ func Configure(p *config.Provider) {
 	})
 	p.AddResourceConfigurator("cloudflare_workers_kv", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
+		r.Kind = "KV"
 		r.References["account_id"] = config.Reference{
 			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
 		}

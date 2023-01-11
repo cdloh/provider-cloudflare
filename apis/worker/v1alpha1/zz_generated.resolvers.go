@@ -56,34 +56,8 @@ func (mg *CronTrigger) ResolveReferences(ctx context.Context, c client.Reader) e
 	return nil
 }
 
-// ResolveReferences of this KVNamespace.
-func (mg *KVNamespace) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPIResolver(c, mg)
-
-	var rsp reference.ResolutionResponse
-	var err error
-
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AccountID),
-		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.AccountIDRef,
-		Selector:     mg.Spec.ForProvider.AccountIDSelector,
-		To: reference.To{
-			List:    &v1alpha1.AccountList{},
-			Managed: &v1alpha1.Account{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.AccountID")
-	}
-	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
-
-	return nil
-}
-
-// ResolveReferences of this Kv.
-func (mg *Kv) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this KV.
+func (mg *KV) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -120,6 +94,32 @@ func (mg *Kv) ResolveReferences(ctx context.Context, c client.Reader) error {
 	}
 	mg.Spec.ForProvider.NamespaceID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NamespaceIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this KVNamespace.
+func (mg *KVNamespace) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.AccountIDRef,
+		Selector:     mg.Spec.ForProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.AccountList{},
+			Managed: &v1alpha1.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AccountID")
+	}
+	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
 
 	return nil
 }

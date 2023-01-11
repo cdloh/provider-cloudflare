@@ -1,5 +1,5 @@
 apiVersion: worker.cloudflare.upbound.io/v1alpha1
-kind: Kv
+kind: KV
 metadata:
   name: example-worker-kv
   labels:

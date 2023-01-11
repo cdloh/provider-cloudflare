@@ -13,8 +13,8 @@ spec:
     - crossplane
     - managed
     - cloudflare
-    kind: Kv
-    listKind: KvList
+    kind: KV
+    listKind: KVList
     plural: kvs
     singular: kv
   scope: Cluster
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Kv is the Schema for the Kvs API. <no value>
+        description: KV is the Schema for the KVs API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: KvSpec defines the desired state of Kv
+            description: KVSpec defines the desired state of KV
             properties:
               deletionPolicy:
                 default: Delete
@@ -400,7 +400,7 @@ spec:
             - forProvider
             type: object
           status:
-            description: KvStatus defines the observed state of Kv.
+            description: KVStatus defines the observed state of KV.
             properties:
               atProvider:
                 properties:
