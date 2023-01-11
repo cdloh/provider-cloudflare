@@ -57,4 +57,18 @@ func Configure(p *config.Provider) {
 			Type: "Zone",
 		}
 	})
+	p.AddResourceConfigurator("cloudflare_managed_headers", func(r *config.Resource) {
+		r.ShortGroup = shortGroupName
+		r.Kind = "ManagedHeaders"
+		r.References["zone_id"] = config.Reference{
+			Type: "Zone",
+		}
+	})
+	p.AddResourceConfigurator("cloudflare_healthcheck", func(r *config.Resource) {
+		r.ShortGroup = shortGroupName
+		r.Kind = "Healthcheck"
+		r.References["zone_id"] = config.Reference{
+			Type: "Zone",
+		}
+	})
 }
