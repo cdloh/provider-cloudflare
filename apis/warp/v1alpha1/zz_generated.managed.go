@@ -271,6 +271,72 @@ func (mg *DeviceSettingsPolicy) SetWriteConnectionSecretToReference(r *xpv1.Secr
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this FallbackDomain.
+func (mg *FallbackDomain) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this FallbackDomain.
+func (mg *FallbackDomain) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetProviderConfigReference of this FallbackDomain.
+func (mg *FallbackDomain) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+/*
+GetProviderReference of this FallbackDomain.
+Deprecated: Use GetProviderConfigReference.
+*/
+func (mg *FallbackDomain) GetProviderReference() *xpv1.Reference {
+	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this FallbackDomain.
+func (mg *FallbackDomain) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this FallbackDomain.
+func (mg *FallbackDomain) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this FallbackDomain.
+func (mg *FallbackDomain) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this FallbackDomain.
+func (mg *FallbackDomain) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetProviderConfigReference of this FallbackDomain.
+func (mg *FallbackDomain) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+/*
+SetProviderReference of this FallbackDomain.
+Deprecated: Use SetProviderConfigReference.
+*/
+func (mg *FallbackDomain) SetProviderReference(r *xpv1.Reference) {
+	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this FallbackDomain.
+func (mg *FallbackDomain) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this FallbackDomain.
+func (mg *FallbackDomain) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this SplitTunnel.
 func (mg *SplitTunnel) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)

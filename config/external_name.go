@@ -32,6 +32,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_email_routing_catch_all":                config.IdentifierFromProvider,
 	"cloudflare_email_routing_rule":                     config.IdentifierFromProvider,
 	"cloudflare_email_routing_settings":                 config.IdentifierFromProvider,
+	"cloudflare_fallback_domain":                        config.IdentifierFromProvider,
 	"cloudflare_filter":                                 config.IdentifierFromProvider,
 	"cloudflare_gre_tunnel":                             config.IdentifierFromProvider,
 	"cloudflare_healthcheck":                            config.IdentifierFromProvider,

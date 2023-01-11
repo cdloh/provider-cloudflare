@@ -43,6 +43,15 @@ func (l *DeviceSettingsPolicyList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this FallbackDomainList.
+func (l *FallbackDomainList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this SplitTunnelList.
 func (l *SplitTunnelList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))

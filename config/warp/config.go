@@ -29,6 +29,16 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "DeviceSettingsPolicy"
 	})
+	p.AddResourceConfigurator("cloudflare_fallback_domain", func(r *config.Resource) {
+		r.ShortGroup = shortGroupName
+		r.Kind = "FallbackDomain"
+		r.References["policy_id"] = config.Reference{
+			Type: "DeviceSettingsPolicy",
+		}
+		r.References["account_id"] = config.Reference{
+			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+		}
+	})
 	p.AddResourceConfigurator("cloudflare_split_tunnel", func(r *config.Resource) {
 		r.ShortGroup = shortGroupName
 		r.Kind = "SplitTunnel"

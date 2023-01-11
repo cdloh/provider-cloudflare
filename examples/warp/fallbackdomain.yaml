@@ -1,0 +1,14 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: FallbackDomain
+metadata:
+  name: example-fallback-domain
+spec:
+  forProvider:
+    accountIdRef:
+      name: example
+    domains:
+      - suffix: example.com
+        description: Example domain
+        dnsServer:
+          - "192.0.2.0"
+          - "192.0.2.1"
