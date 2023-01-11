@@ -77,7 +77,9 @@ import (
 	route "github.com/cdloh/provider-cloudflare/internal/controller/worker/route"
 	script "github.com/cdloh/provider-cloudflare/internal/controller/worker/script"
 	dnssec "github.com/cdloh/provider-cloudflare/internal/controller/zone/dnssec"
+	healthcheck "github.com/cdloh/provider-cloudflare/internal/controller/zone/healthcheck"
 	logpullretention "github.com/cdloh/provider-cloudflare/internal/controller/zone/logpullretention"
+	managedheaders "github.com/cdloh/provider-cloudflare/internal/controller/zone/managedheaders"
 	ratelimit "github.com/cdloh/provider-cloudflare/internal/controller/zone/ratelimit"
 	settingsoverride "github.com/cdloh/provider-cloudflare/internal/controller/zone/settingsoverride"
 	tieredcache "github.com/cdloh/provider-cloudflare/internal/controller/zone/tieredcache"
@@ -157,7 +159,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		route.Setup,
 		script.Setup,
 		dnssec.Setup,
+		healthcheck.Setup,
 		logpullretention.Setup,
+		managedheaders.Setup,
 		ratelimit.Setup,
 		settingsoverride.Setup,
 		tieredcache.Setup,
