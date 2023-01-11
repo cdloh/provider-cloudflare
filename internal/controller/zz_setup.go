@@ -78,6 +78,7 @@ import (
 	script "github.com/cdloh/provider-cloudflare/internal/controller/worker/script"
 	dnssec "github.com/cdloh/provider-cloudflare/internal/controller/zone/dnssec"
 	logpullretention "github.com/cdloh/provider-cloudflare/internal/controller/zone/logpullretention"
+	ratelimit "github.com/cdloh/provider-cloudflare/internal/controller/zone/ratelimit"
 	settingsoverride "github.com/cdloh/provider-cloudflare/internal/controller/zone/settingsoverride"
 	tieredcache "github.com/cdloh/provider-cloudflare/internal/controller/zone/tieredcache"
 	totaltls "github.com/cdloh/provider-cloudflare/internal/controller/zone/totaltls"
@@ -157,6 +158,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		script.Setup,
 		dnssec.Setup,
 		logpullretention.Setup,
+		ratelimit.Setup,
 		settingsoverride.Setup,
 		tieredcache.Setup,
 		totaltls.Setup,

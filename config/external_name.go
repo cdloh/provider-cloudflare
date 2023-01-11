@@ -50,6 +50,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"cloudflare_origin_ca_certificate":                  config.IdentifierFromProvider,
 	"cloudflare_pages_domain":                           config.IdentifierFromProvider,
 	"cloudflare_pages_project":                          config.IdentifierFromProvider,
+	"cloudflare_rate_limit":                             config.IdentifierFromProvider,
 	"cloudflare_record":                                 config.IdentifierFromProvider,
 	"cloudflare_spectrum_application":                   config.IdentifierFromProvider,
 	"cloudflare_split_tunnel":                           config.IdentifierFromProvider,
