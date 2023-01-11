@@ -70,6 +70,7 @@ import (
 	devicepostureintegration "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicepostureintegration"
 	deviceposturerule "github.com/cdloh/provider-cloudflare/internal/controller/warp/deviceposturerule"
 	devicesettingspolicy "github.com/cdloh/provider-cloudflare/internal/controller/warp/devicesettingspolicy"
+	fallbackdomain "github.com/cdloh/provider-cloudflare/internal/controller/warp/fallbackdomain"
 	splittunnel "github.com/cdloh/provider-cloudflare/internal/controller/warp/splittunnel"
 	crontrigger "github.com/cdloh/provider-cloudflare/internal/controller/worker/crontrigger"
 	kv "github.com/cdloh/provider-cloudflare/internal/controller/worker/kv"
@@ -152,6 +153,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		devicepostureintegration.Setup,
 		deviceposturerule.Setup,
 		devicesettingspolicy.Setup,
+		fallbackdomain.Setup,
 		splittunnel.Setup,
 		crontrigger.Setup,
 		kv.Setup,
