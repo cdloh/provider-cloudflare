@@ -70,4 +70,18 @@ func Configure(p *config.Provider) {
 			Type: "Zone",
 		}
 	})
+	p.AddResourceConfigurator("cloudflare_url_normalization_settings", func(r *config.Resource) {
+		r.ShortGroup = shortGroupName
+		r.Kind = "URLNormalizationSettings"
+		r.References["zone_id"] = config.Reference{
+			Type: "Zone",
+		}
+	})
+	p.AddResourceConfigurator("cloudflare_user_agent_blocking_rule", func(r *config.Resource) {
+		r.ShortGroup = shortGroupName
+		r.Kind = "UserAgentBlockingRule"
+		r.References["zone_id"] = config.Reference{
+			Type: "Zone",
+		}
+	})
 }

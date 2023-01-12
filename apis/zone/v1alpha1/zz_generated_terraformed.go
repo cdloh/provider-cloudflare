@@ -457,6 +457,154 @@ func (tr *TotalTLS) GetTerraformSchemaVersion() int {
 	return 0
 }
 
+// GetTerraformResourceType returns Terraform resource type for this URLNormalizationSettings
+func (mg *URLNormalizationSettings) GetTerraformResourceType() string {
+	return "cloudflare_url_normalization_settings"
+}
+
+// GetConnectionDetailsMapping for this URLNormalizationSettings
+func (tr *URLNormalizationSettings) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this URLNormalizationSettings
+func (tr *URLNormalizationSettings) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this URLNormalizationSettings
+func (tr *URLNormalizationSettings) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this URLNormalizationSettings
+func (tr *URLNormalizationSettings) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this URLNormalizationSettings
+func (tr *URLNormalizationSettings) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this URLNormalizationSettings
+func (tr *URLNormalizationSettings) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this URLNormalizationSettings using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *URLNormalizationSettings) LateInitialize(attrs []byte) (bool, error) {
+	params := &URLNormalizationSettingsParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *URLNormalizationSettings) GetTerraformSchemaVersion() int {
+	return 0
+}
+
+// GetTerraformResourceType returns Terraform resource type for this UserAgentBlockingRule
+func (mg *UserAgentBlockingRule) GetTerraformResourceType() string {
+	return "cloudflare_user_agent_blocking_rule"
+}
+
+// GetConnectionDetailsMapping for this UserAgentBlockingRule
+func (tr *UserAgentBlockingRule) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this UserAgentBlockingRule
+func (tr *UserAgentBlockingRule) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this UserAgentBlockingRule
+func (tr *UserAgentBlockingRule) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this UserAgentBlockingRule
+func (tr *UserAgentBlockingRule) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this UserAgentBlockingRule
+func (tr *UserAgentBlockingRule) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this UserAgentBlockingRule
+func (tr *UserAgentBlockingRule) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this UserAgentBlockingRule using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *UserAgentBlockingRule) LateInitialize(attrs []byte) (bool, error) {
+	params := &UserAgentBlockingRuleParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *UserAgentBlockingRule) GetTerraformSchemaVersion() int {
+	return 0
+}
+
 // GetTerraformResourceType returns Terraform resource type for this Zone
 func (mg *Zone) GetTerraformResourceType() string {
 	return "cloudflare_zone"

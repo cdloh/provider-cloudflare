@@ -35,8 +35,6 @@ import (
 	"github.com/cdloh/provider-cloudflare/config/ruleset"
 	"github.com/cdloh/provider-cloudflare/config/spectrum"
 	"github.com/cdloh/provider-cloudflare/config/teams"
-	"github.com/cdloh/provider-cloudflare/config/urlnormalization"
-	"github.com/cdloh/provider-cloudflare/config/useragent"
 	"github.com/cdloh/provider-cloudflare/config/waf"
 	"github.com/cdloh/provider-cloudflare/config/waitingroom"
 	"github.com/cdloh/provider-cloudflare/config/warp"
@@ -91,8 +89,6 @@ func GetProvider() *ujconfig.Provider {
 		ruleset.Configure,
 		spectrum.Configure,
 		teams.Configure,
-		urlnormalization.Configure,
-		useragent.Configure,
 		waf.Configure,
 		waitingroom.Configure,
 		warp.Configure,
