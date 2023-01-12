@@ -13,11 +13,25 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type BlockingRuleObservation struct {
+type ConfigurationObservation struct {
+}
+
+type ConfigurationParameters struct {
+
+	// The configuration target for this rule. You must set the target to ua for User Agent Blocking rules.
+	// +kubebuilder:validation:Required
+	Target *string `json:"target" tf:"target,omitempty"`
+
+	// The exact user agent string to match. This value will be compared to the received User-Agent HTTP header value.
+	// +kubebuilder:validation:Required
+	Value *string `json:"value" tf:"value,omitempty"`
+}
+
+type UserAgentBlockingRuleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
-type BlockingRuleParameters struct {
+type UserAgentBlockingRuleParameters struct {
 
 	// The configuration object for the current rule.
 	// +kubebuilder:validation:Required
@@ -36,78 +50,64 @@ type BlockingRuleParameters struct {
 	Paused *bool `json:"paused" tf:"paused,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
-	// Reference to a Zone in zone to populate zoneId.
+	// Reference to a Zone to populate zoneId.
 	// +kubebuilder:validation:Optional
 	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
 
-	// Selector for a Zone in zone to populate zoneId.
+	// Selector for a Zone to populate zoneId.
 	// +kubebuilder:validation:Optional
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
-type ConfigurationObservation struct {
-}
-
-type ConfigurationParameters struct {
-
-	// The configuration target for this rule. You must set the target to ua for User Agent Blocking rules.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
-
-	// The exact user agent string to match. This value will be compared to the received User-Agent HTTP header value.
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
-}
-
-// BlockingRuleSpec defines the desired state of BlockingRule
-type BlockingRuleSpec struct {
+// UserAgentBlockingRuleSpec defines the desired state of UserAgentBlockingRule
+type UserAgentBlockingRuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     BlockingRuleParameters `json:"forProvider"`
+	ForProvider     UserAgentBlockingRuleParameters `json:"forProvider"`
 }
 
-// BlockingRuleStatus defines the observed state of BlockingRule.
-type BlockingRuleStatus struct {
+// UserAgentBlockingRuleStatus defines the observed state of UserAgentBlockingRule.
+type UserAgentBlockingRuleStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        BlockingRuleObservation `json:"atProvider,omitempty"`
+	AtProvider        UserAgentBlockingRuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// BlockingRule is the Schema for the BlockingRules API. <no value>
+// UserAgentBlockingRule is the Schema for the UserAgentBlockingRules API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
-type BlockingRule struct {
+type UserAgentBlockingRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              BlockingRuleSpec   `json:"spec"`
-	Status            BlockingRuleStatus `json:"status,omitempty"`
+	Spec              UserAgentBlockingRuleSpec   `json:"spec"`
+	Status            UserAgentBlockingRuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// BlockingRuleList contains a list of BlockingRules
-type BlockingRuleList struct {
+// UserAgentBlockingRuleList contains a list of UserAgentBlockingRules
+type UserAgentBlockingRuleList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BlockingRule `json:"items"`
+	Items           []UserAgentBlockingRule `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	BlockingRule_Kind             = "BlockingRule"
-	BlockingRule_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: BlockingRule_Kind}.String()
-	BlockingRule_KindAPIVersion   = BlockingRule_Kind + "." + CRDGroupVersion.String()
-	BlockingRule_GroupVersionKind = CRDGroupVersion.WithKind(BlockingRule_Kind)
+	UserAgentBlockingRule_Kind             = "UserAgentBlockingRule"
+	UserAgentBlockingRule_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: UserAgentBlockingRule_Kind}.String()
+	UserAgentBlockingRule_KindAPIVersion   = UserAgentBlockingRule_Kind + "." + CRDGroupVersion.String()
+	UserAgentBlockingRule_GroupVersionKind = CRDGroupVersion.WithKind(UserAgentBlockingRule_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&BlockingRule{}, &BlockingRuleList{})
+	SchemeBuilder.Register(&UserAgentBlockingRule{}, &UserAgentBlockingRuleList{})
 }

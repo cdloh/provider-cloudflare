@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: settings.urlnormalization.cloudflare.upbound.io
+  name: useragentblockingrules.zone.cloudflare.upbound.io
 spec:
-  group: urlnormalization.cloudflare.upbound.io
+  group: zone.cloudflare.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - cloudflare
-    kind: Settings
-    listKind: SettingsList
-    plural: settings
-    singular: settings
+    kind: UserAgentBlockingRule
+    listKind: UserAgentBlockingRuleList
+    plural: useragentblockingrules
+    singular: useragentblockingrule
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Settings is the Schema for the Settingss API. <no value>
+        description: UserAgentBlockingRule is the Schema for the UserAgentBlockingRules
+          API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: SettingsSpec defines the desired state of Settings
+            description: UserAgentBlockingRuleSpec defines the desired state of UserAgentBlockingRule
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,18 +64,40 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  scope:
-                    description: The scope of the URL normalization.
+                  configuration:
+                    description: The configuration object for the current rule.
+                    items:
+                      properties:
+                        target:
+                          description: The configuration target for this rule. You
+                            must set the target to ua for User Agent Blocking rules.
+                          type: string
+                        value:
+                          description: The exact user agent string to match. This
+                            value will be compared to the received User-Agent HTTP
+                            header value.
+                          type: string
+                      required:
+                      - target
+                      - value
+                      type: object
+                    type: array
+                  description:
+                    description: An informative summary of the rule.
                     type: string
-                  type:
-                    description: The type of URL normalization performed by Cloudflare.
+                  mode:
+                    description: 'The action to apply to a matched request. Available
+                      values: `block`, `challenge`, `js_challenge`, `managed_challenge`.'
                     type: string
+                  paused:
+                    description: When true, indicates that the rule is currently paused.
+                    type: boolean
                   zoneId:
                     description: The zone identifier to target for the resource. **Modifying
                       this attribute will force creation of a new resource.**
                     type: string
                   zoneIdRef:
-                    description: Reference to a Zone in zone to populate zoneId.
+                    description: Reference to a Zone to populate zoneId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -108,7 +131,7 @@ spec:
                     - name
                     type: object
                   zoneIdSelector:
-                    description: Selector for a Zone in zone to populate zoneId.
+                    description: Selector for a Zone to populate zoneId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -147,8 +170,10 @@ spec:
                         type: object
                     type: object
                 required:
-                - scope
-                - type
+                - configuration
+                - description
+                - mode
+                - paused
                 type: object
               providerConfigRef:
                 default:
@@ -322,7 +347,8 @@ spec:
             - forProvider
             type: object
           status:
-            description: SettingsStatus defines the observed state of Settings.
+            description: UserAgentBlockingRuleStatus defines the observed state of
+              UserAgentBlockingRule.
             properties:
               atProvider:
                 properties:

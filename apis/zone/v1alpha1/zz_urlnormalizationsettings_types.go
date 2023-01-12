@@ -13,11 +13,11 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type SettingsObservation struct {
+type URLNormalizationSettingsObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
-type SettingsParameters struct {
+type URLNormalizationSettingsParameters struct {
 
 	// The scope of the URL normalization.
 	// +kubebuilder:validation:Required
@@ -28,64 +28,64 @@ type SettingsParameters struct {
 	Type *string `json:"type" tf:"type,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
-	// Reference to a Zone in zone to populate zoneId.
+	// Reference to a Zone to populate zoneId.
 	// +kubebuilder:validation:Optional
 	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
 
-	// Selector for a Zone in zone to populate zoneId.
+	// Selector for a Zone to populate zoneId.
 	// +kubebuilder:validation:Optional
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
-// SettingsSpec defines the desired state of Settings
-type SettingsSpec struct {
+// URLNormalizationSettingsSpec defines the desired state of URLNormalizationSettings
+type URLNormalizationSettingsSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     SettingsParameters `json:"forProvider"`
+	ForProvider     URLNormalizationSettingsParameters `json:"forProvider"`
 }
 
-// SettingsStatus defines the observed state of Settings.
-type SettingsStatus struct {
+// URLNormalizationSettingsStatus defines the observed state of URLNormalizationSettings.
+type URLNormalizationSettingsStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        SettingsObservation `json:"atProvider,omitempty"`
+	AtProvider        URLNormalizationSettingsObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Settings is the Schema for the Settingss API. <no value>
+// URLNormalizationSettings is the Schema for the URLNormalizationSettingss API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
-type Settings struct {
+type URLNormalizationSettings struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              SettingsSpec   `json:"spec"`
-	Status            SettingsStatus `json:"status,omitempty"`
+	Spec              URLNormalizationSettingsSpec   `json:"spec"`
+	Status            URLNormalizationSettingsStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// SettingsList contains a list of Settingss
-type SettingsList struct {
+// URLNormalizationSettingsList contains a list of URLNormalizationSettingss
+type URLNormalizationSettingsList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Settings `json:"items"`
+	Items           []URLNormalizationSettings `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Settings_Kind             = "Settings"
-	Settings_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Settings_Kind}.String()
-	Settings_KindAPIVersion   = Settings_Kind + "." + CRDGroupVersion.String()
-	Settings_GroupVersionKind = CRDGroupVersion.WithKind(Settings_Kind)
+	URLNormalizationSettings_Kind             = "URLNormalizationSettings"
+	URLNormalizationSettings_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: URLNormalizationSettings_Kind}.String()
+	URLNormalizationSettings_KindAPIVersion   = URLNormalizationSettings_Kind + "." + CRDGroupVersion.String()
+	URLNormalizationSettings_GroupVersionKind = CRDGroupVersion.WithKind(URLNormalizationSettings_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Settings{}, &SettingsList{})
+	SchemeBuilder.Register(&URLNormalizationSettings{}, &URLNormalizationSettingsList{})
 }

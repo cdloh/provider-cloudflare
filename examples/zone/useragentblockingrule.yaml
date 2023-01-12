@@ -1,5 +1,5 @@
-apiVersion: useragent.cloudflare.upbound.io/v1alpha1
-kind: BlockingRule
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: UserAgentBlockingRule
 metadata:
   name: example-user-agent-blocking-rule
   labels:

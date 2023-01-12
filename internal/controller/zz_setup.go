@@ -70,8 +70,6 @@ import (
 	location "github.com/cdloh/provider-cloudflare/internal/controller/teams/location"
 	proxyendpoint "github.com/cdloh/provider-cloudflare/internal/controller/teams/proxyendpoint"
 	ruleteams "github.com/cdloh/provider-cloudflare/internal/controller/teams/rule"
-	settingsurlnormalization "github.com/cdloh/provider-cloudflare/internal/controller/urlnormalization/settings"
-	blockingrule "github.com/cdloh/provider-cloudflare/internal/controller/useragent/blockingrule"
 	groupwaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/group"
 	override "github.com/cdloh/provider-cloudflare/internal/controller/waf/override"
 	rulewaf "github.com/cdloh/provider-cloudflare/internal/controller/waf/rule"
@@ -99,6 +97,8 @@ import (
 	settingsoverride "github.com/cdloh/provider-cloudflare/internal/controller/zone/settingsoverride"
 	tieredcache "github.com/cdloh/provider-cloudflare/internal/controller/zone/tieredcache"
 	totaltls "github.com/cdloh/provider-cloudflare/internal/controller/zone/totaltls"
+	urlnormalizationsettings "github.com/cdloh/provider-cloudflare/internal/controller/zone/urlnormalizationsettings"
+	useragentblockingrule "github.com/cdloh/provider-cloudflare/internal/controller/zone/useragentblockingrule"
 	zone "github.com/cdloh/provider-cloudflare/internal/controller/zone/zone"
 )
 
@@ -167,8 +167,6 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		location.Setup,
 		proxyendpoint.Setup,
 		ruleteams.Setup,
-		settingsurlnormalization.Setup,
-		blockingrule.Setup,
 		groupwaf.Setup,
 		override.Setup,
 		rulewaf.Setup,
@@ -196,6 +194,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		settingsoverride.Setup,
 		tieredcache.Setup,
 		totaltls.Setup,
+		urlnormalizationsettings.Setup,
+		useragentblockingrule.Setup,
 		zone.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

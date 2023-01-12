@@ -1,5 +1,5 @@
-apiVersion: urlnormalization.cloudflare.upbound.io/v1alpha1
-kind: Settings
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: URLNormalizationSettings
 metadata:
   name: example-url-normalization-settings
   labels:
