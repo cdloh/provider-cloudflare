@@ -4,7 +4,7 @@
 PROJECT_NAME := provider-cloudflare
 PROJECT_REPO := github.com/cdloh/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION := 1.3.3
+export TERRAFORM_VERSION := 1.5.5
 
 export TERRAFORM_PROVIDER_SOURCE := cloudflare/cloudflare
 export TERRAFORM_PROVIDER_REPO := https://github.com/cloudflare/terraform-provider-cloudflare
