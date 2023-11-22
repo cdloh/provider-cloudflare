@@ -2,7 +2,7 @@
 # Setup Project
 
 PROJECT_NAME := provider-cloudflare
-PROJECT_REPO := github.com/cdloh/$(PROJECT_NAME)
+PROJECT_REPO := github.com/clementblaise/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION := 1.5.5
 
