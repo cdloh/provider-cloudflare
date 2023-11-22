@@ -10,7 +10,7 @@ export TERRAFORM_PROVIDER_SOURCE := cloudflare/cloudflare
 export TERRAFORM_PROVIDER_REPO := https://github.com/cloudflare/terraform-provider-cloudflare
 export TERRAFORM_PROVIDER_VERSION := 4.19.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-cloudflare
-export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-github_v4.19.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-github_4.19.0
 export TERRAFORM_DOCS_PATH := docs/resources
 
 PLATFORMS ?= linux_amd64 linux_arm64
