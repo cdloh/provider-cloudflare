@@ -17,6 +17,11 @@ func (mg *Argo) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this Argo.
+func (mg *Argo) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this Argo.
 func (mg *Argo) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -48,6 +53,11 @@ func (mg *Argo) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this Argo.
 func (mg *Argo) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this Argo.
+func (mg *Argo) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Argo.
@@ -83,6 +93,11 @@ func (mg *Tunnel) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this Tunnel.
+func (mg *Tunnel) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this Tunnel.
 func (mg *Tunnel) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -114,6 +129,11 @@ func (mg *Tunnel) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this Tunnel.
 func (mg *Tunnel) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this Tunnel.
+func (mg *Tunnel) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Tunnel.
@@ -149,6 +169,11 @@ func (mg *TunnelConfig) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this TunnelConfig.
+func (mg *TunnelConfig) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this TunnelConfig.
 func (mg *TunnelConfig) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -180,6 +205,11 @@ func (mg *TunnelConfig) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this TunnelConfig.
 func (mg *TunnelConfig) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this TunnelConfig.
+func (mg *TunnelConfig) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this TunnelConfig.
@@ -215,6 +245,11 @@ func (mg *TunnelRoute) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this TunnelRoute.
+func (mg *TunnelRoute) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this TunnelRoute.
 func (mg *TunnelRoute) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -246,6 +281,11 @@ func (mg *TunnelRoute) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this TunnelRoute.
 func (mg *TunnelRoute) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this TunnelRoute.
+func (mg *TunnelRoute) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this TunnelRoute.
@@ -281,6 +321,11 @@ func (mg *TunnelVirtualNetwork) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this TunnelVirtualNetwork.
+func (mg *TunnelVirtualNetwork) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this TunnelVirtualNetwork.
 func (mg *TunnelVirtualNetwork) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -312,6 +357,11 @@ func (mg *TunnelVirtualNetwork) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this TunnelVirtualNetwork.
 func (mg *TunnelVirtualNetwork) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this TunnelVirtualNetwork.
+func (mg *TunnelVirtualNetwork) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this TunnelVirtualNetwork.

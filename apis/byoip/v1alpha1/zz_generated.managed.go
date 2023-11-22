@@ -17,6 +17,11 @@ func (mg *IPPrefix) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this IPPrefix.
+func (mg *IPPrefix) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this IPPrefix.
 func (mg *IPPrefix) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -48,6 +53,11 @@ func (mg *IPPrefix) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this IPPrefix.
 func (mg *IPPrefix) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this IPPrefix.
+func (mg *IPPrefix) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this IPPrefix.

@@ -17,6 +17,11 @@ func (mg *FallbackOrigin) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this FallbackOrigin.
+func (mg *FallbackOrigin) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this FallbackOrigin.
 func (mg *FallbackOrigin) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -48,6 +53,11 @@ func (mg *FallbackOrigin) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this FallbackOrigin.
 func (mg *FallbackOrigin) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this FallbackOrigin.
+func (mg *FallbackOrigin) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this FallbackOrigin.
@@ -83,6 +93,11 @@ func (mg *Hostname) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this Hostname.
+func (mg *Hostname) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this Hostname.
 func (mg *Hostname) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -114,6 +129,11 @@ func (mg *Hostname) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this Hostname.
 func (mg *Hostname) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this Hostname.
+func (mg *Hostname) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Hostname.

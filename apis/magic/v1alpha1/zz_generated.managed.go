@@ -17,6 +17,11 @@ func (mg *FirewallRuleset) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this FirewallRuleset.
+func (mg *FirewallRuleset) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this FirewallRuleset.
 func (mg *FirewallRuleset) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -48,6 +53,11 @@ func (mg *FirewallRuleset) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this FirewallRuleset.
 func (mg *FirewallRuleset) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this FirewallRuleset.
+func (mg *FirewallRuleset) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this FirewallRuleset.
@@ -83,6 +93,11 @@ func (mg *GRETunnel) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this GRETunnel.
+func (mg *GRETunnel) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this GRETunnel.
 func (mg *GRETunnel) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -114,6 +129,11 @@ func (mg *GRETunnel) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this GRETunnel.
 func (mg *GRETunnel) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this GRETunnel.
+func (mg *GRETunnel) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this GRETunnel.
@@ -149,6 +169,11 @@ func (mg *IPsecTunnel) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this IPsecTunnel.
+func (mg *IPsecTunnel) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this IPsecTunnel.
 func (mg *IPsecTunnel) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -180,6 +205,11 @@ func (mg *IPsecTunnel) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this IPsecTunnel.
 func (mg *IPsecTunnel) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this IPsecTunnel.
+func (mg *IPsecTunnel) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this IPsecTunnel.
@@ -215,6 +245,11 @@ func (mg *StaticRoute) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this StaticRoute.
+func (mg *StaticRoute) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this StaticRoute.
 func (mg *StaticRoute) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -246,6 +281,11 @@ func (mg *StaticRoute) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this StaticRoute.
 func (mg *StaticRoute) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this StaticRoute.
+func (mg *StaticRoute) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this StaticRoute.
