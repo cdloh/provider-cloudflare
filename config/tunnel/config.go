@@ -42,7 +42,7 @@ func Configure(p *config.Provider) {
 			Type: "Tunnel",
 		}
 		r.References["virtual_network_id"] = config.Reference{
-			Type: "TunnelVirtualNetwork",
+			Type: "VirtualNetwork",
 		}
 	})
 	p.AddResourceConfigurator("cloudflare_tunnel_virtual_network", func(r *config.Resource) {

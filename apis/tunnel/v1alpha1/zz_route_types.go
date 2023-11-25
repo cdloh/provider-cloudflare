@@ -79,15 +79,15 @@ type RouteParameters struct {
 	TunnelIDSelector *v1.Selector `json:"tunnelIdSelector,omitempty" tf:"-"`
 
 	// The ID of the virtual network for which this route is being added; uses the default virtual network of the account if none is provided. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=TunnelVirtualNetwork
+	// +crossplane:generate:reference:type=VirtualNetwork
 	// +kubebuilder:validation:Optional
 	VirtualNetworkID *string `json:"virtualNetworkId,omitempty" tf:"virtual_network_id,omitempty"`
 
-	// Reference to a TunnelVirtualNetwork to populate virtualNetworkId.
+	// Reference to a VirtualNetwork to populate virtualNetworkId.
 	// +kubebuilder:validation:Optional
 	VirtualNetworkIDRef *v1.Reference `json:"virtualNetworkIdRef,omitempty" tf:"-"`
 
-	// Selector for a TunnelVirtualNetwork to populate virtualNetworkId.
+	// Selector for a VirtualNetwork to populate virtualNetworkId.
 	// +kubebuilder:validation:Optional
 	VirtualNetworkIDSelector *v1.Selector `json:"virtualNetworkIdSelector,omitempty" tf:"-"`
 }

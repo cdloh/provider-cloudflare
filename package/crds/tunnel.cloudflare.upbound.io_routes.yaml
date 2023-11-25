@@ -234,7 +234,7 @@ spec:
                       of a new resource.**
                     type: string
                   virtualNetworkIdRef:
-                    description: Reference to a TunnelVirtualNetwork to populate virtualNetworkId.
+                    description: Reference to a VirtualNetwork to populate virtualNetworkId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -268,7 +268,7 @@ spec:
                     - name
                     type: object
                   virtualNetworkIdSelector:
-                    description: Selector for a TunnelVirtualNetwork to populate virtualNetworkId.
+                    description: Selector for a VirtualNetwork to populate virtualNetworkId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the

@@ -127,8 +127,8 @@ func (mg *Route) ResolveReferences(ctx context.Context, c client.Reader) error {
 		Reference:    mg.Spec.ForProvider.VirtualNetworkIDRef,
 		Selector:     mg.Spec.ForProvider.VirtualNetworkIDSelector,
 		To: reference.To{
-			List:    &TunnelVirtualNetworkList{},
-			Managed: &TunnelVirtualNetwork{},
+			List:    &VirtualNetworkList{},
+			Managed: &VirtualNetwork{},
 		},
 	})
 	if err != nil {
