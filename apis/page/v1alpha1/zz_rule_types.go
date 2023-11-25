@@ -13,263 +13,752 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionsInitParameters struct {
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	AlwaysUseHTTPS *bool `json:"alwaysUseHttps,omitempty" tf:"always_use_https,omitempty"`
+
+	// Whether this action is "on" or "off".
+	AutomaticHTTPSRewrites *string `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
+
+	// The Time To Live for the browser cache. 0 means 'Respect Existing Headers'
+	BrowserCacheTTL *string `json:"browserCacheTtl,omitempty" tf:"browser_cache_ttl,omitempty"`
+
+	// Whether this action is "on" or "off".
+	BrowserCheck *string `json:"browserCheck,omitempty" tf:"browser_check,omitempty"`
+
+	// String value of cookie name to conditionally bypass cache the page.
+	BypassCacheOnCookie *string `json:"bypassCacheOnCookie,omitempty" tf:"bypass_cache_on_cookie,omitempty"`
+
+	// Whether this action is "on" or "off".
+	CacheByDeviceType *string `json:"cacheByDeviceType,omitempty" tf:"cache_by_device_type,omitempty"`
+
+	// Whether this action is "on" or "off".
+	CacheDeceptionArmor *string `json:"cacheDeceptionArmor,omitempty" tf:"cache_deception_armor,omitempty"`
+
+	// Controls how Cloudflare creates Cache Keys used to identify files in cache. See below for full description.
+	CacheKeyFields []CacheKeyFieldsInitParameters `json:"cacheKeyFields,omitempty" tf:"cache_key_fields,omitempty"`
+
+	// Whether to set the cache level to "bypass", "basic", "simplified", "aggressive", or "cache_everything".
+	CacheLevel *string `json:"cacheLevel,omitempty" tf:"cache_level,omitempty"`
+
+	// String value of cookie name to conditionally cache the page.
+	CacheOnCookie *string `json:"cacheOnCookie,omitempty" tf:"cache_on_cookie,omitempty"`
+
+	// Set cache TTL based on the response status from the origin web server. Can be specified multiple times. See below for full description.
+	CacheTTLByStatus []CacheTTLByStatusInitParameters `json:"cacheTtlByStatus,omitempty" tf:"cache_ttl_by_status,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableApps *bool `json:"disableApps,omitempty" tf:"disable_apps,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisablePerformance *bool `json:"disablePerformance,omitempty" tf:"disable_performance,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableRailgun *bool `json:"disableRailgun,omitempty" tf:"disable_railgun,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableSecurity *bool `json:"disableSecurity,omitempty" tf:"disable_security,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableZaraz *bool `json:"disableZaraz,omitempty" tf:"disable_zaraz,omitempty"`
+
+	// The Time To Live for the edge cache.
+	EdgeCacheTTL *float64 `json:"edgeCacheTtl,omitempty" tf:"edge_cache_ttl,omitempty"`
+
+	// Whether this action is "on" or "off".
+	EmailObfuscation *string `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
+
+	// Whether origin Cache-Control action is "on" or "off".
+	ExplicitCacheControl *string `json:"explicitCacheControl,omitempty" tf:"explicit_cache_control,omitempty"`
+
+	// The URL to forward to, and with what status. See below.
+	ForwardingURL []ForwardingURLInitParameters `json:"forwardingUrl,omitempty" tf:"forwarding_url,omitempty"`
+
+	// Value of the Host header to send.
+	HostHeaderOverride *string `json:"hostHeaderOverride,omitempty" tf:"host_header_override,omitempty"`
+
+	// Whether this action is "on" or "off".
+	IPGeolocation *string `json:"ipGeolocation,omitempty" tf:"ip_geolocation,omitempty"`
+
+	// The configuration for HTML, CSS and JS minification. See below for full list of options.
+	Minify []MinifyInitParameters `json:"minify,omitempty" tf:"minify,omitempty"`
+
+	// Whether this action is "on" or "off".
+	Mirage *string `json:"mirage,omitempty" tf:"mirage,omitempty"`
+
+	// Whether this action is "on" or "off".
+	OpportunisticEncryption *string `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
+
+	// Whether this action is "on" or "off".
+	OriginErrorPagePassThru *string `json:"originErrorPagePassThru,omitempty" tf:"origin_error_page_pass_thru,omitempty"`
+
+	// Whether this action is "off", "lossless" or "lossy".
+	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
+
+	// Overridden origin server name.
+	ResolveOverride *string `json:"resolveOverride,omitempty" tf:"resolve_override,omitempty"`
+
+	// Whether this action is "on" or "off".
+	RespectStrongEtag *string `json:"respectStrongEtag,omitempty" tf:"respect_strong_etag,omitempty"`
+
+	// Whether this action is "on" or "off".
+	ResponseBuffering *string `json:"responseBuffering,omitempty" tf:"response_buffering,omitempty"`
+
+	// Whether to set the rocket loader to "on", "off".
+	RocketLoader *string `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
+
+	// Whether to set the SSL mode to "off", "flexible", "full", "strict", or "origin_pull".
+	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
+
+	// Whether to set the security level to "off", "essentially_off", "low", "medium", "high", or "under_attack".
+	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
+
+	// Whether this action is "on" or "off".
+	ServerSideExclude *string `json:"serverSideExclude,omitempty" tf:"server_side_exclude,omitempty"`
+
+	// Whether this action is "on" or "off".
+	SortQueryStringForCache *string `json:"sortQueryStringForCache,omitempty" tf:"sort_query_string_for_cache,omitempty"`
+
+	// Whether this action is "on" or "off".
+	TrueClientIPHeader *string `json:"trueClientIpHeader,omitempty" tf:"true_client_ip_header,omitempty"`
+
+	// Whether this action is "on" or "off".
+	Waf *string `json:"waf,omitempty" tf:"waf,omitempty"`
+}
+
 type ActionsObservation struct {
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	AlwaysUseHTTPS *bool `json:"alwaysUseHttps,omitempty" tf:"always_use_https,omitempty"`
+
+	// Whether this action is "on" or "off".
+	AutomaticHTTPSRewrites *string `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
+
+	// The Time To Live for the browser cache. 0 means 'Respect Existing Headers'
+	BrowserCacheTTL *string `json:"browserCacheTtl,omitempty" tf:"browser_cache_ttl,omitempty"`
+
+	// Whether this action is "on" or "off".
+	BrowserCheck *string `json:"browserCheck,omitempty" tf:"browser_check,omitempty"`
+
+	// String value of cookie name to conditionally bypass cache the page.
+	BypassCacheOnCookie *string `json:"bypassCacheOnCookie,omitempty" tf:"bypass_cache_on_cookie,omitempty"`
+
+	// Whether this action is "on" or "off".
+	CacheByDeviceType *string `json:"cacheByDeviceType,omitempty" tf:"cache_by_device_type,omitempty"`
+
+	// Whether this action is "on" or "off".
+	CacheDeceptionArmor *string `json:"cacheDeceptionArmor,omitempty" tf:"cache_deception_armor,omitempty"`
+
+	// Controls how Cloudflare creates Cache Keys used to identify files in cache. See below for full description.
+	CacheKeyFields []CacheKeyFieldsObservation `json:"cacheKeyFields,omitempty" tf:"cache_key_fields,omitempty"`
+
+	// Whether to set the cache level to "bypass", "basic", "simplified", "aggressive", or "cache_everything".
+	CacheLevel *string `json:"cacheLevel,omitempty" tf:"cache_level,omitempty"`
+
+	// String value of cookie name to conditionally cache the page.
+	CacheOnCookie *string `json:"cacheOnCookie,omitempty" tf:"cache_on_cookie,omitempty"`
+
+	// Set cache TTL based on the response status from the origin web server. Can be specified multiple times. See below for full description.
+	CacheTTLByStatus []CacheTTLByStatusObservation `json:"cacheTtlByStatus,omitempty" tf:"cache_ttl_by_status,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableApps *bool `json:"disableApps,omitempty" tf:"disable_apps,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisablePerformance *bool `json:"disablePerformance,omitempty" tf:"disable_performance,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableRailgun *bool `json:"disableRailgun,omitempty" tf:"disable_railgun,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableSecurity *bool `json:"disableSecurity,omitempty" tf:"disable_security,omitempty"`
+
+	// Boolean of whether this action is enabled. Default: false.
+	// Defaults to `false`.
+	DisableZaraz *bool `json:"disableZaraz,omitempty" tf:"disable_zaraz,omitempty"`
+
+	// The Time To Live for the edge cache.
+	EdgeCacheTTL *float64 `json:"edgeCacheTtl,omitempty" tf:"edge_cache_ttl,omitempty"`
+
+	// Whether this action is "on" or "off".
+	EmailObfuscation *string `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
+
+	// Whether origin Cache-Control action is "on" or "off".
+	ExplicitCacheControl *string `json:"explicitCacheControl,omitempty" tf:"explicit_cache_control,omitempty"`
+
+	// The URL to forward to, and with what status. See below.
+	ForwardingURL []ForwardingURLObservation `json:"forwardingUrl,omitempty" tf:"forwarding_url,omitempty"`
+
+	// Value of the Host header to send.
+	HostHeaderOverride *string `json:"hostHeaderOverride,omitempty" tf:"host_header_override,omitempty"`
+
+	// Whether this action is "on" or "off".
+	IPGeolocation *string `json:"ipGeolocation,omitempty" tf:"ip_geolocation,omitempty"`
+
+	// The configuration for HTML, CSS and JS minification. See below for full list of options.
+	Minify []MinifyObservation `json:"minify,omitempty" tf:"minify,omitempty"`
+
+	// Whether this action is "on" or "off".
+	Mirage *string `json:"mirage,omitempty" tf:"mirage,omitempty"`
+
+	// Whether this action is "on" or "off".
+	OpportunisticEncryption *string `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
+
+	// Whether this action is "on" or "off".
+	OriginErrorPagePassThru *string `json:"originErrorPagePassThru,omitempty" tf:"origin_error_page_pass_thru,omitempty"`
+
+	// Whether this action is "off", "lossless" or "lossy".
+	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
+
+	// Overridden origin server name.
+	ResolveOverride *string `json:"resolveOverride,omitempty" tf:"resolve_override,omitempty"`
+
+	// Whether this action is "on" or "off".
+	RespectStrongEtag *string `json:"respectStrongEtag,omitempty" tf:"respect_strong_etag,omitempty"`
+
+	// Whether this action is "on" or "off".
+	ResponseBuffering *string `json:"responseBuffering,omitempty" tf:"response_buffering,omitempty"`
+
+	// Whether to set the rocket loader to "on", "off".
+	RocketLoader *string `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
+
+	// Whether to set the SSL mode to "off", "flexible", "full", "strict", or "origin_pull".
+	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
+
+	// Whether to set the security level to "off", "essentially_off", "low", "medium", "high", or "under_attack".
+	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
+
+	// Whether this action is "on" or "off".
+	ServerSideExclude *string `json:"serverSideExclude,omitempty" tf:"server_side_exclude,omitempty"`
+
+	// Whether this action is "on" or "off".
+	SortQueryStringForCache *string `json:"sortQueryStringForCache,omitempty" tf:"sort_query_string_for_cache,omitempty"`
+
+	// Whether this action is "on" or "off".
+	TrueClientIPHeader *string `json:"trueClientIpHeader,omitempty" tf:"true_client_ip_header,omitempty"`
+
+	// Whether this action is "on" or "off".
+	Waf *string `json:"waf,omitempty" tf:"waf,omitempty"`
 }
 
 type ActionsParameters struct {
 
+	// Boolean of whether this action is enabled. Default: false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	AlwaysUseHTTPS *bool `json:"alwaysUseHttps,omitempty" tf:"always_use_https,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	AutomaticHTTPSRewrites *string `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
 
+	// The Time To Live for the browser cache. 0 means 'Respect Existing Headers'
 	// +kubebuilder:validation:Optional
 	BrowserCacheTTL *string `json:"browserCacheTtl,omitempty" tf:"browser_cache_ttl,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	BrowserCheck *string `json:"browserCheck,omitempty" tf:"browser_check,omitempty"`
 
+	// String value of cookie name to conditionally bypass cache the page.
 	// +kubebuilder:validation:Optional
 	BypassCacheOnCookie *string `json:"bypassCacheOnCookie,omitempty" tf:"bypass_cache_on_cookie,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	CacheByDeviceType *string `json:"cacheByDeviceType,omitempty" tf:"cache_by_device_type,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	CacheDeceptionArmor *string `json:"cacheDeceptionArmor,omitempty" tf:"cache_deception_armor,omitempty"`
 
+	// Controls how Cloudflare creates Cache Keys used to identify files in cache. See below for full description.
 	// +kubebuilder:validation:Optional
 	CacheKeyFields []CacheKeyFieldsParameters `json:"cacheKeyFields,omitempty" tf:"cache_key_fields,omitempty"`
 
+	// Whether to set the cache level to "bypass", "basic", "simplified", "aggressive", or "cache_everything".
 	// +kubebuilder:validation:Optional
 	CacheLevel *string `json:"cacheLevel,omitempty" tf:"cache_level,omitempty"`
 
+	// String value of cookie name to conditionally cache the page.
 	// +kubebuilder:validation:Optional
 	CacheOnCookie *string `json:"cacheOnCookie,omitempty" tf:"cache_on_cookie,omitempty"`
 
+	// Set cache TTL based on the response status from the origin web server. Can be specified multiple times. See below for full description.
 	// +kubebuilder:validation:Optional
 	CacheTTLByStatus []CacheTTLByStatusParameters `json:"cacheTtlByStatus,omitempty" tf:"cache_ttl_by_status,omitempty"`
 
+	// Boolean of whether this action is enabled. Default: false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DisableApps *bool `json:"disableApps,omitempty" tf:"disable_apps,omitempty"`
 
+	// Boolean of whether this action is enabled. Default: false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DisablePerformance *bool `json:"disablePerformance,omitempty" tf:"disable_performance,omitempty"`
 
+	// Boolean of whether this action is enabled. Default: false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DisableRailgun *bool `json:"disableRailgun,omitempty" tf:"disable_railgun,omitempty"`
 
+	// Boolean of whether this action is enabled. Default: false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DisableSecurity *bool `json:"disableSecurity,omitempty" tf:"disable_security,omitempty"`
 
+	// Boolean of whether this action is enabled. Default: false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DisableZaraz *bool `json:"disableZaraz,omitempty" tf:"disable_zaraz,omitempty"`
 
+	// The Time To Live for the edge cache.
 	// +kubebuilder:validation:Optional
 	EdgeCacheTTL *float64 `json:"edgeCacheTtl,omitempty" tf:"edge_cache_ttl,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	EmailObfuscation *string `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
 
+	// Whether origin Cache-Control action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	ExplicitCacheControl *string `json:"explicitCacheControl,omitempty" tf:"explicit_cache_control,omitempty"`
 
+	// The URL to forward to, and with what status. See below.
 	// +kubebuilder:validation:Optional
 	ForwardingURL []ForwardingURLParameters `json:"forwardingUrl,omitempty" tf:"forwarding_url,omitempty"`
 
+	// Value of the Host header to send.
 	// +kubebuilder:validation:Optional
 	HostHeaderOverride *string `json:"hostHeaderOverride,omitempty" tf:"host_header_override,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	IPGeolocation *string `json:"ipGeolocation,omitempty" tf:"ip_geolocation,omitempty"`
 
+	// The configuration for HTML, CSS and JS minification. See below for full list of options.
 	// +kubebuilder:validation:Optional
 	Minify []MinifyParameters `json:"minify,omitempty" tf:"minify,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	Mirage *string `json:"mirage,omitempty" tf:"mirage,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	OpportunisticEncryption *string `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	OriginErrorPagePassThru *string `json:"originErrorPagePassThru,omitempty" tf:"origin_error_page_pass_thru,omitempty"`
 
+	// Whether this action is "off", "lossless" or "lossy".
 	// +kubebuilder:validation:Optional
 	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
 
+	// Overridden origin server name.
 	// +kubebuilder:validation:Optional
 	ResolveOverride *string `json:"resolveOverride,omitempty" tf:"resolve_override,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	RespectStrongEtag *string `json:"respectStrongEtag,omitempty" tf:"respect_strong_etag,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	ResponseBuffering *string `json:"responseBuffering,omitempty" tf:"response_buffering,omitempty"`
 
+	// Whether to set the rocket loader to "on", "off".
 	// +kubebuilder:validation:Optional
 	RocketLoader *string `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
 
+	// Whether to set the SSL mode to "off", "flexible", "full", "strict", or "origin_pull".
 	// +kubebuilder:validation:Optional
 	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
 
+	// Whether to set the security level to "off", "essentially_off", "low", "medium", "high", or "under_attack".
 	// +kubebuilder:validation:Optional
 	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	ServerSideExclude *string `json:"serverSideExclude,omitempty" tf:"server_side_exclude,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	SortQueryStringForCache *string `json:"sortQueryStringForCache,omitempty" tf:"sort_query_string_for_cache,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	TrueClientIPHeader *string `json:"trueClientIpHeader,omitempty" tf:"true_client_ip_header,omitempty"`
 
+	// Whether this action is "on" or "off".
 	// +kubebuilder:validation:Optional
 	Waf *string `json:"waf,omitempty" tf:"waf,omitempty"`
 }
 
+type CacheKeyFieldsInitParameters struct {
+
+	// Controls what cookies go into Cache Key:
+	Cookie []CookieInitParameters `json:"cookie,omitempty" tf:"cookie,omitempty"`
+
+	// Controls what HTTP headers go into Cache Key:
+	Header []HeaderInitParameters `json:"header,omitempty" tf:"header,omitempty"`
+
+	// Controls which Host header goes into Cache Key:
+	Host []HostInitParameters `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Controls which URL query string parameters go into the Cache Key.
+	QueryString []QueryStringInitParameters `json:"queryString,omitempty" tf:"query_string,omitempty"`
+
+	// Controls which end user-related features go into the Cache Key.
+	User []UserInitParameters `json:"user,omitempty" tf:"user,omitempty"`
+}
+
 type CacheKeyFieldsObservation struct {
+
+	// Controls what cookies go into Cache Key:
+	Cookie []CookieObservation `json:"cookie,omitempty" tf:"cookie,omitempty"`
+
+	// Controls what HTTP headers go into Cache Key:
+	Header []HeaderObservation `json:"header,omitempty" tf:"header,omitempty"`
+
+	// Controls which Host header goes into Cache Key:
+	Host []HostObservation `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Controls which URL query string parameters go into the Cache Key.
+	QueryString []QueryStringObservation `json:"queryString,omitempty" tf:"query_string,omitempty"`
+
+	// Controls which end user-related features go into the Cache Key.
+	User []UserObservation `json:"user,omitempty" tf:"user,omitempty"`
 }
 
 type CacheKeyFieldsParameters struct {
 
-	// +kubebuilder:validation:Required
-	Cookie []CookieParameters `json:"cookie" tf:"cookie,omitempty"`
+	// Controls what cookies go into Cache Key:
+	// +kubebuilder:validation:Optional
+	Cookie []CookieParameters `json:"cookie,omitempty" tf:"cookie,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Header []HeaderParameters `json:"header" tf:"header,omitempty"`
+	// Controls what HTTP headers go into Cache Key:
+	// +kubebuilder:validation:Optional
+	Header []HeaderParameters `json:"header,omitempty" tf:"header,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Host []HostParameters `json:"host" tf:"host,omitempty"`
+	// Controls which Host header goes into Cache Key:
+	// +kubebuilder:validation:Optional
+	Host []HostParameters `json:"host,omitempty" tf:"host,omitempty"`
 
-	// +kubebuilder:validation:Required
-	QueryString []QueryStringParameters `json:"queryString" tf:"query_string,omitempty"`
+	// Controls which URL query string parameters go into the Cache Key.
+	// +kubebuilder:validation:Optional
+	QueryString []QueryStringParameters `json:"queryString,omitempty" tf:"query_string,omitempty"`
 
-	// +kubebuilder:validation:Required
-	User []UserParameters `json:"user" tf:"user,omitempty"`
+	// Controls which end user-related features go into the Cache Key.
+	// +kubebuilder:validation:Optional
+	User []UserParameters `json:"user,omitempty" tf:"user,omitempty"`
+}
+
+type CacheTTLByStatusInitParameters struct {
+
+	// A HTTP code (e.g. 404) or range of codes (e.g. 400-499)
+	Codes *string `json:"codes,omitempty" tf:"codes,omitempty"`
+
+	// Duration a resource lives in the Cloudflare cache.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type CacheTTLByStatusObservation struct {
+
+	// A HTTP code (e.g. 404) or range of codes (e.g. 400-499)
+	Codes *string `json:"codes,omitempty" tf:"codes,omitempty"`
+
+	// Duration a resource lives in the Cloudflare cache.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type CacheTTLByStatusParameters struct {
 
-	// +kubebuilder:validation:Required
-	Codes *string `json:"codes" tf:"codes,omitempty"`
+	// A HTTP code (e.g. 404) or range of codes (e.g. 400-499)
+	// +kubebuilder:validation:Optional
+	Codes *string `json:"codes,omitempty" tf:"codes,omitempty"`
 
-	// +kubebuilder:validation:Required
-	TTL *float64 `json:"ttl" tf:"ttl,omitempty"`
+	// Duration a resource lives in the Cloudflare cache.
+	// +kubebuilder:validation:Optional
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+}
+
+type CookieInitParameters struct {
+
+	// Check for presence of specified cookies, without including their actual values.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// Use values of specified cookies in Cache Key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type CookieObservation struct {
+
+	// Check for presence of specified cookies, without including their actual values.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// Use values of specified cookies in Cache Key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type CookieParameters struct {
 
+	// Check for presence of specified cookies, without including their actual values.
 	// +kubebuilder:validation:Optional
 	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
 
+	// Use values of specified cookies in Cache Key.
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
+type ForwardingURLInitParameters struct {
+
+	// The status code to use for the redirection.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// The URL to which the page rule should forward.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+}
+
 type ForwardingURLObservation struct {
+
+	// The status code to use for the redirection.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// The URL to which the page rule should forward.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
 
 type ForwardingURLParameters struct {
 
-	// +kubebuilder:validation:Required
-	StatusCode *float64 `json:"statusCode" tf:"status_code,omitempty"`
+	// The status code to use for the redirection.
+	// +kubebuilder:validation:Optional
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 
-	// +kubebuilder:validation:Required
-	URL *string `json:"url" tf:"url,omitempty"`
+	// The URL to which the page rule should forward.
+	// +kubebuilder:validation:Optional
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+}
+
+type HeaderInitParameters struct {
+
+	// Check for presence of specified cookies, without including their actual values.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// Exclude these HTTP headers from Cache Key. Currently, only the Origin header can be excluded.
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// Use values of specified cookies in Cache Key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type HeaderObservation struct {
+
+	// Check for presence of specified cookies, without including their actual values.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// Exclude these HTTP headers from Cache Key. Currently, only the Origin header can be excluded.
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// Use values of specified cookies in Cache Key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type HeaderParameters struct {
 
+	// Check for presence of specified cookies, without including their actual values.
 	// +kubebuilder:validation:Optional
 	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
 
+	// Exclude these HTTP headers from Cache Key. Currently, only the Origin header can be excluded.
 	// +kubebuilder:validation:Optional
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
+	// Use values of specified cookies in Cache Key.
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
+type HostInitParameters struct {
+
+	// false (default) - includes the Host header in the HTTP request sent to the origin; true - includes the Host header that was resolved to get the origin IP for the request (e.g. changed with Resolve Override Page Rule).
+	// Defaults to `false`.
+	Resolved *bool `json:"resolved,omitempty" tf:"resolved,omitempty"`
+}
+
 type HostObservation struct {
+
+	// false (default) - includes the Host header in the HTTP request sent to the origin; true - includes the Host header that was resolved to get the origin IP for the request (e.g. changed with Resolve Override Page Rule).
+	// Defaults to `false`.
+	Resolved *bool `json:"resolved,omitempty" tf:"resolved,omitempty"`
 }
 
 type HostParameters struct {
 
+	// false (default) - includes the Host header in the HTTP request sent to the origin; true - includes the Host header that was resolved to get the origin IP for the request (e.g. changed with Resolve Override Page Rule).
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	Resolved *bool `json:"resolved,omitempty" tf:"resolved,omitempty"`
 }
 
+type MinifyInitParameters struct {
+
+	// Whether CSS should be minified. Valid values are "on" or "off".
+	CSS *string `json:"css,omitempty" tf:"css,omitempty"`
+
+	// Whether HTML should be minified. Valid values are "on" or "off".
+	HTML *string `json:"html,omitempty" tf:"html,omitempty"`
+
+	// Whether Javascript should be minified. Valid values are "on" or "off".
+	Js *string `json:"js,omitempty" tf:"js,omitempty"`
+}
+
 type MinifyObservation struct {
+
+	// Whether CSS should be minified. Valid values are "on" or "off".
+	CSS *string `json:"css,omitempty" tf:"css,omitempty"`
+
+	// Whether HTML should be minified. Valid values are "on" or "off".
+	HTML *string `json:"html,omitempty" tf:"html,omitempty"`
+
+	// Whether Javascript should be minified. Valid values are "on" or "off".
+	Js *string `json:"js,omitempty" tf:"js,omitempty"`
 }
 
 type MinifyParameters struct {
 
-	// +kubebuilder:validation:Required
-	CSS *string `json:"css" tf:"css,omitempty"`
+	// Whether CSS should be minified. Valid values are "on" or "off".
+	// +kubebuilder:validation:Optional
+	CSS *string `json:"css,omitempty" tf:"css,omitempty"`
 
-	// +kubebuilder:validation:Required
-	HTML *string `json:"html" tf:"html,omitempty"`
+	// Whether HTML should be minified. Valid values are "on" or "off".
+	// +kubebuilder:validation:Optional
+	HTML *string `json:"html,omitempty" tf:"html,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Js *string `json:"js" tf:"js,omitempty"`
+	// Whether Javascript should be minified. Valid values are "on" or "off".
+	// +kubebuilder:validation:Optional
+	Js *string `json:"js,omitempty" tf:"js,omitempty"`
+}
+
+type QueryStringInitParameters struct {
+
+	// Exclude these HTTP headers from Cache Key. Currently, only the Origin header can be excluded.
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// false (default) - all query string parameters are used for Cache Key, unless explicitly excluded; true - all query string parameters are ignored; value should be false if any of exclude or include is non-empty.
+	Ignore *bool `json:"ignore,omitempty" tf:"ignore,omitempty"`
+
+	// Use values of specified cookies in Cache Key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type QueryStringObservation struct {
+
+	// Exclude these HTTP headers from Cache Key. Currently, only the Origin header can be excluded.
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// false (default) - all query string parameters are used for Cache Key, unless explicitly excluded; true - all query string parameters are ignored; value should be false if any of exclude or include is non-empty.
+	Ignore *bool `json:"ignore,omitempty" tf:"ignore,omitempty"`
+
+	// Use values of specified cookies in Cache Key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type QueryStringParameters struct {
 
+	// Exclude these HTTP headers from Cache Key. Currently, only the Origin header can be excluded.
 	// +kubebuilder:validation:Optional
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
+	// false (default) - all query string parameters are used for Cache Key, unless explicitly excluded; true - all query string parameters are ignored; value should be false if any of exclude or include is non-empty.
 	// +kubebuilder:validation:Optional
 	Ignore *bool `json:"ignore,omitempty" tf:"ignore,omitempty"`
 
+	// Use values of specified cookies in Cache Key.
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
+type RuleInitParameters struct {
+
+	// The actions taken by the page rule, options given below.
+	Actions []ActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// The priority of the page rule among others for this target, the higher the number the higher the priority as per API documentation.
+	// Defaults to `1`.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// Whether the page rule is active or disabled.
+	// Defaults to `active`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// The URL pattern to target with the page rule.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+}
+
 type RuleObservation struct {
+
+	// The actions taken by the page rule, options given below.
+	Actions []ActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// The page rule ID.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The priority of the page rule among others for this target, the higher the number the higher the priority as per API documentation.
+	// Defaults to `1`.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// Whether the page rule is active or disabled.
+	// Defaults to `active`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// The URL pattern to target with the page rule.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The DNS zone ID to which the page rule should be added.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RuleParameters struct {
 
-	// +kubebuilder:validation:Required
-	Actions []ActionsParameters `json:"actions" tf:"actions,omitempty"`
+	// The actions taken by the page rule, options given below.
+	// +kubebuilder:validation:Optional
+	Actions []ActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
+	// The priority of the page rule among others for this target, the higher the number the higher the priority as per API documentation.
 	// Defaults to `1`.
 	// +kubebuilder:validation:Optional
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
+	// Whether the page rule is active or disabled.
 	// Defaults to `active`.
 	// +kubebuilder:validation:Optional
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// The URL pattern to target with the page rule.
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
+	// The DNS zone ID to which the page rule should be added.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -282,17 +771,41 @@ type RuleParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type UserInitParameters struct {
+
+	// true - classifies a request as “mobile”, “desktop”, or “tablet” based on the User Agent; defaults to false.
+	DeviceType *bool `json:"deviceType,omitempty" tf:"device_type,omitempty"`
+
+	// true - includes the client’s country, derived from the IP address; defaults to false.
+	Geo *bool `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// true - includes the first language code contained in the Accept-Language header sent by the client; defaults to false.
+	Lang *bool `json:"lang,omitempty" tf:"lang,omitempty"`
+}
+
 type UserObservation struct {
+
+	// true - classifies a request as “mobile”, “desktop”, or “tablet” based on the User Agent; defaults to false.
+	DeviceType *bool `json:"deviceType,omitempty" tf:"device_type,omitempty"`
+
+	// true - includes the client’s country, derived from the IP address; defaults to false.
+	Geo *bool `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// true - includes the first language code contained in the Accept-Language header sent by the client; defaults to false.
+	Lang *bool `json:"lang,omitempty" tf:"lang,omitempty"`
 }
 
 type UserParameters struct {
 
+	// true - classifies a request as “mobile”, “desktop”, or “tablet” based on the User Agent; defaults to false.
 	// +kubebuilder:validation:Optional
 	DeviceType *bool `json:"deviceType,omitempty" tf:"device_type,omitempty"`
 
+	// true - includes the client’s country, derived from the IP address; defaults to false.
 	// +kubebuilder:validation:Optional
 	Geo *bool `json:"geo,omitempty" tf:"geo,omitempty"`
 
+	// true - includes the first language code contained in the Accept-Language header sent by the client; defaults to false.
 	// +kubebuilder:validation:Optional
 	Lang *bool `json:"lang,omitempty" tf:"lang,omitempty"`
 }
@@ -301,6 +814,18 @@ type UserParameters struct {
 type RuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RuleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // RuleStatus defines the observed state of Rule.
@@ -311,7 +836,7 @@ type RuleStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Rule is the Schema for the Rules API. <no value>
+// Rule is the Schema for the Rules API. Provides a Cloudflare page rule resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -321,8 +846,10 @@ type RuleStatus struct {
 type Rule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RuleSpec   `json:"spec"`
-	Status            RuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.actions) || has(self.initProvider.actions)",message="actions is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.target) || has(self.initProvider.target)",message="target is a required parameter"
+	Spec   RuleSpec   `json:"spec"`
+	Status RuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

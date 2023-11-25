@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SSL is the Schema for the SSLs API. <no value>
+        description: SSL is the Schema for the SSLs API. Provides a Cloudflare custom
+          SSL resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,19 +68,41 @@ spec:
               forProvider:
                 properties:
                   customSslOptions:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: The certificate, private key and associated optional
+                      parameters, such as bundle_method, geo_restrictions, and type.
+                      The certificate associated parameters. **Modifying this attribute
+                      will force creation of a new resource.**
                     items:
                       properties:
                         bundleMethod:
+                          description: 'Method of building intermediate certificate
+                            chain. A ubiquitous bundle has the highest probability
+                            of being verified everywhere, even by clients using outdated
+                            or unusual trust stores. An optimal bundle uses the shortest
+                            chain and newest intermediates. And the force bundle verifies
+                            the chain, but does not otherwise modify it. Valid values
+                            are ubiquitous (default), optimal, force. Method of building
+                            intermediate certificate chain. A ubiquitous bundle has
+                            the highest probability of being verified everywhere,
+                            even by clients using outdated or unusual trust stores.
+                            An optimal bundle uses the shortest chain and newest intermediates.
+                            And the force bundle verifies the chain, but does not
+                            otherwise modify it. Available values: `ubiquitous`, `optimal`,
+                            `force`.'
                           type: string
                         certificate:
+                          description: Certificate certificate and the intermediate(s)
+                            Certificate certificate and the intermediate(s).
                           type: string
                         geoRestrictions:
+                          description: 'Specifies the region where your private key
+                            can be held locally. Valid values are us, eu, highest_security.
+                            Specifies the region where your private key can be held
+                            locally. Available values: `us`, `eu`, `highest_security`.'
                           type: string
                         privateKeySecretRef:
-                          description: A SecretKeySelector is a reference to a secret
-                            key in an arbitrary namespace.
+                          description: Certificate's private key Certificate's private
+                            key.
                           properties:
                             key:
                               description: The key to select.
@@ -96,6 +119,12 @@ spec:
                           - namespace
                           type: object
                         type:
+                          description: 'Whether to enable support for legacy clients
+                            which do not include SNI in the TLS handshake. Valid values
+                            are legacy_custom (default), sni_custom. Whether to enable
+                            support for legacy clients which do not include SNI in
+                            the TLS handshake. Available values: `legacy_custom`,
+                            `sni_custom`.'
                           type: string
                       type: object
                     type: array
@@ -109,7 +138,8 @@ spec:
                       type: object
                     type: array
                   zoneId:
-                    description: The zone identifier to target for the resource.
+                    description: The DNS zone id to the custom ssl cert should be
+                      added. The zone identifier to target for the resource.
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -184,6 +214,72 @@ spec:
                             type: string
                         type: object
                     type: object
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  customSslOptions:
+                    description: The certificate, private key and associated optional
+                      parameters, such as bundle_method, geo_restrictions, and type.
+                      The certificate associated parameters. **Modifying this attribute
+                      will force creation of a new resource.**
+                    items:
+                      properties:
+                        bundleMethod:
+                          description: 'Method of building intermediate certificate
+                            chain. A ubiquitous bundle has the highest probability
+                            of being verified everywhere, even by clients using outdated
+                            or unusual trust stores. An optimal bundle uses the shortest
+                            chain and newest intermediates. And the force bundle verifies
+                            the chain, but does not otherwise modify it. Valid values
+                            are ubiquitous (default), optimal, force. Method of building
+                            intermediate certificate chain. A ubiquitous bundle has
+                            the highest probability of being verified everywhere,
+                            even by clients using outdated or unusual trust stores.
+                            An optimal bundle uses the shortest chain and newest intermediates.
+                            And the force bundle verifies the chain, but does not
+                            otherwise modify it. Available values: `ubiquitous`, `optimal`,
+                            `force`.'
+                          type: string
+                        certificate:
+                          description: Certificate certificate and the intermediate(s)
+                            Certificate certificate and the intermediate(s).
+                          type: string
+                        geoRestrictions:
+                          description: 'Specifies the region where your private key
+                            can be held locally. Valid values are us, eu, highest_security.
+                            Specifies the region where your private key can be held
+                            locally. Available values: `us`, `eu`, `highest_security`.'
+                          type: string
+                        type:
+                          description: 'Whether to enable support for legacy clients
+                            which do not include SNI in the TLS handshake. Valid values
+                            are legacy_custom (default), sni_custom. Whether to enable
+                            support for legacy clients which do not include SNI in
+                            the TLS handshake. Available values: `legacy_custom`,
+                            `sni_custom`.'
+                          type: string
+                      type: object
+                    type: array
+                  customSslPriority:
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        priority:
+                          type: number
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -387,6 +483,58 @@ spec:
             properties:
               atProvider:
                 properties:
+                  customSslOptions:
+                    description: The certificate, private key and associated optional
+                      parameters, such as bundle_method, geo_restrictions, and type.
+                      The certificate associated parameters. **Modifying this attribute
+                      will force creation of a new resource.**
+                    items:
+                      properties:
+                        bundleMethod:
+                          description: 'Method of building intermediate certificate
+                            chain. A ubiquitous bundle has the highest probability
+                            of being verified everywhere, even by clients using outdated
+                            or unusual trust stores. An optimal bundle uses the shortest
+                            chain and newest intermediates. And the force bundle verifies
+                            the chain, but does not otherwise modify it. Valid values
+                            are ubiquitous (default), optimal, force. Method of building
+                            intermediate certificate chain. A ubiquitous bundle has
+                            the highest probability of being verified everywhere,
+                            even by clients using outdated or unusual trust stores.
+                            An optimal bundle uses the shortest chain and newest intermediates.
+                            And the force bundle verifies the chain, but does not
+                            otherwise modify it. Available values: `ubiquitous`, `optimal`,
+                            `force`.'
+                          type: string
+                        certificate:
+                          description: Certificate certificate and the intermediate(s)
+                            Certificate certificate and the intermediate(s).
+                          type: string
+                        geoRestrictions:
+                          description: 'Specifies the region where your private key
+                            can be held locally. Valid values are us, eu, highest_security.
+                            Specifies the region where your private key can be held
+                            locally. Available values: `us`, `eu`, `highest_security`.'
+                          type: string
+                        type:
+                          description: 'Whether to enable support for legacy clients
+                            which do not include SNI in the TLS handshake. Valid values
+                            are legacy_custom (default), sni_custom. Whether to enable
+                            support for legacy clients which do not include SNI in
+                            the TLS handshake. Available values: `legacy_custom`,
+                            `sni_custom`.'
+                          type: string
+                      type: object
+                    type: array
+                  customSslPriority:
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        priority:
+                          type: number
+                      type: object
+                    type: array
                   expiresOn:
                     type: string
                   hosts:
@@ -406,6 +554,10 @@ spec:
                   status:
                     type: string
                   uploadedOn:
+                    type: string
+                  zoneId:
+                    description: The DNS zone id to the custom ssl cert should be
+                      added. The zone identifier to target for the resource.
                     type: string
                 type: object
               conditions:

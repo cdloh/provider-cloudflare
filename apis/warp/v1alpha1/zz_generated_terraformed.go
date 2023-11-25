@@ -69,6 +69,16 @@ func (tr *DevicePolicyCertificates) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this DevicePolicyCertificates
+func (tr *DevicePolicyCertificates) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this DevicePolicyCertificates using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *DevicePolicyCertificates) LateInitialize(attrs []byte) (bool, error) {
@@ -141,6 +151,16 @@ func (tr *DevicePostureIntegration) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this DevicePostureIntegration
+func (tr *DevicePostureIntegration) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this DevicePostureIntegration using its observed tfState.
@@ -217,6 +237,16 @@ func (tr *DevicePostureRule) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this DevicePostureRule
+func (tr *DevicePostureRule) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this DevicePostureRule using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *DevicePostureRule) LateInitialize(attrs []byte) (bool, error) {
@@ -289,6 +319,16 @@ func (tr *DeviceSettingsPolicy) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this DeviceSettingsPolicy
+func (tr *DeviceSettingsPolicy) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this DeviceSettingsPolicy using its observed tfState.
@@ -365,6 +405,16 @@ func (tr *FallbackDomain) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this FallbackDomain
+func (tr *FallbackDomain) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this FallbackDomain using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *FallbackDomain) LateInitialize(attrs []byte) (bool, error) {
@@ -437,6 +487,16 @@ func (tr *SplitTunnel) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this SplitTunnel
+func (tr *SplitTunnel) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this SplitTunnel using its observed tfState.

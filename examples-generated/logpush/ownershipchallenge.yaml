@@ -1,0 +1,14 @@
+apiVersion: logpush.cloudflare.upbound.io/v1alpha1
+kind: OwnershipChallenge
+metadata:
+  annotations:
+    meta.upbound.io/example-id: logpush/v1alpha1/ownershipchallenge
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    destinationConf: s3://my-bucket-path?region=us-west-2
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

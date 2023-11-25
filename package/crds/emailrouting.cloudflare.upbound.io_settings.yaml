@@ -151,8 +151,28 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - enabled
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  enabled:
+                    description: State of the zone settings for Email Routing. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: boolean
+                  skipWizard:
+                    description: Flag to check if the user skipped the configuration
+                      wizard.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -351,6 +371,11 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: enabled is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.enabled)
+                || has(self.initProvider.enabled)'
           status:
             description: SettingsStatus defines the observed state of Settings.
             properties:
@@ -359,6 +384,10 @@ spec:
                   created:
                     description: The date and time the settings have been created.
                     type: string
+                  enabled:
+                    description: State of the zone settings for Email Routing. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: boolean
                   id:
                     type: string
                   modified:
@@ -367,12 +396,20 @@ spec:
                   name:
                     description: Domain of your zone.
                     type: string
+                  skipWizard:
+                    description: Flag to check if the user skipped the configuration
+                      wizard.
+                    type: boolean
                   status:
                     description: Show the state of your account, and the type or configuration
                       error.
                     type: string
                   tag:
                     description: Email Routing settings identifier.
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

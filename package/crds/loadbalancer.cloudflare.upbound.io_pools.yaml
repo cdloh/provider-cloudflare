@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Pool is the Schema for the Pools API. <no value>
+        description: Pool is the Schema for the Pools API. Provides a Cloudflare Load
+          Balancer Pool resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,6 +69,7 @@ spec:
                 properties:
                   accountId:
                     description: The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -143,43 +145,81 @@ spec:
                         type: object
                     type: object
                   checkRegions:
+                    description: A list of regions (specified by region code) from
+                      which to run health checks. Empty means every Cloudflare data
+                      center (the default), but requires an Enterprise plan. Region
+                      codes can be found here. A list of regions (specified by region
+                      code) from which to run health checks. Empty means every Cloudflare
+                      data center (the default), but requires an Enterprise plan.
+                      Region codes can be found [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api).
                     items:
                       type: string
                     type: array
                   description:
+                    description: Free text description. Free text description.
                     type: string
                   enabled:
-                    description: Defaults to `true`.
+                    description: Whether to enable (the default) this pool. Disabled
+                      pools will not receive traffic and are excluded from health
+                      checks. Disabling a pool will cause any load balancers using
+                      it to failover to the next pool (if any). Whether to enable
+                      (the default) this pool. Disabled pools will not receive traffic
+                      and are excluded from health checks. Disabling a pool will cause
+                      any load balancers using it to failover to the next pool (if
+                      any). Defaults to `true`.
                     type: boolean
                   latitude:
+                    description: The latitude this pool is physically located at;
+                      used for proximity steering. Values should be between -90 and
+                      90. The latitude this pool is physically located at; used for
+                      proximity steering.
                     type: number
                   loadShedding:
+                    description: Setting for controlling load shedding for this pool.
+                      Setting for controlling load shedding for this pool.
                     items:
                       properties:
                         defaultPercent:
-                          description: Percent of traffic to shed 0 - 100. Defaults
-                            to `0`.
+                          description: Percent of traffic to shed 0 - 100. Percent
+                            of traffic to shed 0 - 100. Defaults to `0`.
                           type: number
                         defaultPolicy:
-                          description: 'Method of shedding traffic. Available values:
-                            “, `hash`, `random`. Defaults to `""`.'
+                          description: 'Method of shedding traffic "", "hash" or "random".
+                            Method of shedding traffic. Available values: `""`, `hash`,
+                            `random`. Defaults to `""`.'
                           type: string
                         sessionPercent:
                           description: Percent of session traffic to shed 0 - 100.
-                            Defaults to `0`.
+                            Percent of session traffic to shed 0 - 100. Defaults to
+                            `0`.
                           type: number
                         sessionPolicy:
-                          description: 'Method of shedding traffic. Available values:
-                            “, `hash`. Defaults to `""`.'
+                          description: 'Method of shedding session traffic "" or "hash".
+                            Method of shedding traffic. Available values: `""`, `hash`.
+                            Defaults to `""`.'
                           type: string
                       type: object
                     type: array
                   longitude:
+                    description: The longitude this pool is physically located at;
+                      used for proximity steering. Values should be between -180 and
+                      180. The longitude this pool is physically located at; used
+                      for proximity steering.
                     type: number
                   minimumOrigins:
-                    description: Defaults to `1`.
+                    description: 'The minimum number of origins that must be healthy
+                      for this pool to serve traffic. If the number of healthy origins
+                      falls below this number, the pool will be marked unhealthy and
+                      we will failover to the next available pool. Default: 1. The
+                      minimum number of origins that must be healthy for this pool
+                      to serve traffic. If the number of healthy origins falls below
+                      this number, the pool will be marked unhealthy and we will failover
+                      to the next available pool. Defaults to `1`.'
                     type: number
                   monitor:
+                    description: The ID of the Monitor to use for health checking
+                      origins within this pool. The ID of the Monitor to use for health
+                      checking origins within this pool.
                     type: string
                   monitorRef:
                     description: Reference to a Monitor to populate monitor.
@@ -255,65 +295,299 @@ spec:
                         type: object
                     type: object
                   name:
+                    description: A short name (tag) for the pool. Only alphanumeric
+                      characters, hyphens, and underscores are allowed. A short name
+                      (tag) for the pool.
                     type: string
                   notificationEmail:
+                    description: The email address to send health status notifications
+                      to. This can be an individual mailbox or a mailing list. Multiple
+                      emails can be supplied as a comma delimited list. The email
+                      address to send health status notifications to. This can be
+                      an individual mailbox or a mailing list. Multiple emails can
+                      be supplied as a comma delimited list.
                     type: string
                   originSteering:
+                    description: Set an origin steering policy to control origin selection
+                      within a pool. Set an origin steering policy to control origin
+                      selection within a pool.
                     items:
                       properties:
                         policy:
-                          description: 'Origin steering policy to be used. Available
-                            values: “, `hash`, `random`. Defaults to `random`.'
+                          description: 'Either "random" (default) or "hash". Origin
+                            steering policy to be used. Value `random` selects an
+                            origin randomly. Value `hash` selects an origin by computing
+                            a hash over the CF-Connecting-IP address. Value `least_outstanding_requests`
+                            selects an origin by taking into consideration origin
+                            weights, as well as each origin''s number of outstanding
+                            requests. Origins with more pending requests are weighted
+                            proportionately less relative to others. Value `least_connections`
+                            selects an origin by taking into consideration origin
+                            weights, as well as each origin''s number of open connections.
+                            Origins with more open connections are weighted proportionately
+                            less relative to others. Supported for HTTP/1 and HTTP/2
+                            connections. Available values: `""`, `hash`, `random`,
+                            `least_outstanding_requests`, `least_connections`. Defaults
+                            to `random`.'
                           type: string
                       type: object
                     type: array
                   origins:
+                    description: The list of origins within this pool. Traffic directed
+                      at this pool is balanced across all currently healthy origins,
+                      provided the pool itself is healthy. It's a complex value. See
+                      description below. The list of origins within this pool. Traffic
+                      directed at this pool is balanced across all currently healthy
+                      origins, provided the pool itself is healthy.
                     items:
                       properties:
                         address:
                           description: The IP address (IPv4 or IPv6) of the origin,
-                            or the publicly addressable hostname.
+                            or the publicly addressable hostname. Hostnames entered
+                            here should resolve directly to the origin, and not be
+                            a hostname proxied by Cloudflare. The IP address (IPv4
+                            or IPv6) of the origin, or the publicly addressable hostname.
                           type: string
                         enabled:
-                          description: Whether this origin is enabled. Disabled origins
-                            will not receive traffic and are excluded from health
-                            checks. Defaults to `true`.
+                          description: Whether to enable (the default) this pool.
+                            Disabled pools will not receive traffic and are excluded
+                            from health checks. Disabling a pool will cause any load
+                            balancers using it to failover to the next pool (if any).
+                            Whether this origin is enabled. Disabled origins will
+                            not receive traffic and are excluded from health checks.
+                            Defaults to `true`.
                           type: boolean
                         header:
-                          description: HTTP request headers.
+                          description: The HTTP request headers. For security reasons,
+                            this header also needs to be a subdomain of the overall
+                            zone. Fields documented below. HTTP request headers.
                           items:
                             properties:
                               header:
-                                description: HTTP Header name.
+                                description: The HTTP request headers. For security
+                                  reasons, this header also needs to be a subdomain
+                                  of the overall zone. Fields documented below. HTTP
+                                  Header name.
                                 type: string
                               values:
-                                description: Values for the HTTP headers.
+                                description: A list of string values for the header.
+                                  Values for the HTTP headers.
                                 items:
                                   type: string
                                 type: array
-                            required:
-                            - header
-                            - values
                             type: object
                           type: array
                         name:
-                          description: A human-identifiable name for the origin.
+                          description: A short name (tag) for the pool. Only alphanumeric
+                            characters, hyphens, and underscores are allowed. A human-identifiable
+                            name for the origin.
                           type: string
                         weight:
-                          description: The weight (0.01 - 1.00) of this origin, relative
+                          description: 'The weight (0.01 - 1.00) of this origin, relative
                             to other origins in the pool. Equal values mean equal
                             weighting. A weight of 0 means traffic will not be sent
-                            to this origin, but health is still checked. Defaults
-                            to `1`.
+                            to this origin, but health is still checked. Default:
+                            1. The weight (0.01 - 1.00) of this origin, relative to
+                            other origins in the pool. Equal values mean equal weighting.
+                            A weight of 0 means traffic will not be sent to this origin,
+                            but health is still checked. When [`origin_steering.policy="least_outstanding_requests"`](#policy),
+                            weight is used to scale the origin''s outstanding requests.
+                            When [`origin_steering.policy="least_connections"`](#policy),
+                            weight is used to scale the origin''s open connections.
+                            Defaults to `1`.'
                           type: number
-                      required:
-                      - address
-                      - name
                       type: object
                     type: array
-                required:
-                - name
-                - origins
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  checkRegions:
+                    description: A list of regions (specified by region code) from
+                      which to run health checks. Empty means every Cloudflare data
+                      center (the default), but requires an Enterprise plan. Region
+                      codes can be found here. A list of regions (specified by region
+                      code) from which to run health checks. Empty means every Cloudflare
+                      data center (the default), but requires an Enterprise plan.
+                      Region codes can be found [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api).
+                    items:
+                      type: string
+                    type: array
+                  description:
+                    description: Free text description. Free text description.
+                    type: string
+                  enabled:
+                    description: Whether to enable (the default) this pool. Disabled
+                      pools will not receive traffic and are excluded from health
+                      checks. Disabling a pool will cause any load balancers using
+                      it to failover to the next pool (if any). Whether to enable
+                      (the default) this pool. Disabled pools will not receive traffic
+                      and are excluded from health checks. Disabling a pool will cause
+                      any load balancers using it to failover to the next pool (if
+                      any). Defaults to `true`.
+                    type: boolean
+                  latitude:
+                    description: The latitude this pool is physically located at;
+                      used for proximity steering. Values should be between -90 and
+                      90. The latitude this pool is physically located at; used for
+                      proximity steering.
+                    type: number
+                  loadShedding:
+                    description: Setting for controlling load shedding for this pool.
+                      Setting for controlling load shedding for this pool.
+                    items:
+                      properties:
+                        defaultPercent:
+                          description: Percent of traffic to shed 0 - 100. Percent
+                            of traffic to shed 0 - 100. Defaults to `0`.
+                          type: number
+                        defaultPolicy:
+                          description: 'Method of shedding traffic "", "hash" or "random".
+                            Method of shedding traffic. Available values: `""`, `hash`,
+                            `random`. Defaults to `""`.'
+                          type: string
+                        sessionPercent:
+                          description: Percent of session traffic to shed 0 - 100.
+                            Percent of session traffic to shed 0 - 100. Defaults to
+                            `0`.
+                          type: number
+                        sessionPolicy:
+                          description: 'Method of shedding session traffic "" or "hash".
+                            Method of shedding traffic. Available values: `""`, `hash`.
+                            Defaults to `""`.'
+                          type: string
+                      type: object
+                    type: array
+                  longitude:
+                    description: The longitude this pool is physically located at;
+                      used for proximity steering. Values should be between -180 and
+                      180. The longitude this pool is physically located at; used
+                      for proximity steering.
+                    type: number
+                  minimumOrigins:
+                    description: 'The minimum number of origins that must be healthy
+                      for this pool to serve traffic. If the number of healthy origins
+                      falls below this number, the pool will be marked unhealthy and
+                      we will failover to the next available pool. Default: 1. The
+                      minimum number of origins that must be healthy for this pool
+                      to serve traffic. If the number of healthy origins falls below
+                      this number, the pool will be marked unhealthy and we will failover
+                      to the next available pool. Defaults to `1`.'
+                    type: number
+                  name:
+                    description: A short name (tag) for the pool. Only alphanumeric
+                      characters, hyphens, and underscores are allowed. A short name
+                      (tag) for the pool.
+                    type: string
+                  notificationEmail:
+                    description: The email address to send health status notifications
+                      to. This can be an individual mailbox or a mailing list. Multiple
+                      emails can be supplied as a comma delimited list. The email
+                      address to send health status notifications to. This can be
+                      an individual mailbox or a mailing list. Multiple emails can
+                      be supplied as a comma delimited list.
+                    type: string
+                  originSteering:
+                    description: Set an origin steering policy to control origin selection
+                      within a pool. Set an origin steering policy to control origin
+                      selection within a pool.
+                    items:
+                      properties:
+                        policy:
+                          description: 'Either "random" (default) or "hash". Origin
+                            steering policy to be used. Value `random` selects an
+                            origin randomly. Value `hash` selects an origin by computing
+                            a hash over the CF-Connecting-IP address. Value `least_outstanding_requests`
+                            selects an origin by taking into consideration origin
+                            weights, as well as each origin''s number of outstanding
+                            requests. Origins with more pending requests are weighted
+                            proportionately less relative to others. Value `least_connections`
+                            selects an origin by taking into consideration origin
+                            weights, as well as each origin''s number of open connections.
+                            Origins with more open connections are weighted proportionately
+                            less relative to others. Supported for HTTP/1 and HTTP/2
+                            connections. Available values: `""`, `hash`, `random`,
+                            `least_outstanding_requests`, `least_connections`. Defaults
+                            to `random`.'
+                          type: string
+                      type: object
+                    type: array
+                  origins:
+                    description: The list of origins within this pool. Traffic directed
+                      at this pool is balanced across all currently healthy origins,
+                      provided the pool itself is healthy. It's a complex value. See
+                      description below. The list of origins within this pool. Traffic
+                      directed at this pool is balanced across all currently healthy
+                      origins, provided the pool itself is healthy.
+                    items:
+                      properties:
+                        address:
+                          description: The IP address (IPv4 or IPv6) of the origin,
+                            or the publicly addressable hostname. Hostnames entered
+                            here should resolve directly to the origin, and not be
+                            a hostname proxied by Cloudflare. The IP address (IPv4
+                            or IPv6) of the origin, or the publicly addressable hostname.
+                          type: string
+                        enabled:
+                          description: Whether to enable (the default) this pool.
+                            Disabled pools will not receive traffic and are excluded
+                            from health checks. Disabling a pool will cause any load
+                            balancers using it to failover to the next pool (if any).
+                            Whether this origin is enabled. Disabled origins will
+                            not receive traffic and are excluded from health checks.
+                            Defaults to `true`.
+                          type: boolean
+                        header:
+                          description: The HTTP request headers. For security reasons,
+                            this header also needs to be a subdomain of the overall
+                            zone. Fields documented below. HTTP request headers.
+                          items:
+                            properties:
+                              header:
+                                description: The HTTP request headers. For security
+                                  reasons, this header also needs to be a subdomain
+                                  of the overall zone. Fields documented below. HTTP
+                                  Header name.
+                                type: string
+                              values:
+                                description: A list of string values for the header.
+                                  Values for the HTTP headers.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        name:
+                          description: A short name (tag) for the pool. Only alphanumeric
+                            characters, hyphens, and underscores are allowed. A human-identifiable
+                            name for the origin.
+                          type: string
+                        weight:
+                          description: 'The weight (0.01 - 1.00) of this origin, relative
+                            to other origins in the pool. Equal values mean equal
+                            weighting. A weight of 0 means traffic will not be sent
+                            to this origin, but health is still checked. Default:
+                            1. The weight (0.01 - 1.00) of this origin, relative to
+                            other origins in the pool. Equal values mean equal weighting.
+                            A weight of 0 means traffic will not be sent to this origin,
+                            but health is still checked. When [`origin_steering.policy="least_outstanding_requests"`](#policy),
+                            weight is used to scale the origin''s outstanding requests.
+                            When [`origin_steering.policy="least_connections"`](#policy),
+                            weight is used to scale the origin''s open connections.
+                            Defaults to `1`.'
+                          type: number
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -512,17 +786,218 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: origins is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.origins)
+                || has(self.initProvider.origins)'
           status:
             description: PoolStatus defines the observed state of Pool.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      The account identifier to target for the resource.
+                    type: string
+                  checkRegions:
+                    description: A list of regions (specified by region code) from
+                      which to run health checks. Empty means every Cloudflare data
+                      center (the default), but requires an Enterprise plan. Region
+                      codes can be found here. A list of regions (specified by region
+                      code) from which to run health checks. Empty means every Cloudflare
+                      data center (the default), but requires an Enterprise plan.
+                      Region codes can be found [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api).
+                    items:
+                      type: string
+                    type: array
                   createdOn:
+                    description: The RFC3339 timestamp of when the load balancer was
+                      created. The RFC3339 timestamp of when the load balancer was
+                      created.
                     type: string
+                  description:
+                    description: Free text description. Free text description.
+                    type: string
+                  enabled:
+                    description: Whether to enable (the default) this pool. Disabled
+                      pools will not receive traffic and are excluded from health
+                      checks. Disabling a pool will cause any load balancers using
+                      it to failover to the next pool (if any). Whether to enable
+                      (the default) this pool. Disabled pools will not receive traffic
+                      and are excluded from health checks. Disabling a pool will cause
+                      any load balancers using it to failover to the next pool (if
+                      any). Defaults to `true`.
+                    type: boolean
                   id:
+                    description: ID for this load balancer pool.
                     type: string
+                  latitude:
+                    description: The latitude this pool is physically located at;
+                      used for proximity steering. Values should be between -90 and
+                      90. The latitude this pool is physically located at; used for
+                      proximity steering.
+                    type: number
+                  loadShedding:
+                    description: Setting for controlling load shedding for this pool.
+                      Setting for controlling load shedding for this pool.
+                    items:
+                      properties:
+                        defaultPercent:
+                          description: Percent of traffic to shed 0 - 100. Percent
+                            of traffic to shed 0 - 100. Defaults to `0`.
+                          type: number
+                        defaultPolicy:
+                          description: 'Method of shedding traffic "", "hash" or "random".
+                            Method of shedding traffic. Available values: `""`, `hash`,
+                            `random`. Defaults to `""`.'
+                          type: string
+                        sessionPercent:
+                          description: Percent of session traffic to shed 0 - 100.
+                            Percent of session traffic to shed 0 - 100. Defaults to
+                            `0`.
+                          type: number
+                        sessionPolicy:
+                          description: 'Method of shedding session traffic "" or "hash".
+                            Method of shedding traffic. Available values: `""`, `hash`.
+                            Defaults to `""`.'
+                          type: string
+                      type: object
+                    type: array
+                  longitude:
+                    description: The longitude this pool is physically located at;
+                      used for proximity steering. Values should be between -180 and
+                      180. The longitude this pool is physically located at; used
+                      for proximity steering.
+                    type: number
+                  minimumOrigins:
+                    description: 'The minimum number of origins that must be healthy
+                      for this pool to serve traffic. If the number of healthy origins
+                      falls below this number, the pool will be marked unhealthy and
+                      we will failover to the next available pool. Default: 1. The
+                      minimum number of origins that must be healthy for this pool
+                      to serve traffic. If the number of healthy origins falls below
+                      this number, the pool will be marked unhealthy and we will failover
+                      to the next available pool. Defaults to `1`.'
+                    type: number
                   modifiedOn:
+                    description: The RFC3339 timestamp of when the load balancer was
+                      last modified. The RFC3339 timestamp of when the load balancer
+                      was last modified.
                     type: string
+                  monitor:
+                    description: The ID of the Monitor to use for health checking
+                      origins within this pool. The ID of the Monitor to use for health
+                      checking origins within this pool.
+                    type: string
+                  name:
+                    description: A short name (tag) for the pool. Only alphanumeric
+                      characters, hyphens, and underscores are allowed. A short name
+                      (tag) for the pool.
+                    type: string
+                  notificationEmail:
+                    description: The email address to send health status notifications
+                      to. This can be an individual mailbox or a mailing list. Multiple
+                      emails can be supplied as a comma delimited list. The email
+                      address to send health status notifications to. This can be
+                      an individual mailbox or a mailing list. Multiple emails can
+                      be supplied as a comma delimited list.
+                    type: string
+                  originSteering:
+                    description: Set an origin steering policy to control origin selection
+                      within a pool. Set an origin steering policy to control origin
+                      selection within a pool.
+                    items:
+                      properties:
+                        policy:
+                          description: 'Either "random" (default) or "hash". Origin
+                            steering policy to be used. Value `random` selects an
+                            origin randomly. Value `hash` selects an origin by computing
+                            a hash over the CF-Connecting-IP address. Value `least_outstanding_requests`
+                            selects an origin by taking into consideration origin
+                            weights, as well as each origin''s number of outstanding
+                            requests. Origins with more pending requests are weighted
+                            proportionately less relative to others. Value `least_connections`
+                            selects an origin by taking into consideration origin
+                            weights, as well as each origin''s number of open connections.
+                            Origins with more open connections are weighted proportionately
+                            less relative to others. Supported for HTTP/1 and HTTP/2
+                            connections. Available values: `""`, `hash`, `random`,
+                            `least_outstanding_requests`, `least_connections`. Defaults
+                            to `random`.'
+                          type: string
+                      type: object
+                    type: array
+                  origins:
+                    description: The list of origins within this pool. Traffic directed
+                      at this pool is balanced across all currently healthy origins,
+                      provided the pool itself is healthy. It's a complex value. See
+                      description below. The list of origins within this pool. Traffic
+                      directed at this pool is balanced across all currently healthy
+                      origins, provided the pool itself is healthy.
+                    items:
+                      properties:
+                        address:
+                          description: The IP address (IPv4 or IPv6) of the origin,
+                            or the publicly addressable hostname. Hostnames entered
+                            here should resolve directly to the origin, and not be
+                            a hostname proxied by Cloudflare. The IP address (IPv4
+                            or IPv6) of the origin, or the publicly addressable hostname.
+                          type: string
+                        enabled:
+                          description: Whether to enable (the default) this pool.
+                            Disabled pools will not receive traffic and are excluded
+                            from health checks. Disabling a pool will cause any load
+                            balancers using it to failover to the next pool (if any).
+                            Whether this origin is enabled. Disabled origins will
+                            not receive traffic and are excluded from health checks.
+                            Defaults to `true`.
+                          type: boolean
+                        header:
+                          description: The HTTP request headers. For security reasons,
+                            this header also needs to be a subdomain of the overall
+                            zone. Fields documented below. HTTP request headers.
+                          items:
+                            properties:
+                              header:
+                                description: The HTTP request headers. For security
+                                  reasons, this header also needs to be a subdomain
+                                  of the overall zone. Fields documented below. HTTP
+                                  Header name.
+                                type: string
+                              values:
+                                description: A list of string values for the header.
+                                  Values for the HTTP headers.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        name:
+                          description: A short name (tag) for the pool. Only alphanumeric
+                            characters, hyphens, and underscores are allowed. A human-identifiable
+                            name for the origin.
+                          type: string
+                        weight:
+                          description: 'The weight (0.01 - 1.00) of this origin, relative
+                            to other origins in the pool. Equal values mean equal
+                            weighting. A weight of 0 means traffic will not be sent
+                            to this origin, but health is still checked. Default:
+                            1. The weight (0.01 - 1.00) of this origin, relative to
+                            other origins in the pool. Equal values mean equal weighting.
+                            A weight of 0 means traffic will not be sent to this origin,
+                            but health is still checked. When [`origin_steering.policy="least_outstanding_requests"`](#policy),
+                            weight is used to scale the origin''s outstanding requests.
+                            When [`origin_steering.policy="least_connections"`](#policy),
+                            weight is used to scale the origin''s open connections.
+                            Defaults to `1`.'
+                          type: number
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

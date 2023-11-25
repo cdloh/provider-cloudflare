@@ -13,7 +13,69 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CustomPagesInitParameters struct {
+
+	// The id of the forbidden page.
+	Forbidden *string `json:"forbidden,omitempty" tf:"forbidden,omitempty"`
+
+	// The id of the identity denied page.
+	IdentityDenied *string `json:"identityDenied,omitempty" tf:"identity_denied,omitempty"`
+}
+
+type CustomPagesObservation struct {
+
+	// The id of the forbidden page.
+	Forbidden *string `json:"forbidden,omitempty" tf:"forbidden,omitempty"`
+
+	// The id of the identity denied page.
+	IdentityDenied *string `json:"identityDenied,omitempty" tf:"identity_denied,omitempty"`
+}
+
+type CustomPagesParameters struct {
+
+	// The id of the forbidden page.
+	// +kubebuilder:validation:Optional
+	Forbidden *string `json:"forbidden,omitempty" tf:"forbidden,omitempty"`
+
+	// The id of the identity denied page.
+	// +kubebuilder:validation:Optional
+	IdentityDenied *string `json:"identityDenied,omitempty" tf:"identity_denied,omitempty"`
+}
+
+type LoginDesignInitParameters struct {
+
+	// The background color on the login page.
+	BackgroundColor *string `json:"backgroundColor,omitempty" tf:"background_color,omitempty"`
+
+	// The text at the bottom of the login page.
+	FooterText *string `json:"footerText,omitempty" tf:"footer_text,omitempty"`
+
+	// The text at the top of the login page.
+	HeaderText *string `json:"headerText,omitempty" tf:"header_text,omitempty"`
+
+	// The URL of the logo on the login page.
+	LogoPath *string `json:"logoPath,omitempty" tf:"logo_path,omitempty"`
+
+	// The text color on the login page.
+	TextColor *string `json:"textColor,omitempty" tf:"text_color,omitempty"`
+}
+
 type LoginDesignObservation struct {
+
+	// The background color on the login page.
+	BackgroundColor *string `json:"backgroundColor,omitempty" tf:"background_color,omitempty"`
+
+	// The text at the bottom of the login page.
+	FooterText *string `json:"footerText,omitempty" tf:"footer_text,omitempty"`
+
+	// The text at the top of the login page.
+	HeaderText *string `json:"headerText,omitempty" tf:"header_text,omitempty"`
+
+	// The URL of the logo on the login page.
+	LogoPath *string `json:"logoPath,omitempty" tf:"logo_path,omitempty"`
+
+	// The text color on the login page.
+	TextColor *string `json:"textColor,omitempty" tf:"text_color,omitempty"`
 }
 
 type LoginDesignParameters struct {
@@ -39,14 +101,76 @@ type LoginDesignParameters struct {
 	TextColor *string `json:"textColor,omitempty" tf:"text_color,omitempty"`
 }
 
+type OrganizationInitParameters struct {
+
+	// The unique subdomain assigned to your Zero Trust organization.
+	AuthDomain *string `json:"authDomain,omitempty" tf:"auth_domain,omitempty"`
+
+	// When set to true, users skip the identity provider selection step during login.
+	AutoRedirectToIdentity *bool `json:"autoRedirectToIdentity,omitempty" tf:"auto_redirect_to_identity,omitempty"`
+
+	// Custom pages for your Zero Trust organization.
+	CustomPages []CustomPagesInitParameters `json:"customPages,omitempty" tf:"custom_pages,omitempty"`
+
+	// When set to true, this will disable all editing of Access resources via the Zero Trust Dashboard.
+	IsUIReadOnly *bool `json:"isUiReadOnly,omitempty" tf:"is_ui_read_only,omitempty"`
+
+	LoginDesign []LoginDesignInitParameters `json:"loginDesign,omitempty" tf:"login_design,omitempty"`
+
+	// The name of your Zero Trust organization.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// A description of the reason why the UI read only field is being toggled.
+	UIReadOnlyToggleReason *string `json:"uiReadOnlyToggleReason,omitempty" tf:"ui_read_only_toggle_reason,omitempty"`
+
+	// The amount of time a user seat is inactive before it expires. When the user seat exceeds the set time of inactivity, the user is removed as an active seat and no longer counts against your Teams seat count. Must be in the format `300ms` or `2h45m`.
+	UserSeatExpirationInactiveTime *string `json:"userSeatExpirationInactiveTime,omitempty" tf:"user_seat_expiration_inactive_time,omitempty"`
+}
+
 type OrganizationObservation struct {
+
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The unique subdomain assigned to your Zero Trust organization.
+	AuthDomain *string `json:"authDomain,omitempty" tf:"auth_domain,omitempty"`
+
+	// When set to true, users skip the identity provider selection step during login.
+	AutoRedirectToIdentity *bool `json:"autoRedirectToIdentity,omitempty" tf:"auto_redirect_to_identity,omitempty"`
+
+	// Custom pages for your Zero Trust organization.
+	CustomPages []CustomPagesObservation `json:"customPages,omitempty" tf:"custom_pages,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// When set to true, this will disable all editing of Access resources via the Zero Trust Dashboard.
+	IsUIReadOnly *bool `json:"isUiReadOnly,omitempty" tf:"is_ui_read_only,omitempty"`
+
+	LoginDesign []LoginDesignObservation `json:"loginDesign,omitempty" tf:"login_design,omitempty"`
+
+	// The name of your Zero Trust organization.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// A description of the reason why the UI read only field is being toggled.
+	UIReadOnlyToggleReason *string `json:"uiReadOnlyToggleReason,omitempty" tf:"ui_read_only_toggle_reason,omitempty"`
+
+	// The amount of time a user seat is inactive before it expires. When the user seat exceeds the set time of inactivity, the user is removed as an active seat and no longer counts against your Teams seat count. Must be in the format `300ms` or `2h45m`.
+	UserSeatExpirationInactiveTime *string `json:"userSeatExpirationInactiveTime,omitempty" tf:"user_seat_expiration_inactive_time,omitempty"`
+
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type OrganizationParameters struct {
 
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -59,8 +183,16 @@ type OrganizationParameters struct {
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
 	// The unique subdomain assigned to your Zero Trust organization.
-	// +kubebuilder:validation:Required
-	AuthDomain *string `json:"authDomain" tf:"auth_domain,omitempty"`
+	// +kubebuilder:validation:Optional
+	AuthDomain *string `json:"authDomain,omitempty" tf:"auth_domain,omitempty"`
+
+	// When set to true, users skip the identity provider selection step during login.
+	// +kubebuilder:validation:Optional
+	AutoRedirectToIdentity *bool `json:"autoRedirectToIdentity,omitempty" tf:"auto_redirect_to_identity,omitempty"`
+
+	// Custom pages for your Zero Trust organization.
+	// +kubebuilder:validation:Optional
+	CustomPages []CustomPagesParameters `json:"customPages,omitempty" tf:"custom_pages,omitempty"`
 
 	// When set to true, this will disable all editing of Access resources via the Zero Trust Dashboard.
 	// +kubebuilder:validation:Optional
@@ -73,8 +205,20 @@ type OrganizationParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	// +kubebuilder:validation:Optional
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// A description of the reason why the UI read only field is being toggled.
+	// +kubebuilder:validation:Optional
+	UIReadOnlyToggleReason *string `json:"uiReadOnlyToggleReason,omitempty" tf:"ui_read_only_toggle_reason,omitempty"`
+
+	// The amount of time a user seat is inactive before it expires. When the user seat exceeds the set time of inactivity, the user is removed as an active seat and no longer counts against your Teams seat count. Must be in the format `300ms` or `2h45m`.
+	// +kubebuilder:validation:Optional
+	UserSeatExpirationInactiveTime *string `json:"userSeatExpirationInactiveTime,omitempty" tf:"user_seat_expiration_inactive_time,omitempty"`
+
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -91,6 +235,18 @@ type OrganizationParameters struct {
 type OrganizationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OrganizationParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OrganizationInitParameters `json:"initProvider,omitempty"`
 }
 
 // OrganizationStatus defines the observed state of Organization.
@@ -111,8 +267,9 @@ type OrganizationStatus struct {
 type Organization struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              OrganizationSpec   `json:"spec"`
-	Status            OrganizationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.authDomain) || has(self.initProvider.authDomain)",message="authDomain is a required parameter"
+	Spec   OrganizationSpec   `json:"spec"`
+	Status OrganizationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

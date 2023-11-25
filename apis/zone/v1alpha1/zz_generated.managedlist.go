@@ -7,6 +7,15 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
+// GetItems of this CacheServerList.
+func (l *CacheServerList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this DNSSECList.
 func (l *DNSSECList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -18,6 +27,33 @@ func (l *DNSSECList) GetItems() []resource.Managed {
 
 // GetItems of this HealthcheckList.
 func (l *HealthcheckList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this HoldList.
+func (l *HoldList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this KeylessCertificateList.
+func (l *KeylessCertificateList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this LockdownList.
+func (l *LockdownList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -43,6 +79,15 @@ func (l *ManagedHeadersList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this ObservatoryScheduledTestList.
+func (l *ObservatoryScheduledTestList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this RateLimitList.
 func (l *RateLimitList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -52,8 +97,35 @@ func (l *RateLimitList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this RegionalTieredCacheList.
+func (l *RegionalTieredCacheList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this SettingsOverrideList.
 func (l *SettingsOverrideList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this TLSSettingCiphersList.
+func (l *TLSSettingCiphersList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this TLSSettingList.
+func (l *TLSSettingList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -90,6 +162,15 @@ func (l *URLNormalizationSettingsList) GetItems() []resource.Managed {
 
 // GetItems of this UserAgentBlockingRuleList.
 func (l *UserAgentBlockingRuleList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this ZoneCacheVariantsList.
+func (l *ZoneCacheVariantsList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

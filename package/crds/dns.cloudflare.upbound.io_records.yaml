@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Record is the Schema for the Records API. <no value>
+        description: Record is the Schema for the Records API. Provides a Cloudflare
+          record resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,10 +68,19 @@ spec:
               forProvider:
                 properties:
                   allowOverwrite:
-                    description: Defaults to `false`.
+                    description: false by default. This configuration is not recommended
+                      for most environments. **This configuration is not recommended
+                      for most environments**. Defaults to `false`.
                     type: boolean
+                  comment:
+                    description: Comments or notes about the DNS record. This field
+                      has no effect on DNS responses.
+                    type: string
                   data:
-                    description: Conflicts with `value`.
+                    description: Map of attributes that constitute the record value.
+                      Primarily used for LOC and SRV record types. Either this or
+                      value must be specified Map of attributes that constitute the
+                      record value. Conflicts with `value`.
                     items:
                       properties:
                         algorithm:
@@ -84,6 +94,7 @@ spec:
                         digest:
                           type: string
                         digestType:
+                          description: The type of the record
                           type: number
                         fingerprint:
                           type: string
@@ -108,8 +119,10 @@ spec:
                         longSeconds:
                           type: number
                         matchingType:
+                          description: The type of the record
                           type: number
                         name:
+                          description: The name of the record
                           type: string
                         order:
                           type: number
@@ -122,6 +135,7 @@ spec:
                         preference:
                           type: number
                         priority:
+                          description: The priority of the record
                           type: number
                         proto:
                           type: string
@@ -144,35 +158,55 @@ spec:
                         target:
                           type: string
                         type:
+                          description: The type of the record
                           type: number
                         usage:
                           type: number
                         value:
+                          description: The (string) value of the record. Either this
+                            or data must be specified
                           type: string
                         weight:
                           type: number
                       type: object
                     type: array
                   name:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: The name of the record The name of the record. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                   priority:
+                    description: The priority of the record The priority of the record.
                     type: number
                   proxied:
+                    description: Whether the record gets Cloudflare's origin protection;
+                      defaults to false. Whether the record gets Cloudflare's origin
+                      protection.
                     type: boolean
+                  tags:
+                    description: Custom tags for the DNS record.
+                    items:
+                      type: string
+                    type: array
                   ttl:
+                    description: 'The TTL of the record (automatic: ''1'') The TTL
+                      of the record.'
                     type: number
                   type:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: 'The type of the record The type of the record. Available
+                      values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`,
+                      `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`,
+                      `TLSA`, `URI`, `PTR`, `HTTPS`, `SVCB`. **Modifying this attribute
+                      will force creation of a new resource.**'
                     type: string
                   value:
-                    description: Conflicts with `data`.
+                    description: The (string) value of the record. Either this or
+                      data must be specified The value of the record. Conflicts with
+                      `data`.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: The DNS zone ID to add the record to The zone identifier
+                      to target for the resource. **Modifying this attribute will
+                      force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -247,9 +281,156 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - name
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  allowOverwrite:
+                    description: false by default. This configuration is not recommended
+                      for most environments. **This configuration is not recommended
+                      for most environments**. Defaults to `false`.
+                    type: boolean
+                  comment:
+                    description: Comments or notes about the DNS record. This field
+                      has no effect on DNS responses.
+                    type: string
+                  data:
+                    description: Map of attributes that constitute the record value.
+                      Primarily used for LOC and SRV record types. Either this or
+                      value must be specified Map of attributes that constitute the
+                      record value. Conflicts with `value`.
+                    items:
+                      properties:
+                        algorithm:
+                          type: number
+                        altitude:
+                          type: number
+                        certificate:
+                          type: string
+                        content:
+                          type: string
+                        digest:
+                          type: string
+                        digestType:
+                          description: The type of the record
+                          type: number
+                        fingerprint:
+                          type: string
+                        flags:
+                          type: string
+                        keyTag:
+                          type: number
+                        latDegrees:
+                          type: number
+                        latDirection:
+                          type: string
+                        latMinutes:
+                          type: number
+                        latSeconds:
+                          type: number
+                        longDegrees:
+                          type: number
+                        longDirection:
+                          type: string
+                        longMinutes:
+                          type: number
+                        longSeconds:
+                          type: number
+                        matchingType:
+                          description: The type of the record
+                          type: number
+                        name:
+                          description: The name of the record
+                          type: string
+                        order:
+                          type: number
+                        port:
+                          type: number
+                        precisionHorz:
+                          type: number
+                        precisionVert:
+                          type: number
+                        preference:
+                          type: number
+                        priority:
+                          description: The priority of the record
+                          type: number
+                        proto:
+                          type: string
+                        protocol:
+                          type: number
+                        publicKey:
+                          type: string
+                        regex:
+                          type: string
+                        replacement:
+                          type: string
+                        selector:
+                          type: number
+                        service:
+                          type: string
+                        size:
+                          type: number
+                        tag:
+                          type: string
+                        target:
+                          type: string
+                        type:
+                          description: The type of the record
+                          type: number
+                        usage:
+                          type: number
+                        value:
+                          description: The (string) value of the record. Either this
+                            or data must be specified
+                          type: string
+                        weight:
+                          type: number
+                      type: object
+                    type: array
+                  name:
+                    description: The name of the record The name of the record. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  priority:
+                    description: The priority of the record The priority of the record.
+                    type: number
+                  proxied:
+                    description: Whether the record gets Cloudflare's origin protection;
+                      defaults to false. Whether the record gets Cloudflare's origin
+                      protection.
+                    type: boolean
+                  tags:
+                    description: Custom tags for the DNS record.
+                    items:
+                      type: string
+                    type: array
+                  ttl:
+                    description: 'The TTL of the record (automatic: ''1'') The TTL
+                      of the record.'
+                    type: number
+                  type:
+                    description: 'The type of the record The type of the record. Available
+                      values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`,
+                      `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`,
+                      `TLSA`, `URI`, `PTR`, `HTTPS`, `SVCB`. **Modifying this attribute
+                      will force creation of a new resource.**'
+                    type: string
+                  value:
+                    description: The (string) value of the record. Either this or
+                      data must be specified The value of the record. Conflicts with
+                      `data`.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -448,25 +629,187 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: RecordStatus defines the observed state of Record.
             properties:
               atProvider:
                 properties:
-                  createdOn:
+                  allowOverwrite:
+                    description: false by default. This configuration is not recommended
+                      for most environments. **This configuration is not recommended
+                      for most environments**. Defaults to `false`.
+                    type: boolean
+                  comment:
+                    description: Comments or notes about the DNS record. This field
+                      has no effect on DNS responses.
                     type: string
+                  createdOn:
+                    description: The RFC3339 timestamp of when the record was created
+                      The RFC3339 timestamp of when the record was created.
+                    type: string
+                  data:
+                    description: Map of attributes that constitute the record value.
+                      Primarily used for LOC and SRV record types. Either this or
+                      value must be specified Map of attributes that constitute the
+                      record value. Conflicts with `value`.
+                    items:
+                      properties:
+                        algorithm:
+                          type: number
+                        altitude:
+                          type: number
+                        certificate:
+                          type: string
+                        content:
+                          type: string
+                        digest:
+                          type: string
+                        digestType:
+                          description: The type of the record
+                          type: number
+                        fingerprint:
+                          type: string
+                        flags:
+                          type: string
+                        keyTag:
+                          type: number
+                        latDegrees:
+                          type: number
+                        latDirection:
+                          type: string
+                        latMinutes:
+                          type: number
+                        latSeconds:
+                          type: number
+                        longDegrees:
+                          type: number
+                        longDirection:
+                          type: string
+                        longMinutes:
+                          type: number
+                        longSeconds:
+                          type: number
+                        matchingType:
+                          description: The type of the record
+                          type: number
+                        name:
+                          description: The name of the record
+                          type: string
+                        order:
+                          type: number
+                        port:
+                          type: number
+                        precisionHorz:
+                          type: number
+                        precisionVert:
+                          type: number
+                        preference:
+                          type: number
+                        priority:
+                          description: The priority of the record
+                          type: number
+                        proto:
+                          type: string
+                        protocol:
+                          type: number
+                        publicKey:
+                          type: string
+                        regex:
+                          type: string
+                        replacement:
+                          type: string
+                        selector:
+                          type: number
+                        service:
+                          type: string
+                        size:
+                          type: number
+                        tag:
+                          type: string
+                        target:
+                          type: string
+                        type:
+                          description: The type of the record
+                          type: number
+                        usage:
+                          type: number
+                        value:
+                          description: The (string) value of the record. Either this
+                            or data must be specified
+                          type: string
+                        weight:
+                          type: number
+                      type: object
+                    type: array
                   hostname:
+                    description: The FQDN of the record The FQDN of the record.
                     type: string
                   id:
+                    description: The record ID
                     type: string
                   metadata:
                     additionalProperties:
                       type: string
+                    description: A key-value map of string metadata Cloudflare associates
+                      with the record A key-value map of string metadata Cloudflare
+                      associates with the record.
                     type: object
                   modifiedOn:
+                    description: The RFC3339 timestamp of when the record was last
+                      modified The RFC3339 timestamp of when the record was last modified.
                     type: string
+                  name:
+                    description: The name of the record The name of the record. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  priority:
+                    description: The priority of the record The priority of the record.
+                    type: number
                   proxiable:
+                    description: Shows whether this record can be proxied, must be
+                      true if setting proxied=true Shows whether this record can be
+                      proxied.
                     type: boolean
+                  proxied:
+                    description: Whether the record gets Cloudflare's origin protection;
+                      defaults to false. Whether the record gets Cloudflare's origin
+                      protection.
+                    type: boolean
+                  tags:
+                    description: Custom tags for the DNS record.
+                    items:
+                      type: string
+                    type: array
+                  ttl:
+                    description: 'The TTL of the record (automatic: ''1'') The TTL
+                      of the record.'
+                    type: number
+                  type:
+                    description: 'The type of the record The type of the record. Available
+                      values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`,
+                      `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`,
+                      `TLSA`, `URI`, `PTR`, `HTTPS`, `SVCB`. **Modifying this attribute
+                      will force creation of a new resource.**'
+                    type: string
+                  value:
+                    description: The (string) value of the record. Either this or
+                      data must be specified The value of the record. Conflicts with
+                      `data`.
+                    type: string
+                  zoneId:
+                    description: The DNS zone ID to add the record to The zone identifier
+                      to target for the resource. **Modifying this attribute will
+                      force creation of a new resource.**
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

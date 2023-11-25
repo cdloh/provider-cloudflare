@@ -159,14 +159,51 @@ spec:
                   type:
                     description: 'A full zone implies that DNS is hosted with Cloudflare.
                       A partial zone is typically a partner-hosted zone or a CNAME
-                      setup. Available values: `full`, `partial`. Defaults to `full`.'
+                      setup. Available values: `full`, `partial`, `secondary`. Defaults
+                      to `full`.'
                     type: string
                   zone:
                     description: The DNS zone name which will be added. **Modifying
                       this attribute will force creation of a new resource.**
                     type: string
-                required:
-                - zone
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  jumpStart:
+                    description: Whether to scan for DNS records on creation. Ignored
+                      after zone is created.
+                    type: boolean
+                  paused:
+                    description: Whether this zone is paused (traffic bypasses Cloudflare).
+                      Defaults to `false`.
+                    type: boolean
+                  plan:
+                    description: 'The name of the commercial plan to apply to the
+                      zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`,
+                      `enterprise`, `partners_free`, `partners_pro`, `partners_business`,
+                      `partners_enterprise`.'
+                    type: string
+                  type:
+                    description: 'A full zone implies that DNS is hosted with Cloudflare.
+                      A partial zone is typically a partner-hosted zone or a CNAME
+                      setup. Available values: `full`, `partial`, `secondary`. Defaults
+                      to `full`.'
+                    type: string
+                  zone:
+                    description: The DNS zone name which will be added. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -365,13 +402,25 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: zone is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.zone)
+                || has(self.initProvider.zone)'
           status:
             description: ZoneStatus defines the observed state of Zone.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: Account ID to manage the zone resource in.
+                    type: string
                   id:
                     type: string
+                  jumpStart:
+                    description: Whether to scan for DNS records on creation. Ignored
+                      after zone is created.
+                    type: boolean
                   meta:
                     additionalProperties:
                       type: boolean
@@ -382,9 +431,25 @@ spec:
                     items:
                       type: string
                     type: array
+                  paused:
+                    description: Whether this zone is paused (traffic bypasses Cloudflare).
+                      Defaults to `false`.
+                    type: boolean
+                  plan:
+                    description: 'The name of the commercial plan to apply to the
+                      zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`,
+                      `enterprise`, `partners_free`, `partners_pro`, `partners_business`,
+                      `partners_enterprise`.'
+                    type: string
                   status:
                     description: 'Status of the zone. Available values: `active`,
                       `pending`, `initializing`, `moved`, `deleted`, `deactivated`.'
+                    type: string
+                  type:
+                    description: 'A full zone implies that DNS is hosted with Cloudflare.
+                      A partial zone is typically a partner-hosted zone or a CNAME
+                      setup. Available values: `full`, `partial`, `secondary`. Defaults
+                      to `full`.'
                     type: string
                   vanityNameServers:
                     description: List of Vanity Nameservers (if set).
@@ -394,6 +459,10 @@ spec:
                   verificationKey:
                     description: Contains the TXT record value to validate domain
                       ownership. This is only populated for zones of type `partial`.
+                    type: string
+                  zone:
+                    description: The DNS zone name which will be added. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

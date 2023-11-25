@@ -13,19 +13,39 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type FallbackOriginInitParameters struct {
+
+	// Hostname you intend to fallback requests to. Origin must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+	// Hostname you intend to fallback requests to. Origin must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+	Origin *string `json:"origin,omitempty" tf:"origin,omitempty"`
+}
+
 type FallbackOriginObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Hostname you intend to fallback requests to. Origin must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+	// Hostname you intend to fallback requests to. Origin must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+	Origin *string `json:"origin,omitempty" tf:"origin,omitempty"`
+
+	// Status of the fallback origin's activation.
+	// Status of the fallback origin's activation.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// The DNS zone ID where the custom hostname should be assigned.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type FallbackOriginParameters struct {
 
-	// +kubebuilder:validation:Required
-	Origin *string `json:"origin" tf:"origin,omitempty"`
+	// Hostname you intend to fallback requests to. Origin must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+	// Hostname you intend to fallback requests to. Origin must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+	// +kubebuilder:validation:Optional
+	Origin *string `json:"origin,omitempty" tf:"origin,omitempty"`
 
+	// The DNS zone ID where the custom hostname should be assigned.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -42,6 +62,18 @@ type FallbackOriginParameters struct {
 type FallbackOriginSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     FallbackOriginParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider FallbackOriginInitParameters `json:"initProvider,omitempty"`
 }
 
 // FallbackOriginStatus defines the observed state of FallbackOrigin.
@@ -52,7 +84,7 @@ type FallbackOriginStatus struct {
 
 // +kubebuilder:object:root=true
 
-// FallbackOrigin is the Schema for the FallbackOrigins API. <no value>
+// FallbackOrigin is the Schema for the FallbackOrigins API. Provides a Cloudflare custom hostname fallback origin resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -62,8 +94,9 @@ type FallbackOriginStatus struct {
 type FallbackOrigin struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              FallbackOriginSpec   `json:"spec"`
-	Status            FallbackOriginStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.origin) || has(self.initProvider.origin)",message="origin is a required parameter"
+	Spec   FallbackOriginSpec   `json:"spec"`
+	Status FallbackOriginStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

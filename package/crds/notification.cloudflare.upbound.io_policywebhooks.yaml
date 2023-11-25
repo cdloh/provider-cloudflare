@@ -34,8 +34,9 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PolicyWebhooks is the Schema for the PolicyWebhookss API. <no
-          value>
+        description: PolicyWebhooks is the Schema for the PolicyWebhookss API. Provides
+          a resource to create and manage webhooks destinations for Cloudflare's notification
+          policies.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,7 +69,9 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The ID of the account for which the webhook destination
+                      has to be connected. The account identifier to target for the
+                      resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -144,13 +147,59 @@ spec:
                         type: object
                     type: object
                   name:
+                    description: The name of the webhook destination. The name of
+                      the webhook destination.
                     type: string
                   secret:
+                    description: An optional secret can be provided that will be passed
+                      in the cf-webhook-auth header when dispatching a webhook notification.
+                      Secrets are not returned in any API response body. Refer to
+                      the documentation for more details - https://api.cloudflare.com/#notification-webhooks-create-webhook.
+                      An optional secret can be provided that will be passed in the
+                      `cf-webhook-auth` header when dispatching a webhook notification.
+                      Secrets are not returned in any API response body. Refer to
+                      the [documentation](https://api.cloudflare.com/#notification-webhooks-create-webhook)
+                      for more details.
                     type: string
                   url:
+                    description: The URL of the webhook destinations. The URL of the
+                      webhook destinations. **Modifying this attribute will force
+                      creation of a new resource.**
                     type: string
-                required:
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  name:
+                    description: The name of the webhook destination. The name of
+                      the webhook destination.
+                    type: string
+                  secret:
+                    description: An optional secret can be provided that will be passed
+                      in the cf-webhook-auth header when dispatching a webhook notification.
+                      Secrets are not returned in any API response body. Refer to
+                      the documentation for more details - https://api.cloudflare.com/#notification-webhooks-create-webhook.
+                      An optional secret can be provided that will be passed in the
+                      `cf-webhook-auth` header when dispatching a webhook notification.
+                      Secrets are not returned in any API response body. Refer to
+                      the [documentation](https://api.cloudflare.com/#notification-webhooks-create-webhook)
+                      for more details.
+                    type: string
+                  url:
+                    description: The URL of the webhook destinations. The URL of the
+                      webhook destinations. **Modifying this attribute will force
+                      creation of a new resource.**
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -349,20 +398,54 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: PolicyWebhooksStatus defines the observed state of PolicyWebhooks.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The ID of the account for which the webhook destination
+                      has to be connected. The account identifier to target for the
+                      resource.
+                    type: string
                   createdAt:
+                    description: Timestamp of when the notification webhook was created.
                     type: string
                   id:
                     type: string
                   lastFailure:
+                    description: Timestamp of when the notification webhook last faiuled.
                     type: string
                   lastSuccess:
+                    description: Timestamp of when the notification webhook was last
+                      successful.
+                    type: string
+                  name:
+                    description: The name of the webhook destination. The name of
+                      the webhook destination.
+                    type: string
+                  secret:
+                    description: An optional secret can be provided that will be passed
+                      in the cf-webhook-auth header when dispatching a webhook notification.
+                      Secrets are not returned in any API response body. Refer to
+                      the documentation for more details - https://api.cloudflare.com/#notification-webhooks-create-webhook.
+                      An optional secret can be provided that will be passed in the
+                      `cf-webhook-auth` header when dispatching a webhook notification.
+                      Secrets are not returned in any API response body. Refer to
+                      the [documentation](https://api.cloudflare.com/#notification-webhooks-create-webhook)
+                      for more details.
                     type: string
                   type:
+                    type: string
+                  url:
+                    description: The URL of the webhook destinations. The URL of the
+                      webhook destinations. **Modifying this attribute will force
+                      creation of a new resource.**
                     type: string
                 type: object
               conditions:

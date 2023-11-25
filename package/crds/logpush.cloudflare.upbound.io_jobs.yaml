@@ -144,14 +144,12 @@ spec:
                         type: object
                     type: object
                   dataset:
-                    description: 'Uniquely identifies a resource (such as an s3 bucket)
-                      where data will be pushed. Additional configuration parameters
-                      supported by the destination may be included. See [Logpush destination
-                      documentation](https://developers.cloudflare.com/logs/reference/logpush-api-configuration#destination).
-                      Available values: `access_requests`, `firewall_events`, `http_requests`,
-                      `spectrum_events`, `nel_reports`, `audit_logs`, `gateway_dns`,
-                      `gateway_http`, `gateway_network`, `dns_logs`, `network_analytics_logs`,
-                      `workers_trace_events`.'
+                    description: 'The kind of the dataset to use with the logpush
+                      job. Available values: `access_requests`, `casb_findings`, `firewall_events`,
+                      `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`,
+                      `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`,
+                      `network_analytics_logs`, `workers_trace_events`, `device_posture_results`,
+                      `zero_trust_network_sessions`.'
                     type: string
                   destinationConf:
                     description: Uniquely identifies a resource (such as an s3 bucket)
@@ -178,9 +176,21 @@ spec:
                     type: string
                   logpullOptions:
                     description: Configuration string for the Logshare API. It specifies
-                      things like requested fields and timestamp formats. See [Logpull
+                      things like requested fields and timestamp formats. See [Logpush
                       options documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#options).
                     type: string
+                  maxUploadBytes:
+                    description: The maximum uncompressed file size of a batch of
+                      logs. Value must be between 5MB and 1GB.
+                    type: number
+                  maxUploadIntervalSeconds:
+                    description: The maximum interval in seconds for log batches.
+                      Value must be between 30 and 300.
+                    type: number
+                  maxUploadRecords:
+                    description: The maximum number of log lines per batch. Value
+                      must be between 1000 and 1,000,000.
+                    type: number
                   name:
                     description: The name of the logpush job to create.
                     type: string
@@ -266,9 +276,76 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - dataset
-                - destinationConf
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  dataset:
+                    description: 'The kind of the dataset to use with the logpush
+                      job. Available values: `access_requests`, `casb_findings`, `firewall_events`,
+                      `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`,
+                      `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`,
+                      `network_analytics_logs`, `workers_trace_events`, `device_posture_results`,
+                      `zero_trust_network_sessions`.'
+                    type: string
+                  destinationConf:
+                    description: Uniquely identifies a resource (such as an s3 bucket)
+                      where data will be pushed. Additional configuration parameters
+                      supported by the destination may be included. See [Logpush destination
+                      documentation](https://developers.cloudflare.com/logs/reference/logpush-api-configuration#destination).
+                    type: string
+                  enabled:
+                    description: Whether to enable the job.
+                    type: boolean
+                  filter:
+                    description: Use filters to select the events to include and/or
+                      remove from your logs. For more information, refer to [Filters](https://developers.cloudflare.com/logs/reference/logpush-api-configuration/filters/).
+                    type: string
+                  frequency:
+                    description: 'A higher frequency will result in logs being pushed
+                      on faster with smaller files. `low` frequency will push logs
+                      less often with larger files. Available values: `high`, `low`.
+                      Defaults to `high`.'
+                    type: string
+                  kind:
+                    description: 'The kind of logpush job to create. Available values:
+                      `edge`, `instant-logs`, `""`.'
+                    type: string
+                  logpullOptions:
+                    description: Configuration string for the Logshare API. It specifies
+                      things like requested fields and timestamp formats. See [Logpush
+                      options documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#options).
+                    type: string
+                  maxUploadBytes:
+                    description: The maximum uncompressed file size of a batch of
+                      logs. Value must be between 5MB and 1GB.
+                    type: number
+                  maxUploadIntervalSeconds:
+                    description: The maximum interval in seconds for log batches.
+                      Value must be between 30 and 300.
+                    type: number
+                  maxUploadRecords:
+                    description: The maximum number of log lines per batch. Value
+                      must be between 1000 and 1,000,000.
+                    type: number
+                  name:
+                    description: The name of the logpush job to create.
+                    type: string
+                  ownershipChallenge:
+                    description: Ownership challenge token to prove destination ownership,
+                      required when destination is Amazon S3, Google Cloud Storage,
+                      Microsoft Azure or Sumo Logic. See [Developer documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#usage).
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -467,12 +544,85 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: dataset is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.dataset)
+                || has(self.initProvider.dataset)'
+            - message: destinationConf is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.destinationConf)
+                || has(self.initProvider.destinationConf)'
           status:
             description: JobStatus defines the observed state of Job.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      Must provide only one of `account_id`, `zone_id`.
+                    type: string
+                  dataset:
+                    description: 'The kind of the dataset to use with the logpush
+                      job. Available values: `access_requests`, `casb_findings`, `firewall_events`,
+                      `http_requests`, `spectrum_events`, `nel_reports`, `audit_logs`,
+                      `gateway_dns`, `gateway_http`, `gateway_network`, `dns_logs`,
+                      `network_analytics_logs`, `workers_trace_events`, `device_posture_results`,
+                      `zero_trust_network_sessions`.'
+                    type: string
+                  destinationConf:
+                    description: Uniquely identifies a resource (such as an s3 bucket)
+                      where data will be pushed. Additional configuration parameters
+                      supported by the destination may be included. See [Logpush destination
+                      documentation](https://developers.cloudflare.com/logs/reference/logpush-api-configuration#destination).
+                    type: string
+                  enabled:
+                    description: Whether to enable the job.
+                    type: boolean
+                  filter:
+                    description: Use filters to select the events to include and/or
+                      remove from your logs. For more information, refer to [Filters](https://developers.cloudflare.com/logs/reference/logpush-api-configuration/filters/).
+                    type: string
+                  frequency:
+                    description: 'A higher frequency will result in logs being pushed
+                      on faster with smaller files. `low` frequency will push logs
+                      less often with larger files. Available values: `high`, `low`.
+                      Defaults to `high`.'
+                    type: string
                   id:
+                    type: string
+                  kind:
+                    description: 'The kind of logpush job to create. Available values:
+                      `edge`, `instant-logs`, `""`.'
+                    type: string
+                  logpullOptions:
+                    description: Configuration string for the Logshare API. It specifies
+                      things like requested fields and timestamp formats. See [Logpush
+                      options documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#options).
+                    type: string
+                  maxUploadBytes:
+                    description: The maximum uncompressed file size of a batch of
+                      logs. Value must be between 5MB and 1GB.
+                    type: number
+                  maxUploadIntervalSeconds:
+                    description: The maximum interval in seconds for log batches.
+                      Value must be between 30 and 300.
+                    type: number
+                  maxUploadRecords:
+                    description: The maximum number of log lines per batch. Value
+                      must be between 1000 and 1,000,000.
+                    type: number
+                  name:
+                    description: The name of the logpush job to create.
+                    type: string
+                  ownershipChallenge:
+                    description: Ownership challenge token to prove destination ownership,
+                      required when destination is Amazon S3, Google Cloud Storage,
+                      Microsoft Azure or Sumo Logic. See [Developer documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#usage).
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. Must
+                      provide only one of `account_id`, `zone_id`.
                     type: string
                 type: object
               conditions:

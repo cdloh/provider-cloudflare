@@ -1,0 +1,20 @@
+apiVersion: spectrum.cloudflare.upbound.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    meta.upbound.io/example-id: spectrum/v1alpha1/application
+  labels:
+    testing.upbound.io/example-name: ssh_proxy
+  name: ssh-proxy
+spec:
+  forProvider:
+    dns:
+    - name: ssh.example.com
+      type: CNAME
+    originDirect:
+    - tcp://109.151.40.129:22
+    protocol: tcp/22
+    trafficType: direct
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

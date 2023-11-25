@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Location is the Schema for the Locations API. <no value>
+        description: Location is the Schema for the Locations API. Provides a Cloudflare
+          Teams Location resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,7 +68,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The account to which the teams location should be
+                      added. The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -143,20 +145,55 @@ spec:
                         type: object
                     type: object
                   clientDefault:
+                    description: Indicator that this is the default location. Indicator
+                      that this is the default location.
                     type: boolean
                   name:
+                    description: Name of the teams location. Name of the teams location.
                     type: string
                   networks:
+                    description: The networks CIDRs that comprise the location. The
+                      networks CIDRs that comprise the location.
                     items:
                       properties:
                         network:
+                          description: CIDR notation representation of the network
+                            IP.
                           type: string
-                      required:
-                      - network
                       type: object
                     type: array
-                required:
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  clientDefault:
+                    description: Indicator that this is the default location. Indicator
+                      that this is the default location.
+                    type: boolean
+                  name:
+                    description: Name of the teams location. Name of the teams location.
+                    type: string
+                  networks:
+                    description: The networks CIDRs that comprise the location. The
+                      networks CIDRs that comprise the location.
+                    items:
+                      properties:
+                        network:
+                          description: CIDR notation representation of the network
+                            IP.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -355,25 +392,56 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: LocationStatus defines the observed state of Location.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account to which the teams location should be
+                      added. The account identifier to target for the resource.
+                    type: string
                   anonymizedLogsEnabled:
+                    description: Indicator that anonymized logs are enabled. Indicator
+                      that anonymized logs are enabled.
+                    type: boolean
+                  clientDefault:
+                    description: Indicator that this is the default location. Indicator
+                      that this is the default location.
                     type: boolean
                   dohSubdomain:
+                    description: The FQDN that DoH clients should be pointed at. The
+                      FQDN that DoH clients should be pointed at.
                     type: string
                   id:
+                    description: ID of the teams location.
                     type: string
                   ip:
+                    description: Client IP address Client IP address.
                     type: string
                   ipv4Destination:
+                    description: IP to direct all IPv4 DNS queries too. IP to direct
+                      all IPv4 DNS queries to.
+                    type: string
+                  name:
+                    description: Name of the teams location. Name of the teams location.
                     type: string
                   networks:
+                    description: The networks CIDRs that comprise the location. The
+                      networks CIDRs that comprise the location.
                     items:
                       properties:
                         id:
+                          description: ID of the teams location.
+                          type: string
+                        network:
+                          description: CIDR notation representation of the network
+                            IP.
                           type: string
                       type: object
                     type: array

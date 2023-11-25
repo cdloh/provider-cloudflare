@@ -13,14 +13,58 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DevicePostureRuleInitParameters struct {
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Expire posture results after the specified amount of time. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Expiration *string `json:"expiration,omitempty" tf:"expiration,omitempty"`
+
+	Input []InputInitParameters `json:"input,omitempty" tf:"input,omitempty"`
+
+	// The conditions that the client must match to run the rule.
+	Match []MatchInitParameters `json:"match,omitempty" tf:"match,omitempty"`
+
+	// Name of the device posture rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Tells the client when to run the device posture check. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Schedule *string `json:"schedule,omitempty" tf:"schedule,omitempty"`
+
+	// The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `client_certificate`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`, `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type DevicePostureRuleObservation struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Expire posture results after the specified amount of time. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Expiration *string `json:"expiration,omitempty" tf:"expiration,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Input []InputObservation `json:"input,omitempty" tf:"input,omitempty"`
+
+	// The conditions that the client must match to run the rule.
+	Match []MatchObservation `json:"match,omitempty" tf:"match,omitempty"`
+
+	// Name of the device posture rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Tells the client when to run the device posture check. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Schedule *string `json:"schedule,omitempty" tf:"schedule,omitempty"`
+
+	// The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `client_certificate`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`, `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type DevicePostureRuleParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -54,17 +98,222 @@ type DevicePostureRuleParameters struct {
 	// +kubebuilder:validation:Optional
 	Schedule *string `json:"schedule,omitempty" tf:"schedule,omitempty"`
 
-	// The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `workspace_one`, `unique_client_id`.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `client_certificate`, `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`, `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type InputInitParameters struct {
+
+	// The number of active threats from SentinelOne.
+	ActiveThreats *float64 `json:"activeThreats,omitempty" tf:"active_threats,omitempty"`
+
+	// The UUID of a Cloudflare managed certificate.
+	CertificateID *string `json:"certificateId,omitempty" tf:"certificate_id,omitempty"`
+
+	// Specific volume(s) to check for encryption.
+	CheckDisks []*string `json:"checkDisks,omitempty" tf:"check_disks,omitempty"`
+
+	// The common name for a certificate.
+	Cn *string `json:"cn,omitempty" tf:"cn,omitempty"`
+
+	// The workspace one device compliance status. Available values: `compliant`, `noncompliant`.
+	ComplianceStatus *string `json:"complianceStatus,omitempty" tf:"compliance_status,omitempty"`
+
+	// The workspace one connection id.
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+
+	// The count comparison operator for kolide. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	CountOperator *string `json:"countOperator,omitempty" tf:"count_operator,omitempty"`
+
+	// The domain that the client must join.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// The datetime a device last seen in RFC 3339 format from Tanium.
+	EidLastSeen *string `json:"eidLastSeen,omitempty" tf:"eid_last_seen,omitempty"`
+
+	// True if the firewall must be enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Checks if the file should exist.
+	Exists *bool `json:"exists,omitempty" tf:"exists,omitempty"`
+
+	// The Teams List id.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// True if SentinelOne device is infected.
+	Infected *bool `json:"infected,omitempty" tf:"infected,omitempty"`
+
+	// True if SentinelOne device is active.
+	IsActive *bool `json:"isActive,omitempty" tf:"is_active,omitempty"`
+
+	// The number of issues for kolide.
+	IssueCount *string `json:"issueCount,omitempty" tf:"issue_count,omitempty"`
+
+	// The network status from SentinelOne. Available values: `connected`, `disconnected`, `disconnecting`, `connecting`.
+	NetworkStatus *string `json:"networkStatus,omitempty" tf:"network_status,omitempty"`
+
+	// The version comparison operator. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// OS signal score from Crowdstrike. Value must be between 1 and 100.
+	Os *string `json:"os,omitempty" tf:"os,omitempty"`
+
+	// The operating system excluding version information.
+	OsDistroName *string `json:"osDistroName,omitempty" tf:"os_distro_name,omitempty"`
+
+	// The operating system version excluding OS name information or release name.
+	OsDistroRevision *string `json:"osDistroRevision,omitempty" tf:"os_distro_revision,omitempty"`
+
+	// Overall ZTA score from Crowdstrike. Value must be between 1 and 100.
+	Overall *string `json:"overall,omitempty" tf:"overall,omitempty"`
+
+	// The path to the file.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// True if all drives must be encrypted.
+	RequireAll *bool `json:"requireAll,omitempty" tf:"require_all,omitempty"`
+
+	// The risk level from Tanium. Available values: `low`, `medium`, `high`, `critical`.
+	RiskLevel *string `json:"riskLevel,omitempty" tf:"risk_level,omitempty"`
+
+	// Checks if the application should be running.
+	Running *bool `json:"running,omitempty" tf:"running,omitempty"`
+
+	// Sensor signal score from Crowdstrike. Value must be between 1 and 100.
+	SensorConfig *string `json:"sensorConfig,omitempty" tf:"sensor_config,omitempty"`
+
+	// The sha256 hash of the file.
+	Sha256 *string `json:"sha256,omitempty" tf:"sha256,omitempty"`
+
+	// The thumbprint of the file certificate.
+	Thumbprint *string `json:"thumbprint,omitempty" tf:"thumbprint,omitempty"`
+
+	// The total score from Tanium.
+	TotalScore *float64 `json:"totalScore,omitempty" tf:"total_score,omitempty"`
+
+	// The operating system semantic version.
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+
+	// The version comparison operator for crowdstrike. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	VersionOperator *string `json:"versionOperator,omitempty" tf:"version_operator,omitempty"`
 }
 
 type InputObservation struct {
+
+	// The number of active threats from SentinelOne.
+	ActiveThreats *float64 `json:"activeThreats,omitempty" tf:"active_threats,omitempty"`
+
+	// The UUID of a Cloudflare managed certificate.
+	CertificateID *string `json:"certificateId,omitempty" tf:"certificate_id,omitempty"`
+
+	// Specific volume(s) to check for encryption.
+	CheckDisks []*string `json:"checkDisks,omitempty" tf:"check_disks,omitempty"`
+
+	// The common name for a certificate.
+	Cn *string `json:"cn,omitempty" tf:"cn,omitempty"`
+
+	// The workspace one device compliance status. Available values: `compliant`, `noncompliant`.
+	ComplianceStatus *string `json:"complianceStatus,omitempty" tf:"compliance_status,omitempty"`
+
+	// The workspace one connection id.
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+
+	// The count comparison operator for kolide. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	CountOperator *string `json:"countOperator,omitempty" tf:"count_operator,omitempty"`
+
+	// The domain that the client must join.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// The datetime a device last seen in RFC 3339 format from Tanium.
+	EidLastSeen *string `json:"eidLastSeen,omitempty" tf:"eid_last_seen,omitempty"`
+
+	// True if the firewall must be enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Checks if the file should exist.
+	Exists *bool `json:"exists,omitempty" tf:"exists,omitempty"`
+
+	// The Teams List id.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// True if SentinelOne device is infected.
+	Infected *bool `json:"infected,omitempty" tf:"infected,omitempty"`
+
+	// True if SentinelOne device is active.
+	IsActive *bool `json:"isActive,omitempty" tf:"is_active,omitempty"`
+
+	// The number of issues for kolide.
+	IssueCount *string `json:"issueCount,omitempty" tf:"issue_count,omitempty"`
+
+	// The network status from SentinelOne. Available values: `connected`, `disconnected`, `disconnecting`, `connecting`.
+	NetworkStatus *string `json:"networkStatus,omitempty" tf:"network_status,omitempty"`
+
+	// The version comparison operator. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// OS signal score from Crowdstrike. Value must be between 1 and 100.
+	Os *string `json:"os,omitempty" tf:"os,omitempty"`
+
+	// The operating system excluding version information.
+	OsDistroName *string `json:"osDistroName,omitempty" tf:"os_distro_name,omitempty"`
+
+	// The operating system version excluding OS name information or release name.
+	OsDistroRevision *string `json:"osDistroRevision,omitempty" tf:"os_distro_revision,omitempty"`
+
+	// Overall ZTA score from Crowdstrike. Value must be between 1 and 100.
+	Overall *string `json:"overall,omitempty" tf:"overall,omitempty"`
+
+	// The path to the file.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// True if all drives must be encrypted.
+	RequireAll *bool `json:"requireAll,omitempty" tf:"require_all,omitempty"`
+
+	// The risk level from Tanium. Available values: `low`, `medium`, `high`, `critical`.
+	RiskLevel *string `json:"riskLevel,omitempty" tf:"risk_level,omitempty"`
+
+	// Checks if the application should be running.
+	Running *bool `json:"running,omitempty" tf:"running,omitempty"`
+
+	// Sensor signal score from Crowdstrike. Value must be between 1 and 100.
+	SensorConfig *string `json:"sensorConfig,omitempty" tf:"sensor_config,omitempty"`
+
+	// The sha256 hash of the file.
+	Sha256 *string `json:"sha256,omitempty" tf:"sha256,omitempty"`
+
+	// The thumbprint of the file certificate.
+	Thumbprint *string `json:"thumbprint,omitempty" tf:"thumbprint,omitempty"`
+
+	// The total score from Tanium.
+	TotalScore *float64 `json:"totalScore,omitempty" tf:"total_score,omitempty"`
+
+	// The operating system semantic version.
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+
+	// The version comparison operator for crowdstrike. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	VersionOperator *string `json:"versionOperator,omitempty" tf:"version_operator,omitempty"`
 }
 
 type InputParameters struct {
 
-	// The workspace one device compliance status.
+	// The number of active threats from SentinelOne.
+	// +kubebuilder:validation:Optional
+	ActiveThreats *float64 `json:"activeThreats,omitempty" tf:"active_threats,omitempty"`
+
+	// The UUID of a Cloudflare managed certificate.
+	// +kubebuilder:validation:Optional
+	CertificateID *string `json:"certificateId,omitempty" tf:"certificate_id,omitempty"`
+
+	// Specific volume(s) to check for encryption.
+	// +kubebuilder:validation:Optional
+	CheckDisks []*string `json:"checkDisks,omitempty" tf:"check_disks,omitempty"`
+
+	// The common name for a certificate.
+	// +kubebuilder:validation:Optional
+	Cn *string `json:"cn,omitempty" tf:"cn,omitempty"`
+
+	// The workspace one device compliance status. Available values: `compliant`, `noncompliant`.
 	// +kubebuilder:validation:Optional
 	ComplianceStatus *string `json:"complianceStatus,omitempty" tf:"compliance_status,omitempty"`
 
@@ -72,9 +321,17 @@ type InputParameters struct {
 	// +kubebuilder:validation:Optional
 	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
 
+	// The count comparison operator for kolide. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	// +kubebuilder:validation:Optional
+	CountOperator *string `json:"countOperator,omitempty" tf:"count_operator,omitempty"`
+
 	// The domain that the client must join.
 	// +kubebuilder:validation:Optional
 	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// The datetime a device last seen in RFC 3339 format from Tanium.
+	// +kubebuilder:validation:Optional
+	EidLastSeen *string `json:"eidLastSeen,omitempty" tf:"eid_last_seen,omitempty"`
 
 	// True if the firewall must be enabled.
 	// +kubebuilder:validation:Optional
@@ -88,9 +345,29 @@ type InputParameters struct {
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The version comparison operator.
+	// True if SentinelOne device is infected.
+	// +kubebuilder:validation:Optional
+	Infected *bool `json:"infected,omitempty" tf:"infected,omitempty"`
+
+	// True if SentinelOne device is active.
+	// +kubebuilder:validation:Optional
+	IsActive *bool `json:"isActive,omitempty" tf:"is_active,omitempty"`
+
+	// The number of issues for kolide.
+	// +kubebuilder:validation:Optional
+	IssueCount *string `json:"issueCount,omitempty" tf:"issue_count,omitempty"`
+
+	// The network status from SentinelOne. Available values: `connected`, `disconnected`, `disconnecting`, `connecting`.
+	// +kubebuilder:validation:Optional
+	NetworkStatus *string `json:"networkStatus,omitempty" tf:"network_status,omitempty"`
+
+	// The version comparison operator. Available values: `>`, `>=`, `<`, `<=`, `==`.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// OS signal score from Crowdstrike. Value must be between 1 and 100.
+	// +kubebuilder:validation:Optional
+	Os *string `json:"os,omitempty" tf:"os,omitempty"`
 
 	// The operating system excluding version information.
 	// +kubebuilder:validation:Optional
@@ -100,6 +377,10 @@ type InputParameters struct {
 	// +kubebuilder:validation:Optional
 	OsDistroRevision *string `json:"osDistroRevision,omitempty" tf:"os_distro_revision,omitempty"`
 
+	// Overall ZTA score from Crowdstrike. Value must be between 1 and 100.
+	// +kubebuilder:validation:Optional
+	Overall *string `json:"overall,omitempty" tf:"overall,omitempty"`
+
 	// The path to the file.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
@@ -108,9 +389,17 @@ type InputParameters struct {
 	// +kubebuilder:validation:Optional
 	RequireAll *bool `json:"requireAll,omitempty" tf:"require_all,omitempty"`
 
+	// The risk level from Tanium. Available values: `low`, `medium`, `high`, `critical`.
+	// +kubebuilder:validation:Optional
+	RiskLevel *string `json:"riskLevel,omitempty" tf:"risk_level,omitempty"`
+
 	// Checks if the application should be running.
 	// +kubebuilder:validation:Optional
 	Running *bool `json:"running,omitempty" tf:"running,omitempty"`
+
+	// Sensor signal score from Crowdstrike. Value must be between 1 and 100.
+	// +kubebuilder:validation:Optional
+	SensorConfig *string `json:"sensorConfig,omitempty" tf:"sensor_config,omitempty"`
 
 	// The sha256 hash of the file.
 	// +kubebuilder:validation:Optional
@@ -120,12 +409,29 @@ type InputParameters struct {
 	// +kubebuilder:validation:Optional
 	Thumbprint *string `json:"thumbprint,omitempty" tf:"thumbprint,omitempty"`
 
+	// The total score from Tanium.
+	// +kubebuilder:validation:Optional
+	TotalScore *float64 `json:"totalScore,omitempty" tf:"total_score,omitempty"`
+
 	// The operating system semantic version.
 	// +kubebuilder:validation:Optional
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+
+	// The version comparison operator for crowdstrike. Available values: `>`, `>=`, `<`, `<=`, `==`.
+	// +kubebuilder:validation:Optional
+	VersionOperator *string `json:"versionOperator,omitempty" tf:"version_operator,omitempty"`
+}
+
+type MatchInitParameters struct {
+
+	// The platform of the device. Available values: `windows`, `mac`, `linux`, `android`, `ios`, `chromeos`.
+	Platform *string `json:"platform,omitempty" tf:"platform,omitempty"`
 }
 
 type MatchObservation struct {
+
+	// The platform of the device. Available values: `windows`, `mac`, `linux`, `android`, `ios`, `chromeos`.
+	Platform *string `json:"platform,omitempty" tf:"platform,omitempty"`
 }
 
 type MatchParameters struct {
@@ -139,6 +445,18 @@ type MatchParameters struct {
 type DevicePostureRuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DevicePostureRuleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DevicePostureRuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // DevicePostureRuleStatus defines the observed state of DevicePostureRule.
@@ -159,8 +477,9 @@ type DevicePostureRuleStatus struct {
 type DevicePostureRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DevicePostureRuleSpec   `json:"spec"`
-	Status            DevicePostureRuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	Spec   DevicePostureRuleSpec   `json:"spec"`
+	Status DevicePostureRuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

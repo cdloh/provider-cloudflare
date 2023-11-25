@@ -13,30 +13,191 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type HeaderInitParameters struct {
+
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden. Fields documented below. Only valid if type is "http" or "https".
+	// The header name.
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A list of string values for the header.
+	// A list of values for the header.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
 type HeaderObservation struct {
+
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden. Fields documented below. Only valid if type is "http" or "https".
+	// The header name.
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A list of string values for the header.
+	// A list of values for the header.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type HeaderParameters struct {
 
-	// +kubebuilder:validation:Required
-	Header *string `json:"header" tf:"header,omitempty"`
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden. Fields documented below. Only valid if type is "http" or "https".
+	// The header name.
+	// +kubebuilder:validation:Optional
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Values []*string `json:"values" tf:"values,omitempty"`
+	// A list of string values for the header.
+	// A list of values for the header.
+	// +kubebuilder:validation:Optional
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type MonitorInitParameters struct {
+
+	// Do not validate the certificate when monitor use HTTPS. Only valid if type is "http" or "https".
+	// Do not validate the certificate when monitor use HTTPS.  Only valid if `type` is "http" or "https".
+	AllowInsecure *bool `json:"allowInsecure,omitempty" tf:"allow_insecure,omitempty"`
+
+	// To be marked unhealthy the monitored origin must fail this healthcheck N consecutive times. Defaults to `0`.
+	ConsecutiveDown *float64 `json:"consecutiveDown,omitempty" tf:"consecutive_down,omitempty"`
+
+	// To be marked healthy the monitored origin must pass this healthcheck N consecutive times. Defaults to `0`.
+	ConsecutiveUp *float64 `json:"consecutiveUp,omitempty" tf:"consecutive_up,omitempty"`
+
+	// Free text description.
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A case-insensitive sub-string to look for in the response body. If this string is not found, the origin will be marked as unhealthy. Only valid if type is "http" or "https". Default: "".
+	// A case-insensitive sub-string to look for in the response body. If this string is not found, the origin will be marked as unhealthy. Only valid if `type` is "http" or "https".
+	ExpectedBody *string `json:"expectedBody,omitempty" tf:"expected_body,omitempty"`
+
+	// The expected HTTP response code or code range of the health check. Eg 2xx. Only valid and required if type is "http" or "https".
+	// The expected HTTP response code or code range of the health check. Eg `2xx`. Only valid and required if `type` is "http" or "https".
+	ExpectedCodes *string `json:"expectedCodes,omitempty" tf:"expected_codes,omitempty"`
+
+	// Follow redirects if returned by the origin. Only valid if type is "http" or "https".
+	// Follow redirects if returned by the origin. Only valid if `type` is "http" or "https".
+	FollowRedirects *bool `json:"followRedirects,omitempty" tf:"follow_redirects,omitempty"`
+
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden. Fields documented below. Only valid if type is "http" or "https".
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden.
+	Header []HeaderInitParameters `json:"header,omitempty" tf:"header,omitempty"`
+
+	// The interval between each health check. Shorter intervals may improve failover time, but will increase load on the origins as we check from multiple locations. Default: 60.
+	// The interval between each health check. Shorter intervals may improve failover time, but will increase load on the origins as we check from multiple locations. Defaults to `60`.
+	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
+
+	// The method to use for the health check. Valid values are any valid HTTP verb if type is "http" or "https", or connection_established if type is "tcp". Default: "GET" if type is "http" or "https", "connection_established" if type is "tcp", and empty otherwise.
+	// The method to use for the health check.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+
+	// The endpoint path to health check against. Default: "/". Only valid if type is "http" or "https".
+	// The endpoint path to health check against.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The port number to use for the healthcheck, required when creating a TCP monitor. Valid values are in the range 0-65535.
+	// The port number to use for the healthcheck, required when creating a TCP monitor.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// Assign this monitor to emulate the specified zone while probing. Only valid if type is "http" or "https".
+	// Assign this monitor to emulate the specified zone while probing. Only valid if `type` is "http" or "https".
+	ProbeZone *string `json:"probeZone,omitempty" tf:"probe_zone,omitempty"`
+
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Default: 2.
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Defaults to `2`.
+	Retries *float64 `json:"retries,omitempty" tf:"retries,omitempty"`
+
+	// The timeout (in seconds) before marking the health check as failed. Default: 5.
+	// The timeout (in seconds) before marking the health check as failed. Defaults to `5`.
+	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+
+	// The protocol to use for the healthcheck. Currently supported protocols are 'HTTP', 'HTTPS', 'TCP', 'UDP-ICMP', 'ICMP-PING', and 'SMTP'. Default: "http".
+	// The protocol to use for the healthcheck. Available values: `http`, `https`, `tcp`, `udp_icmp`, `icmp_ping`, `smtp`. Defaults to `http`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type MonitorObservation struct {
+
+	// The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Do not validate the certificate when monitor use HTTPS. Only valid if type is "http" or "https".
+	// Do not validate the certificate when monitor use HTTPS.  Only valid if `type` is "http" or "https".
+	AllowInsecure *bool `json:"allowInsecure,omitempty" tf:"allow_insecure,omitempty"`
+
+	// To be marked unhealthy the monitored origin must fail this healthcheck N consecutive times. Defaults to `0`.
+	ConsecutiveDown *float64 `json:"consecutiveDown,omitempty" tf:"consecutive_down,omitempty"`
+
+	// To be marked healthy the monitored origin must pass this healthcheck N consecutive times. Defaults to `0`.
+	ConsecutiveUp *float64 `json:"consecutiveUp,omitempty" tf:"consecutive_up,omitempty"`
+
+	// The RFC3339 timestamp of when the load balancer monitor was created.
+	// The RFC3339 timestamp of when the load balancer monitor was created.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
 
+	// Free text description.
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A case-insensitive sub-string to look for in the response body. If this string is not found, the origin will be marked as unhealthy. Only valid if type is "http" or "https". Default: "".
+	// A case-insensitive sub-string to look for in the response body. If this string is not found, the origin will be marked as unhealthy. Only valid if `type` is "http" or "https".
+	ExpectedBody *string `json:"expectedBody,omitempty" tf:"expected_body,omitempty"`
+
+	// The expected HTTP response code or code range of the health check. Eg 2xx. Only valid and required if type is "http" or "https".
+	// The expected HTTP response code or code range of the health check. Eg `2xx`. Only valid and required if `type` is "http" or "https".
+	ExpectedCodes *string `json:"expectedCodes,omitempty" tf:"expected_codes,omitempty"`
+
+	// Follow redirects if returned by the origin. Only valid if type is "http" or "https".
+	// Follow redirects if returned by the origin. Only valid if `type` is "http" or "https".
+	FollowRedirects *bool `json:"followRedirects,omitempty" tf:"follow_redirects,omitempty"`
+
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden. Fields documented below. Only valid if type is "http" or "https".
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden.
+	Header []HeaderObservation `json:"header,omitempty" tf:"header,omitempty"`
+
+	// Load balancer monitor ID.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The interval between each health check. Shorter intervals may improve failover time, but will increase load on the origins as we check from multiple locations. Default: 60.
+	// The interval between each health check. Shorter intervals may improve failover time, but will increase load on the origins as we check from multiple locations. Defaults to `60`.
+	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
+
+	// The method to use for the health check. Valid values are any valid HTTP verb if type is "http" or "https", or connection_established if type is "tcp". Default: "GET" if type is "http" or "https", "connection_established" if type is "tcp", and empty otherwise.
+	// The method to use for the health check.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+
+	// The RFC3339 timestamp of when the load balancer monitor was last modified.
+	// The RFC3339 timestamp of when the load balancer monitor was last modified.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+
+	// The endpoint path to health check against. Default: "/". Only valid if type is "http" or "https".
+	// The endpoint path to health check against.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// The port number to use for the healthcheck, required when creating a TCP monitor. Valid values are in the range 0-65535.
+	// The port number to use for the healthcheck, required when creating a TCP monitor.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// Assign this monitor to emulate the specified zone while probing. Only valid if type is "http" or "https".
+	// Assign this monitor to emulate the specified zone while probing. Only valid if `type` is "http" or "https".
+	ProbeZone *string `json:"probeZone,omitempty" tf:"probe_zone,omitempty"`
+
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Default: 2.
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Defaults to `2`.
+	Retries *float64 `json:"retries,omitempty" tf:"retries,omitempty"`
+
+	// The timeout (in seconds) before marking the health check as failed. Default: 5.
+	// The timeout (in seconds) before marking the health check as failed. Defaults to `5`.
+	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+
+	// The protocol to use for the healthcheck. Currently supported protocols are 'HTTP', 'HTTPS', 'TCP', 'UDP-ICMP', 'ICMP-PING', and 'SMTP'. Default: "http".
+	// The protocol to use for the healthcheck. Available values: `http`, `https`, `tcp`, `udp_icmp`, `icmp_ping`, `smtp`. Defaults to `http`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type MonitorParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -48,49 +209,81 @@ type MonitorParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Do not validate the certificate when monitor use HTTPS. Only valid if type is "http" or "https".
+	// Do not validate the certificate when monitor use HTTPS.  Only valid if `type` is "http" or "https".
 	// +kubebuilder:validation:Optional
 	AllowInsecure *bool `json:"allowInsecure,omitempty" tf:"allow_insecure,omitempty"`
 
+	// To be marked unhealthy the monitored origin must fail this healthcheck N consecutive times. Defaults to `0`.
+	// +kubebuilder:validation:Optional
+	ConsecutiveDown *float64 `json:"consecutiveDown,omitempty" tf:"consecutive_down,omitempty"`
+
+	// To be marked healthy the monitored origin must pass this healthcheck N consecutive times. Defaults to `0`.
+	// +kubebuilder:validation:Optional
+	ConsecutiveUp *float64 `json:"consecutiveUp,omitempty" tf:"consecutive_up,omitempty"`
+
+	// Free text description.
+	// Free text description.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// A case-insensitive sub-string to look for in the response body. If this string is not found, the origin will be marked as unhealthy. Only valid if type is "http" or "https". Default: "".
+	// A case-insensitive sub-string to look for in the response body. If this string is not found, the origin will be marked as unhealthy. Only valid if `type` is "http" or "https".
 	// +kubebuilder:validation:Optional
 	ExpectedBody *string `json:"expectedBody,omitempty" tf:"expected_body,omitempty"`
 
+	// The expected HTTP response code or code range of the health check. Eg 2xx. Only valid and required if type is "http" or "https".
+	// The expected HTTP response code or code range of the health check. Eg `2xx`. Only valid and required if `type` is "http" or "https".
 	// +kubebuilder:validation:Optional
 	ExpectedCodes *string `json:"expectedCodes,omitempty" tf:"expected_codes,omitempty"`
 
+	// Follow redirects if returned by the origin. Only valid if type is "http" or "https".
+	// Follow redirects if returned by the origin. Only valid if `type` is "http" or "https".
 	// +kubebuilder:validation:Optional
 	FollowRedirects *bool `json:"followRedirects,omitempty" tf:"follow_redirects,omitempty"`
 
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden. Fields documented below. Only valid if type is "http" or "https".
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden.
 	// +kubebuilder:validation:Optional
 	Header []HeaderParameters `json:"header,omitempty" tf:"header,omitempty"`
 
-	// Defaults to `60`.
+	// The interval between each health check. Shorter intervals may improve failover time, but will increase load on the origins as we check from multiple locations. Default: 60.
+	// The interval between each health check. Shorter intervals may improve failover time, but will increase load on the origins as we check from multiple locations. Defaults to `60`.
 	// +kubebuilder:validation:Optional
 	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
 
+	// The method to use for the health check. Valid values are any valid HTTP verb if type is "http" or "https", or connection_established if type is "tcp". Default: "GET" if type is "http" or "https", "connection_established" if type is "tcp", and empty otherwise.
+	// The method to use for the health check.
 	// +kubebuilder:validation:Optional
 	Method *string `json:"method,omitempty" tf:"method,omitempty"`
 
+	// The endpoint path to health check against. Default: "/". Only valid if type is "http" or "https".
+	// The endpoint path to health check against.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// The port number to use for the healthcheck, required when creating a TCP monitor. Valid values are in the range 0-65535.
+	// The port number to use for the healthcheck, required when creating a TCP monitor.
 	// +kubebuilder:validation:Optional
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 
+	// Assign this monitor to emulate the specified zone while probing. Only valid if type is "http" or "https".
+	// Assign this monitor to emulate the specified zone while probing. Only valid if `type` is "http" or "https".
 	// +kubebuilder:validation:Optional
 	ProbeZone *string `json:"probeZone,omitempty" tf:"probe_zone,omitempty"`
 
-	// Defaults to `2`.
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Default: 2.
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Defaults to `2`.
 	// +kubebuilder:validation:Optional
 	Retries *float64 `json:"retries,omitempty" tf:"retries,omitempty"`
 
-	// Defaults to `5`.
+	// The timeout (in seconds) before marking the health check as failed. Default: 5.
+	// The timeout (in seconds) before marking the health check as failed. Defaults to `5`.
 	// +kubebuilder:validation:Optional
 	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 
-	// Defaults to `http`.
+	// The protocol to use for the healthcheck. Currently supported protocols are 'HTTP', 'HTTPS', 'TCP', 'UDP-ICMP', 'ICMP-PING', and 'SMTP'. Default: "http".
+	// The protocol to use for the healthcheck. Available values: `http`, `https`, `tcp`, `udp_icmp`, `icmp_ping`, `smtp`. Defaults to `http`.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -99,6 +292,18 @@ type MonitorParameters struct {
 type MonitorSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MonitorParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider MonitorInitParameters `json:"initProvider,omitempty"`
 }
 
 // MonitorStatus defines the observed state of Monitor.
@@ -109,7 +314,7 @@ type MonitorStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Monitor is the Schema for the Monitors API. <no value>
+// Monitor is the Schema for the Monitors API. Provides a Cloudflare Load Balancer Monitor resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -1,0 +1,15 @@
+apiVersion: custom.cloudflare.upbound.io/v1alpha1
+kind: SSL
+metadata:
+  annotations:
+    meta.upbound.io/example-id: custom/v1alpha1/ssl
+  labels:
+    testing.upbound.io/example-name: foossl
+  name: foossl
+spec:
+  forProvider:
+    customSslOptions:
+    - {}
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

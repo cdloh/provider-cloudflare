@@ -35,7 +35,8 @@ spec:
     schema:
       openAPIV3Schema:
         description: OwnershipChallenge is the Schema for the OwnershipChallenges
-          API. <no value>
+          API. Provides a resource which manages Cloudflare Logpush ownership challenges
+          to use in a Logpush Job.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,8 +69,10 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
-                      Must provide only one of `account_id`, `zone_id`.
+                    description: The account ID where the logpush ownership challenge
+                      should be created. Either account_id or zone_id are required.
+                      The account identifier to target for the resource. Must provide
+                      only one of `account_id`, `zone_id`.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -145,12 +148,20 @@ spec:
                         type: object
                     type: object
                   destinationConf:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: Uniquely identifies a resource (such as an s3 bucket)
+                      where data will be pushed. Additional configuration parameters
+                      supported by the destination may be included. See Logpush destination
+                      documentation. Uniquely identifies a resource (such as an s3
+                      bucket) where data will be pushed. Additional configuration
+                      parameters supported by the destination may be included. See
+                      [Logpush destination documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#destination).
+                      **Modifying this attribute will force creation of a new resource.**
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. Must
-                      provide only one of `account_id`, `zone_id`.
+                    description: The zone ID where the logpush ownership challenge
+                      should be created. Either account_id or zone_id are required.
+                      The zone identifier to target for the resource. Must provide
+                      only one of `account_id`, `zone_id`.
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -225,8 +236,30 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - destinationConf
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  destinationConf:
+                    description: Uniquely identifies a resource (such as an s3 bucket)
+                      where data will be pushed. Additional configuration parameters
+                      supported by the destination may be included. See Logpush destination
+                      documentation. Uniquely identifies a resource (such as an s3
+                      bucket) where data will be pushed. Additional configuration
+                      parameters supported by the destination may be included. See
+                      [Logpush destination documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#destination).
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -425,14 +458,45 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: destinationConf is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.destinationConf)
+                || has(self.initProvider.destinationConf)'
           status:
             description: OwnershipChallengeStatus defines the observed state of OwnershipChallenge.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account ID where the logpush ownership challenge
+                      should be created. Either account_id or zone_id are required.
+                      The account identifier to target for the resource. Must provide
+                      only one of `account_id`, `zone_id`.
+                    type: string
+                  destinationConf:
+                    description: Uniquely identifies a resource (such as an s3 bucket)
+                      where data will be pushed. Additional configuration parameters
+                      supported by the destination may be included. See Logpush destination
+                      documentation. Uniquely identifies a resource (such as an s3
+                      bucket) where data will be pushed. Additional configuration
+                      parameters supported by the destination may be included. See
+                      [Logpush destination documentation](https://developers.cloudflare.com/logs/logpush/logpush-configuration-api/understanding-logpush-api/#destination).
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
                   id:
                     type: string
                   ownershipChallengeFilename:
+                    description: "The filename of the ownership challenge which contains
+                      the contents required for Logpush Job creation. The filename
+                      of the ownership challenge which\tcontains the contents required
+                      for Logpush Job creation."
+                    type: string
+                  zoneId:
+                    description: The zone ID where the logpush ownership challenge
+                      should be created. Either account_id or zone_id are required.
+                      The zone identifier to target for the resource. Must provide
+                      only one of `account_id`, `zone_id`.
                     type: string
                 type: object
               conditions:

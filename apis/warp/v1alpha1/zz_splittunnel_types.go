@@ -13,14 +13,36 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type SplitTunnelInitParameters struct {
+
+	// The mode of the split tunnel policy. Available values: `include`, `exclude`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The value of the tunnel attributes.
+	Tunnels []TunnelsInitParameters `json:"tunnels,omitempty" tf:"tunnels,omitempty"`
+}
+
 type SplitTunnelObservation struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The mode of the split tunnel policy. Available values: `include`, `exclude`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The settings policy for which to configure this split tunnel policy.
+	PolicyID *string `json:"policyId,omitempty" tf:"policy_id,omitempty"`
+
+	// The value of the tunnel attributes.
+	Tunnels []TunnelsObservation `json:"tunnels,omitempty" tf:"tunnels,omitempty"`
 }
 
 type SplitTunnelParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -33,8 +55,8 @@ type SplitTunnelParameters struct {
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
 	// The mode of the split tunnel policy. Available values: `include`, `exclude`.
-	// +kubebuilder:validation:Required
-	Mode *string `json:"mode" tf:"mode,omitempty"`
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 
 	// The settings policy for which to configure this split tunnel policy.
 	// +crossplane:generate:reference:type=DeviceSettingsPolicy
@@ -50,11 +72,32 @@ type SplitTunnelParameters struct {
 	PolicyIDSelector *v1.Selector `json:"policyIdSelector,omitempty" tf:"-"`
 
 	// The value of the tunnel attributes.
-	// +kubebuilder:validation:Required
-	Tunnels []TunnelsParameters `json:"tunnels" tf:"tunnels,omitempty"`
+	// +kubebuilder:validation:Optional
+	Tunnels []TunnelsParameters `json:"tunnels,omitempty" tf:"tunnels,omitempty"`
+}
+
+type TunnelsInitParameters struct {
+
+	// The address for the tunnel.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// A description for the tunnel.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The domain name for the tunnel.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 }
 
 type TunnelsObservation struct {
+
+	// The address for the tunnel.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// A description for the tunnel.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The domain name for the tunnel.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 }
 
 type TunnelsParameters struct {
@@ -76,6 +119,18 @@ type TunnelsParameters struct {
 type SplitTunnelSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SplitTunnelParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SplitTunnelInitParameters `json:"initProvider,omitempty"`
 }
 
 // SplitTunnelStatus defines the observed state of SplitTunnel.
@@ -96,8 +151,10 @@ type SplitTunnelStatus struct {
 type SplitTunnel struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              SplitTunnelSpec   `json:"spec"`
-	Status            SplitTunnelStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mode) || has(self.initProvider.mode)",message="mode is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tunnels) || has(self.initProvider.tunnels)",message="tunnels is a required parameter"
+	Spec   SplitTunnelSpec   `json:"spec"`
+	Status SplitTunnelStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

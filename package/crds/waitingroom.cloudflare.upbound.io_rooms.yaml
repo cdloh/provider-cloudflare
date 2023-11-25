@@ -66,6 +66,25 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  additionalRoutes:
+                    description: A list of additional hostname and paths combination
+                      to be applied on the waiting room.
+                    items:
+                      properties:
+                        host:
+                          description: The additional host name for which the waiting
+                            room to be applied on (no wildcards).
+                          type: string
+                        path:
+                          description: The path within the additional host to enable
+                            the waiting room on. Defaults to `/`.
+                          type: string
+                      type: object
+                    type: array
+                  cookieSuffix:
+                    description: A cookie suffix to be appended to the Cloudflare
+                      waiting room cookie name.
+                    type: string
                   customPageHtml:
                     description: This is a templated html file that will be rendered
                       at the edge.
@@ -74,7 +93,7 @@ spec:
                     description: 'The language to use for the default waiting room
                       page. Available values: `de-DE`, `es-ES`, `en-US`, `fr-FR`,
                       `id-ID`, `it-IT`, `ja-JP`, `ko-KR`, `nl-NL`, `pl-PL`, `pt-BR`,
-                      `tr-TR`, `zh-CN`, `zh-TW`. Defaults to `en-US`.'
+                      `tr-TR`, `zh-CN`, `zh-TW`, `ru-RU`, `fa-IR`. Defaults to `en-US`.'
                     type: string
                   description:
                     description: A description to add more details about the waiting
@@ -112,6 +131,10 @@ spec:
                       values: `fifo`, `random`, `passthrough`, `reject`. Defaults
                       to `fifo`.'
                     type: string
+                  queueingStatusCode:
+                    description: HTTP status code returned to a user while in the
+                      queue. Defaults to `200`.
+                    type: number
                   sessionDuration:
                     description: Lifetime of a cookie (in minutes) set by Cloudflare
                       for users who get access to the origin. Defaults to `5`.
@@ -200,11 +223,100 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - host
-                - name
-                - newUsersPerMinute
-                - totalActiveUsers
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  additionalRoutes:
+                    description: A list of additional hostname and paths combination
+                      to be applied on the waiting room.
+                    items:
+                      properties:
+                        host:
+                          description: The additional host name for which the waiting
+                            room to be applied on (no wildcards).
+                          type: string
+                        path:
+                          description: The path within the additional host to enable
+                            the waiting room on. Defaults to `/`.
+                          type: string
+                      type: object
+                    type: array
+                  cookieSuffix:
+                    description: A cookie suffix to be appended to the Cloudflare
+                      waiting room cookie name.
+                    type: string
+                  customPageHtml:
+                    description: This is a templated html file that will be rendered
+                      at the edge.
+                    type: string
+                  defaultTemplateLanguage:
+                    description: 'The language to use for the default waiting room
+                      page. Available values: `de-DE`, `es-ES`, `en-US`, `fr-FR`,
+                      `id-ID`, `it-IT`, `ja-JP`, `ko-KR`, `nl-NL`, `pl-PL`, `pt-BR`,
+                      `tr-TR`, `zh-CN`, `zh-TW`, `ru-RU`, `fa-IR`. Defaults to `en-US`.'
+                    type: string
+                  description:
+                    description: A description to add more details about the waiting
+                      room.
+                    type: string
+                  disableSessionRenewal:
+                    description: Disables automatic renewal of session cookies.
+                    type: boolean
+                  host:
+                    description: Host name for which the waiting room will be applied
+                      (no wildcards).
+                    type: string
+                  jsonResponseEnabled:
+                    description: 'If true, requests to the waiting room with the header
+                      `Accept: application/json` will receive a JSON response object.'
+                    type: boolean
+                  name:
+                    description: A unique name to identify the waiting room. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  newUsersPerMinute:
+                    description: The number of new users that will be let into the
+                      route every minute.
+                    type: number
+                  path:
+                    description: The path within the host to enable the waiting room
+                      on. Defaults to `/`.
+                    type: string
+                  queueAll:
+                    description: If queue_all is true, then all traffic will be sent
+                      to the waiting room.
+                    type: boolean
+                  queueingMethod:
+                    description: 'The queueing method used by the waiting room. Available
+                      values: `fifo`, `random`, `passthrough`, `reject`. Defaults
+                      to `fifo`.'
+                    type: string
+                  queueingStatusCode:
+                    description: HTTP status code returned to a user while in the
+                      queue. Defaults to `200`.
+                    type: number
+                  sessionDuration:
+                    description: Lifetime of a cookie (in minutes) set by Cloudflare
+                      for users who get access to the origin. Defaults to `5`.
+                    type: number
+                  suspended:
+                    description: Suspends the waiting room.
+                    type: boolean
+                  totalActiveUsers:
+                    description: The total number of active user sessions on the route
+                      at a point in time.
+                    type: number
                 type: object
               managementPolicies:
                 default:
@@ -403,12 +515,113 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: host is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.host)
+                || has(self.initProvider.host)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: newUsersPerMinute is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.newUsersPerMinute)
+                || has(self.initProvider.newUsersPerMinute)'
+            - message: totalActiveUsers is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.totalActiveUsers)
+                || has(self.initProvider.totalActiveUsers)'
           status:
             description: RoomStatus defines the observed state of Room.
             properties:
               atProvider:
                 properties:
+                  additionalRoutes:
+                    description: A list of additional hostname and paths combination
+                      to be applied on the waiting room.
+                    items:
+                      properties:
+                        host:
+                          description: The additional host name for which the waiting
+                            room to be applied on (no wildcards).
+                          type: string
+                        path:
+                          description: The path within the additional host to enable
+                            the waiting room on. Defaults to `/`.
+                          type: string
+                      type: object
+                    type: array
+                  cookieSuffix:
+                    description: A cookie suffix to be appended to the Cloudflare
+                      waiting room cookie name.
+                    type: string
+                  customPageHtml:
+                    description: This is a templated html file that will be rendered
+                      at the edge.
+                    type: string
+                  defaultTemplateLanguage:
+                    description: 'The language to use for the default waiting room
+                      page. Available values: `de-DE`, `es-ES`, `en-US`, `fr-FR`,
+                      `id-ID`, `it-IT`, `ja-JP`, `ko-KR`, `nl-NL`, `pl-PL`, `pt-BR`,
+                      `tr-TR`, `zh-CN`, `zh-TW`, `ru-RU`, `fa-IR`. Defaults to `en-US`.'
+                    type: string
+                  description:
+                    description: A description to add more details about the waiting
+                      room.
+                    type: string
+                  disableSessionRenewal:
+                    description: Disables automatic renewal of session cookies.
+                    type: boolean
+                  host:
+                    description: Host name for which the waiting room will be applied
+                      (no wildcards).
+                    type: string
                   id:
+                    type: string
+                  jsonResponseEnabled:
+                    description: 'If true, requests to the waiting room with the header
+                      `Accept: application/json` will receive a JSON response object.'
+                    type: boolean
+                  name:
+                    description: A unique name to identify the waiting room. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  newUsersPerMinute:
+                    description: The number of new users that will be let into the
+                      route every minute.
+                    type: number
+                  path:
+                    description: The path within the host to enable the waiting room
+                      on. Defaults to `/`.
+                    type: string
+                  queueAll:
+                    description: If queue_all is true, then all traffic will be sent
+                      to the waiting room.
+                    type: boolean
+                  queueingMethod:
+                    description: 'The queueing method used by the waiting room. Available
+                      values: `fifo`, `random`, `passthrough`, `reject`. Defaults
+                      to `fifo`.'
+                    type: string
+                  queueingStatusCode:
+                    description: HTTP status code returned to a user while in the
+                      queue. Defaults to `200`.
+                    type: number
+                  sessionDuration:
+                    description: Lifetime of a cookie (in minutes) set by Cloudflare
+                      for users who get access to the origin. Defaults to `5`.
+                    type: number
+                  suspended:
+                    description: Suspends the waiting room.
+                    type: boolean
+                  totalActiveUsers:
+                    description: The total number of active user sessions on the route
+                      at a point in time.
+                    type: number
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

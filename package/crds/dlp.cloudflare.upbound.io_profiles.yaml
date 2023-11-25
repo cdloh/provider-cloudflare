@@ -143,6 +143,10 @@ spec:
                             type: string
                         type: object
                     type: object
+                  allowedMatchCount:
+                    description: Related DLP policies will trigger when the match
+                      count exceeds the number set.
+                    type: number
                   description:
                     description: Brief summary of the profile and its intended use.
                     type: string
@@ -169,12 +173,8 @@ spec:
                                 description: The validation algorithm to apply with
                                   this pattern.
                                 type: string
-                            required:
-                            - regex
                             type: object
                           type: array
-                      required:
-                      - name
                       type: object
                     type: array
                   name:
@@ -186,10 +186,63 @@ spec:
                       `predefined`. **Modifying this attribute will force creation
                       of a new resource.**'
                     type: string
-                required:
-                - entry
-                - name
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  allowedMatchCount:
+                    description: Related DLP policies will trigger when the match
+                      count exceeds the number set.
+                    type: number
+                  description:
+                    description: Brief summary of the profile and its intended use.
+                    type: string
+                  entry:
+                    description: List of entries to apply to the profile.
+                    items:
+                      properties:
+                        enabled:
+                          description: Whether the entry is active. Defaults to `false`.
+                          type: boolean
+                        id:
+                          description: Unique entry identifier.
+                          type: string
+                        name:
+                          description: Name of the entry to deploy.
+                          type: string
+                        pattern:
+                          items:
+                            properties:
+                              regex:
+                                description: The regex that defines the pattern.
+                                type: string
+                              validation:
+                                description: The validation algorithm to apply with
+                                  this pattern.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the profile. **Modifying this attribute will
+                      force creation of a new resource.**
+                    type: string
+                  type:
+                    description: 'The type of the profile. Available values: `custom`,
+                      `predefined`. **Modifying this attribute will force creation
+                      of a new resource.**'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -388,12 +441,76 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: allowedMatchCount is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.allowedMatchCount)
+                || has(self.initProvider.allowedMatchCount)'
+            - message: entry is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.entry)
+                || has(self.initProvider.entry)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: ProfileStatus defines the observed state of Profile.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
+                  allowedMatchCount:
+                    description: Related DLP policies will trigger when the match
+                      count exceeds the number set.
+                    type: number
+                  description:
+                    description: Brief summary of the profile and its intended use.
+                    type: string
+                  entry:
+                    description: List of entries to apply to the profile.
+                    items:
+                      properties:
+                        enabled:
+                          description: Whether the entry is active. Defaults to `false`.
+                          type: boolean
+                        id:
+                          description: Unique entry identifier.
+                          type: string
+                        name:
+                          description: Name of the entry to deploy.
+                          type: string
+                        pattern:
+                          items:
+                            properties:
+                              regex:
+                                description: The regex that defines the pattern.
+                                type: string
+                              validation:
+                                description: The validation algorithm to apply with
+                                  this pattern.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   id:
+                    type: string
+                  name:
+                    description: Name of the profile. **Modifying this attribute will
+                      force creation of a new resource.**
+                    type: string
+                  type:
+                    description: 'The type of the profile. Available values: `custom`,
+                      `predefined`. **Modifying this attribute will force creation
+                      of a new resource.**'
                     type: string
                 type: object
               conditions:

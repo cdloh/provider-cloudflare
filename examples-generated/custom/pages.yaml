@@ -1,0 +1,16 @@
+apiVersion: custom.cloudflare.upbound.io/v1alpha1
+kind: Pages
+metadata:
+  annotations:
+    meta.upbound.io/example-id: custom/v1alpha1/pages
+  labels:
+    testing.upbound.io/example-name: basic_challenge
+  name: basic-challenge
+spec:
+  forProvider:
+    state: customized
+    type: basic_challenge
+    url: https://example.com/challenge.html
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

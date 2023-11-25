@@ -13,36 +13,171 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type HeaderInitParameters struct {
+
+	// The header name.
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A list of string values for the header.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
 type HeaderObservation struct {
+
+	// The header name.
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A list of string values for the header.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type HeaderParameters struct {
 
 	// The header name.
-	// +kubebuilder:validation:Required
-	Header *string `json:"header" tf:"header,omitempty"`
+	// +kubebuilder:validation:Optional
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
 
 	// A list of string values for the header.
-	// +kubebuilder:validation:Required
-	Values []*string `json:"values" tf:"values,omitempty"`
+	// +kubebuilder:validation:Optional
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type HealthcheckInitParameters struct {
+
+	// The hostname or IP address of the origin server to run health checks on.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// Do not validate the certificate when the health check uses HTTPS. Defaults to `false`.
+	AllowInsecure *bool `json:"allowInsecure,omitempty" tf:"allow_insecure,omitempty"`
+
+	// A list of regions from which to run health checks. If not set, Cloudflare will pick a default region. Available values: `WNAM`, `ENAM`, `WEU`, `EEU`, `NSAM`, `SSAM`, `OC`, `ME`, `NAF`, `SAF`, `IN`, `SEAS`, `NEAS`, `ALL_REGIONS`.
+	CheckRegions []*string `json:"checkRegions,omitempty" tf:"check_regions,omitempty"`
+
+	// The number of consecutive fails required from a health check before changing the health to unhealthy. Defaults to `1`.
+	ConsecutiveFails *float64 `json:"consecutiveFails,omitempty" tf:"consecutive_fails,omitempty"`
+
+	// The number of consecutive successes required from a health check before changing the health to healthy. Defaults to `1`.
+	ConsecutiveSuccesses *float64 `json:"consecutiveSuccesses,omitempty" tf:"consecutive_successes,omitempty"`
+
+	// A human-readable description of the health check.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A case-insensitive sub-string to look for in the response body. If this string is not found the origin will be marked as unhealthy.
+	ExpectedBody *string `json:"expectedBody,omitempty" tf:"expected_body,omitempty"`
+
+	// The expected HTTP response codes (e.g. '200') or code ranges (e.g. '2xx' for all codes starting with 2) of the health check.
+	ExpectedCodes []*string `json:"expectedCodes,omitempty" tf:"expected_codes,omitempty"`
+
+	// Follow redirects if the origin returns a 3xx status code. Defaults to `false`.
+	FollowRedirects *bool `json:"followRedirects,omitempty" tf:"follow_redirects,omitempty"`
+
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden.
+	Header []HeaderInitParameters `json:"header,omitempty" tf:"header,omitempty"`
+
+	// The interval between each health check. Shorter intervals may give quicker notifications if the origin status changes, but will increase the load on the origin as we check from multiple locations. Defaults to `60`.
+	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
+
+	// The HTTP method to use for the health check. Available values: `connection_established`, `GET`, `HEAD`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+
+	// A short name to identify the health check. Only alphanumeric characters, hyphens, and underscores are allowed.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The endpoint path to health check against. Defaults to `/`.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Port number to connect to for the health check. Defaults to `80`.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Defaults to `2`.
+	Retries *float64 `json:"retries,omitempty" tf:"retries,omitempty"`
+
+	// If suspended, no health checks are sent to the origin. Defaults to `false`.
+	Suspended *bool `json:"suspended,omitempty" tf:"suspended,omitempty"`
+
+	// The timeout (in seconds) before marking the health check as failed. Defaults to `5`.
+	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+
+	// The protocol to use for the health check. Available values: `TCP`, `HTTP`, `HTTPS`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type HealthcheckObservation struct {
 
+	// The hostname or IP address of the origin server to run health checks on.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// Do not validate the certificate when the health check uses HTTPS. Defaults to `false`.
+	AllowInsecure *bool `json:"allowInsecure,omitempty" tf:"allow_insecure,omitempty"`
+
+	// A list of regions from which to run health checks. If not set, Cloudflare will pick a default region. Available values: `WNAM`, `ENAM`, `WEU`, `EEU`, `NSAM`, `SSAM`, `OC`, `ME`, `NAF`, `SAF`, `IN`, `SEAS`, `NEAS`, `ALL_REGIONS`.
+	CheckRegions []*string `json:"checkRegions,omitempty" tf:"check_regions,omitempty"`
+
+	// The number of consecutive fails required from a health check before changing the health to unhealthy. Defaults to `1`.
+	ConsecutiveFails *float64 `json:"consecutiveFails,omitempty" tf:"consecutive_fails,omitempty"`
+
+	// The number of consecutive successes required from a health check before changing the health to healthy. Defaults to `1`.
+	ConsecutiveSuccesses *float64 `json:"consecutiveSuccesses,omitempty" tf:"consecutive_successes,omitempty"`
+
 	// Creation time.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
 
+	// A human-readable description of the health check.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A case-insensitive sub-string to look for in the response body. If this string is not found the origin will be marked as unhealthy.
+	ExpectedBody *string `json:"expectedBody,omitempty" tf:"expected_body,omitempty"`
+
+	// The expected HTTP response codes (e.g. '200') or code ranges (e.g. '2xx' for all codes starting with 2) of the health check.
+	ExpectedCodes []*string `json:"expectedCodes,omitempty" tf:"expected_codes,omitempty"`
+
+	// Follow redirects if the origin returns a 3xx status code. Defaults to `false`.
+	FollowRedirects *bool `json:"followRedirects,omitempty" tf:"follow_redirects,omitempty"`
+
+	// The HTTP request headers to send in the health check. It is recommended you set a Host header by default. The User-Agent header cannot be overridden.
+	Header []HeaderObservation `json:"header,omitempty" tf:"header,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The interval between each health check. Shorter intervals may give quicker notifications if the origin status changes, but will increase the load on the origin as we check from multiple locations. Defaults to `60`.
+	Interval *float64 `json:"interval,omitempty" tf:"interval,omitempty"`
+
+	// The HTTP method to use for the health check. Available values: `connection_established`, `GET`, `HEAD`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
 
 	// Last modified time.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+
+	// A short name to identify the health check. Only alphanumeric characters, hyphens, and underscores are allowed.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The endpoint path to health check against. Defaults to `/`.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Port number to connect to for the health check. Defaults to `80`.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	// The number of retries to attempt in case of a timeout before marking the origin as unhealthy. Retries are attempted immediately. Defaults to `2`.
+	Retries *float64 `json:"retries,omitempty" tf:"retries,omitempty"`
+
+	// If suspended, no health checks are sent to the origin. Defaults to `false`.
+	Suspended *bool `json:"suspended,omitempty" tf:"suspended,omitempty"`
+
+	// The timeout (in seconds) before marking the health check as failed. Defaults to `5`.
+	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+
+	// The protocol to use for the health check. Available values: `TCP`, `HTTP`, `HTTPS`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type HealthcheckParameters struct {
 
 	// The hostname or IP address of the origin server to run health checks on.
-	// +kubebuilder:validation:Required
-	Address *string `json:"address" tf:"address,omitempty"`
+	// +kubebuilder:validation:Optional
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// Do not validate the certificate when the health check uses HTTPS. Defaults to `false`.
 	// +kubebuilder:validation:Optional
@@ -89,8 +224,8 @@ type HealthcheckParameters struct {
 	Method *string `json:"method,omitempty" tf:"method,omitempty"`
 
 	// A short name to identify the health check. Only alphanumeric characters, hyphens, and underscores are allowed.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The endpoint path to health check against. Defaults to `/`.
 	// +kubebuilder:validation:Optional
@@ -113,8 +248,8 @@ type HealthcheckParameters struct {
 	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 
 	// The protocol to use for the health check. Available values: `TCP`, `HTTP`, `HTTPS`.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=Zone
@@ -134,6 +269,18 @@ type HealthcheckParameters struct {
 type HealthcheckSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     HealthcheckParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider HealthcheckInitParameters `json:"initProvider,omitempty"`
 }
 
 // HealthcheckStatus defines the observed state of Healthcheck.
@@ -154,8 +301,11 @@ type HealthcheckStatus struct {
 type Healthcheck struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              HealthcheckSpec   `json:"spec"`
-	Status            HealthcheckStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.address) || has(self.initProvider.address)",message="address is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	Spec   HealthcheckSpec   `json:"spec"`
+	Status HealthcheckStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

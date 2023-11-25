@@ -8,14 +8,14 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "customhostname"
 		r.Kind = "Hostname"
 		r.References["zone_id"] = config.Reference{
-			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
+			Type: "github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 	})
 	p.AddResourceConfigurator("cloudflare_custom_hostname_fallback_origin", func(r *config.Resource) {
 		r.ShortGroup = "customhostname"
 		r.Kind = "FallbackOrigin"
 		r.References["zone_id"] = config.Reference{
-			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
+			Type: "github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 	})
 }

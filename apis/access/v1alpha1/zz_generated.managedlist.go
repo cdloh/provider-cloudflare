@@ -16,15 +16,6 @@ func (l *ApplicationList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this BookmarkList.
-func (l *BookmarkList) GetItems() []resource.Managed {
-	items := make([]resource.Managed, len(l.Items))
-	for i := range l.Items {
-		items[i] = &l.Items[i]
-	}
-	return items
-}
-
 // GetItems of this CACertificateList.
 func (l *CACertificateList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -99,6 +90,15 @@ func (l *RuleList) GetItems() []resource.Managed {
 
 // GetItems of this ServiceTokenList.
 func (l *ServiceTokenList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this TagList.
+func (l *TagList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

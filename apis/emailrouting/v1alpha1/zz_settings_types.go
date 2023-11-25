@@ -13,10 +13,22 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type SettingsInitParameters struct {
+
+	// State of the zone settings for Email Routing. **Modifying this attribute will force creation of a new resource.**
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Flag to check if the user skipped the configuration wizard.
+	SkipWizard *bool `json:"skipWizard,omitempty" tf:"skip_wizard,omitempty"`
+}
+
 type SettingsObservation struct {
 
 	// The date and time the settings have been created.
 	Created *string `json:"created,omitempty" tf:"created,omitempty"`
+
+	// State of the zone settings for Email Routing. **Modifying this attribute will force creation of a new resource.**
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -26,25 +38,31 @@ type SettingsObservation struct {
 	// Domain of your zone.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// Flag to check if the user skipped the configuration wizard.
+	SkipWizard *bool `json:"skipWizard,omitempty" tf:"skip_wizard,omitempty"`
+
 	// Show the state of your account, and the type or configuration error.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// Email Routing settings identifier.
 	Tag *string `json:"tag,omitempty" tf:"tag,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type SettingsParameters struct {
 
 	// State of the zone settings for Email Routing. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Flag to check if the user skipped the configuration wizard.
 	// +kubebuilder:validation:Optional
 	SkipWizard *bool `json:"skipWizard,omitempty" tf:"skip_wizard,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -61,6 +79,18 @@ type SettingsParameters struct {
 type SettingsSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SettingsParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SettingsInitParameters `json:"initProvider,omitempty"`
 }
 
 // SettingsStatus defines the observed state of Settings.
@@ -81,8 +111,9 @@ type SettingsStatus struct {
 type Settings struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              SettingsSpec   `json:"spec"`
-	Status            SettingsStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.enabled) || has(self.initProvider.enabled)",message="enabled is a required parameter"
+	Spec   SettingsSpec   `json:"spec"`
+	Status SettingsStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

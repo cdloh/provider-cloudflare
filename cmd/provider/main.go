@@ -24,12 +24,12 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/cdloh/provider-cloudflare/apis"
-	"github.com/cdloh/provider-cloudflare/apis/v1alpha1"
-	"github.com/cdloh/provider-cloudflare/config"
-	"github.com/cdloh/provider-cloudflare/internal/clients"
-	"github.com/cdloh/provider-cloudflare/internal/controller"
-	"github.com/cdloh/provider-cloudflare/internal/features"
+	"github.com/clementblaise/provider-cloudflare/apis"
+	"github.com/clementblaise/provider-cloudflare/apis/v1alpha1"
+	"github.com/clementblaise/provider-cloudflare/config"
+	"github.com/clementblaise/provider-cloudflare/internal/clients"
+	"github.com/clementblaise/provider-cloudflare/internal/controller"
+	"github.com/clementblaise/provider-cloudflare/internal/features"
 )
 
 func main() {

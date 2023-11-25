@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: SettingsOverride is the Schema for the SettingsOverrides API.
-          <no value>
+          Provides a resource which customizes Cloudflare zone settings.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,164 +68,238 @@ spec:
               forProvider:
                 properties:
                   settings:
+                    description: Settings overrides that will be applied to the zone.
+                      If a setting is not specified the existing setting will be used.
+                      For a full list of available settings see below.
                     items:
                       properties:
                         alwaysOnline:
+                          description: '(default: on)'
                           type: string
                         alwaysUseHttps:
+                          description: '(default: off)'
                           type: string
                         automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         binaryAst:
+                          description: '(default: off)'
                           type: string
                         brotli:
+                          description: '(default: off)'
                           type: string
                         browserCacheTtl:
+                          description: '(default: 14400)'
                           type: number
                         browserCheck:
+                          description: '(default: on)'
                           type: string
                         cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
                           type: string
                         challengeTtl:
+                          description: '(default: 1800)'
                           type: number
                         ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
                           items:
                             type: string
                           type: array
                         cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
                           type: string
                         developmentMode:
+                          description: '(default: off)'
                           type: string
                         earlyHints:
+                          description: '(default: off)'
                           type: string
                         emailObfuscation:
+                          description: '(default: on)'
                           type: string
                         filterLogsToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        fonts:
                           type: string
                         h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
                           type: string
                         hotlinkProtection:
+                          description: '(default: off)'
                           type: string
                         http2:
+                          description: '(default: off)'
                           type: string
                         http3:
+                          description: '(default: off)'
                           type: string
                         imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
                           type: string
                         ipGeolocation:
+                          description: '(default: on)'
                           type: string
                         ipv6:
+                          description: '(default: off)'
                           type: string
                         logToCloudflare:
+                          description: '(default: off)'
                           type: string
                         maxUpload:
+                          description: '(default: 100)'
                           type: number
                         minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
                           type: string
                         minify:
                           items:
                             properties:
                               css:
+                                description: '"on"/"off"'
                                 type: string
                               html:
+                                description: '"on"/"off"'
                                 type: string
                               js:
+                                description: '"on"/"off"'
                                 type: string
-                            required:
-                            - css
-                            - html
-                            - js
                             type: object
                           type: array
                         mirage:
+                          description: '(default: off)'
                           type: string
                         mobileRedirect:
                           items:
                             properties:
                               mobileSubdomain:
+                                description: String value
                                 type: string
                               status:
+                                description: '"on"/"off"'
                                 type: string
                               stripUri:
+                                description: true/false
                                 type: boolean
-                            required:
-                            - mobileSubdomain
-                            - status
-                            - stripUri
                             type: object
                           type: array
                         opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         opportunisticOnion:
+                          description: '(default: off)'
                           type: string
                         orangeToOrange:
+                          description: '(default: off)'
                           type: string
                         originErrorPagePassThru:
+                          description: '(default: off)'
                           type: string
                         originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
                           type: string
                         polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
                           type: string
                         prefetchPreload:
+                          description: '(default: off)'
                           type: string
                         privacyPass:
+                          description: '(default: on)'
                           type: string
                         proxyReadTimeout:
+                          description: '(default: "100")'
                           type: string
                         pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
                           type: string
                         responseBuffering:
+                          description: '(default: off)'
                           type: string
                         rocketLoader:
+                          description: '(default: off)'
                           type: string
                         securityHeader:
                           items:
                             properties:
                               enabled:
+                                description: true/false
                                 type: boolean
                               includeSubdomains:
+                                description: true/false
                                 type: boolean
                               maxAge:
+                                description: Integer
                                 type: number
                               nosniff:
+                                description: true/false
                                 type: boolean
                               preload:
+                                description: true/false
                                 type: boolean
                             type: object
                           type: array
                         securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
                           type: string
                         serverSideExclude:
+                          description: '(default: on)'
                           type: string
                         sortQueryStringForCache:
+                          description: '(default: off)'
                           type: string
                         ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
                           type: string
                         tls12Only:
                           type: string
                         tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
                           type: string
                         tlsClientAuth:
+                          description: '(default: on)'
                           type: string
                         trueClientIpHeader:
+                          description: '(default: off)'
                           type: string
                         universalSsl:
+                          description: '(default: on)'
                           type: string
                         visitorIp:
+                          description: '(default: off)'
                           type: string
                         waf:
+                          description: '(default: off)'
                           type: string
                         webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
                           type: string
                         websockets:
+                          description: '(default: off)'
                           type: string
                         zeroRtt:
+                          description: '(default: off)'
                           type: string
                       type: object
                     type: array
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: The DNS zone ID to which apply settings. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone to populate zoneId.
@@ -300,6 +374,249 @@ spec:
                             type: string
                         type: object
                     type: object
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  settings:
+                    description: Settings overrides that will be applied to the zone.
+                      If a setting is not specified the existing setting will be used.
+                      For a full list of available settings see below.
+                    items:
+                      properties:
+                        alwaysOnline:
+                          description: '(default: on)'
+                          type: string
+                        alwaysUseHttps:
+                          description: '(default: off)'
+                          type: string
+                        automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        binaryAst:
+                          description: '(default: off)'
+                          type: string
+                        brotli:
+                          description: '(default: off)'
+                          type: string
+                        browserCacheTtl:
+                          description: '(default: 14400)'
+                          type: number
+                        browserCheck:
+                          description: '(default: on)'
+                          type: string
+                        cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
+                          type: string
+                        challengeTtl:
+                          description: '(default: 1800)'
+                          type: number
+                        ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
+                          items:
+                            type: string
+                          type: array
+                        cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
+                          type: string
+                        developmentMode:
+                          description: '(default: off)'
+                          type: string
+                        earlyHints:
+                          description: '(default: off)'
+                          type: string
+                        emailObfuscation:
+                          description: '(default: on)'
+                          type: string
+                        filterLogsToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        fonts:
+                          type: string
+                        h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
+                          type: string
+                        hotlinkProtection:
+                          description: '(default: off)'
+                          type: string
+                        http2:
+                          description: '(default: off)'
+                          type: string
+                        http3:
+                          description: '(default: off)'
+                          type: string
+                        imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
+                          type: string
+                        ipGeolocation:
+                          description: '(default: on)'
+                          type: string
+                        ipv6:
+                          description: '(default: off)'
+                          type: string
+                        logToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        maxUpload:
+                          description: '(default: 100)'
+                          type: number
+                        minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
+                          type: string
+                        minify:
+                          items:
+                            properties:
+                              css:
+                                description: '"on"/"off"'
+                                type: string
+                              html:
+                                description: '"on"/"off"'
+                                type: string
+                              js:
+                                description: '"on"/"off"'
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: '(default: off)'
+                          type: string
+                        mobileRedirect:
+                          items:
+                            properties:
+                              mobileSubdomain:
+                                description: String value
+                                type: string
+                              status:
+                                description: '"on"/"off"'
+                                type: string
+                              stripUri:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        opportunisticOnion:
+                          description: '(default: off)'
+                          type: string
+                        orangeToOrange:
+                          description: '(default: off)'
+                          type: string
+                        originErrorPagePassThru:
+                          description: '(default: off)'
+                          type: string
+                        originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
+                          type: string
+                        polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
+                          type: string
+                        prefetchPreload:
+                          description: '(default: off)'
+                          type: string
+                        privacyPass:
+                          description: '(default: on)'
+                          type: string
+                        proxyReadTimeout:
+                          description: '(default: "100")'
+                          type: string
+                        pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
+                          type: string
+                        responseBuffering:
+                          description: '(default: off)'
+                          type: string
+                        rocketLoader:
+                          description: '(default: off)'
+                          type: string
+                        securityHeader:
+                          items:
+                            properties:
+                              enabled:
+                                description: true/false
+                                type: boolean
+                              includeSubdomains:
+                                description: true/false
+                                type: boolean
+                              maxAge:
+                                description: Integer
+                                type: number
+                              nosniff:
+                                description: true/false
+                                type: boolean
+                              preload:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
+                          type: string
+                        serverSideExclude:
+                          description: '(default: on)'
+                          type: string
+                        sortQueryStringForCache:
+                          description: '(default: off)'
+                          type: string
+                        ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
+                          type: string
+                        tls12Only:
+                          type: string
+                        tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
+                          type: string
+                        tlsClientAuth:
+                          description: '(default: on)'
+                          type: string
+                        trueClientIpHeader:
+                          description: '(default: off)'
+                          type: string
+                        universalSsl:
+                          description: '(default: on)'
+                          type: string
+                        visitorIp:
+                          description: '(default: off)'
+                          type: string
+                        waf:
+                          description: '(default: off)'
+                          type: string
+                        webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
+                          type: string
+                        websockets:
+                          description: '(default: off)'
+                          type: string
+                        zeroRtt:
+                          description: '(default: off)'
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -504,164 +821,489 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: The zone ID.
                     type: string
                   initialSettings:
+                    description: Settings present in the zone at the time the resource
+                      is created. This will be used to restore the original settings
+                      when this resource is destroyed. Shares the same schema as the
+                      settings attribute (Above).
                     items:
                       properties:
                         alwaysOnline:
+                          description: '(default: on)'
                           type: string
                         alwaysUseHttps:
+                          description: '(default: off)'
                           type: string
                         automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         binaryAst:
+                          description: '(default: off)'
                           type: string
                         brotli:
+                          description: '(default: off)'
                           type: string
                         browserCacheTtl:
+                          description: '(default: 14400)'
                           type: number
                         browserCheck:
+                          description: '(default: on)'
                           type: string
                         cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
                           type: string
                         challengeTtl:
+                          description: '(default: 1800)'
                           type: number
                         ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
                           items:
                             type: string
                           type: array
                         cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
                           type: string
                         developmentMode:
+                          description: '(default: off)'
                           type: string
                         earlyHints:
+                          description: '(default: off)'
                           type: string
                         emailObfuscation:
+                          description: '(default: on)'
                           type: string
                         filterLogsToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        fonts:
                           type: string
                         h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
                           type: string
                         hotlinkProtection:
+                          description: '(default: off)'
                           type: string
                         http2:
+                          description: '(default: off)'
                           type: string
                         http3:
+                          description: '(default: off)'
                           type: string
                         imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
                           type: string
                         ipGeolocation:
+                          description: '(default: on)'
                           type: string
                         ipv6:
+                          description: '(default: off)'
                           type: string
                         logToCloudflare:
+                          description: '(default: off)'
                           type: string
                         maxUpload:
+                          description: '(default: 100)'
                           type: number
                         minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
                           type: string
                         minify:
                           items:
                             properties:
                               css:
+                                description: '"on"/"off"'
                                 type: string
                               html:
+                                description: '"on"/"off"'
                                 type: string
                               js:
+                                description: '"on"/"off"'
                                 type: string
                             type: object
                           type: array
                         mirage:
+                          description: '(default: off)'
                           type: string
                         mobileRedirect:
                           items:
                             properties:
                               mobileSubdomain:
+                                description: String value
                                 type: string
                               status:
+                                description: '"on"/"off"'
                                 type: string
                               stripUri:
+                                description: true/false
                                 type: boolean
                             type: object
                           type: array
                         opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         opportunisticOnion:
+                          description: '(default: off)'
                           type: string
                         orangeToOrange:
+                          description: '(default: off)'
                           type: string
                         originErrorPagePassThru:
+                          description: '(default: off)'
                           type: string
                         originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
                           type: string
                         polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
                           type: string
                         prefetchPreload:
+                          description: '(default: off)'
                           type: string
                         privacyPass:
+                          description: '(default: on)'
                           type: string
                         proxyReadTimeout:
+                          description: '(default: "100")'
                           type: string
                         pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
                           type: string
                         responseBuffering:
+                          description: '(default: off)'
                           type: string
                         rocketLoader:
+                          description: '(default: off)'
                           type: string
                         securityHeader:
                           items:
                             properties:
                               enabled:
+                                description: true/false
                                 type: boolean
                               includeSubdomains:
+                                description: true/false
                                 type: boolean
                               maxAge:
+                                description: Integer
                                 type: number
                               nosniff:
+                                description: true/false
                                 type: boolean
                               preload:
+                                description: true/false
                                 type: boolean
                             type: object
                           type: array
                         securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
                           type: string
                         serverSideExclude:
+                          description: '(default: on)'
                           type: string
                         sortQueryStringForCache:
+                          description: '(default: off)'
                           type: string
                         ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
                           type: string
                         tls12Only:
                           type: string
                         tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
                           type: string
                         tlsClientAuth:
+                          description: '(default: on)'
                           type: string
                         trueClientIpHeader:
+                          description: '(default: off)'
                           type: string
                         universalSsl:
+                          description: '(default: on)'
                           type: string
                         visitorIp:
+                          description: '(default: off)'
                           type: string
                         waf:
+                          description: '(default: off)'
                           type: string
                         webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
                           type: string
                         websockets:
+                          description: '(default: off)'
                           type: string
                         zeroRtt:
+                          description: '(default: off)'
                           type: string
                       type: object
                     type: array
                   initialSettingsReadAt:
+                    description: Time when this resource was created and the initial_settings
+                      were set.
                     type: string
                   readonlySettings:
+                    description: Which of the current settings are not able to be
+                      set by the user. Which settings these are is determined by plan
+                      level and user permissions.
                     items:
                       type: string
                     type: array
+                  settings:
+                    description: Settings overrides that will be applied to the zone.
+                      If a setting is not specified the existing setting will be used.
+                      For a full list of available settings see below.
+                    items:
+                      properties:
+                        alwaysOnline:
+                          description: '(default: on)'
+                          type: string
+                        alwaysUseHttps:
+                          description: '(default: off)'
+                          type: string
+                        automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        binaryAst:
+                          description: '(default: off)'
+                          type: string
+                        brotli:
+                          description: '(default: off)'
+                          type: string
+                        browserCacheTtl:
+                          description: '(default: 14400)'
+                          type: number
+                        browserCheck:
+                          description: '(default: on)'
+                          type: string
+                        cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
+                          type: string
+                        challengeTtl:
+                          description: '(default: 1800)'
+                          type: number
+                        ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
+                          items:
+                            type: string
+                          type: array
+                        cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
+                          type: string
+                        developmentMode:
+                          description: '(default: off)'
+                          type: string
+                        earlyHints:
+                          description: '(default: off)'
+                          type: string
+                        emailObfuscation:
+                          description: '(default: on)'
+                          type: string
+                        filterLogsToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        fonts:
+                          type: string
+                        h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
+                          type: string
+                        hotlinkProtection:
+                          description: '(default: off)'
+                          type: string
+                        http2:
+                          description: '(default: off)'
+                          type: string
+                        http3:
+                          description: '(default: off)'
+                          type: string
+                        imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
+                          type: string
+                        ipGeolocation:
+                          description: '(default: on)'
+                          type: string
+                        ipv6:
+                          description: '(default: off)'
+                          type: string
+                        logToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        maxUpload:
+                          description: '(default: 100)'
+                          type: number
+                        minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
+                          type: string
+                        minify:
+                          items:
+                            properties:
+                              css:
+                                description: '"on"/"off"'
+                                type: string
+                              html:
+                                description: '"on"/"off"'
+                                type: string
+                              js:
+                                description: '"on"/"off"'
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: '(default: off)'
+                          type: string
+                        mobileRedirect:
+                          items:
+                            properties:
+                              mobileSubdomain:
+                                description: String value
+                                type: string
+                              status:
+                                description: '"on"/"off"'
+                                type: string
+                              stripUri:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        opportunisticOnion:
+                          description: '(default: off)'
+                          type: string
+                        orangeToOrange:
+                          description: '(default: off)'
+                          type: string
+                        originErrorPagePassThru:
+                          description: '(default: off)'
+                          type: string
+                        originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
+                          type: string
+                        polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
+                          type: string
+                        prefetchPreload:
+                          description: '(default: off)'
+                          type: string
+                        privacyPass:
+                          description: '(default: on)'
+                          type: string
+                        proxyReadTimeout:
+                          description: '(default: "100")'
+                          type: string
+                        pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
+                          type: string
+                        responseBuffering:
+                          description: '(default: off)'
+                          type: string
+                        rocketLoader:
+                          description: '(default: off)'
+                          type: string
+                        securityHeader:
+                          items:
+                            properties:
+                              enabled:
+                                description: true/false
+                                type: boolean
+                              includeSubdomains:
+                                description: true/false
+                                type: boolean
+                              maxAge:
+                                description: Integer
+                                type: number
+                              nosniff:
+                                description: true/false
+                                type: boolean
+                              preload:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
+                          type: string
+                        serverSideExclude:
+                          description: '(default: on)'
+                          type: string
+                        sortQueryStringForCache:
+                          description: '(default: off)'
+                          type: string
+                        ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
+                          type: string
+                        tls12Only:
+                          type: string
+                        tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
+                          type: string
+                        tlsClientAuth:
+                          description: '(default: on)'
+                          type: string
+                        trueClientIpHeader:
+                          description: '(default: off)'
+                          type: string
+                        universalSsl:
+                          description: '(default: on)'
+                          type: string
+                        visitorIp:
+                          description: '(default: off)'
+                          type: string
+                        waf:
+                          description: '(default: off)'
+                          type: string
+                        webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
+                          type: string
+                        websockets:
+                          description: '(default: off)'
+                          type: string
+                        zeroRtt:
+                          description: '(default: off)'
+                          type: string
+                      type: object
+                    type: array
+                  zoneId:
+                    description: The DNS zone ID to which apply settings. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
+                    type: string
                   zoneStatus:
+                    description: hosted zone or a CNAME setup.
                     type: string
                   zoneType:
+                    description: '. Status of the zone. Valid values: active, pending,
+                      initializing, moved, deleted, deactivated.'
                     type: string
                 type: object
               conditions:

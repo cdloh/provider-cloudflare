@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: DevicePostureIntegration is the Schema for the DevicePostureIntegrations
-          API. <no value>
+          API. Provides a Cloudflare Device Posture Integration resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -69,7 +69,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The account to which the device posture integration
+                      should be added. The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -145,17 +146,26 @@ spec:
                         type: object
                     type: object
                   config:
+                    description: The device posture integration's connection authorization
+                      parameters. The device posture integration's connection authorization
+                      parameters.
                     items:
                       properties:
                         apiUrl:
+                          description: The third-party API's URL. The third-party
+                            API's URL.
                           type: string
                         authUrl:
+                          description: The third-party authorization API URL. The
+                            third-party authorization API URL.
                           type: string
                         clientId:
+                          description: The client identifier for authenticating API
+                            calls. The client identifier for authenticating API calls.
                           type: string
                         clientKeySecretRef:
-                          description: A SecretKeySelector is a reference to a secret
-                            key in an arbitrary namespace.
+                          description: The client key for authenticating API calls.
+                            The client key for authenticating API calls.
                           properties:
                             key:
                               description: The key to select.
@@ -172,8 +182,8 @@ spec:
                           - namespace
                           type: object
                         clientSecretSecretRef:
-                          description: A SecretKeySelector is a reference to a secret
-                            key in an arbitrary namespace.
+                          description: The client secret for authenticating API calls.
+                            The client secret for authenticating API calls.
                           properties:
                             key:
                               description: The key to select.
@@ -190,20 +200,87 @@ spec:
                           - namespace
                           type: object
                         customerId:
+                          description: The customer identifier for authenticating
+                            API calls. The customer identifier for authenticating
+                            API calls.
                           type: string
                       type: object
                     type: array
                   identifier:
                     type: string
                   interval:
+                    description: Indicates the frequency with which to poll the third-party
+                      API. Must be in the format "1h" or "30m". Valid units are h
+                      and m. Indicates the frequency with which to poll the third-party
+                      API. Must be in the format `1h` or `30m`.
                     type: string
                   name:
+                    description: Name of the device posture integration. Name of the
+                      device posture integration.
                     type: string
                   type:
+                    description: 'The device posture integration type. Valid values
+                      are workspace_one. The device posture integration type. Available
+                      values: `workspace_one`, `uptycs`, `crowdstrike_s2s`, `intune`,
+                      `kolide`, `sentinelone_s2s`, `tanium_s2s`.'
                     type: string
-                required:
-                - name
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  config:
+                    description: The device posture integration's connection authorization
+                      parameters. The device posture integration's connection authorization
+                      parameters.
+                    items:
+                      properties:
+                        apiUrl:
+                          description: The third-party API's URL. The third-party
+                            API's URL.
+                          type: string
+                        authUrl:
+                          description: The third-party authorization API URL. The
+                            third-party authorization API URL.
+                          type: string
+                        clientId:
+                          description: The client identifier for authenticating API
+                            calls. The client identifier for authenticating API calls.
+                          type: string
+                        customerId:
+                          description: The customer identifier for authenticating
+                            API calls. The customer identifier for authenticating
+                            API calls.
+                          type: string
+                      type: object
+                    type: array
+                  identifier:
+                    type: string
+                  interval:
+                    description: Indicates the frequency with which to poll the third-party
+                      API. Must be in the format "1h" or "30m". Valid units are h
+                      and m. Indicates the frequency with which to poll the third-party
+                      API. Must be in the format `1h` or `30m`.
+                    type: string
+                  name:
+                    description: Name of the device posture integration. Name of the
+                      device posture integration.
+                    type: string
+                  type:
+                    description: 'The device posture integration type. Valid values
+                      are workspace_one. The device posture integration type. Available
+                      values: `workspace_one`, `uptycs`, `crowdstrike_s2s`, `intune`,
+                      `kolide`, `sentinelone_s2s`, `tanium_s2s`.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -402,13 +479,70 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: DevicePostureIntegrationStatus defines the observed state
               of DevicePostureIntegration.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account to which the device posture integration
+                      should be added. The account identifier to target for the resource.
+                    type: string
+                  config:
+                    description: The device posture integration's connection authorization
+                      parameters. The device posture integration's connection authorization
+                      parameters.
+                    items:
+                      properties:
+                        apiUrl:
+                          description: The third-party API's URL. The third-party
+                            API's URL.
+                          type: string
+                        authUrl:
+                          description: The third-party authorization API URL. The
+                            third-party authorization API URL.
+                          type: string
+                        clientId:
+                          description: The client identifier for authenticating API
+                            calls. The client identifier for authenticating API calls.
+                          type: string
+                        customerId:
+                          description: The customer identifier for authenticating
+                            API calls. The customer identifier for authenticating
+                            API calls.
+                          type: string
+                      type: object
+                    type: array
                   id:
+                    description: ID of the device posture integration.
+                    type: string
+                  identifier:
+                    type: string
+                  interval:
+                    description: Indicates the frequency with which to poll the third-party
+                      API. Must be in the format "1h" or "30m". Valid units are h
+                      and m. Indicates the frequency with which to poll the third-party
+                      API. Must be in the format `1h` or `30m`.
+                    type: string
+                  name:
+                    description: Name of the device posture integration. Name of the
+                      device posture integration.
+                    type: string
+                  type:
+                    description: 'The device posture integration type. Valid values
+                      are workspace_one. The device posture integration type. Available
+                      values: `workspace_one`, `uptycs`, `crowdstrike_s2s`, `intune`,
+                      `kolide`, `sentinelone_s2s`, `tanium_s2s`.'
                     type: string
                 type: object
               conditions:

@@ -90,9 +90,44 @@ spec:
                       `5475`. **Modifying this attribute will force creation of a
                       new resource.**'
                     type: number
-                required:
-                - hostnames
-                - requestType
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  csr:
+                    description: The Certificate Signing Request. Must be newline-encoded.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
+                  hostnames:
+                    description: A list of hostnames or wildcard names bound to the
+                      certificate. **Modifying this attribute will force creation
+                      of a new resource.**
+                    items:
+                      type: string
+                    type: array
+                  minDaysForRenewal:
+                    type: number
+                  requestType:
+                    description: 'The signature type desired on the certificate. Available
+                      values: `origin-rsa`, `origin-ecc`, `keyless-certificate`. **Modifying
+                      this attribute will force creation of a new resource.**'
+                    type: string
+                  requestedValidity:
+                    description: 'The number of days for which the certificate should
+                      be valid. Available values: `7`, `30`, `90`, `365`, `730`, `1095`,
+                      `5475`. **Modifying this attribute will force creation of a
+                      new resource.**'
+                    type: number
                 type: object
               managementPolicies:
                 default:
@@ -291,6 +326,19 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: csr is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.csr)
+                || has(self.initProvider.csr)'
+            - message: hostnames is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.hostnames)
+                || has(self.initProvider.hostnames)'
+            - message: requestType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.requestType)
+                || has(self.initProvider.requestType)'
           status:
             description: CertificateStatus defines the observed state of Certificate.
             properties:
@@ -299,11 +347,35 @@ spec:
                   certificate:
                     description: The Origin CA certificate.
                     type: string
+                  csr:
+                    description: The Certificate Signing Request. Must be newline-encoded.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
                   expiresOn:
                     description: The datetime when the certificate will expire.
                     type: string
+                  hostnames:
+                    description: A list of hostnames or wildcard names bound to the
+                      certificate. **Modifying this attribute will force creation
+                      of a new resource.**
+                    items:
+                      type: string
+                    type: array
                   id:
                     type: string
+                  minDaysForRenewal:
+                    type: number
+                  requestType:
+                    description: 'The signature type desired on the certificate. Available
+                      values: `origin-rsa`, `origin-ecc`, `keyless-certificate`. **Modifying
+                      this attribute will force creation of a new resource.**'
+                    type: string
+                  requestedValidity:
+                    description: 'The number of days for which the certificate should
+                      be valid. Available values: `7`, `30`, `90`, `365`, `730`, `1095`,
+                      `5475`. **Modifying this attribute will force creation of a
+                      new resource.**'
+                    type: number
                 type: object
               conditions:
                 description: Conditions of the resource.

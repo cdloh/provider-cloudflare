@@ -69,6 +69,16 @@ func (tr *Domain) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Domain
+func (tr *Domain) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Domain using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Domain) LateInitialize(attrs []byte) (bool, error) {
@@ -94,7 +104,7 @@ func (mg *Project) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this Project
 func (tr *Project) GetConnectionDetailsMapping() map[string]string {
-	return nil
+	return map[string]string{"deployment_configs[*].preview[*].secrets": "spec.forProvider.deploymentConfigs[*].preview[*].secretsSecretRef", "deployment_configs[*].production[*].secrets": "spec.forProvider.deploymentConfigs[*].production[*].secretsSecretRef"}
 }
 
 // GetObservation of this Project
@@ -141,6 +151,16 @@ func (tr *Project) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this Project
+func (tr *Project) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this Project using its observed tfState.

@@ -124,9 +124,6 @@ spec:
                           items:
                             type: string
                           type: array
-                      required:
-                      - header
-                      - values
                       type: object
                     type: array
                   interval:
@@ -245,10 +242,119 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - address
-                - name
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  address:
+                    description: The hostname or IP address of the origin server to
+                      run health checks on.
+                    type: string
+                  allowInsecure:
+                    description: Do not validate the certificate when the health check
+                      uses HTTPS. Defaults to `false`.
+                    type: boolean
+                  checkRegions:
+                    description: 'A list of regions from which to run health checks.
+                      If not set, Cloudflare will pick a default region. Available
+                      values: `WNAM`, `ENAM`, `WEU`, `EEU`, `NSAM`, `SSAM`, `OC`,
+                      `ME`, `NAF`, `SAF`, `IN`, `SEAS`, `NEAS`, `ALL_REGIONS`.'
+                    items:
+                      type: string
+                    type: array
+                  consecutiveFails:
+                    description: The number of consecutive fails required from a health
+                      check before changing the health to unhealthy. Defaults to `1`.
+                    type: number
+                  consecutiveSuccesses:
+                    description: The number of consecutive successes required from
+                      a health check before changing the health to healthy. Defaults
+                      to `1`.
+                    type: number
+                  description:
+                    description: A human-readable description of the health check.
+                    type: string
+                  expectedBody:
+                    description: A case-insensitive sub-string to look for in the
+                      response body. If this string is not found the origin will be
+                      marked as unhealthy.
+                    type: string
+                  expectedCodes:
+                    description: The expected HTTP response codes (e.g. '200') or
+                      code ranges (e.g. '2xx' for all codes starting with 2) of the
+                      health check.
+                    items:
+                      type: string
+                    type: array
+                  followRedirects:
+                    description: Follow redirects if the origin returns a 3xx status
+                      code. Defaults to `false`.
+                    type: boolean
+                  header:
+                    description: The HTTP request headers to send in the health check.
+                      It is recommended you set a Host header by default. The User-Agent
+                      header cannot be overridden.
+                    items:
+                      properties:
+                        header:
+                          description: The header name.
+                          type: string
+                        values:
+                          description: A list of string values for the header.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  interval:
+                    description: The interval between each health check. Shorter intervals
+                      may give quicker notifications if the origin status changes,
+                      but will increase the load on the origin as we check from multiple
+                      locations. Defaults to `60`.
+                    type: number
+                  method:
+                    description: 'The HTTP method to use for the health check. Available
+                      values: `connection_established`, `GET`, `HEAD`.'
+                    type: string
+                  name:
+                    description: A short name to identify the health check. Only alphanumeric
+                      characters, hyphens, and underscores are allowed.
+                    type: string
+                  path:
+                    description: The endpoint path to health check against. Defaults
+                      to `/`.
+                    type: string
+                  port:
+                    description: Port number to connect to for the health check. Defaults
+                      to `80`.
+                    type: number
+                  retries:
+                    description: The number of retries to attempt in case of a timeout
+                      before marking the origin as unhealthy. Retries are attempted
+                      immediately. Defaults to `2`.
+                    type: number
+                  suspended:
+                    description: If suspended, no health checks are sent to the origin.
+                      Defaults to `false`.
+                    type: boolean
+                  timeout:
+                    description: The timeout (in seconds) before marking the health
+                      check as failed. Defaults to `5`.
+                    type: number
+                  type:
+                    description: 'The protocol to use for the health check. Available
+                      values: `TCP`, `HTTP`, `HTTPS`.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -447,18 +553,134 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: address is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.address)
+                || has(self.initProvider.address)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: HealthcheckStatus defines the observed state of Healthcheck.
             properties:
               atProvider:
                 properties:
+                  address:
+                    description: The hostname or IP address of the origin server to
+                      run health checks on.
+                    type: string
+                  allowInsecure:
+                    description: Do not validate the certificate when the health check
+                      uses HTTPS. Defaults to `false`.
+                    type: boolean
+                  checkRegions:
+                    description: 'A list of regions from which to run health checks.
+                      If not set, Cloudflare will pick a default region. Available
+                      values: `WNAM`, `ENAM`, `WEU`, `EEU`, `NSAM`, `SSAM`, `OC`,
+                      `ME`, `NAF`, `SAF`, `IN`, `SEAS`, `NEAS`, `ALL_REGIONS`.'
+                    items:
+                      type: string
+                    type: array
+                  consecutiveFails:
+                    description: The number of consecutive fails required from a health
+                      check before changing the health to unhealthy. Defaults to `1`.
+                    type: number
+                  consecutiveSuccesses:
+                    description: The number of consecutive successes required from
+                      a health check before changing the health to healthy. Defaults
+                      to `1`.
+                    type: number
                   createdOn:
                     description: Creation time.
                     type: string
+                  description:
+                    description: A human-readable description of the health check.
+                    type: string
+                  expectedBody:
+                    description: A case-insensitive sub-string to look for in the
+                      response body. If this string is not found the origin will be
+                      marked as unhealthy.
+                    type: string
+                  expectedCodes:
+                    description: The expected HTTP response codes (e.g. '200') or
+                      code ranges (e.g. '2xx' for all codes starting with 2) of the
+                      health check.
+                    items:
+                      type: string
+                    type: array
+                  followRedirects:
+                    description: Follow redirects if the origin returns a 3xx status
+                      code. Defaults to `false`.
+                    type: boolean
+                  header:
+                    description: The HTTP request headers to send in the health check.
+                      It is recommended you set a Host header by default. The User-Agent
+                      header cannot be overridden.
+                    items:
+                      properties:
+                        header:
+                          description: The header name.
+                          type: string
+                        values:
+                          description: A list of string values for the header.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   id:
+                    type: string
+                  interval:
+                    description: The interval between each health check. Shorter intervals
+                      may give quicker notifications if the origin status changes,
+                      but will increase the load on the origin as we check from multiple
+                      locations. Defaults to `60`.
+                    type: number
+                  method:
+                    description: 'The HTTP method to use for the health check. Available
+                      values: `connection_established`, `GET`, `HEAD`.'
                     type: string
                   modifiedOn:
                     description: Last modified time.
+                    type: string
+                  name:
+                    description: A short name to identify the health check. Only alphanumeric
+                      characters, hyphens, and underscores are allowed.
+                    type: string
+                  path:
+                    description: The endpoint path to health check against. Defaults
+                      to `/`.
+                    type: string
+                  port:
+                    description: Port number to connect to for the health check. Defaults
+                      to `80`.
+                    type: number
+                  retries:
+                    description: The number of retries to attempt in case of a timeout
+                      before marking the origin as unhealthy. Retries are attempted
+                      immediately. Defaults to `2`.
+                    type: number
+                  suspended:
+                    description: If suspended, no health checks are sent to the origin.
+                      Defaults to `false`.
+                    type: boolean
+                  timeout:
+                    description: The timeout (in seconds) before marking the health
+                      check as failed. Defaults to `5`.
+                    type: number
+                  type:
+                    description: 'The protocol to use for the health check. Available
+                      values: `TCP`, `HTTP`, `HTTPS`.'
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

@@ -88,9 +88,6 @@ spec:
                           description: 'Whether the rule is enabled or disabled. Available
                             values: `enabled`, `disabled`.'
                           type: string
-                      required:
-                      - action
-                      - expression
                       type: object
                     type: array
                   waitingRoomId:
@@ -247,6 +244,44 @@ spec:
                             type: string
                         type: object
                     type: object
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  rules:
+                    description: List of rules to apply to the ruleset.
+                    items:
+                      properties:
+                        action:
+                          description: 'Action to perform in the ruleset rule. Available
+                            values: `bypass_waiting_room`.'
+                          type: string
+                        description:
+                          description: Brief summary of the waiting room rule and
+                            its intended use.
+                          type: string
+                        expression:
+                          description: Criteria for an HTTP request to trigger the
+                            waiting room rule action. Uses the Firewall Rules expression
+                            language based on Wireshark display filters. Refer to
+                            the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
+                          type: string
+                        status:
+                          description: 'Whether the rule is enabled or disabled. Available
+                            values: `enabled`, `disabled`.'
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -456,14 +491,40 @@ spec:
                     description: List of rules to apply to the ruleset.
                     items:
                       properties:
+                        action:
+                          description: 'Action to perform in the ruleset rule. Available
+                            values: `bypass_waiting_room`.'
+                          type: string
+                        description:
+                          description: Brief summary of the waiting room rule and
+                            its intended use.
+                          type: string
+                        expression:
+                          description: Criteria for an HTTP request to trigger the
+                            waiting room rule action. Uses the Firewall Rules expression
+                            language based on Wireshark display filters. Refer to
+                            the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
+                          type: string
                         id:
                           description: Unique rule identifier.
+                          type: string
+                        status:
+                          description: 'Whether the rule is enabled or disabled. Available
+                            values: `enabled`, `disabled`.'
                           type: string
                         version:
                           description: Version of the waiting room rule.
                           type: string
                       type: object
                     type: array
+                  waitingRoomId:
+                    description: The Waiting Room ID the rules should apply to. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

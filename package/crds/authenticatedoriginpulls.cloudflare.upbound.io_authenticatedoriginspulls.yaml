@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: AuthenticatedOriginsPulls is the Schema for the AuthenticatedOriginsPullss
-          API. <no value>
+          API. Provides a Cloudflare Authenticated Origin Pulls resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -69,6 +69,12 @@ spec:
               forProvider:
                 properties:
                   authenticatedOriginPullsCertificate:
+                    description: The id of an uploaded Authenticated Origin Pulls
+                      certificate. If no hostname is provided, this certificate will
+                      be used zone wide as Per-Zone Authenticated Origin Pulls. The
+                      ID of an uploaded Authenticated Origin Pulls certificate. If
+                      no hostname is provided, this certificate will be used zone
+                      wide as Per-Zone Authenticated Origin Pulls.
                     type: string
                   authenticatedOriginPullsCertificateRef:
                     description: Reference to a Certificate to populate authenticatedOriginPullsCertificate.
@@ -144,12 +150,20 @@ spec:
                         type: object
                     type: object
                   enabled:
+                    description: Whether or not to enable Authenticated Origin Pulls
+                      on the given zone or hostname. Whether to enable Authenticated
+                      Origin Pulls on the given zone or hostname.
                     type: boolean
                   hostname:
+                    description: Specify a hostname to enable Per-Hostname Authenticated
+                      Origin Pulls on, using the provided certificate. Specify a hostname
+                      to enable Per-Hostname Authenticated Origin Pulls on, using
+                      the provided certificate.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: The zone ID to upload the certificate to. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -224,8 +238,31 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - enabled
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  enabled:
+                    description: Whether or not to enable Authenticated Origin Pulls
+                      on the given zone or hostname. Whether to enable Authenticated
+                      Origin Pulls on the given zone or hostname.
+                    type: boolean
+                  hostname:
+                    description: Specify a hostname to enable Per-Hostname Authenticated
+                      Origin Pulls on, using the provided certificate. Specify a hostname
+                      to enable Per-Hostname Authenticated Origin Pulls on, using
+                      the provided certificate.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -424,13 +461,42 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: enabled is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.enabled)
+                || has(self.initProvider.enabled)'
           status:
             description: AuthenticatedOriginsPullsStatus defines the observed state
               of AuthenticatedOriginsPulls.
             properties:
               atProvider:
                 properties:
+                  authenticatedOriginPullsCertificate:
+                    description: The id of an uploaded Authenticated Origin Pulls
+                      certificate. If no hostname is provided, this certificate will
+                      be used zone wide as Per-Zone Authenticated Origin Pulls. The
+                      ID of an uploaded Authenticated Origin Pulls certificate. If
+                      no hostname is provided, this certificate will be used zone
+                      wide as Per-Zone Authenticated Origin Pulls.
+                    type: string
+                  enabled:
+                    description: Whether or not to enable Authenticated Origin Pulls
+                      on the given zone or hostname. Whether to enable Authenticated
+                      Origin Pulls on the given zone or hostname.
+                    type: boolean
+                  hostname:
+                    description: Specify a hostname to enable Per-Hostname Authenticated
+                      Origin Pulls on, using the provided certificate. Specify a hostname
+                      to enable Per-Hostname Authenticated Origin Pulls on, using
+                      the provided certificate.
+                    type: string
                   id:
+                    type: string
+                  zoneId:
+                    description: The zone ID to upload the certificate to. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

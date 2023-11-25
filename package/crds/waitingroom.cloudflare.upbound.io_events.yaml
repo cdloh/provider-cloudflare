@@ -275,10 +275,75 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - eventEndTime
-                - eventStartTime
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  customPageHtml:
+                    description: This is a templated html file that will be rendered
+                      at the edge.
+                    type: string
+                  description:
+                    description: A description to let users add more details about
+                      the event.
+                    type: string
+                  disableSessionRenewal:
+                    description: Disables automatic renewal of session cookies.
+                    type: boolean
+                  eventEndTime:
+                    description: ISO 8601 timestamp that marks the end of the event.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
+                  eventStartTime:
+                    description: ISO 8601 timestamp that marks the start of the event.
+                      Must occur at least 1 minute before `event_end_time`. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  name:
+                    description: A unique name to identify the event. Only alphanumeric
+                      characters, hyphens, and underscores are allowed. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  newUsersPerMinute:
+                    description: The number of new users that will be let into the
+                      route every minute.
+                    type: number
+                  prequeueStartTime:
+                    description: ISO 8601 timestamp that marks when to begin queueing
+                      all users before the event starts. Must occur at least 5 minutes
+                      before `event_start_time`.
+                    type: string
+                  queueingMethod:
+                    description: 'The queueing method used by the waiting room. Available
+                      values: `fifo`, `random`, `passthrough`, `reject`.'
+                    type: string
+                  sessionDuration:
+                    description: Lifetime of a cookie (in minutes) set by Cloudflare
+                      for users who get access to the origin.
+                    type: number
+                  shuffleAtEventStart:
+                    description: Users in the prequeue will be shuffled randomly at
+                      the `event_start_time`. Requires that `prequeue_start_time`
+                      is not null. Defaults to `false`.
+                    type: boolean
+                  suspended:
+                    description: If suspended, the event is ignored and traffic will
+                      be handled based on the waiting room configuration.
+                    type: boolean
+                  totalActiveUsers:
+                    description: The total number of active user sessions on the route
+                      at a point in time.
+                    type: number
                 type: object
               managementPolicies:
                 default:
@@ -477,6 +542,19 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: eventEndTime is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.eventEndTime)
+                || has(self.initProvider.eventEndTime)'
+            - message: eventStartTime is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.eventStartTime)
+                || has(self.initProvider.eventStartTime)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: EventStatus defines the observed state of Event.
             properties:
@@ -485,10 +563,73 @@ spec:
                   createdOn:
                     description: Creation time.
                     type: string
+                  customPageHtml:
+                    description: This is a templated html file that will be rendered
+                      at the edge.
+                    type: string
+                  description:
+                    description: A description to let users add more details about
+                      the event.
+                    type: string
+                  disableSessionRenewal:
+                    description: Disables automatic renewal of session cookies.
+                    type: boolean
+                  eventEndTime:
+                    description: ISO 8601 timestamp that marks the end of the event.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
+                  eventStartTime:
+                    description: ISO 8601 timestamp that marks the start of the event.
+                      Must occur at least 1 minute before `event_end_time`. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
                   id:
                     type: string
                   modifiedOn:
                     description: Last modified time.
+                    type: string
+                  name:
+                    description: A unique name to identify the event. Only alphanumeric
+                      characters, hyphens, and underscores are allowed. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  newUsersPerMinute:
+                    description: The number of new users that will be let into the
+                      route every minute.
+                    type: number
+                  prequeueStartTime:
+                    description: ISO 8601 timestamp that marks when to begin queueing
+                      all users before the event starts. Must occur at least 5 minutes
+                      before `event_start_time`.
+                    type: string
+                  queueingMethod:
+                    description: 'The queueing method used by the waiting room. Available
+                      values: `fifo`, `random`, `passthrough`, `reject`.'
+                    type: string
+                  sessionDuration:
+                    description: Lifetime of a cookie (in minutes) set by Cloudflare
+                      for users who get access to the origin.
+                    type: number
+                  shuffleAtEventStart:
+                    description: Users in the prequeue will be shuffled randomly at
+                      the `event_start_time`. Requires that `prequeue_start_time`
+                      is not null. Defaults to `false`.
+                    type: boolean
+                  suspended:
+                    description: If suspended, the event is ignored and traffic will
+                      be handled based on the waiting room configuration.
+                    type: boolean
+                  totalActiveUsers:
+                    description: The total number of active user sessions on the route
+                      at a point in time.
+                    type: number
+                  waitingRoomId:
+                    description: The Waiting Room ID the event should apply to. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

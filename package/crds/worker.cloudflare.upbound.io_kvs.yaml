@@ -227,9 +227,27 @@ spec:
                   value:
                     description: Value of the KV pair.
                     type: string
-                required:
-                - key
-                - value
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  key:
+                    description: Name of the KV pair. **Modifying this attribute will
+                      force creation of a new resource.**
+                    type: string
+                  value:
+                    description: Value of the KV pair.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -428,12 +446,36 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: key is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.key)
+                || has(self.initProvider.key)'
+            - message: value is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.value)
+                || has(self.initProvider.value)'
           status:
             description: KVStatus defines the observed state of KV.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
                   id:
+                    type: string
+                  key:
+                    description: Name of the KV pair. **Modifying this attribute will
+                      force creation of a new resource.**
+                    type: string
+                  namespaceId:
+                    description: The ID of the Workers KV namespace in which you want
+                      to create the KV pair. **Modifying this attribute will force
+                      creation of a new resource.**
+                    type: string
+                  value:
+                    description: Value of the KV pair.
                     type: string
                 type: object
               conditions:

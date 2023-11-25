@@ -13,14 +13,325 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ActionParametersObservation struct {
+type ActionParametersInitParameters struct {
+
+	// Specifies uncommon ports to allow cacheable assets to be served from.
+	AdditionalCacheablePorts []*float64 `json:"additionalCacheablePorts,omitempty" tf:"additional_cacheable_ports,omitempty"`
+
+	// Compression algorithms to use in order of preference.
+	Algorithms []AlgorithmsInitParameters `json:"algorithms,omitempty" tf:"algorithms,omitempty"`
+
+	// Turn on or off Cloudflare Automatic HTTPS rewrites.
+	AutomaticHTTPSRewrites *bool `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
+
+	// Indicate which file extensions to minify automatically.
+	Autominify []AutominifyInitParameters `json:"autominify,omitempty" tf:"autominify,omitempty"`
+
+	// Inspect the visitor's browser for headers commonly associated with spammers and certain bots.
+	Bic *bool `json:"bic,omitempty" tf:"bic,omitempty"`
+
+	// List of browser TTL parameters to apply to the request.
+	BrowserTTL []BrowserTTLInitParameters `json:"browserTtl,omitempty" tf:"browser_ttl,omitempty"`
+
+	// Whether to cache if expression matches.
+	Cache *bool `json:"cache,omitempty" tf:"cache,omitempty"`
+
+	// List of cache key parameters to apply to the request.
+	CacheKey []CacheKeyInitParameters `json:"cacheKey,omitempty" tf:"cache_key,omitempty"`
+
+	// Content of the custom error response.
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
+	// Content-Type of the custom error response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// List of cookie values to include as part of custom fields logging.
+	CookieFields []*string `json:"cookieFields,omitempty" tf:"cookie_fields,omitempty"`
+
+	// Turn off all active Cloudflare Apps.
+	DisableApps *bool `json:"disableApps,omitempty" tf:"disable_apps,omitempty"`
+
+	// Turn off railgun feature of the Cloudflare Speed app.
+	DisableRailgun *bool `json:"disableRailgun,omitempty" tf:"disable_railgun,omitempty"`
+
+	// Turn off zaraz feature.
+	DisableZaraz *bool `json:"disableZaraz,omitempty" tf:"disable_zaraz,omitempty"`
+
+	// List of edge TTL parameters to apply to the request.
+	EdgeTTL []EdgeTTLInitParameters `json:"edgeTtl,omitempty" tf:"edge_ttl,omitempty"`
+
+	// Turn on or off the Cloudflare Email Obfuscation feature of the Cloudflare Scrape Shield app.
+	EmailObfuscation *bool `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
+
+	// Use a list to lookup information for the action.
+	FromList []FromListInitParameters `json:"fromList,omitempty" tf:"from_list,omitempty"`
+
+	// Use a value to lookup information for the action.
+	FromValue []FromValueInitParameters `json:"fromValue,omitempty" tf:"from_value,omitempty"`
+
+	// List of HTTP header modifications to perform in the ruleset rule. Note: Headers are order dependent and must be provided sorted alphabetically ascending based on the `name` value.
+	Headers []HeadersInitParameters `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Host Header that request origin receives.
+	HostHeader *string `json:"hostHeader,omitempty" tf:"host_header,omitempty"`
+
+	// Turn on or off the hotlink protection feature.
+	HotlinkProtection *bool `json:"hotlinkProtection,omitempty" tf:"hotlink_protection,omitempty"`
+
+	// Identifier of the action parameter to modify.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Increment *float64 `json:"increment,omitempty" tf:"increment,omitempty"`
+
+	// List of properties to configure WAF payload logging.
+	MatchedData []MatchedDataInitParameters `json:"matchedData,omitempty" tf:"matched_data,omitempty"`
+
+	// Turn on or off Cloudflare Mirage of the Cloudflare Speed app.
+	Mirage *bool `json:"mirage,omitempty" tf:"mirage,omitempty"`
+
+	// Turn on or off the Cloudflare Opportunistic Encryption feature of the Edge Certificates tab in the Cloudflare SSL/TLS app.
+	OpportunisticEncryption *bool `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
+
+	// List of properties to change request origin.
+	Origin []OriginInitParameters `json:"origin,omitempty" tf:"origin,omitempty"`
+
+	// Enable or disable the use of a more compliant Cache Control parsing mechanism, enabled by default for most zones.
+	OriginCacheControl *bool `json:"originCacheControl,omitempty" tf:"origin_cache_control,omitempty"`
+
+	// Pass-through error page for origin.
+	OriginErrorPagePassthru *bool `json:"originErrorPagePassthru,omitempty" tf:"origin_error_page_passthru,omitempty"`
 
 	// List of override configurations to apply to the ruleset.
-	// +kubebuilder:validation:Optional
+	Overrides []OverridesInitParameters `json:"overrides,omitempty" tf:"overrides,omitempty"`
+
+	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.
+	Phases []*string `json:"phases,omitempty" tf:"phases,omitempty"`
+
+	// Apply options from the Polish feature of the Cloudflare Speed app.
+	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
+
+	// Products to target with the actions. Available values: `bic`, `hot`, `ratelimit`, `securityLevel`, `uablock`, `waf`, `zonelockdown`.
+	Products []*string `json:"products,omitempty" tf:"products,omitempty"`
+
+	// Specifies a maximum timeout for reading content from an origin server.
+	ReadTimeout *float64 `json:"readTimeout,omitempty" tf:"read_timeout,omitempty"`
+
+	// List of request headers to include as part of custom fields logging, in lowercase.
+	RequestFields []*string `json:"requestFields,omitempty" tf:"request_fields,omitempty"`
+
+	// Respect strong ETags.
+	RespectStrongEtags *bool `json:"respectStrongEtags,omitempty" tf:"respect_strong_etags,omitempty"`
+
+	// List of parameters that configure the response given to end users.
+	Response []ResponseInitParameters `json:"response,omitempty" tf:"response,omitempty"`
+
+	// List of response headers to include as part of custom fields logging, in lowercase.
+	ResponseFields []*string `json:"responseFields,omitempty" tf:"response_fields,omitempty"`
+
+	// Turn on or off Cloudflare Rocket Loader in the Cloudflare Speed app.
+	RocketLoader *bool `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
+
+	// Map of managed WAF rule ID to comma-delimited string of ruleset rule IDs. Example: `rules = { "efb7b8c949ac4650a09736fc376e9aee" = "5de7edfa648c4d6891dc3e7f84534ffa,e3a567afc347477d9702d9047e97d760" }`.
+	Rules map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// Which ruleset ID to target.
+	Ruleset *string `json:"ruleset,omitempty" tf:"ruleset,omitempty"`
+
+	// List of managed WAF rule IDs to target. Only valid when the `"action"` is set to skip.
+	Rulesets []*string `json:"rulesets,omitempty" tf:"rulesets,omitempty"`
+
+	// Control options for the SSL feature of the Edge Certificates tab in the Cloudflare SSL/TLS app.
+	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
+
+	// Control options for the Security Level feature from the Security app.
+	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
+
+	// List of serve stale parameters to apply to the request.
+	ServeStale []ServeStaleInitParameters `json:"serveStale,omitempty" tf:"serve_stale,omitempty"`
+
+	// Turn on or off the Server Side Excludes feature of the Cloudflare Scrape Shield app.
+	ServerSideExcludes *bool `json:"serverSideExcludes,omitempty" tf:"server_side_excludes,omitempty"`
+
+	// List of properties to manange Server Name Indication.
+	Sni []SniInitParameters `json:"sni,omitempty" tf:"sni,omitempty"`
+
+	// HTTP status code of the custom error response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Turn on or off the SXG feature.
+	Sxg *bool `json:"sxg,omitempty" tf:"sxg,omitempty"`
+
+	// List of URI properties to configure for the ruleset rule when performing URL rewrite transformations.
+	URI []URIInitParameters `json:"uri,omitempty" tf:"uri,omitempty"`
+
+	// Version of the ruleset to deploy.
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
+}
+
+type ActionParametersObservation struct {
+
+	// Specifies uncommon ports to allow cacheable assets to be served from.
+	AdditionalCacheablePorts []*float64 `json:"additionalCacheablePorts,omitempty" tf:"additional_cacheable_ports,omitempty"`
+
+	// Compression algorithms to use in order of preference.
+	Algorithms []AlgorithmsObservation `json:"algorithms,omitempty" tf:"algorithms,omitempty"`
+
+	// Turn on or off Cloudflare Automatic HTTPS rewrites.
+	AutomaticHTTPSRewrites *bool `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
+
+	// Indicate which file extensions to minify automatically.
+	Autominify []AutominifyObservation `json:"autominify,omitempty" tf:"autominify,omitempty"`
+
+	// Inspect the visitor's browser for headers commonly associated with spammers and certain bots.
+	Bic *bool `json:"bic,omitempty" tf:"bic,omitempty"`
+
+	// List of browser TTL parameters to apply to the request.
+	BrowserTTL []BrowserTTLObservation `json:"browserTtl,omitempty" tf:"browser_ttl,omitempty"`
+
+	// Whether to cache if expression matches.
+	Cache *bool `json:"cache,omitempty" tf:"cache,omitempty"`
+
+	// List of cache key parameters to apply to the request.
+	CacheKey []CacheKeyObservation `json:"cacheKey,omitempty" tf:"cache_key,omitempty"`
+
+	// Content of the custom error response.
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
+	// Content-Type of the custom error response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// List of cookie values to include as part of custom fields logging.
+	CookieFields []*string `json:"cookieFields,omitempty" tf:"cookie_fields,omitempty"`
+
+	// Turn off all active Cloudflare Apps.
+	DisableApps *bool `json:"disableApps,omitempty" tf:"disable_apps,omitempty"`
+
+	// Turn off railgun feature of the Cloudflare Speed app.
+	DisableRailgun *bool `json:"disableRailgun,omitempty" tf:"disable_railgun,omitempty"`
+
+	// Turn off zaraz feature.
+	DisableZaraz *bool `json:"disableZaraz,omitempty" tf:"disable_zaraz,omitempty"`
+
+	// List of edge TTL parameters to apply to the request.
+	EdgeTTL []EdgeTTLObservation `json:"edgeTtl,omitempty" tf:"edge_ttl,omitempty"`
+
+	// Turn on or off the Cloudflare Email Obfuscation feature of the Cloudflare Scrape Shield app.
+	EmailObfuscation *bool `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
+
+	// Use a list to lookup information for the action.
+	FromList []FromListObservation `json:"fromList,omitempty" tf:"from_list,omitempty"`
+
+	// Use a value to lookup information for the action.
+	FromValue []FromValueObservation `json:"fromValue,omitempty" tf:"from_value,omitempty"`
+
+	// List of HTTP header modifications to perform in the ruleset rule. Note: Headers are order dependent and must be provided sorted alphabetically ascending based on the `name` value.
+	Headers []HeadersObservation `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Host Header that request origin receives.
+	HostHeader *string `json:"hostHeader,omitempty" tf:"host_header,omitempty"`
+
+	// Turn on or off the hotlink protection feature.
+	HotlinkProtection *bool `json:"hotlinkProtection,omitempty" tf:"hotlink_protection,omitempty"`
+
+	// Identifier of the action parameter to modify.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Increment *float64 `json:"increment,omitempty" tf:"increment,omitempty"`
+
+	// List of properties to configure WAF payload logging.
+	MatchedData []MatchedDataObservation `json:"matchedData,omitempty" tf:"matched_data,omitempty"`
+
+	// Turn on or off Cloudflare Mirage of the Cloudflare Speed app.
+	Mirage *bool `json:"mirage,omitempty" tf:"mirage,omitempty"`
+
+	// Turn on or off the Cloudflare Opportunistic Encryption feature of the Edge Certificates tab in the Cloudflare SSL/TLS app.
+	OpportunisticEncryption *bool `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
+
+	// List of properties to change request origin.
+	Origin []OriginObservation `json:"origin,omitempty" tf:"origin,omitempty"`
+
+	// Enable or disable the use of a more compliant Cache Control parsing mechanism, enabled by default for most zones.
+	OriginCacheControl *bool `json:"originCacheControl,omitempty" tf:"origin_cache_control,omitempty"`
+
+	// Pass-through error page for origin.
+	OriginErrorPagePassthru *bool `json:"originErrorPagePassthru,omitempty" tf:"origin_error_page_passthru,omitempty"`
+
+	// List of override configurations to apply to the ruleset.
 	Overrides []OverridesObservation `json:"overrides,omitempty" tf:"overrides,omitempty"`
+
+	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.
+	Phases []*string `json:"phases,omitempty" tf:"phases,omitempty"`
+
+	// Apply options from the Polish feature of the Cloudflare Speed app.
+	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
+
+	// Products to target with the actions. Available values: `bic`, `hot`, `ratelimit`, `securityLevel`, `uablock`, `waf`, `zonelockdown`.
+	Products []*string `json:"products,omitempty" tf:"products,omitempty"`
+
+	// Specifies a maximum timeout for reading content from an origin server.
+	ReadTimeout *float64 `json:"readTimeout,omitempty" tf:"read_timeout,omitempty"`
+
+	// List of request headers to include as part of custom fields logging, in lowercase.
+	RequestFields []*string `json:"requestFields,omitempty" tf:"request_fields,omitempty"`
+
+	// Respect strong ETags.
+	RespectStrongEtags *bool `json:"respectStrongEtags,omitempty" tf:"respect_strong_etags,omitempty"`
+
+	// List of parameters that configure the response given to end users.
+	Response []ResponseObservation `json:"response,omitempty" tf:"response,omitempty"`
+
+	// List of response headers to include as part of custom fields logging, in lowercase.
+	ResponseFields []*string `json:"responseFields,omitempty" tf:"response_fields,omitempty"`
+
+	// Turn on or off Cloudflare Rocket Loader in the Cloudflare Speed app.
+	RocketLoader *bool `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
+
+	// Map of managed WAF rule ID to comma-delimited string of ruleset rule IDs. Example: `rules = { "efb7b8c949ac4650a09736fc376e9aee" = "5de7edfa648c4d6891dc3e7f84534ffa,e3a567afc347477d9702d9047e97d760" }`.
+	Rules map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// Which ruleset ID to target.
+	Ruleset *string `json:"ruleset,omitempty" tf:"ruleset,omitempty"`
+
+	// List of managed WAF rule IDs to target. Only valid when the `"action"` is set to skip.
+	Rulesets []*string `json:"rulesets,omitempty" tf:"rulesets,omitempty"`
+
+	// Control options for the SSL feature of the Edge Certificates tab in the Cloudflare SSL/TLS app.
+	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
+
+	// Control options for the Security Level feature from the Security app.
+	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
+
+	// List of serve stale parameters to apply to the request.
+	ServeStale []ServeStaleObservation `json:"serveStale,omitempty" tf:"serve_stale,omitempty"`
+
+	// Turn on or off the Server Side Excludes feature of the Cloudflare Scrape Shield app.
+	ServerSideExcludes *bool `json:"serverSideExcludes,omitempty" tf:"server_side_excludes,omitempty"`
+
+	// List of properties to manange Server Name Indication.
+	Sni []SniObservation `json:"sni,omitempty" tf:"sni,omitempty"`
+
+	// HTTP status code of the custom error response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Turn on or off the SXG feature.
+	Sxg *bool `json:"sxg,omitempty" tf:"sxg,omitempty"`
+
+	// List of URI properties to configure for the ruleset rule when performing URL rewrite transformations.
+	URI []URIObservation `json:"uri,omitempty" tf:"uri,omitempty"`
+
+	// Version of the ruleset to deploy.
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 }
 
 type ActionParametersParameters struct {
+
+	// Specifies uncommon ports to allow cacheable assets to be served from.
+	// +kubebuilder:validation:Optional
+	AdditionalCacheablePorts []*float64 `json:"additionalCacheablePorts,omitempty" tf:"additional_cacheable_ports,omitempty"`
+
+	// Compression algorithms to use in order of preference.
+	// +kubebuilder:validation:Optional
+	Algorithms []AlgorithmsParameters `json:"algorithms,omitempty" tf:"algorithms,omitempty"`
 
 	// Turn on or off Cloudflare Automatic HTTPS rewrites.
 	// +kubebuilder:validation:Optional
@@ -86,7 +397,7 @@ type ActionParametersParameters struct {
 	// +kubebuilder:validation:Optional
 	FromValue []FromValueParameters `json:"fromValue,omitempty" tf:"from_value,omitempty"`
 
-	// List of HTTP header modifications to perform in the ruleset rule.
+	// List of HTTP header modifications to perform in the ruleset rule. Note: Headers are order dependent and must be provided sorted alphabetically ascending based on the `name` value.
 	// +kubebuilder:validation:Optional
 	Headers []HeadersParameters `json:"headers,omitempty" tf:"headers,omitempty"`
 
@@ -121,6 +432,10 @@ type ActionParametersParameters struct {
 	// +kubebuilder:validation:Optional
 	Origin []OriginParameters `json:"origin,omitempty" tf:"origin,omitempty"`
 
+	// Enable or disable the use of a more compliant Cache Control parsing mechanism, enabled by default for most zones.
+	// +kubebuilder:validation:Optional
+	OriginCacheControl *bool `json:"originCacheControl,omitempty" tf:"origin_cache_control,omitempty"`
+
 	// Pass-through error page for origin.
 	// +kubebuilder:validation:Optional
 	OriginErrorPagePassthru *bool `json:"originErrorPagePassthru,omitempty" tf:"origin_error_page_passthru,omitempty"`
@@ -129,7 +444,7 @@ type ActionParametersParameters struct {
 	// +kubebuilder:validation:Optional
 	Overrides []OverridesParameters `json:"overrides,omitempty" tf:"overrides,omitempty"`
 
-	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.
+	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.
 	// +kubebuilder:validation:Optional
 	Phases []*string `json:"phases,omitempty" tf:"phases,omitempty"`
 
@@ -140,6 +455,10 @@ type ActionParametersParameters struct {
 	// Products to target with the actions. Available values: `bic`, `hot`, `ratelimit`, `securityLevel`, `uablock`, `waf`, `zonelockdown`.
 	// +kubebuilder:validation:Optional
 	Products []*string `json:"products,omitempty" tf:"products,omitempty"`
+
+	// Specifies a maximum timeout for reading content from an origin server.
+	// +kubebuilder:validation:Optional
+	ReadTimeout *float64 `json:"readTimeout,omitempty" tf:"read_timeout,omitempty"`
 
 	// List of request headers to include as part of custom fields logging, in lowercase.
 	// +kubebuilder:validation:Optional
@@ -210,12 +529,52 @@ type ActionParametersParameters struct {
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 }
 
+type AlgorithmsInitParameters struct {
+
+	// Name of the compression algorithm to use. Available values: `gzip`, `brotli`, `auto`, `default`, `none`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type AlgorithmsObservation struct {
+
+	// Name of the compression algorithm to use. Available values: `gzip`, `brotli`, `auto`, `default`, `none`
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type AlgorithmsParameters struct {
+
+	// Name of the compression algorithm to use. Available values: `gzip`, `brotli`, `auto`, `default`, `none`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type AutominifyInitParameters struct {
+
+	// CSS minification.
+	CSS *bool `json:"css,omitempty" tf:"css,omitempty"`
+
+	// HTML minification.
+	HTML *bool `json:"html,omitempty" tf:"html,omitempty"`
+
+	// JS minification.
+	Js *bool `json:"js,omitempty" tf:"js,omitempty"`
+}
+
 type AutominifyObservation struct {
+
+	// CSS minification.
+	CSS *bool `json:"css,omitempty" tf:"css,omitempty"`
+
+	// HTML minification.
+	HTML *bool `json:"html,omitempty" tf:"html,omitempty"`
+
+	// JS minification.
+	Js *bool `json:"js,omitempty" tf:"js,omitempty"`
 }
 
 type AutominifyParameters struct {
 
-	// SSL minification.
+	// CSS minification.
 	// +kubebuilder:validation:Optional
 	CSS *bool `json:"css,omitempty" tf:"css,omitempty"`
 
@@ -228,26 +587,68 @@ type AutominifyParameters struct {
 	Js *bool `json:"js,omitempty" tf:"js,omitempty"`
 }
 
+type BrowserTTLInitParameters struct {
+
+	// Default browser TTL. This value is required when override_origin is set
+	Default *float64 `json:"default,omitempty" tf:"default,omitempty"`
+
+	// Mode of the browser TTL. Available values: `override_origin`, `respect_origin`, `bypass`
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
 type BrowserTTLObservation struct {
+
+	// Default browser TTL. This value is required when override_origin is set
+	Default *float64 `json:"default,omitempty" tf:"default,omitempty"`
+
+	// Mode of the browser TTL. Available values: `override_origin`, `respect_origin`, `bypass`
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 }
 
 type BrowserTTLParameters struct {
 
-	// Default browser TTL.
+	// Default browser TTL. This value is required when override_origin is set
 	// +kubebuilder:validation:Optional
 	Default *float64 `json:"default,omitempty" tf:"default,omitempty"`
 
-	// Mode of the browser TTL.
-	// +kubebuilder:validation:Required
-	Mode *string `json:"mode" tf:"mode,omitempty"`
+	// Mode of the browser TTL. Available values: `override_origin`, `respect_origin`, `bypass`
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type CacheKeyInitParameters struct {
+
+	// Cache by device type.
+	CacheByDeviceType *bool `json:"cacheByDeviceType,omitempty" tf:"cache_by_device_type,omitempty"`
+
+	// Cache deception armor.
+	CacheDeceptionArmor *bool `json:"cacheDeceptionArmor,omitempty" tf:"cache_deception_armor,omitempty"`
+
+	// Custom key parameters for the request.
+	CustomKey []CustomKeyInitParameters `json:"customKey,omitempty" tf:"custom_key,omitempty"`
+
+	// Ignore query strings order.
+	IgnoreQueryStringsOrder *bool `json:"ignoreQueryStringsOrder,omitempty" tf:"ignore_query_strings_order,omitempty"`
 }
 
 type CacheKeyObservation struct {
+
+	// Cache by device type.
+	CacheByDeviceType *bool `json:"cacheByDeviceType,omitempty" tf:"cache_by_device_type,omitempty"`
+
+	// Cache deception armor.
+	CacheDeceptionArmor *bool `json:"cacheDeceptionArmor,omitempty" tf:"cache_deception_armor,omitempty"`
+
+	// Custom key parameters for the request.
+	CustomKey []CustomKeyObservation `json:"customKey,omitempty" tf:"custom_key,omitempty"`
+
+	// Ignore query strings order.
+	IgnoreQueryStringsOrder *bool `json:"ignoreQueryStringsOrder,omitempty" tf:"ignore_query_strings_order,omitempty"`
 }
 
 type CacheKeyParameters struct {
 
-	// Cache by device type. Conflicts with "custom_key.user.device_type".
+	// Cache by device type.
 	// +kubebuilder:validation:Optional
 	CacheByDeviceType *bool `json:"cacheByDeviceType,omitempty" tf:"cache_by_device_type,omitempty"`
 
@@ -264,7 +665,22 @@ type CacheKeyParameters struct {
 	IgnoreQueryStringsOrder *bool `json:"ignoreQueryStringsOrder,omitempty" tf:"ignore_query_strings_order,omitempty"`
 }
 
+type CategoriesInitParameters struct {
+
+	// Action to perform in the tag-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Tag name to apply the ruleset rule override to.
+	Category *string `json:"category,omitempty" tf:"category,omitempty"`
+}
+
 type CategoriesObservation struct {
+
+	// Action to perform in the tag-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Tag name to apply the ruleset rule override to.
+	Category *string `json:"category,omitempty" tf:"category,omitempty"`
 
 	// Defines if the current tag-level override enables or disables the ruleset rules with the specified tag.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
@@ -272,20 +688,31 @@ type CategoriesObservation struct {
 
 type CategoriesParameters struct {
 
-	// Action to perform in the tag-level override. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.
+	// Action to perform in the tag-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
 	// +kubebuilder:validation:Optional
 	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// Tag name to apply the ruleset rule override to.
 	// +kubebuilder:validation:Optional
 	Category *string `json:"category,omitempty" tf:"category,omitempty"`
+}
 
-	// Defines if the current tag-level override enables or disables the ruleset rules with the specified tag. Available values: `enabled`, `disabled`. Defaults to `""`.
-	// +kubebuilder:validation:Optional
-	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+type CookieInitParameters struct {
+
+	// List of cookies to check for presence in the custom key.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// List of cookies to include in the custom key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type CookieObservation struct {
+
+	// List of cookies to check for presence in the custom key.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// List of cookies to include in the custom key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type CookieParameters struct {
@@ -299,7 +726,40 @@ type CookieParameters struct {
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
+type CustomKeyInitParameters struct {
+
+	// Cookie parameters for the custom key.
+	Cookie []CookieInitParameters `json:"cookie,omitempty" tf:"cookie,omitempty"`
+
+	// Header parameters for the custom key.
+	Header []HeaderInitParameters `json:"header,omitempty" tf:"header,omitempty"`
+
+	// Host parameters for the custom key.
+	Host []HostInitParameters `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Query string parameters for the custom key.
+	QueryString []QueryStringInitParameters `json:"queryString,omitempty" tf:"query_string,omitempty"`
+
+	// User parameters for the custom key.
+	User []UserInitParameters `json:"user,omitempty" tf:"user,omitempty"`
+}
+
 type CustomKeyObservation struct {
+
+	// Cookie parameters for the custom key.
+	Cookie []CookieObservation `json:"cookie,omitempty" tf:"cookie,omitempty"`
+
+	// Header parameters for the custom key.
+	Header []HeaderObservation `json:"header,omitempty" tf:"header,omitempty"`
+
+	// Host parameters for the custom key.
+	Host []HostObservation `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Query string parameters for the custom key.
+	QueryString []QueryStringObservation `json:"queryString,omitempty" tf:"query_string,omitempty"`
+
+	// User parameters for the custom key.
+	User []UserObservation `json:"user,omitempty" tf:"user,omitempty"`
 }
 
 type CustomKeyParameters struct {
@@ -325,7 +785,28 @@ type CustomKeyParameters struct {
 	User []UserParameters `json:"user,omitempty" tf:"user,omitempty"`
 }
 
+type EdgeTTLInitParameters struct {
+
+	// Default edge TTL.
+	Default *float64 `json:"default,omitempty" tf:"default,omitempty"`
+
+	// Mode of the edge TTL. Available values: `override_origin`, `respect_origin`, `bypass_by_default`
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// Edge TTL for the status codes.
+	StatusCodeTTL []StatusCodeTTLInitParameters `json:"statusCodeTtl,omitempty" tf:"status_code_ttl,omitempty"`
+}
+
 type EdgeTTLObservation struct {
+
+	// Default edge TTL.
+	Default *float64 `json:"default,omitempty" tf:"default,omitempty"`
+
+	// Mode of the edge TTL. Available values: `override_origin`, `respect_origin`, `bypass_by_default`
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// Edge TTL for the status codes.
+	StatusCodeTTL []StatusCodeTTLObservation `json:"statusCodeTtl,omitempty" tf:"status_code_ttl,omitempty"`
 }
 
 type EdgeTTLParameters struct {
@@ -334,16 +815,31 @@ type EdgeTTLParameters struct {
 	// +kubebuilder:validation:Optional
 	Default *float64 `json:"default,omitempty" tf:"default,omitempty"`
 
-	// Mode of the edge TTL.
-	// +kubebuilder:validation:Required
-	Mode *string `json:"mode" tf:"mode,omitempty"`
+	// Mode of the edge TTL. Available values: `override_origin`, `respect_origin`, `bypass_by_default`
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 
 	// Edge TTL for the status codes.
 	// +kubebuilder:validation:Optional
 	StatusCodeTTL []StatusCodeTTLParameters `json:"statusCodeTtl,omitempty" tf:"status_code_ttl,omitempty"`
 }
 
+type ExposedCredentialCheckInitParameters struct {
+
+	// Firewall Rules expression language based on Wireshark display filters for where to check for the "password" value. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+	PasswordExpression *string `json:"passwordExpression,omitempty" tf:"password_expression,omitempty"`
+
+	// Firewall Rules expression language based on Wireshark display filters for where to check for the "username" value. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+	UsernameExpression *string `json:"usernameExpression,omitempty" tf:"username_expression,omitempty"`
+}
+
 type ExposedCredentialCheckObservation struct {
+
+	// Firewall Rules expression language based on Wireshark display filters for where to check for the "password" value. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+	PasswordExpression *string `json:"passwordExpression,omitempty" tf:"password_expression,omitempty"`
+
+	// Firewall Rules expression language based on Wireshark display filters for where to check for the "username" value. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+	UsernameExpression *string `json:"usernameExpression,omitempty" tf:"username_expression,omitempty"`
 }
 
 type ExposedCredentialCheckParameters struct {
@@ -357,21 +853,57 @@ type ExposedCredentialCheckParameters struct {
 	UsernameExpression *string `json:"usernameExpression,omitempty" tf:"username_expression,omitempty"`
 }
 
+type FromListInitParameters struct {
+
+	// Expression to use for the list lookup.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Name of the list.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type FromListObservation struct {
+
+	// Expression to use for the list lookup.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Name of the list.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type FromListParameters struct {
 
 	// Expression to use for the list lookup.
-	// +kubebuilder:validation:Required
-	Key *string `json:"key" tf:"key,omitempty"`
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// Name of the list.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type FromValueInitParameters struct {
+
+	// Preserve query string for redirect URL.
+	PreserveQueryString *bool `json:"preserveQueryString,omitempty" tf:"preserve_query_string,omitempty"`
+
+	// Status code for redirect.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Target URL for redirect.
+	TargetURL []TargetURLInitParameters `json:"targetUrl,omitempty" tf:"target_url,omitempty"`
 }
 
 type FromValueObservation struct {
+
+	// Preserve query string for redirect URL.
+	PreserveQueryString *bool `json:"preserveQueryString,omitempty" tf:"preserve_query_string,omitempty"`
+
+	// Status code for redirect.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Target URL for redirect.
+	TargetURL []TargetURLObservation `json:"targetUrl,omitempty" tf:"target_url,omitempty"`
 }
 
 type FromValueParameters struct {
@@ -389,7 +921,28 @@ type FromValueParameters struct {
 	TargetURL []TargetURLParameters `json:"targetUrl,omitempty" tf:"target_url,omitempty"`
 }
 
+type HeaderInitParameters struct {
+
+	// List of headers to check for presence in the custom key.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// Exclude the origin header from the custom key.
+	ExcludeOrigin *bool `json:"excludeOrigin,omitempty" tf:"exclude_origin,omitempty"`
+
+	// List of headers to include in the custom key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
+}
+
 type HeaderObservation struct {
+
+	// List of headers to check for presence in the custom key.
+	CheckPresence []*string `json:"checkPresence,omitempty" tf:"check_presence,omitempty"`
+
+	// Exclude the origin header from the custom key.
+	ExcludeOrigin *bool `json:"excludeOrigin,omitempty" tf:"exclude_origin,omitempty"`
+
+	// List of headers to include in the custom key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type HeaderParameters struct {
@@ -407,12 +960,39 @@ type HeaderParameters struct {
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
+type HeadersInitParameters struct {
+
+	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Name of the HTTP request header to target.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Action to perform on the HTTP request header. Available values: `remove`, `set`, `add`.
+	Operation *string `json:"operation,omitempty" tf:"operation,omitempty"`
+
+	// Static value to provide as the HTTP request header value.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type HeadersObservation struct {
+
+	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Name of the HTTP request header to target.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Action to perform on the HTTP request header. Available values: `remove`, `set`, `add`.
+	Operation *string `json:"operation,omitempty" tf:"operation,omitempty"`
+
+	// Static value to provide as the HTTP request header value.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type HeadersParameters struct {
 
-	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions. Conflicts with `"value"`.
+	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
 	// +kubebuilder:validation:Optional
 	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
@@ -420,16 +1000,25 @@ type HeadersParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Action to perform on the HTTP request header. Available values: `remove`, `set`.
+	// Action to perform on the HTTP request header. Available values: `remove`, `set`, `add`.
 	// +kubebuilder:validation:Optional
 	Operation *string `json:"operation,omitempty" tf:"operation,omitempty"`
 
-	// Static value to provide as the HTTP request header value. Conflicts with `"expression"`.
+	// Static value to provide as the HTTP request header value.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type HostInitParameters struct {
+
+	// Resolve hostname to IP address.
+	Resolved *bool `json:"resolved,omitempty" tf:"resolved,omitempty"`
+}
+
 type HostObservation struct {
+
+	// Resolve hostname to IP address.
+	Resolved *bool `json:"resolved,omitempty" tf:"resolved,omitempty"`
 }
 
 type HostParameters struct {
@@ -439,6 +1028,9 @@ type HostParameters struct {
 	Resolved *bool `json:"resolved,omitempty" tf:"resolved,omitempty"`
 }
 
+type LoggingInitParameters struct {
+}
+
 type LoggingObservation struct {
 
 	// Override the default logging behavior when a rule is matched.
@@ -446,13 +1038,18 @@ type LoggingObservation struct {
 }
 
 type LoggingParameters struct {
+}
 
-	// Override the default logging behavior when a rule is matched. Available values: `enabled`, `disabled`. Defaults to `""`.
-	// +kubebuilder:validation:Optional
-	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+type MatchedDataInitParameters struct {
+
+	// Public key to use within WAF Ruleset payload logging to view the HTTP request parameters. You can generate a public key [using the `matched-data-cli` command-line tool](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/command-line/generate-key-pair) or [in the Cloudflare dashboard](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/configure).
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 }
 
 type MatchedDataObservation struct {
+
+	// Public key to use within WAF Ruleset payload logging to view the HTTP request parameters. You can generate a public key [using the `matched-data-cli` command-line tool](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/command-line/generate-key-pair) or [in the Cloudflare dashboard](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/configure).
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 }
 
 type MatchedDataParameters struct {
@@ -462,7 +1059,22 @@ type MatchedDataParameters struct {
 	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 }
 
+type OriginInitParameters struct {
+
+	// Origin Hostname where request is sent.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Origin Port where request is sent.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+}
+
 type OriginObservation struct {
+
+	// Origin Hostname where request is sent.
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// Origin Port where request is sent.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 }
 
 type OriginParameters struct {
@@ -476,23 +1088,42 @@ type OriginParameters struct {
 	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 }
 
-type OverridesObservation struct {
+type OverridesInitParameters struct {
+
+	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// List of tag-based overrides.
-	// +kubebuilder:validation:Optional
+	Categories []CategoriesInitParameters `json:"categories,omitempty" tf:"categories,omitempty"`
+
+	// List of rule-based overrides.
+	Rules []OverridesRulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// Sensitivity level to override for all ruleset rules. Available values: `default`, `medium`, `low`, `eoff`.
+	SensitivityLevel *string `json:"sensitivityLevel,omitempty" tf:"sensitivity_level,omitempty"`
+}
+
+type OverridesObservation struct {
+
+	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// List of tag-based overrides.
 	Categories []CategoriesObservation `json:"categories,omitempty" tf:"categories,omitempty"`
 
 	// Defines if the current ruleset-level override enables or disables the ruleset.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// List of rule-based overrides.
-	// +kubebuilder:validation:Optional
 	Rules []OverridesRulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// Sensitivity level to override for all ruleset rules. Available values: `default`, `medium`, `low`, `eoff`.
+	SensitivityLevel *string `json:"sensitivityLevel,omitempty" tf:"sensitivity_level,omitempty"`
 }
 
 type OverridesParameters struct {
 
-	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.
+	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
 	// +kubebuilder:validation:Optional
 	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
@@ -507,21 +1138,44 @@ type OverridesParameters struct {
 	// Sensitivity level to override for all ruleset rules. Available values: `default`, `medium`, `low`, `eoff`.
 	// +kubebuilder:validation:Optional
 	SensitivityLevel *string `json:"sensitivityLevel,omitempty" tf:"sensitivity_level,omitempty"`
+}
 
-	// Defines if the current ruleset-level override enables or disables the ruleset. Available values: `enabled`, `disabled`. Defaults to `""`.
-	// +kubebuilder:validation:Optional
-	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+type OverridesRulesInitParameters struct {
+
+	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Rule ID to apply the override to.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Anomaly score threshold to apply in the ruleset rule override. Only applicable to modsecurity-based rulesets.
+	ScoreThreshold *float64 `json:"scoreThreshold,omitempty" tf:"score_threshold,omitempty"`
+
+	// Sensitivity level for a ruleset rule override.
+	SensitivityLevel *string `json:"sensitivityLevel,omitempty" tf:"sensitivity_level,omitempty"`
 }
 
 type OverridesRulesObservation struct {
 
+	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
 	// Defines if the current rule-level override enables or disables the rule.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Rule ID to apply the override to.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Anomaly score threshold to apply in the ruleset rule override. Only applicable to modsecurity-based rulesets.
+	ScoreThreshold *float64 `json:"scoreThreshold,omitempty" tf:"score_threshold,omitempty"`
+
+	// Sensitivity level for a ruleset rule override.
+	SensitivityLevel *string `json:"sensitivityLevel,omitempty" tf:"sensitivity_level,omitempty"`
 }
 
 type OverridesRulesParameters struct {
 
-	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.
+	// Action to perform in the rule-level override. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
 	// +kubebuilder:validation:Optional
 	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
@@ -536,13 +1190,24 @@ type OverridesRulesParameters struct {
 	// Sensitivity level for a ruleset rule override.
 	// +kubebuilder:validation:Optional
 	SensitivityLevel *string `json:"sensitivityLevel,omitempty" tf:"sensitivity_level,omitempty"`
+}
 
-	// Defines if the current rule-level override enables or disables the rule. Available values: `enabled`, `disabled`. Defaults to `""`.
-	// +kubebuilder:validation:Optional
-	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+type PathInitParameters struct {
+
+	// Expression that defines the updated (dynamic) value of the URI path or query string component. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Static string value of the updated URI path or query string component.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type PathObservation struct {
+
+	// Expression that defines the updated (dynamic) value of the URI path or query string component. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Static string value of the updated URI path or query string component.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type PathParameters struct {
@@ -556,7 +1221,22 @@ type PathParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type QueryInitParameters struct {
+
+	// Expression that defines the updated (dynamic) value of the URI path or query string component. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Static string value of the updated URI path or query string component.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type QueryObservation struct {
+
+	// Expression that defines the updated (dynamic) value of the URI path or query string component. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Static string value of the updated URI path or query string component.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type QueryParameters struct {
@@ -570,21 +1250,87 @@ type QueryParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type QueryStringInitParameters struct {
+
+	// List of query string parameters to exclude from the custom key.
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// List of query string parameters to include in the custom key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
+}
+
 type QueryStringObservation struct {
+
+	// List of query string parameters to exclude from the custom key.
+	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// List of query string parameters to include in the custom key.
+	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type QueryStringParameters struct {
 
-	// List of query string parameters to exclude from the custom key. Conflicts with "include".
+	// List of query string parameters to exclude from the custom key.
 	// +kubebuilder:validation:Optional
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
-	// List of query string parameters to include in the custom key. Conflicts with "exclude".
+	// List of query string parameters to include in the custom key.
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
+type RatelimitInitParameters struct {
+
+	// List of parameters that define how Cloudflare tracks the request rate for this rule.
+	Characteristics []*string `json:"characteristics,omitempty" tf:"characteristics,omitempty"`
+
+	// Criteria for counting HTTP requests to trigger the Rate Limiting action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	CountingExpression *string `json:"countingExpression,omitempty" tf:"counting_expression,omitempty"`
+
+	// Once the request rate is reached, the Rate Limiting rule blocks further requests for the period of time defined in this field.
+	MitigationTimeout *float64 `json:"mitigationTimeout,omitempty" tf:"mitigation_timeout,omitempty"`
+
+	// The period of time to consider (in seconds) when evaluating the request rate.
+	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
+
+	// The number of requests over the period of time that will trigger the Rate Limiting rule.
+	RequestsPerPeriod *float64 `json:"requestsPerPeriod,omitempty" tf:"requests_per_period,omitempty"`
+
+	// Whether to include requests to origin within the Rate Limiting count.
+	RequestsToOrigin *bool `json:"requestsToOrigin,omitempty" tf:"requests_to_origin,omitempty"`
+
+	// The maximum aggregate score over the period of time that will trigger Rate Limiting rule.
+	ScorePerPeriod *float64 `json:"scorePerPeriod,omitempty" tf:"score_per_period,omitempty"`
+
+	// Name of HTTP header in the response, set by the origin server, with the score for the current request.
+	ScoreResponseHeaderName *string `json:"scoreResponseHeaderName,omitempty" tf:"score_response_header_name,omitempty"`
+}
+
 type RatelimitObservation struct {
+
+	// List of parameters that define how Cloudflare tracks the request rate for this rule.
+	Characteristics []*string `json:"characteristics,omitempty" tf:"characteristics,omitempty"`
+
+	// Criteria for counting HTTP requests to trigger the Rate Limiting action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	CountingExpression *string `json:"countingExpression,omitempty" tf:"counting_expression,omitempty"`
+
+	// Once the request rate is reached, the Rate Limiting rule blocks further requests for the period of time defined in this field.
+	MitigationTimeout *float64 `json:"mitigationTimeout,omitempty" tf:"mitigation_timeout,omitempty"`
+
+	// The period of time to consider (in seconds) when evaluating the request rate.
+	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
+
+	// The number of requests over the period of time that will trigger the Rate Limiting rule.
+	RequestsPerPeriod *float64 `json:"requestsPerPeriod,omitempty" tf:"requests_per_period,omitempty"`
+
+	// Whether to include requests to origin within the Rate Limiting count.
+	RequestsToOrigin *bool `json:"requestsToOrigin,omitempty" tf:"requests_to_origin,omitempty"`
+
+	// The maximum aggregate score over the period of time that will trigger Rate Limiting rule.
+	ScorePerPeriod *float64 `json:"scorePerPeriod,omitempty" tf:"score_per_period,omitempty"`
+
+	// Name of HTTP header in the response, set by the origin server, with the score for the current request.
+	ScoreResponseHeaderName *string `json:"scoreResponseHeaderName,omitempty" tf:"score_response_header_name,omitempty"`
 }
 
 type RatelimitParameters struct {
@@ -612,9 +1358,38 @@ type RatelimitParameters struct {
 	// Whether to include requests to origin within the Rate Limiting count.
 	// +kubebuilder:validation:Optional
 	RequestsToOrigin *bool `json:"requestsToOrigin,omitempty" tf:"requests_to_origin,omitempty"`
+
+	// The maximum aggregate score over the period of time that will trigger Rate Limiting rule.
+	// +kubebuilder:validation:Optional
+	ScorePerPeriod *float64 `json:"scorePerPeriod,omitempty" tf:"score_per_period,omitempty"`
+
+	// Name of HTTP header in the response, set by the origin server, with the score for the current request.
+	// +kubebuilder:validation:Optional
+	ScoreResponseHeaderName *string `json:"scoreResponseHeaderName,omitempty" tf:"score_response_header_name,omitempty"`
+}
+
+type ResponseInitParameters struct {
+
+	// Body content to include in the response.
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
+	// HTTP content type to send in the response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// HTTP status code to send in the response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 }
 
 type ResponseObservation struct {
+
+	// Body content to include in the response.
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
+	// HTTP content type to send in the response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// HTTP status code to send in the response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 }
 
 type ResponseParameters struct {
@@ -632,18 +1407,67 @@ type ResponseParameters struct {
 	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 }
 
-type RulesObservation struct {
+type RulesInitParameters struct {
+
+	// Action to perform in the ruleset rule. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// List of parameters that configure the behavior of the ruleset rule action.
-	// +kubebuilder:validation:Optional
+	ActionParameters []ActionParametersInitParameters `json:"actionParameters,omitempty" tf:"action_parameters,omitempty"`
+
+	// Brief summary of the ruleset rule and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Whether the rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// List of parameters that configure exposed credential checks.
+	ExposedCredentialCheck []ExposedCredentialCheckInitParameters `json:"exposedCredentialCheck,omitempty" tf:"exposed_credential_check,omitempty"`
+
+	// Criteria for an HTTP request to trigger the ruleset rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// List parameters to configure how the rule generates logs. Only valid for skip action.
+	Logging []LoggingInitParameters `json:"logging,omitempty" tf:"logging,omitempty"`
+
+	// List of parameters that configure HTTP rate limiting behaviour.
+	Ratelimit []RatelimitInitParameters `json:"ratelimit,omitempty" tf:"ratelimit,omitempty"`
+
+	// Rule reference.
+	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
+}
+
+type RulesObservation struct {
+
+	// Action to perform in the ruleset rule. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// List of parameters that configure the behavior of the ruleset rule action.
 	ActionParameters []ActionParametersObservation `json:"actionParameters,omitempty" tf:"action_parameters,omitempty"`
+
+	// Brief summary of the ruleset rule and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Whether the rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// List of parameters that configure exposed credential checks.
+	ExposedCredentialCheck []ExposedCredentialCheckObservation `json:"exposedCredentialCheck,omitempty" tf:"exposed_credential_check,omitempty"`
+
+	// Criteria for an HTTP request to trigger the ruleset rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
 	// Unique rule identifier.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// List parameters to configure how the rule generates logs.
-	// +kubebuilder:validation:Optional
+	// The most recent update to this rule.
+	LastUpdated *string `json:"lastUpdated,omitempty" tf:"last_updated,omitempty"`
+
+	// List parameters to configure how the rule generates logs. Only valid for skip action.
 	Logging []LoggingObservation `json:"logging,omitempty" tf:"logging,omitempty"`
+
+	// List of parameters that configure HTTP rate limiting behaviour.
+	Ratelimit []RatelimitObservation `json:"ratelimit,omitempty" tf:"ratelimit,omitempty"`
 
 	// Rule reference.
 	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
@@ -654,7 +1478,7 @@ type RulesObservation struct {
 
 type RulesParameters struct {
 
-	// Action to perform in the ruleset rule. Available values: `block`, `challenge`, `ddos_dynamic`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `set_cache_settings`, `set_config`, `serve_error`, `skip`.
+	// Action to perform in the ruleset rule. Available values: `block`, `challenge`, `compress_response`, `ddos_dynamic`, `ddos_mitigation`, `execute`, `force_connection_close`, `js_challenge`, `log`, `log_custom_field`, `managed_challenge`, `redirect`, `rewrite`, `route`, `score`, `serve_error`, `set_cache_settings`, `set_config`, `skip`.
 	// +kubebuilder:validation:Optional
 	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
@@ -675,30 +1499,70 @@ type RulesParameters struct {
 	ExposedCredentialCheck []ExposedCredentialCheckParameters `json:"exposedCredentialCheck,omitempty" tf:"exposed_credential_check,omitempty"`
 
 	// Criteria for an HTTP request to trigger the ruleset rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
-	// +kubebuilder:validation:Required
-	Expression *string `json:"expression" tf:"expression,omitempty"`
+	// +kubebuilder:validation:Optional
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
-	// List parameters to configure how the rule generates logs.
+	// List parameters to configure how the rule generates logs. Only valid for skip action.
 	// +kubebuilder:validation:Optional
 	Logging []LoggingParameters `json:"logging,omitempty" tf:"logging,omitempty"`
 
 	// List of parameters that configure HTTP rate limiting behaviour.
 	// +kubebuilder:validation:Optional
 	Ratelimit []RatelimitParameters `json:"ratelimit,omitempty" tf:"ratelimit,omitempty"`
+
+	// Rule reference.
+	// +kubebuilder:validation:Optional
+	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
+}
+
+type RulesetInitParameters struct {
+
+	// Brief summary of the ruleset and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `zone`.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// Name of the ruleset.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.
+	Phase *string `json:"phase,omitempty" tf:"phase,omitempty"`
+
+	// List of rules to apply to the ruleset.
+	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 }
 
 type RulesetObservation struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Brief summary of the ruleset and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `zone`.
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// Name of the ruleset.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.
+	Phase *string `json:"phase,omitempty" tf:"phase,omitempty"`
+
 	// List of rules to apply to the ruleset.
-	// +kubebuilder:validation:Optional
 	Rules []RulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RulesetParameters struct {
 
-	// The account identifier to target for the resource. Conflicts with `zone_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -714,28 +1578,24 @@ type RulesetParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `schema`, `zone`.
-	// +kubebuilder:validation:Required
-	Kind *string `json:"kind" tf:"kind,omitempty"`
+	// Type of Ruleset to create. Available values: `custom`, `managed`, `root`, `zone`.
+	// +kubebuilder:validation:Optional
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 
-	// Name of the ruleset. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// Name of the ruleset.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_late_transform_managed`, `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`, `http_request_redirect`, `http_request_sanitize`, `http_request_transform`, `http_response_firewall_managed`, `http_response_headers_transform`, `http_response_headers_transform_managed`, `magic_transit`, `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.
-	// +kubebuilder:validation:Required
-	Phase *string `json:"phase" tf:"phase,omitempty"`
+	// Point in the request/response lifecycle where the ruleset will be created. Available values: `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`, `http_request_firewall_custom`, `http_request_firewall_managed`, `http_request_late_transform`, `http_request_origin`, `http_request_redirect`, `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`, `http_response_compression`, `http_response_firewall_managed`, `http_response_headers_transform`, `magic_transit`.
+	// +kubebuilder:validation:Optional
+	Phase *string `json:"phase,omitempty" tf:"phase,omitempty"`
 
 	// List of rules to apply to the ruleset.
 	// +kubebuilder:validation:Optional
 	Rules []RulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
-	// Name of entitlement that is shareable between entities.
-	// +kubebuilder:validation:Optional
-	ShareableEntitlementName *string `json:"shareableEntitlementName,omitempty" tf:"shareable_entitlement_name,omitempty"`
-
-	// The zone identifier to target for the resource. Conflicts with `account_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -748,7 +1608,16 @@ type RulesetParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type ServeStaleInitParameters struct {
+
+	// Disable stale while updating.
+	DisableStaleWhileUpdating *bool `json:"disableStaleWhileUpdating,omitempty" tf:"disable_stale_while_updating,omitempty"`
+}
+
 type ServeStaleObservation struct {
+
+	// Disable stale while updating.
+	DisableStaleWhileUpdating *bool `json:"disableStaleWhileUpdating,omitempty" tf:"disable_stale_while_updating,omitempty"`
 }
 
 type ServeStaleParameters struct {
@@ -758,7 +1627,16 @@ type ServeStaleParameters struct {
 	DisableStaleWhileUpdating *bool `json:"disableStaleWhileUpdating,omitempty" tf:"disable_stale_while_updating,omitempty"`
 }
 
+type SniInitParameters struct {
+
+	// Value to define for SNI.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type SniObservation struct {
+
+	// Value to define for SNI.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type SniParameters struct {
@@ -768,7 +1646,22 @@ type SniParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type StatusCodeRangeInitParameters struct {
+
+	// From status code.
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// To status code.
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+}
+
 type StatusCodeRangeObservation struct {
+
+	// From status code.
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// To status code.
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type StatusCodeRangeParameters struct {
@@ -782,39 +1675,92 @@ type StatusCodeRangeParameters struct {
 	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
 }
 
+type StatusCodeTTLInitParameters struct {
+
+	// Status code for which the edge TTL is applied.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Status code range for which the edge TTL is applied.
+	StatusCodeRange []StatusCodeRangeInitParameters `json:"statusCodeRange,omitempty" tf:"status_code_range,omitempty"`
+
+	// Status code edge TTL value.
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type StatusCodeTTLObservation struct {
+
+	// Status code for which the edge TTL is applied.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Status code range for which the edge TTL is applied.
+	StatusCodeRange []StatusCodeRangeObservation `json:"statusCodeRange,omitempty" tf:"status_code_range,omitempty"`
+
+	// Status code edge TTL value.
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type StatusCodeTTLParameters struct {
 
-	// Status code for which the edge TTL is applied. Conflicts with "status_code_range".
+	// Status code for which the edge TTL is applied.
 	// +kubebuilder:validation:Optional
 	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 
-	// Status code range for which the edge TTL is applied. Conflicts with "status_code".
+	// Status code range for which the edge TTL is applied.
 	// +kubebuilder:validation:Optional
 	StatusCodeRange []StatusCodeRangeParameters `json:"statusCodeRange,omitempty" tf:"status_code_range,omitempty"`
 
 	// Status code edge TTL value.
-	// +kubebuilder:validation:Required
-	Value *float64 `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TargetURLInitParameters struct {
+
+	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Static value to provide as the HTTP request header value.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type TargetURLObservation struct {
+
+	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Static value to provide as the HTTP request header value.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type TargetURLParameters struct {
 
-	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions. Conflicts with `"value"`.
+	// Use a value dynamically determined by the Firewall Rules expression language based on Wireshark display filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language) documentation for all available fields, operators, and functions.
 	// +kubebuilder:validation:Optional
 	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
-	// Static value to provide as the HTTP request header value. Conflicts with `"expression"`.
+	// Static value to provide as the HTTP request header value.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type URIInitParameters struct {
+	Origin *bool `json:"origin,omitempty" tf:"origin,omitempty"`
+
+	// URI path configuration when performing a URL rewrite.
+	Path []PathInitParameters `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Query string configuration when performing a URL rewrite.
+	Query []QueryInitParameters `json:"query,omitempty" tf:"query,omitempty"`
+}
+
 type URIObservation struct {
+	Origin *bool `json:"origin,omitempty" tf:"origin,omitempty"`
+
+	// URI path configuration when performing a URL rewrite.
+	Path []PathObservation `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Query string configuration when performing a URL rewrite.
+	Query []QueryObservation `json:"query,omitempty" tf:"query,omitempty"`
 }
 
 type URIParameters struct {
@@ -831,12 +1777,33 @@ type URIParameters struct {
 	Query []QueryParameters `json:"query,omitempty" tf:"query,omitempty"`
 }
 
+type UserInitParameters struct {
+
+	// Add device type to the custom key.
+	DeviceType *bool `json:"deviceType,omitempty" tf:"device_type,omitempty"`
+
+	// Add geo data to the custom key.
+	Geo *bool `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// Add language data to the custom key.
+	Lang *bool `json:"lang,omitempty" tf:"lang,omitempty"`
+}
+
 type UserObservation struct {
+
+	// Add device type to the custom key.
+	DeviceType *bool `json:"deviceType,omitempty" tf:"device_type,omitempty"`
+
+	// Add geo data to the custom key.
+	Geo *bool `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// Add language data to the custom key.
+	Lang *bool `json:"lang,omitempty" tf:"lang,omitempty"`
 }
 
 type UserParameters struct {
 
-	// Add device type to the custom key. Conflicts with "cache_key.cache_by_device_type".
+	// Add device type to the custom key.
 	// +kubebuilder:validation:Optional
 	DeviceType *bool `json:"deviceType,omitempty" tf:"device_type,omitempty"`
 
@@ -853,6 +1820,18 @@ type UserParameters struct {
 type RulesetSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RulesetParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RulesetInitParameters `json:"initProvider,omitempty"`
 }
 
 // RulesetStatus defines the observed state of Ruleset.
@@ -873,8 +1852,11 @@ type RulesetStatus struct {
 type Ruleset struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RulesetSpec   `json:"spec"`
-	Status            RulesetStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.kind) || has(self.initProvider.kind)",message="kind is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.phase) || has(self.initProvider.phase)",message="phase is a required parameter"
+	Spec   RulesetSpec   `json:"spec"`
+	Status RulesetStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

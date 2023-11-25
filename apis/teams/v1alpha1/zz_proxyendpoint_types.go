@@ -13,16 +13,44 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ProxyEndpointInitParameters struct {
+
+	// The networks CIDRs that will be allowed to initiate proxy connections.
+	// The networks CIDRs that will be allowed to initiate proxy connections.
+	Ips []*string `json:"ips,omitempty" tf:"ips,omitempty"`
+
+	// Name of the teams proxy endpoint.
+	// Name of the teams proxy endpoint.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type ProxyEndpointObservation struct {
+
+	// The account to which the teams proxy endpoint should be added.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// ID of the teams proxy endpoint.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The networks CIDRs that will be allowed to initiate proxy connections.
+	// The networks CIDRs that will be allowed to initiate proxy connections.
+	Ips []*string `json:"ips,omitempty" tf:"ips,omitempty"`
+
+	// Name of the teams proxy endpoint.
+	// Name of the teams proxy endpoint.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The FQDN that proxy clients should be pointed at.
+	// The FQDN that proxy clients should be pointed at.
 	Subdomain *string `json:"subdomain,omitempty" tf:"subdomain,omitempty"`
 }
 
 type ProxyEndpointParameters struct {
 
+	// The account to which the teams proxy endpoint should be added.
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -34,17 +62,33 @@ type ProxyEndpointParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Required
-	Ips []*string `json:"ips" tf:"ips,omitempty"`
+	// The networks CIDRs that will be allowed to initiate proxy connections.
+	// The networks CIDRs that will be allowed to initiate proxy connections.
+	// +kubebuilder:validation:Optional
+	Ips []*string `json:"ips,omitempty" tf:"ips,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// Name of the teams proxy endpoint.
+	// Name of the teams proxy endpoint.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 // ProxyEndpointSpec defines the desired state of ProxyEndpoint
 type ProxyEndpointSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ProxyEndpointParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ProxyEndpointInitParameters `json:"initProvider,omitempty"`
 }
 
 // ProxyEndpointStatus defines the observed state of ProxyEndpoint.
@@ -55,7 +99,7 @@ type ProxyEndpointStatus struct {
 
 // +kubebuilder:object:root=true
 
-// ProxyEndpoint is the Schema for the ProxyEndpoints API. <no value>
+// ProxyEndpoint is the Schema for the ProxyEndpoints API. Provides a Cloudflare Teams Proxy Endpoint resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -65,8 +109,10 @@ type ProxyEndpointStatus struct {
 type ProxyEndpoint struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ProxyEndpointSpec   `json:"spec"`
-	Status            ProxyEndpointStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.ips) || has(self.initProvider.ips)",message="ips is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   ProxyEndpointSpec   `json:"spec"`
+	Status ProxyEndpointStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

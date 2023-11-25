@@ -1,0 +1,17 @@
+apiVersion: dns.cloudflare.upbound.io/v1alpha1
+kind: Record
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dns/v1alpha1/record
+  labels:
+    testing.upbound.io/example-name: foobar
+  name: foobar
+spec:
+  forProvider:
+    name: terraform
+    ttl: 3600
+    type: A
+    value: 192.168.0.11
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

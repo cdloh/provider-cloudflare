@@ -155,8 +155,33 @@ spec:
                     description: The assigned Bring-Your-Own-IP prefix ID. **Modifying
                       this attribute will force creation of a new resource.**
                     type: string
-                required:
-                - prefixId
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  advertisement:
+                    description: 'Whether or not the prefix shall be announced. A
+                      prefix can be activated or deactivated once every 15 minutes
+                      (attempting more regular updates will trigger rate limiting).
+                      Available values: `on`, `off`.'
+                    type: string
+                  description:
+                    description: Description of the BYO IP prefix.
+                    type: string
+                  prefixId:
+                    description: The assigned Bring-Your-Own-IP prefix ID. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -355,12 +380,33 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: prefixId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.prefixId)
+                || has(self.initProvider.prefixId)'
           status:
             description: IPPrefixStatus defines the observed state of IPPrefix.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  advertisement:
+                    description: 'Whether or not the prefix shall be announced. A
+                      prefix can be activated or deactivated once every 15 minutes
+                      (attempting more regular updates will trigger rate limiting).
+                      Available values: `on`, `off`.'
+                    type: string
+                  description:
+                    description: Description of the BYO IP prefix.
+                    type: string
                   id:
+                    type: string
+                  prefixId:
+                    description: The assigned Bring-Your-Own-IP prefix ID. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

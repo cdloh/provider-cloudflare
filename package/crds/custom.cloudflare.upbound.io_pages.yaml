@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Pages is the Schema for the Pagess API. <no value>
+        description: Pages is the Schema for the Pagess API. Provides a resource which
+          manages Cloudflare custom pages.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,8 +68,10 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
-                      Conflicts with `zone_id`.
+                    description: The account ID where the custom pages should be updated.
+                      Either account_id or zone_id must be provided. If account_id
+                      is present, it will override the zone setting. The account identifier
+                      to target for the resource. Conflicts with `zone_id`.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -144,14 +147,28 @@ spec:
                         type: object
                     type: object
                   state:
+                    description: 'Managed state of the custom page. Must be one of
+                      default, customized. Managed state of the custom page. Available
+                      values: `default`, `customized`.'
                     type: string
                   type:
+                    description: 'The type of custom page you wish to update. Must
+                      be one of basic_challenge, waf_challenge, waf_block, ratelimit_block,
+                      country_challenge, ip_block, under_attack, 500_errors, 1000_errors,
+                      always_online, managed_challenge. The type of custom page you
+                      wish to update. Available values: `basic_challenge`, `waf_challenge`,
+                      `waf_block`, `ratelimit_block`, `country_challenge`, `ip_block`,
+                      `under_attack`, `500_errors`, `1000_errors`, `always_online`,
+                      `managed_challenge`.'
                     type: string
                   url:
+                    description: URL of where the custom page source is located. URL
+                      of where the custom page source is located.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. Conflicts
-                      with `account_id`.
+                    description: The zone ID where the custom pages should be updated.
+                      Either zone_id or account_id must be provided. The zone identifier
+                      to target for the resource. Conflicts with `account_id`.
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -226,9 +243,39 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - type
-                - url
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  state:
+                    description: 'Managed state of the custom page. Must be one of
+                      default, customized. Managed state of the custom page. Available
+                      values: `default`, `customized`.'
+                    type: string
+                  type:
+                    description: 'The type of custom page you wish to update. Must
+                      be one of basic_challenge, waf_challenge, waf_block, ratelimit_block,
+                      country_challenge, ip_block, under_attack, 500_errors, 1000_errors,
+                      always_online, managed_challenge. The type of custom page you
+                      wish to update. Available values: `basic_challenge`, `waf_challenge`,
+                      `waf_block`, `ratelimit_block`, `country_challenge`, `ip_block`,
+                      `under_attack`, `500_errors`, `1000_errors`, `always_online`,
+                      `managed_challenge`.'
+                    type: string
+                  url:
+                    description: URL of where the custom page source is located. URL
+                      of where the custom page source is located.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -427,12 +474,51 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
+            - message: url is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.url)
+                || has(self.initProvider.url)'
           status:
             description: PagesStatus defines the observed state of Pages.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account ID where the custom pages should be updated.
+                      Either account_id or zone_id must be provided. If account_id
+                      is present, it will override the zone setting. The account identifier
+                      to target for the resource. Conflicts with `zone_id`.
+                    type: string
                   id:
+                    type: string
+                  state:
+                    description: 'Managed state of the custom page. Must be one of
+                      default, customized. Managed state of the custom page. Available
+                      values: `default`, `customized`.'
+                    type: string
+                  type:
+                    description: 'The type of custom page you wish to update. Must
+                      be one of basic_challenge, waf_challenge, waf_block, ratelimit_block,
+                      country_challenge, ip_block, under_attack, 500_errors, 1000_errors,
+                      always_online, managed_challenge. The type of custom page you
+                      wish to update. Available values: `basic_challenge`, `waf_challenge`,
+                      `waf_block`, `ratelimit_block`, `country_challenge`, `ip_block`,
+                      `under_attack`, `500_errors`, `1000_errors`, `always_online`,
+                      `managed_challenge`.'
+                    type: string
+                  url:
+                    description: URL of where the custom page source is located. URL
+                      of where the custom page source is located.
+                    type: string
+                  zoneId:
+                    description: The zone ID where the custom pages should be updated.
+                      Either zone_id or account_id must be provided. The zone identifier
+                      to target for the resource. Conflicts with `account_id`.
                     type: string
                 type: object
               conditions:

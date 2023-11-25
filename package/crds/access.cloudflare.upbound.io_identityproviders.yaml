@@ -159,19 +159,29 @@ spec:
                           type: array
                         authUrl:
                           type: string
+                        authorizationServerId:
+                          type: string
                         centrifyAccount:
                           type: string
                         centrifyAppId:
                           type: string
                         certsUrl:
                           type: string
+                        claims:
+                          items:
+                            type: string
+                          type: array
                         clientId:
                           type: string
                         clientSecret:
                           type: string
+                        conditionalAccessEnabled:
+                          type: boolean
                         directoryId:
                           type: string
                         emailAttributeName:
+                          type: string
+                        emailClaimName:
                           type: string
                         idpPublicCert:
                           type: string
@@ -181,10 +191,14 @@ spec:
                           type: string
                         oneloginAccount:
                           type: string
+                        pingEnvId:
+                          type: string
                         pkceEnabled:
                           type: boolean
-                        redirectUrl:
-                          type: string
+                        scopes:
+                          items:
+                            type: string
+                          type: array
                         signRequest:
                           type: boolean
                         ssoTargetUrl:
@@ -198,10 +212,43 @@ spec:
                   name:
                     description: Friendly name of the Access Identity Provider configuration.
                     type: string
+                  scimConfig:
+                    description: Configuration for SCIM settings for a given IDP.
+                    items:
+                      properties:
+                        enabled:
+                          type: boolean
+                        groupMemberDeprovision:
+                          type: boolean
+                        seatDeprovision:
+                          type: boolean
+                        secretSecretRef:
+                          description: A SecretKeySelector is a reference to a secret
+                            key in an arbitrary namespace.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        userDeprovision:
+                          type: boolean
+                      type: object
+                    type: array
                   type:
-                    description: 'The provider type to use. Available values: `centrify`,
-                      `facebook`, `google-apps`, `oidc`, `github`, `google`, `saml`,
-                      `linkedin`, `azureAD`, `okta`, `onetimepin`, `onelogin`, `yandex`.'
+                    description: 'The provider type to use. Available values: `azureAD`,
+                      `centrify`, `facebook`, `github`, `google`, `google-apps`, `linkedin`,
+                      `oidc`, `okta`, `onelogin`, `onetimepin`, `pingone`, `saml`,
+                      `yandex`.'
                     type: string
                   zoneId:
                     description: The zone identifier to target for the resource. Conflicts
@@ -281,9 +328,107 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - name
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  config:
+                    description: Provider configuration from the [developer documentation](https://developers.cloudflare.com/access/configuring-identity-providers/).
+                    items:
+                      properties:
+                        apiToken:
+                          type: string
+                        appsDomain:
+                          type: string
+                        attributes:
+                          items:
+                            type: string
+                          type: array
+                        authUrl:
+                          type: string
+                        authorizationServerId:
+                          type: string
+                        centrifyAccount:
+                          type: string
+                        centrifyAppId:
+                          type: string
+                        certsUrl:
+                          type: string
+                        claims:
+                          items:
+                            type: string
+                          type: array
+                        clientId:
+                          type: string
+                        clientSecret:
+                          type: string
+                        conditionalAccessEnabled:
+                          type: boolean
+                        directoryId:
+                          type: string
+                        emailAttributeName:
+                          type: string
+                        emailClaimName:
+                          type: string
+                        idpPublicCert:
+                          type: string
+                        issuerUrl:
+                          type: string
+                        oktaAccount:
+                          type: string
+                        oneloginAccount:
+                          type: string
+                        pingEnvId:
+                          type: string
+                        pkceEnabled:
+                          type: boolean
+                        scopes:
+                          items:
+                            type: string
+                          type: array
+                        signRequest:
+                          type: boolean
+                        ssoTargetUrl:
+                          type: string
+                        supportGroups:
+                          type: boolean
+                        tokenUrl:
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Friendly name of the Access Identity Provider configuration.
+                    type: string
+                  scimConfig:
+                    description: Configuration for SCIM settings for a given IDP.
+                    items:
+                      properties:
+                        enabled:
+                          type: boolean
+                        groupMemberDeprovision:
+                          type: boolean
+                        seatDeprovision:
+                          type: boolean
+                        userDeprovision:
+                          type: boolean
+                      type: object
+                    type: array
+                  type:
+                    description: 'The provider type to use. Available values: `azureAD`,
+                      `centrify`, `facebook`, `github`, `google`, `google-apps`, `linkedin`,
+                      `oidc`, `okta`, `onelogin`, `onetimepin`, `pingone`, `saml`,
+                      `yandex`.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -482,12 +627,120 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: IdentityProviderStatus defines the observed state of IdentityProvider.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      Conflicts with `zone_id`. **Modifying this attribute will force
+                      creation of a new resource.**
+                    type: string
+                  config:
+                    description: Provider configuration from the [developer documentation](https://developers.cloudflare.com/access/configuring-identity-providers/).
+                    items:
+                      properties:
+                        apiToken:
+                          type: string
+                        appsDomain:
+                          type: string
+                        attributes:
+                          items:
+                            type: string
+                          type: array
+                        authUrl:
+                          type: string
+                        authorizationServerId:
+                          type: string
+                        centrifyAccount:
+                          type: string
+                        centrifyAppId:
+                          type: string
+                        certsUrl:
+                          type: string
+                        claims:
+                          items:
+                            type: string
+                          type: array
+                        clientId:
+                          type: string
+                        clientSecret:
+                          type: string
+                        conditionalAccessEnabled:
+                          type: boolean
+                        directoryId:
+                          type: string
+                        emailAttributeName:
+                          type: string
+                        emailClaimName:
+                          type: string
+                        idpPublicCert:
+                          type: string
+                        issuerUrl:
+                          type: string
+                        oktaAccount:
+                          type: string
+                        oneloginAccount:
+                          type: string
+                        pingEnvId:
+                          type: string
+                        pkceEnabled:
+                          type: boolean
+                        redirectUrl:
+                          type: string
+                        scopes:
+                          items:
+                            type: string
+                          type: array
+                        signRequest:
+                          type: boolean
+                        ssoTargetUrl:
+                          type: string
+                        supportGroups:
+                          type: boolean
+                        tokenUrl:
+                          type: string
+                      type: object
+                    type: array
                   id:
+                    type: string
+                  name:
+                    description: Friendly name of the Access Identity Provider configuration.
+                    type: string
+                  scimConfig:
+                    description: Configuration for SCIM settings for a given IDP.
+                    items:
+                      properties:
+                        enabled:
+                          type: boolean
+                        groupMemberDeprovision:
+                          type: boolean
+                        seatDeprovision:
+                          type: boolean
+                        userDeprovision:
+                          type: boolean
+                      type: object
+                    type: array
+                  type:
+                    description: 'The provider type to use. Available values: `azureAD`,
+                      `centrify`, `facebook`, `github`, `google`, `google-apps`, `linkedin`,
+                      `oidc`, `okta`, `onelogin`, `onetimepin`, `pingone`, `saml`,
+                      `yandex`.'
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. Conflicts
+                      with `account_id`. **Modifying this attribute will force creation
+                      of a new resource.**
                     type: string
                 type: object
               conditions:

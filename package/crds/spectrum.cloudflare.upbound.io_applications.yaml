@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Application is the Schema for the Applications API. <no value>
+        description: Application is the Schema for the Applications API. Provides
+          a Cloudflare Spectrum Application resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,71 +68,126 @@ spec:
               forProvider:
                 properties:
                   argoSmartRouting:
-                    description: Defaults to `false`.
+                    description: . Enables Argo Smart Routing. Defaults to false.
+                      Enables Argo Smart Routing.
                     type: boolean
                   dns:
+                    description: The name and type of DNS record for the Spectrum
+                      application. Fields documented below. The name and type of DNS
+                      record for the Spectrum application.
                     items:
                       properties:
                         name:
+                          description: The name of the DNS record associated with
+                            the application.i.e. ssh.example.com. The name of the
+                            DNS record associated with the application.
                           type: string
                         type:
+                          description: 'The type of DNS record associated with the
+                            application. Valid values: CNAME. The type of DNS record
+                            associated with the application.'
                           type: string
-                      required:
-                      - name
-                      - type
                       type: object
                     type: array
-                  edgeIpConnectivity:
-                    type: string
                   edgeIps:
+                    description: . A list of edge IPs (IPv4 and/or IPv6) to configure
+                      Spectrum application to. Requires Bring Your Own IP provisioned.
+                      The anycast edge IP configuration for the hostname of this application.
                     items:
-                      type: string
+                      properties:
+                        connectivity:
+                          description: 'The IP versions supported for inbound connections
+                            on Spectrum anycast IPs. Required when `type` is not `static`.
+                            Available values: `all`, `ipv4`, `ipv6`.'
+                          type: string
+                        ips:
+                          description: The collection of customer owned IPs to broadcast
+                            via anycast for this hostname and application. Requires
+                            [Bring Your Own IP](https://developers.cloudflare.com/spectrum/getting-started/byoip/)
+                            provisioned.
+                          items:
+                            type: string
+                          type: array
+                        type:
+                          description: 'The type of DNS record associated with the
+                            application. Valid values: CNAME. The type of edge IP
+                            configuration specified. Available values: `dynamic`,
+                            `static`.'
+                          type: string
+                      type: object
                     type: array
                   ipFirewall:
-                    description: Defaults to `true`.
+                    description: Enables the IP Firewall for this application. Defaults
+                      to true. Enables the IP Firewall for this application.
                     type: boolean
                   originDirect:
+                    description: A list of destination addresses to the origin. e.g.
+                      tcp://192.0.2.1:22. A list of destination addresses to the origin.
+                      e.g. `tcp://192.0.2.1:22`.
                     items:
                       type: string
                     type: array
                   originDns:
+                    description: A destination DNS addresses to the origin. Fields
+                      documented below. A destination DNS addresses to the origin.
                     items:
                       properties:
                         name:
+                          description: The name of the DNS record associated with
+                            the application.i.e. ssh.example.com. Fully qualified
+                            domain name of the origin.
                           type: string
-                      required:
-                      - name
                       type: object
                     type: array
                   originPort:
-                    description: Conflicts with `origin_port_range`.
+                    description: If using origin_dns and not origin_port_range, this
+                      is a required attribute. Origin port to proxy traffice to e.g.
+                      22. Origin port to proxy traffice to. Conflicts with `origin_port_range`.
                     type: number
                   originPortRange:
-                    description: Conflicts with `origin_port`.
+                    description: If using origin_dns and not origin_port, this is
+                      a required attribute. Origin port range to proxy traffice to.
+                      When using a range, the protocol field must also specify a range,
+                      e.g. tcp/22-23. Fields documented below. Origin port range to
+                      proxy traffice to. When using a range, the protocol field must
+                      also specify a range, e.g. `tcp/22-23`. Conflicts with `origin_port`.
                     items:
                       properties:
                         end:
+                          description: Upper bound of the origin port range, e.g.
+                            2000 Upper bound of the origin port range.
                           type: number
                         start:
+                          description: Lower bound of the origin port range, e.g.
+                            1000 Lower bound of the origin port range.
                           type: number
-                      required:
-                      - end
-                      - start
                       type: object
                     type: array
                   protocol:
+                    description: The port configuration at Cloudflare’s edge. e.g.
+                      tcp/22. The port configuration at Cloudflare's edge. e.g. `tcp/22`.
                     type: string
                   proxyProtocol:
-                    description: Defaults to `off`.
+                    description: 'Enables a proxy protocol to the origin. Valid values
+                      are: off, v1, v2, and simple. Defaults to off. Enables a proxy
+                      protocol to the origin. Available values: `off`, `v1`, `v2`,
+                      `simple`.'
                     type: string
                   tls:
-                    description: Defaults to `off`.
+                    description: 'TLS configuration option for Cloudflare to connect
+                      to your origin. Valid values are: off, flexible, full and strict.
+                      Defaults to off. TLS configuration option for Cloudflare to
+                      connect to your origin. Available values: `off`, `flexible`,
+                      `full`, `strict`.'
                     type: string
                   trafficType:
-                    description: Defaults to `direct`.
+                    description: 'Sets application type. Valid values are: direct,
+                      http, https. Defaults to direct. Sets application type. Available
+                      values: `direct`, `http`, `https`.'
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource.
+                    description: The DNS zone ID to add the application to The zone
+                      identifier to target for the resource.
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -206,9 +262,138 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - dns
-                - protocol
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  argoSmartRouting:
+                    description: . Enables Argo Smart Routing. Defaults to false.
+                      Enables Argo Smart Routing.
+                    type: boolean
+                  dns:
+                    description: The name and type of DNS record for the Spectrum
+                      application. Fields documented below. The name and type of DNS
+                      record for the Spectrum application.
+                    items:
+                      properties:
+                        name:
+                          description: The name of the DNS record associated with
+                            the application.i.e. ssh.example.com. The name of the
+                            DNS record associated with the application.
+                          type: string
+                        type:
+                          description: 'The type of DNS record associated with the
+                            application. Valid values: CNAME. The type of DNS record
+                            associated with the application.'
+                          type: string
+                      type: object
+                    type: array
+                  edgeIps:
+                    description: . A list of edge IPs (IPv4 and/or IPv6) to configure
+                      Spectrum application to. Requires Bring Your Own IP provisioned.
+                      The anycast edge IP configuration for the hostname of this application.
+                    items:
+                      properties:
+                        connectivity:
+                          description: 'The IP versions supported for inbound connections
+                            on Spectrum anycast IPs. Required when `type` is not `static`.
+                            Available values: `all`, `ipv4`, `ipv6`.'
+                          type: string
+                        ips:
+                          description: The collection of customer owned IPs to broadcast
+                            via anycast for this hostname and application. Requires
+                            [Bring Your Own IP](https://developers.cloudflare.com/spectrum/getting-started/byoip/)
+                            provisioned.
+                          items:
+                            type: string
+                          type: array
+                        type:
+                          description: 'The type of DNS record associated with the
+                            application. Valid values: CNAME. The type of edge IP
+                            configuration specified. Available values: `dynamic`,
+                            `static`.'
+                          type: string
+                      type: object
+                    type: array
+                  ipFirewall:
+                    description: Enables the IP Firewall for this application. Defaults
+                      to true. Enables the IP Firewall for this application.
+                    type: boolean
+                  originDirect:
+                    description: A list of destination addresses to the origin. e.g.
+                      tcp://192.0.2.1:22. A list of destination addresses to the origin.
+                      e.g. `tcp://192.0.2.1:22`.
+                    items:
+                      type: string
+                    type: array
+                  originDns:
+                    description: A destination DNS addresses to the origin. Fields
+                      documented below. A destination DNS addresses to the origin.
+                    items:
+                      properties:
+                        name:
+                          description: The name of the DNS record associated with
+                            the application.i.e. ssh.example.com. Fully qualified
+                            domain name of the origin.
+                          type: string
+                      type: object
+                    type: array
+                  originPort:
+                    description: If using origin_dns and not origin_port_range, this
+                      is a required attribute. Origin port to proxy traffice to e.g.
+                      22. Origin port to proxy traffice to. Conflicts with `origin_port_range`.
+                    type: number
+                  originPortRange:
+                    description: If using origin_dns and not origin_port, this is
+                      a required attribute. Origin port range to proxy traffice to.
+                      When using a range, the protocol field must also specify a range,
+                      e.g. tcp/22-23. Fields documented below. Origin port range to
+                      proxy traffice to. When using a range, the protocol field must
+                      also specify a range, e.g. `tcp/22-23`. Conflicts with `origin_port`.
+                    items:
+                      properties:
+                        end:
+                          description: Upper bound of the origin port range, e.g.
+                            2000 Upper bound of the origin port range.
+                          type: number
+                        start:
+                          description: Lower bound of the origin port range, e.g.
+                            1000 Lower bound of the origin port range.
+                          type: number
+                      type: object
+                    type: array
+                  protocol:
+                    description: The port configuration at Cloudflare’s edge. e.g.
+                      tcp/22. The port configuration at Cloudflare's edge. e.g. `tcp/22`.
+                    type: string
+                  proxyProtocol:
+                    description: 'Enables a proxy protocol to the origin. Valid values
+                      are: off, v1, v2, and simple. Defaults to off. Enables a proxy
+                      protocol to the origin. Available values: `off`, `v1`, `v2`,
+                      `simple`.'
+                    type: string
+                  tls:
+                    description: 'TLS configuration option for Cloudflare to connect
+                      to your origin. Valid values are: off, flexible, full and strict.
+                      Defaults to off. TLS configuration option for Cloudflare to
+                      connect to your origin. Available values: `off`, `flexible`,
+                      `full`, `strict`.'
+                    type: string
+                  trafficType:
+                    description: 'Sets application type. Valid values are: direct,
+                      http, https. Defaults to direct. Sets application type. Available
+                      values: `direct`, `http`, `https`.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -407,12 +592,144 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: dns is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.dns)
+                || has(self.initProvider.dns)'
+            - message: protocol is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.protocol)
+                || has(self.initProvider.protocol)'
           status:
             description: ApplicationStatus defines the observed state of Application.
             properties:
               atProvider:
                 properties:
+                  argoSmartRouting:
+                    description: . Enables Argo Smart Routing. Defaults to false.
+                      Enables Argo Smart Routing.
+                    type: boolean
+                  dns:
+                    description: The name and type of DNS record for the Spectrum
+                      application. Fields documented below. The name and type of DNS
+                      record for the Spectrum application.
+                    items:
+                      properties:
+                        name:
+                          description: The name of the DNS record associated with
+                            the application.i.e. ssh.example.com. The name of the
+                            DNS record associated with the application.
+                          type: string
+                        type:
+                          description: 'The type of DNS record associated with the
+                            application. Valid values: CNAME. The type of DNS record
+                            associated with the application.'
+                          type: string
+                      type: object
+                    type: array
+                  edgeIps:
+                    description: . A list of edge IPs (IPv4 and/or IPv6) to configure
+                      Spectrum application to. Requires Bring Your Own IP provisioned.
+                      The anycast edge IP configuration for the hostname of this application.
+                    items:
+                      properties:
+                        connectivity:
+                          description: 'The IP versions supported for inbound connections
+                            on Spectrum anycast IPs. Required when `type` is not `static`.
+                            Available values: `all`, `ipv4`, `ipv6`.'
+                          type: string
+                        ips:
+                          description: The collection of customer owned IPs to broadcast
+                            via anycast for this hostname and application. Requires
+                            [Bring Your Own IP](https://developers.cloudflare.com/spectrum/getting-started/byoip/)
+                            provisioned.
+                          items:
+                            type: string
+                          type: array
+                        type:
+                          description: 'The type of DNS record associated with the
+                            application. Valid values: CNAME. The type of edge IP
+                            configuration specified. Available values: `dynamic`,
+                            `static`.'
+                          type: string
+                      type: object
+                    type: array
                   id:
+                    description: Unique identifier in the API for the spectrum application.
+                    type: string
+                  ipFirewall:
+                    description: Enables the IP Firewall for this application. Defaults
+                      to true. Enables the IP Firewall for this application.
+                    type: boolean
+                  originDirect:
+                    description: A list of destination addresses to the origin. e.g.
+                      tcp://192.0.2.1:22. A list of destination addresses to the origin.
+                      e.g. `tcp://192.0.2.1:22`.
+                    items:
+                      type: string
+                    type: array
+                  originDns:
+                    description: A destination DNS addresses to the origin. Fields
+                      documented below. A destination DNS addresses to the origin.
+                    items:
+                      properties:
+                        name:
+                          description: The name of the DNS record associated with
+                            the application.i.e. ssh.example.com. Fully qualified
+                            domain name of the origin.
+                          type: string
+                      type: object
+                    type: array
+                  originPort:
+                    description: If using origin_dns and not origin_port_range, this
+                      is a required attribute. Origin port to proxy traffice to e.g.
+                      22. Origin port to proxy traffice to. Conflicts with `origin_port_range`.
+                    type: number
+                  originPortRange:
+                    description: If using origin_dns and not origin_port, this is
+                      a required attribute. Origin port range to proxy traffice to.
+                      When using a range, the protocol field must also specify a range,
+                      e.g. tcp/22-23. Fields documented below. Origin port range to
+                      proxy traffice to. When using a range, the protocol field must
+                      also specify a range, e.g. `tcp/22-23`. Conflicts with `origin_port`.
+                    items:
+                      properties:
+                        end:
+                          description: Upper bound of the origin port range, e.g.
+                            2000 Upper bound of the origin port range.
+                          type: number
+                        start:
+                          description: Lower bound of the origin port range, e.g.
+                            1000 Lower bound of the origin port range.
+                          type: number
+                      type: object
+                    type: array
+                  protocol:
+                    description: The port configuration at Cloudflare’s edge. e.g.
+                      tcp/22. The port configuration at Cloudflare's edge. e.g. `tcp/22`.
+                    type: string
+                  proxyProtocol:
+                    description: 'Enables a proxy protocol to the origin. Valid values
+                      are: off, v1, v2, and simple. Defaults to off. Enables a proxy
+                      protocol to the origin. Available values: `off`, `v1`, `v2`,
+                      `simple`.'
+                    type: string
+                  tls:
+                    description: 'TLS configuration option for Cloudflare to connect
+                      to your origin. Valid values are: off, flexible, full and strict.
+                      Defaults to off. TLS configuration option for Cloudflare to
+                      connect to your origin. Available values: `off`, `flexible`,
+                      `full`, `strict`.'
+                    type: string
+                  trafficType:
+                    description: 'Sets application type. Valid values are: direct,
+                      http, https. Defaults to direct. Sets application type. Available
+                      values: `direct`, `http`, `https`.'
+                    type: string
+                  zoneId:
+                    description: The DNS zone ID to add the application to The zone
+                      identifier to target for the resource.
                     type: string
                 type: object
               conditions:

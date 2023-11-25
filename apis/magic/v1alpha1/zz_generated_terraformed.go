@@ -69,6 +69,16 @@ func (tr *GRETunnel) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this GRETunnel
+func (tr *GRETunnel) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this GRETunnel using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *GRETunnel) LateInitialize(attrs []byte) (bool, error) {
@@ -141,6 +151,16 @@ func (tr *IPsecTunnel) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this IPsecTunnel
+func (tr *IPsecTunnel) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this IPsecTunnel using its observed tfState.
@@ -217,6 +237,16 @@ func (tr *FirewallRuleset) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this FirewallRuleset
+func (tr *FirewallRuleset) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this FirewallRuleset using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *FirewallRuleset) LateInitialize(attrs []byte) (bool, error) {
@@ -289,6 +319,16 @@ func (tr *StaticRoute) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this StaticRoute
+func (tr *StaticRoute) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this StaticRoute using its observed tfState.

@@ -13,22 +13,62 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RuleInitParameters struct {
+
+	// The action to apply to a matched request. Available values: `block`, `challenge`, `allow`, `js_challenge`, `managed_challenge`, `log`, `bypass`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// A description of the rule to help identify it.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Whether this filter based firewall rule is currently paused.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// The priority of the rule to allow control of processing order. A lower number indicates high priority. If not provided, any rules with a priority will be sequenced before those without.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// List of products to bypass for a request when the bypass action is used. Available values: `zoneLockdown`, `uaBlock`, `bic`, `hot`, `securityLevel`, `rateLimit`, `waf`.
+	Products []*string `json:"products,omitempty" tf:"products,omitempty"`
+}
+
 type RuleObservation struct {
+
+	// The action to apply to a matched request. Available values: `block`, `challenge`, `allow`, `js_challenge`, `managed_challenge`, `log`, `bypass`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// A description of the rule to help identify it.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The identifier of the Filter to use for determining if the Firewall Rule should be triggered.
+	FilterID *string `json:"filterId,omitempty" tf:"filter_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Whether this filter based firewall rule is currently paused.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// The priority of the rule to allow control of processing order. A lower number indicates high priority. If not provided, any rules with a priority will be sequenced before those without.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// List of products to bypass for a request when the bypass action is used. Available values: `zoneLockdown`, `uaBlock`, `bic`, `hot`, `securityLevel`, `rateLimit`, `waf`.
+	Products []*string `json:"products,omitempty" tf:"products,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RuleParameters struct {
 
 	// The action to apply to a matched request. Available values: `block`, `challenge`, `allow`, `js_challenge`, `managed_challenge`, `log`, `bypass`.
-	// +kubebuilder:validation:Required
-	Action *string `json:"action" tf:"action,omitempty"`
+	// +kubebuilder:validation:Optional
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// A description of the rule to help identify it.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The identifier of the Filter to use for determining if the Firewall Rule should be triggered.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/filters/v1alpha1.Filter
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/filters/v1alpha1.Filter
 	// +kubebuilder:validation:Optional
 	FilterID *string `json:"filterId,omitempty" tf:"filter_id,omitempty"`
 
@@ -53,7 +93,7 @@ type RuleParameters struct {
 	Products []*string `json:"products,omitempty" tf:"products,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -70,6 +110,18 @@ type RuleParameters struct {
 type RuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RuleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // RuleStatus defines the observed state of Rule.
@@ -90,8 +142,9 @@ type RuleStatus struct {
 type Rule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RuleSpec   `json:"spec"`
-	Status            RuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.action) || has(self.initProvider.action)",message="action is a required parameter"
+	Spec   RuleSpec   `json:"spec"`
+	Status RuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

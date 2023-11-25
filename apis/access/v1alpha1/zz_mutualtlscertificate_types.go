@@ -13,16 +13,44 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type MutualTLSCertificateInitParameters struct {
+
+	// The hostnames that will be prompted for this certificate.
+	AssociatedHostnames []*string `json:"associatedHostnames,omitempty" tf:"associated_hostnames,omitempty"`
+
+	// The Root CA for your certificates.
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// The name of the certificate.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type MutualTLSCertificateObservation struct {
+
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The hostnames that will be prompted for this certificate.
+	AssociatedHostnames []*string `json:"associatedHostnames,omitempty" tf:"associated_hostnames,omitempty"`
+
+	// The Root CA for your certificates.
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
 	Fingerprint *string `json:"fingerprint,omitempty" tf:"fingerprint,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The name of the certificate.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type MutualTLSCertificateParameters struct {
 
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -43,11 +71,11 @@ type MutualTLSCertificateParameters struct {
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
 	// The name of the certificate.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -64,6 +92,18 @@ type MutualTLSCertificateParameters struct {
 type MutualTLSCertificateSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MutualTLSCertificateParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider MutualTLSCertificateInitParameters `json:"initProvider,omitempty"`
 }
 
 // MutualTLSCertificateStatus defines the observed state of MutualTLSCertificate.
@@ -84,8 +124,9 @@ type MutualTLSCertificateStatus struct {
 type MutualTLSCertificate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              MutualTLSCertificateSpec   `json:"spec"`
-	Status            MutualTLSCertificateStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   MutualTLSCertificateSpec   `json:"spec"`
+	Status MutualTLSCertificateStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

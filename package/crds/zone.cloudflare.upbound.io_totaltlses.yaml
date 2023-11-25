@@ -150,8 +150,27 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - enabled
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  certificateAuthority:
+                    description: 'The Certificate Authority that Total TLS certificates
+                      will be issued through. Available values: `google`, `lets_encrypt`.'
+                    type: string
+                  enabled:
+                    description: Enable Total TLS for the zone.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -350,12 +369,28 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: enabled is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.enabled)
+                || has(self.initProvider.enabled)'
           status:
             description: TotalTLSStatus defines the observed state of TotalTLS.
             properties:
               atProvider:
                 properties:
+                  certificateAuthority:
+                    description: 'The Certificate Authority that Total TLS certificates
+                      will be issued through. Available values: `google`, `lets_encrypt`.'
+                    type: string
+                  enabled:
+                    description: Enable Total TLS for the zone.
+                    type: boolean
                   id:
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

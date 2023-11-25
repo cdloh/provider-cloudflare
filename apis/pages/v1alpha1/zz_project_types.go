@@ -13,7 +13,40 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BuildConfigInitParameters struct {
+
+	// Command used to build project.
+	BuildCommand *string `json:"buildCommand,omitempty" tf:"build_command,omitempty"`
+
+	// Output directory of the build.
+	DestinationDir *string `json:"destinationDir,omitempty" tf:"destination_dir,omitempty"`
+
+	// Your project's root directory, where Cloudflare runs the build command. If your site is not in a subdirectory, leave this path value empty.
+	RootDir *string `json:"rootDir,omitempty" tf:"root_dir,omitempty"`
+
+	// The classifying tag for analytics.
+	WebAnalyticsTag *string `json:"webAnalyticsTag,omitempty" tf:"web_analytics_tag,omitempty"`
+
+	// The auth token for analytics.
+	WebAnalyticsToken *string `json:"webAnalyticsToken,omitempty" tf:"web_analytics_token,omitempty"`
+}
+
 type BuildConfigObservation struct {
+
+	// Command used to build project.
+	BuildCommand *string `json:"buildCommand,omitempty" tf:"build_command,omitempty"`
+
+	// Output directory of the build.
+	DestinationDir *string `json:"destinationDir,omitempty" tf:"destination_dir,omitempty"`
+
+	// Your project's root directory, where Cloudflare runs the build command. If your site is not in a subdirectory, leave this path value empty.
+	RootDir *string `json:"rootDir,omitempty" tf:"root_dir,omitempty"`
+
+	// The classifying tag for analytics.
+	WebAnalyticsTag *string `json:"webAnalyticsTag,omitempty" tf:"web_analytics_tag,omitempty"`
+
+	// The auth token for analytics.
+	WebAnalyticsToken *string `json:"webAnalyticsToken,omitempty" tf:"web_analytics_token,omitempty"`
 }
 
 type BuildConfigParameters struct {
@@ -26,7 +59,7 @@ type BuildConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	DestinationDir *string `json:"destinationDir,omitempty" tf:"destination_dir,omitempty"`
 
-	// Directory to run the command.
+	// Your project's root directory, where Cloudflare runs the build command. If your site is not in a subdirectory, leave this path value empty.
 	// +kubebuilder:validation:Optional
 	RootDir *string `json:"rootDir,omitempty" tf:"root_dir,omitempty"`
 
@@ -39,7 +72,64 @@ type BuildConfigParameters struct {
 	WebAnalyticsToken *string `json:"webAnalyticsToken,omitempty" tf:"web_analytics_token,omitempty"`
 }
 
+type ConfigInitParameters struct {
+
+	// Toggle deployments on this repo. Defaults to `true`.
+	DeploymentsEnabled *bool `json:"deploymentsEnabled,omitempty" tf:"deployments_enabled,omitempty"`
+
+	// Project owner username. **Modifying this attribute will force creation of a new resource.**
+	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
+
+	// Enable Pages to comment on Pull Requests. Defaults to `true`.
+	PrCommentsEnabled *bool `json:"prCommentsEnabled,omitempty" tf:"pr_comments_enabled,omitempty"`
+
+	// Branches will be excluded from automatic deployment.
+	PreviewBranchExcludes []*string `json:"previewBranchExcludes,omitempty" tf:"preview_branch_excludes,omitempty"`
+
+	// Branches will be included for automatic deployment.
+	PreviewBranchIncludes []*string `json:"previewBranchIncludes,omitempty" tf:"preview_branch_includes,omitempty"`
+
+	// Preview Deployment Setting. Defaults to `all`.
+	PreviewDeploymentSetting *string `json:"previewDeploymentSetting,omitempty" tf:"preview_deployment_setting,omitempty"`
+
+	// Project production branch name.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// Enable production deployments. Defaults to `true`.
+	ProductionDeploymentEnabled *bool `json:"productionDeploymentEnabled,omitempty" tf:"production_deployment_enabled,omitempty"`
+
+	// Project repository name. **Modifying this attribute will force creation of a new resource.**
+	RepoName *string `json:"repoName,omitempty" tf:"repo_name,omitempty"`
+}
+
 type ConfigObservation struct {
+
+	// Toggle deployments on this repo. Defaults to `true`.
+	DeploymentsEnabled *bool `json:"deploymentsEnabled,omitempty" tf:"deployments_enabled,omitempty"`
+
+	// Project owner username. **Modifying this attribute will force creation of a new resource.**
+	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
+
+	// Enable Pages to comment on Pull Requests. Defaults to `true`.
+	PrCommentsEnabled *bool `json:"prCommentsEnabled,omitempty" tf:"pr_comments_enabled,omitempty"`
+
+	// Branches will be excluded from automatic deployment.
+	PreviewBranchExcludes []*string `json:"previewBranchExcludes,omitempty" tf:"preview_branch_excludes,omitempty"`
+
+	// Branches will be included for automatic deployment.
+	PreviewBranchIncludes []*string `json:"previewBranchIncludes,omitempty" tf:"preview_branch_includes,omitempty"`
+
+	// Preview Deployment Setting. Defaults to `all`.
+	PreviewDeploymentSetting *string `json:"previewDeploymentSetting,omitempty" tf:"preview_deployment_setting,omitempty"`
+
+	// Project production branch name.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// Enable production deployments. Defaults to `true`.
+	ProductionDeploymentEnabled *bool `json:"productionDeploymentEnabled,omitempty" tf:"production_deployment_enabled,omitempty"`
+
+	// Project repository name. **Modifying this attribute will force creation of a new resource.**
+	RepoName *string `json:"repoName,omitempty" tf:"repo_name,omitempty"`
 }
 
 type ConfigParameters struct {
@@ -48,7 +138,7 @@ type ConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	DeploymentsEnabled *bool `json:"deploymentsEnabled,omitempty" tf:"deployments_enabled,omitempty"`
 
-	// Project owner username.
+	// Project owner username. **Modifying this attribute will force creation of a new resource.**
 	// +kubebuilder:validation:Optional
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
@@ -69,19 +159,34 @@ type ConfigParameters struct {
 	PreviewDeploymentSetting *string `json:"previewDeploymentSetting,omitempty" tf:"preview_deployment_setting,omitempty"`
 
 	// Project production branch name.
-	// +kubebuilder:validation:Required
-	ProductionBranch *string `json:"productionBranch" tf:"production_branch,omitempty"`
+	// +kubebuilder:validation:Optional
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
 
 	// Enable production deployments. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	ProductionDeploymentEnabled *bool `json:"productionDeploymentEnabled,omitempty" tf:"production_deployment_enabled,omitempty"`
 
-	// Project repository name.
+	// Project repository name. **Modifying this attribute will force creation of a new resource.**
 	// +kubebuilder:validation:Optional
 	RepoName *string `json:"repoName,omitempty" tf:"repo_name,omitempty"`
 }
 
+type DeploymentConfigsInitParameters struct {
+
+	// Configuration for preview deploys.
+	Preview []PreviewInitParameters `json:"preview,omitempty" tf:"preview,omitempty"`
+
+	// Configuration for production deploys.
+	Production []ProductionInitParameters `json:"production,omitempty" tf:"production,omitempty"`
+}
+
 type DeploymentConfigsObservation struct {
+
+	// Configuration for preview deploys.
+	Preview []PreviewObservation `json:"preview,omitempty" tf:"preview,omitempty"`
+
+	// Configuration for production deploys.
+	Production []ProductionObservation `json:"production,omitempty" tf:"production,omitempty"`
 }
 
 type DeploymentConfigsParameters struct {
@@ -95,11 +200,109 @@ type DeploymentConfigsParameters struct {
 	Production []ProductionParameters `json:"production,omitempty" tf:"production,omitempty"`
 }
 
+type PlacementInitParameters struct {
+
+	// Placement Mode for the Pages Function.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type PlacementObservation struct {
+
+	// Placement Mode for the Pages Function.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type PlacementParameters struct {
+
+	// Placement Mode for the Pages Function.
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type PreviewInitParameters struct {
+
+	// Use latest compatibility date for Pages Functions. Defaults to `false`.
+	AlwaysUseLatestCompatibilityDate *bool `json:"alwaysUseLatestCompatibilityDate,omitempty" tf:"always_use_latest_compatibility_date,omitempty"`
+
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// D1 Databases used for Pages Functions. Defaults to `map[]`.
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// Durable Object namespaces used for Pages Functions. Defaults to `map[]`.
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// Environment variables for Pages Functions. Defaults to `map[]`.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// Fail open used for Pages Functions. Defaults to `false`.
+	FailOpen *bool `json:"failOpen,omitempty" tf:"fail_open,omitempty"`
+
+	// KV namespaces used for Pages Functions. Defaults to `map[]`.
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// Configuration for placement in the Cloudflare Pages project.
+	Placement []PlacementInitParameters `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	// R2 Buckets used for Pages Functions. Defaults to `map[]`.
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+
+	// Services used for Pages Functions.
+	ServiceBinding []ServiceBindingInitParameters `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	// Usage model used for Pages Functions. Defaults to `bundled`.
+	UsageModel *string `json:"usageModel,omitempty" tf:"usage_model,omitempty"`
+}
+
 type PreviewObservation struct {
+
+	// Use latest compatibility date for Pages Functions. Defaults to `false`.
+	AlwaysUseLatestCompatibilityDate *bool `json:"alwaysUseLatestCompatibilityDate,omitempty" tf:"always_use_latest_compatibility_date,omitempty"`
+
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// D1 Databases used for Pages Functions. Defaults to `map[]`.
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// Durable Object namespaces used for Pages Functions. Defaults to `map[]`.
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// Environment variables for Pages Functions. Defaults to `map[]`.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// Fail open used for Pages Functions. Defaults to `false`.
+	FailOpen *bool `json:"failOpen,omitempty" tf:"fail_open,omitempty"`
+
+	// KV namespaces used for Pages Functions. Defaults to `map[]`.
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// Configuration for placement in the Cloudflare Pages project.
+	Placement []PlacementObservation `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	// R2 Buckets used for Pages Functions. Defaults to `map[]`.
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+
+	// Services used for Pages Functions.
+	ServiceBinding []ServiceBindingObservation `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	// Usage model used for Pages Functions. Defaults to `bundled`.
+	UsageModel *string `json:"usageModel,omitempty" tf:"usage_model,omitempty"`
 }
 
 type PreviewParameters struct {
 
+	// Use latest compatibility date for Pages Functions. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	AlwaysUseLatestCompatibilityDate *bool `json:"alwaysUseLatestCompatibilityDate,omitempty" tf:"always_use_latest_compatibility_date,omitempty"`
+
 	// Compatibility date used for Pages Functions.
 	// +kubebuilder:validation:Optional
 	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
@@ -108,32 +311,131 @@ type PreviewParameters struct {
 	// +kubebuilder:validation:Optional
 	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
 
-	// D1 Databases used for Pages Functions.
+	// D1 Databases used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
 
-	// Durable Object namespaces used for Pages Functions.
+	// Durable Object namespaces used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
 
-	// Environment variables for Pages Functions.
+	// Environment variables for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
 
-	// KV namespaces used for Pages Functions.
+	// Fail open used for Pages Functions. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	FailOpen *bool `json:"failOpen,omitempty" tf:"fail_open,omitempty"`
+
+	// KV namespaces used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
 
-	// R2 Buckets used for Pages Functions.
+	// Configuration for placement in the Cloudflare Pages project.
+	// +kubebuilder:validation:Optional
+	Placement []PlacementParameters `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	// R2 Buckets used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+
+	// Encrypted environment variables for Pages Functions. Defaults to `map[]`.
+	// +kubebuilder:validation:Optional
+	SecretsSecretRef *v1.SecretReference `json:"secretsSecretRef,omitempty" tf:"-"`
+
+	// Services used for Pages Functions.
+	// +kubebuilder:validation:Optional
+	ServiceBinding []ServiceBindingParameters `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	// Usage model used for Pages Functions. Defaults to `bundled`.
+	// +kubebuilder:validation:Optional
+	UsageModel *string `json:"usageModel,omitempty" tf:"usage_model,omitempty"`
+}
+
+type ProductionInitParameters struct {
+
+	// Use latest compatibility date for Pages Functions. Defaults to `false`.
+	AlwaysUseLatestCompatibilityDate *bool `json:"alwaysUseLatestCompatibilityDate,omitempty" tf:"always_use_latest_compatibility_date,omitempty"`
+
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// D1 Databases used for Pages Functions. Defaults to `map[]`.
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// Durable Object namespaces used for Pages Functions. Defaults to `map[]`.
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// Environment variables for Pages Functions. Defaults to `map[]`.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// Fail open used for Pages Functions. Defaults to `false`.
+	FailOpen *bool `json:"failOpen,omitempty" tf:"fail_open,omitempty"`
+
+	// KV namespaces used for Pages Functions. Defaults to `map[]`.
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// Configuration for placement in the Cloudflare Pages project.
+	Placement []ProductionPlacementInitParameters `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	// R2 Buckets used for Pages Functions. Defaults to `map[]`.
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+
+	// Services used for Pages Functions.
+	ServiceBinding []ProductionServiceBindingInitParameters `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	// Usage model used for Pages Functions. Defaults to `bundled`.
+	UsageModel *string `json:"usageModel,omitempty" tf:"usage_model,omitempty"`
 }
 
 type ProductionObservation struct {
+
+	// Use latest compatibility date for Pages Functions. Defaults to `false`.
+	AlwaysUseLatestCompatibilityDate *bool `json:"alwaysUseLatestCompatibilityDate,omitempty" tf:"always_use_latest_compatibility_date,omitempty"`
+
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// D1 Databases used for Pages Functions. Defaults to `map[]`.
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// Durable Object namespaces used for Pages Functions. Defaults to `map[]`.
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// Environment variables for Pages Functions. Defaults to `map[]`.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// Fail open used for Pages Functions. Defaults to `false`.
+	FailOpen *bool `json:"failOpen,omitempty" tf:"fail_open,omitempty"`
+
+	// KV namespaces used for Pages Functions. Defaults to `map[]`.
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// Configuration for placement in the Cloudflare Pages project.
+	Placement []ProductionPlacementObservation `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	// R2 Buckets used for Pages Functions. Defaults to `map[]`.
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+
+	// Services used for Pages Functions.
+	ServiceBinding []ProductionServiceBindingObservation `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	// Usage model used for Pages Functions. Defaults to `bundled`.
+	UsageModel *string `json:"usageModel,omitempty" tf:"usage_model,omitempty"`
 }
 
 type ProductionParameters struct {
 
+	// Use latest compatibility date for Pages Functions. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	AlwaysUseLatestCompatibilityDate *bool `json:"alwaysUseLatestCompatibilityDate,omitempty" tf:"always_use_latest_compatibility_date,omitempty"`
+
 	// Compatibility date used for Pages Functions.
 	// +kubebuilder:validation:Optional
 	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
@@ -142,36 +444,150 @@ type ProductionParameters struct {
 	// +kubebuilder:validation:Optional
 	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
 
-	// D1 Databases used for Pages Functions.
+	// D1 Databases used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
 
-	// Durable Object namespaces used for Pages Functions.
+	// Durable Object namespaces used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
 
-	// Environment variables for Pages Functions.
+	// Environment variables for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
 
-	// KV namespaces used for Pages Functions.
+	// Fail open used for Pages Functions. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	FailOpen *bool `json:"failOpen,omitempty" tf:"fail_open,omitempty"`
+
+	// KV namespaces used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
 
-	// R2 Buckets used for Pages Functions.
+	// Configuration for placement in the Cloudflare Pages project.
+	// +kubebuilder:validation:Optional
+	Placement []ProductionPlacementParameters `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	// R2 Buckets used for Pages Functions. Defaults to `map[]`.
 	// +kubebuilder:validation:Optional
 	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+
+	// Encrypted environment variables for Pages Functions. Defaults to `map[]`.
+	// +kubebuilder:validation:Optional
+	SecretsSecretRef *v1.SecretReference `json:"secretsSecretRef,omitempty" tf:"-"`
+
+	// Services used for Pages Functions.
+	// +kubebuilder:validation:Optional
+	ServiceBinding []ProductionServiceBindingParameters `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	// Usage model used for Pages Functions. Defaults to `bundled`.
+	// +kubebuilder:validation:Optional
+	UsageModel *string `json:"usageModel,omitempty" tf:"usage_model,omitempty"`
+}
+
+type ProductionPlacementInitParameters struct {
+
+	// Placement Mode for the Pages Function.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type ProductionPlacementObservation struct {
+
+	// Placement Mode for the Pages Function.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type ProductionPlacementParameters struct {
+
+	// Placement Mode for the Pages Function.
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type ProductionServiceBindingInitParameters struct {
+
+	// The name of the Worker environment to bind to.
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
+type ProductionServiceBindingObservation struct {
+
+	// The name of the Worker environment to bind to.
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
+type ProductionServiceBindingParameters struct {
+
+	// The name of the Worker environment to bind to.
+	// +kubebuilder:validation:Optional
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	// +kubebuilder:validation:Optional
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
+type ProjectInitParameters struct {
+
+	// Configuration for the project build process. Read more about the build configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/build-configuration).
+	BuildConfig []BuildConfigInitParameters `json:"buildConfig,omitempty" tf:"build_config,omitempty"`
+
+	// Configuration for deployments in a project.
+	DeploymentConfigs []DeploymentConfigsInitParameters `json:"deploymentConfigs,omitempty" tf:"deployment_configs,omitempty"`
+
+	// Name of the project.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the branch that is used for the production environment.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// Configuration for the project source. Read more about the source configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/branch-build-controls/).
+	Source []SourceInitParameters `json:"source,omitempty" tf:"source,omitempty"`
 }
 
 type ProjectObservation struct {
 
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Configuration for the project build process. Read more about the build configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/build-configuration).
+	BuildConfig []BuildConfigObservation `json:"buildConfig,omitempty" tf:"build_config,omitempty"`
+
 	// When the project was created.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
+
+	// Configuration for deployments in a project.
+	DeploymentConfigs []DeploymentConfigsObservation `json:"deploymentConfigs,omitempty" tf:"deployment_configs,omitempty"`
 
 	// A list of associated custom domains for the project.
 	Domains []*string `json:"domains,omitempty" tf:"domains,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Name of the project.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the branch that is used for the production environment.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// Configuration for the project source. Read more about the source configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/branch-build-controls/).
+	Source []SourceObservation `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The Cloudflare subdomain associated with the project.
 	Subdomain *string `json:"subdomain,omitempty" tf:"subdomain,omitempty"`
@@ -180,7 +596,7 @@ type ProjectObservation struct {
 type ProjectParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -192,7 +608,7 @@ type ProjectParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
-	// Configuration for the project build process.
+	// Configuration for the project build process. Read more about the build configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/build-configuration).
 	// +kubebuilder:validation:Optional
 	BuildConfig []BuildConfigParameters `json:"buildConfig,omitempty" tf:"build_config,omitempty"`
 
@@ -201,19 +617,73 @@ type ProjectParameters struct {
 	DeploymentConfigs []DeploymentConfigsParameters `json:"deploymentConfigs,omitempty" tf:"deployment_configs,omitempty"`
 
 	// Name of the project.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The name of the branch that is used for the production environment.
-	// +kubebuilder:validation:Required
-	ProductionBranch *string `json:"productionBranch" tf:"production_branch,omitempty"`
+	// +kubebuilder:validation:Optional
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
 
-	// Configuration for the project source.
+	// Configuration for the project source. Read more about the source configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/branch-build-controls/).
 	// +kubebuilder:validation:Optional
 	Source []SourceParameters `json:"source,omitempty" tf:"source,omitempty"`
 }
 
+type ServiceBindingInitParameters struct {
+
+	// The name of the Worker environment to bind to.
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
+type ServiceBindingObservation struct {
+
+	// The name of the Worker environment to bind to.
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
+type ServiceBindingParameters struct {
+
+	// The name of the Worker environment to bind to.
+	// +kubebuilder:validation:Optional
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	// +kubebuilder:validation:Optional
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
+type SourceInitParameters struct {
+
+	// Configuration for the source of the Cloudflare Pages project.
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+
+	// Project host type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type SourceObservation struct {
+
+	// Configuration for the source of the Cloudflare Pages project.
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+
+	// Project host type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type SourceParameters struct {
@@ -231,6 +701,18 @@ type SourceParameters struct {
 type ProjectSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ProjectParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ProjectInitParameters `json:"initProvider,omitempty"`
 }
 
 // ProjectStatus defines the observed state of Project.
@@ -251,8 +733,10 @@ type ProjectStatus struct {
 type Project struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ProjectSpec   `json:"spec"`
-	Status            ProjectStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.productionBranch) || has(self.initProvider.productionBranch)",message="productionBranch is a required parameter"
+	Spec   ProjectSpec   `json:"spec"`
+	Status ProjectStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

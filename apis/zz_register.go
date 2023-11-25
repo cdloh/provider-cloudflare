@@ -10,39 +10,46 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/access/v1alpha1"
-	v1alpha1account "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1"
-	v1alpha1apishield "github.com/cdloh/provider-cloudflare/apis/apishield/v1alpha1"
-	v1alpha1argo "github.com/cdloh/provider-cloudflare/apis/argo/v1alpha1"
-	v1alpha1authenticatedoriginpulls "github.com/cdloh/provider-cloudflare/apis/authenticatedoriginpulls/v1alpha1"
-	v1alpha1byoip "github.com/cdloh/provider-cloudflare/apis/byoip/v1alpha1"
-	v1alpha1certificate "github.com/cdloh/provider-cloudflare/apis/certificate/v1alpha1"
-	v1alpha1custom "github.com/cdloh/provider-cloudflare/apis/custom/v1alpha1"
-	v1alpha1customhostname "github.com/cdloh/provider-cloudflare/apis/customhostname/v1alpha1"
-	v1alpha1dlp "github.com/cdloh/provider-cloudflare/apis/dlp/v1alpha1"
-	v1alpha1dns "github.com/cdloh/provider-cloudflare/apis/dns/v1alpha1"
-	v1alpha1emailrouting "github.com/cdloh/provider-cloudflare/apis/emailrouting/v1alpha1"
-	v1alpha1filters "github.com/cdloh/provider-cloudflare/apis/filters/v1alpha1"
-	v1alpha1firewall "github.com/cdloh/provider-cloudflare/apis/firewall/v1alpha1"
-	v1alpha1lists "github.com/cdloh/provider-cloudflare/apis/lists/v1alpha1"
-	v1alpha1loadbalancer "github.com/cdloh/provider-cloudflare/apis/loadbalancer/v1alpha1"
-	v1alpha1logpush "github.com/cdloh/provider-cloudflare/apis/logpush/v1alpha1"
-	v1alpha1magic "github.com/cdloh/provider-cloudflare/apis/magic/v1alpha1"
-	v1alpha1notification "github.com/cdloh/provider-cloudflare/apis/notification/v1alpha1"
-	v1alpha1originca "github.com/cdloh/provider-cloudflare/apis/originca/v1alpha1"
-	v1alpha1page "github.com/cdloh/provider-cloudflare/apis/page/v1alpha1"
-	v1alpha1pages "github.com/cdloh/provider-cloudflare/apis/pages/v1alpha1"
-	v1alpha1ruleset "github.com/cdloh/provider-cloudflare/apis/ruleset/v1alpha1"
-	v1alpha1spectrum "github.com/cdloh/provider-cloudflare/apis/spectrum/v1alpha1"
-	v1alpha1teams "github.com/cdloh/provider-cloudflare/apis/teams/v1alpha1"
-	v1alpha1apis "github.com/cdloh/provider-cloudflare/apis/v1alpha1"
-	v1beta1 "github.com/cdloh/provider-cloudflare/apis/v1beta1"
-	v1alpha1waf "github.com/cdloh/provider-cloudflare/apis/waf/v1alpha1"
-	v1alpha1waitingroom "github.com/cdloh/provider-cloudflare/apis/waitingroom/v1alpha1"
-	v1alpha1warp "github.com/cdloh/provider-cloudflare/apis/warp/v1alpha1"
-	v1alpha1web3 "github.com/cdloh/provider-cloudflare/apis/web3/v1alpha1"
-	v1alpha1worker "github.com/cdloh/provider-cloudflare/apis/worker/v1alpha1"
-	v1alpha1zone "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1"
+	v1alpha1 "github.com/clementblaise/provider-cloudflare/apis/access/v1alpha1"
+	v1alpha1account "github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1"
+	v1alpha1addressmap "github.com/clementblaise/provider-cloudflare/apis/addressmap/v1alpha1"
+	v1alpha1apishield "github.com/clementblaise/provider-cloudflare/apis/apishield/v1alpha1"
+	v1alpha1authenticatedoriginpulls "github.com/clementblaise/provider-cloudflare/apis/authenticatedoriginpulls/v1alpha1"
+	v1alpha1bot "github.com/clementblaise/provider-cloudflare/apis/bot/v1alpha1"
+	v1alpha1byoip "github.com/clementblaise/provider-cloudflare/apis/byoip/v1alpha1"
+	v1alpha1certificate "github.com/clementblaise/provider-cloudflare/apis/certificate/v1alpha1"
+	v1alpha1cloudflare "github.com/clementblaise/provider-cloudflare/apis/cloudflare/v1alpha1"
+	v1alpha1custom "github.com/clementblaise/provider-cloudflare/apis/custom/v1alpha1"
+	v1alpha1customhostname "github.com/clementblaise/provider-cloudflare/apis/customhostname/v1alpha1"
+	v1alpha1d1 "github.com/clementblaise/provider-cloudflare/apis/d1/v1alpha1"
+	v1alpha1device "github.com/clementblaise/provider-cloudflare/apis/device/v1alpha1"
+	v1alpha1dlp "github.com/clementblaise/provider-cloudflare/apis/dlp/v1alpha1"
+	v1alpha1dns "github.com/clementblaise/provider-cloudflare/apis/dns/v1alpha1"
+	v1alpha1emailrouting "github.com/clementblaise/provider-cloudflare/apis/emailrouting/v1alpha1"
+	v1alpha1filters "github.com/clementblaise/provider-cloudflare/apis/filters/v1alpha1"
+	v1alpha1firewall "github.com/clementblaise/provider-cloudflare/apis/firewall/v1alpha1"
+	v1alpha1lists "github.com/clementblaise/provider-cloudflare/apis/lists/v1alpha1"
+	v1alpha1loadbalancer "github.com/clementblaise/provider-cloudflare/apis/loadbalancer/v1alpha1"
+	v1alpha1logpush "github.com/clementblaise/provider-cloudflare/apis/logpush/v1alpha1"
+	v1alpha1magic "github.com/clementblaise/provider-cloudflare/apis/magic/v1alpha1"
+	v1alpha1mtls "github.com/clementblaise/provider-cloudflare/apis/mtls/v1alpha1"
+	v1alpha1notification "github.com/clementblaise/provider-cloudflare/apis/notification/v1alpha1"
+	v1alpha1originca "github.com/clementblaise/provider-cloudflare/apis/originca/v1alpha1"
+	v1alpha1page "github.com/clementblaise/provider-cloudflare/apis/page/v1alpha1"
+	v1alpha1pages "github.com/clementblaise/provider-cloudflare/apis/pages/v1alpha1"
+	v1alpha1r2 "github.com/clementblaise/provider-cloudflare/apis/r2/v1alpha1"
+	v1alpha1ruleset "github.com/clementblaise/provider-cloudflare/apis/ruleset/v1alpha1"
+	v1alpha1spectrum "github.com/clementblaise/provider-cloudflare/apis/spectrum/v1alpha1"
+	v1alpha1teams "github.com/clementblaise/provider-cloudflare/apis/teams/v1alpha1"
+	v1alpha1tunnel "github.com/clementblaise/provider-cloudflare/apis/tunnel/v1alpha1"
+	v1alpha1apis "github.com/clementblaise/provider-cloudflare/apis/v1alpha1"
+	v1beta1 "github.com/clementblaise/provider-cloudflare/apis/v1beta1"
+	v1alpha1waitingroom "github.com/clementblaise/provider-cloudflare/apis/waitingroom/v1alpha1"
+	v1alpha1warp "github.com/clementblaise/provider-cloudflare/apis/warp/v1alpha1"
+	v1alpha1web3 "github.com/clementblaise/provider-cloudflare/apis/web3/v1alpha1"
+	v1alpha1webanalytics "github.com/clementblaise/provider-cloudflare/apis/webanalytics/v1alpha1"
+	v1alpha1worker "github.com/clementblaise/provider-cloudflare/apis/worker/v1alpha1"
+	v1alpha1zone "github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1"
 )
 
 func init() {
@@ -50,13 +57,17 @@ func init() {
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1account.SchemeBuilder.AddToScheme,
+		v1alpha1addressmap.SchemeBuilder.AddToScheme,
 		v1alpha1apishield.SchemeBuilder.AddToScheme,
-		v1alpha1argo.SchemeBuilder.AddToScheme,
 		v1alpha1authenticatedoriginpulls.SchemeBuilder.AddToScheme,
+		v1alpha1bot.SchemeBuilder.AddToScheme,
 		v1alpha1byoip.SchemeBuilder.AddToScheme,
 		v1alpha1certificate.SchemeBuilder.AddToScheme,
+		v1alpha1cloudflare.SchemeBuilder.AddToScheme,
 		v1alpha1custom.SchemeBuilder.AddToScheme,
 		v1alpha1customhostname.SchemeBuilder.AddToScheme,
+		v1alpha1d1.SchemeBuilder.AddToScheme,
+		v1alpha1device.SchemeBuilder.AddToScheme,
 		v1alpha1dlp.SchemeBuilder.AddToScheme,
 		v1alpha1dns.SchemeBuilder.AddToScheme,
 		v1alpha1emailrouting.SchemeBuilder.AddToScheme,
@@ -66,19 +77,22 @@ func init() {
 		v1alpha1loadbalancer.SchemeBuilder.AddToScheme,
 		v1alpha1logpush.SchemeBuilder.AddToScheme,
 		v1alpha1magic.SchemeBuilder.AddToScheme,
+		v1alpha1mtls.SchemeBuilder.AddToScheme,
 		v1alpha1notification.SchemeBuilder.AddToScheme,
 		v1alpha1originca.SchemeBuilder.AddToScheme,
 		v1alpha1page.SchemeBuilder.AddToScheme,
 		v1alpha1pages.SchemeBuilder.AddToScheme,
+		v1alpha1r2.SchemeBuilder.AddToScheme,
 		v1alpha1ruleset.SchemeBuilder.AddToScheme,
 		v1alpha1spectrum.SchemeBuilder.AddToScheme,
 		v1alpha1teams.SchemeBuilder.AddToScheme,
+		v1alpha1tunnel.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
-		v1alpha1waf.SchemeBuilder.AddToScheme,
 		v1alpha1waitingroom.SchemeBuilder.AddToScheme,
 		v1alpha1warp.SchemeBuilder.AddToScheme,
 		v1alpha1web3.SchemeBuilder.AddToScheme,
+		v1alpha1webanalytics.SchemeBuilder.AddToScheme,
 		v1alpha1worker.SchemeBuilder.AddToScheme,
 		v1alpha1zone.SchemeBuilder.AddToScheme,
 	)

@@ -149,16 +149,32 @@ spec:
                       properties:
                         anyValidServiceToken:
                           type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
                         authMethod:
                           type: string
                         azure:
                           items:
                             properties:
                               id:
+                                description: The ID of the Azure group or user.
                                 items:
                                   type: string
                                 type: array
                               identityProviderId:
+                                description: The ID of the Azure Identity provider.
                                 type: string
                             type: object
                           type: array
@@ -222,6 +238,12 @@ spec:
                             type: object
                           type: array
                         ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
                           items:
                             type: string
                           type: array
@@ -262,16 +284,32 @@ spec:
                       properties:
                         anyValidServiceToken:
                           type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
                         authMethod:
                           type: string
                         azure:
                           items:
                             properties:
                               id:
+                                description: The ID of the Azure group or user.
                                 items:
                                   type: string
                                 type: array
                               identityProviderId:
+                                description: The ID of the Azure Identity provider.
                                 type: string
                             type: object
                           type: array
@@ -335,6 +373,12 @@ spec:
                             type: object
                           type: array
                         ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
                           items:
                             type: string
                           type: array
@@ -377,16 +421,32 @@ spec:
                       properties:
                         anyValidServiceToken:
                           type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
                         authMethod:
                           type: string
                         azure:
                           items:
                             properties:
                               id:
+                                description: The ID of the Azure group or user.
                                 items:
                                   type: string
                                 type: array
                               identityProviderId:
+                                description: The ID of the Azure Identity provider.
                                 type: string
                             type: object
                           type: array
@@ -450,6 +510,12 @@ spec:
                             type: object
                           type: array
                         ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
                           items:
                             type: string
                           type: array
@@ -562,9 +628,427 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - include
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  exclude:
+                    items:
+                      properties:
+                        anyValidServiceToken:
+                          type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        authMethod:
+                          type: string
+                        azure:
+                          items:
+                            properties:
+                              id:
+                                description: The ID of the Azure group or user.
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        certificate:
+                          type: boolean
+                        commonName:
+                          type: string
+                        devicePosture:
+                          items:
+                            type: string
+                          type: array
+                        email:
+                          items:
+                            type: string
+                          type: array
+                        emailDomain:
+                          items:
+                            type: string
+                          type: array
+                        everyone:
+                          type: boolean
+                        externalEvaluation:
+                          items:
+                            properties:
+                              evaluateUrl:
+                                type: string
+                              keysUrl:
+                                type: string
+                            type: object
+                          type: array
+                        geo:
+                          items:
+                            type: string
+                          type: array
+                        github:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                type: string
+                              teams:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        group:
+                          items:
+                            type: string
+                          type: array
+                        gsuite:
+                          items:
+                            properties:
+                              email:
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
+                          items:
+                            type: string
+                          type: array
+                        loginMethod:
+                          items:
+                            type: string
+                          type: array
+                        okta:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        saml:
+                          items:
+                            properties:
+                              attributeName:
+                                type: string
+                              attributeValue:
+                                type: string
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  include:
+                    items:
+                      properties:
+                        anyValidServiceToken:
+                          type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        authMethod:
+                          type: string
+                        azure:
+                          items:
+                            properties:
+                              id:
+                                description: The ID of the Azure group or user.
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        certificate:
+                          type: boolean
+                        commonName:
+                          type: string
+                        devicePosture:
+                          items:
+                            type: string
+                          type: array
+                        email:
+                          items:
+                            type: string
+                          type: array
+                        emailDomain:
+                          items:
+                            type: string
+                          type: array
+                        everyone:
+                          type: boolean
+                        externalEvaluation:
+                          items:
+                            properties:
+                              evaluateUrl:
+                                type: string
+                              keysUrl:
+                                type: string
+                            type: object
+                          type: array
+                        geo:
+                          items:
+                            type: string
+                          type: array
+                        github:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                type: string
+                              teams:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        group:
+                          items:
+                            type: string
+                          type: array
+                        gsuite:
+                          items:
+                            properties:
+                              email:
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
+                          items:
+                            type: string
+                          type: array
+                        loginMethod:
+                          items:
+                            type: string
+                          type: array
+                        okta:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        saml:
+                          items:
+                            properties:
+                              attributeName:
+                                type: string
+                              attributeValue:
+                                type: string
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  name:
+                    type: string
+                  require:
+                    items:
+                      properties:
+                        anyValidServiceToken:
+                          type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        authMethod:
+                          type: string
+                        azure:
+                          items:
+                            properties:
+                              id:
+                                description: The ID of the Azure group or user.
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        certificate:
+                          type: boolean
+                        commonName:
+                          type: string
+                        devicePosture:
+                          items:
+                            type: string
+                          type: array
+                        email:
+                          items:
+                            type: string
+                          type: array
+                        emailDomain:
+                          items:
+                            type: string
+                          type: array
+                        everyone:
+                          type: boolean
+                        externalEvaluation:
+                          items:
+                            properties:
+                              evaluateUrl:
+                                type: string
+                              keysUrl:
+                                type: string
+                            type: object
+                          type: array
+                        geo:
+                          items:
+                            type: string
+                          type: array
+                        github:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                type: string
+                              teams:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        group:
+                          items:
+                            type: string
+                          type: array
+                        gsuite:
+                          items:
+                            properties:
+                              email:
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
+                          items:
+                            type: string
+                          type: array
+                        loginMethod:
+                          items:
+                            type: string
+                          type: array
+                        okta:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        saml:
+                          items:
+                            properties:
+                              attributeName:
+                                type: string
+                              attributeValue:
+                                type: string
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -763,12 +1247,437 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: include is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.include)
+                || has(self.initProvider.include)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: GroupStatus defines the observed state of Group.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      Conflicts with `zone_id`. **Modifying this attribute will force
+                      creation of a new resource.**
+                    type: string
+                  exclude:
+                    items:
+                      properties:
+                        anyValidServiceToken:
+                          type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        authMethod:
+                          type: string
+                        azure:
+                          items:
+                            properties:
+                              id:
+                                description: The ID of the Azure group or user.
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        certificate:
+                          type: boolean
+                        commonName:
+                          type: string
+                        devicePosture:
+                          items:
+                            type: string
+                          type: array
+                        email:
+                          items:
+                            type: string
+                          type: array
+                        emailDomain:
+                          items:
+                            type: string
+                          type: array
+                        everyone:
+                          type: boolean
+                        externalEvaluation:
+                          items:
+                            properties:
+                              evaluateUrl:
+                                type: string
+                              keysUrl:
+                                type: string
+                            type: object
+                          type: array
+                        geo:
+                          items:
+                            type: string
+                          type: array
+                        github:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                type: string
+                              teams:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        group:
+                          items:
+                            type: string
+                          type: array
+                        gsuite:
+                          items:
+                            properties:
+                              email:
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
+                          items:
+                            type: string
+                          type: array
+                        loginMethod:
+                          items:
+                            type: string
+                          type: array
+                        okta:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        saml:
+                          items:
+                            properties:
+                              attributeName:
+                                type: string
+                              attributeValue:
+                                type: string
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   id:
+                    type: string
+                  include:
+                    items:
+                      properties:
+                        anyValidServiceToken:
+                          type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        authMethod:
+                          type: string
+                        azure:
+                          items:
+                            properties:
+                              id:
+                                description: The ID of the Azure group or user.
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        certificate:
+                          type: boolean
+                        commonName:
+                          type: string
+                        devicePosture:
+                          items:
+                            type: string
+                          type: array
+                        email:
+                          items:
+                            type: string
+                          type: array
+                        emailDomain:
+                          items:
+                            type: string
+                          type: array
+                        everyone:
+                          type: boolean
+                        externalEvaluation:
+                          items:
+                            properties:
+                              evaluateUrl:
+                                type: string
+                              keysUrl:
+                                type: string
+                            type: object
+                          type: array
+                        geo:
+                          items:
+                            type: string
+                          type: array
+                        github:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                type: string
+                              teams:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        group:
+                          items:
+                            type: string
+                          type: array
+                        gsuite:
+                          items:
+                            properties:
+                              email:
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
+                          items:
+                            type: string
+                          type: array
+                        loginMethod:
+                          items:
+                            type: string
+                          type: array
+                        okta:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        saml:
+                          items:
+                            properties:
+                              attributeName:
+                                type: string
+                              attributeValue:
+                                type: string
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  name:
+                    type: string
+                  require:
+                    items:
+                      properties:
+                        anyValidServiceToken:
+                          type: boolean
+                        authContext:
+                          items:
+                            properties:
+                              acId:
+                                description: The ACID of the Authentication Context.
+                                type: string
+                              id:
+                                description: The ID of the Authentication Context.
+                                type: string
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        authMethod:
+                          type: string
+                        azure:
+                          items:
+                            properties:
+                              id:
+                                description: The ID of the Azure group or user.
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                description: The ID of the Azure Identity provider.
+                                type: string
+                            type: object
+                          type: array
+                        certificate:
+                          type: boolean
+                        commonName:
+                          type: string
+                        devicePosture:
+                          items:
+                            type: string
+                          type: array
+                        email:
+                          items:
+                            type: string
+                          type: array
+                        emailDomain:
+                          items:
+                            type: string
+                          type: array
+                        everyone:
+                          type: boolean
+                        externalEvaluation:
+                          items:
+                            properties:
+                              evaluateUrl:
+                                type: string
+                              keysUrl:
+                                type: string
+                            type: object
+                          type: array
+                        geo:
+                          items:
+                            type: string
+                          type: array
+                        github:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                type: string
+                              teams:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        group:
+                          items:
+                            type: string
+                          type: array
+                        gsuite:
+                          items:
+                            properties:
+                              email:
+                                items:
+                                  type: string
+                                type: array
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        ip:
+                          description: An IPv4 or IPv6 CIDR block.
+                          items:
+                            type: string
+                          type: array
+                        ipList:
+                          description: The ID of an existing IP list to reference.
+                          items:
+                            type: string
+                          type: array
+                        loginMethod:
+                          items:
+                            type: string
+                          type: array
+                        okta:
+                          items:
+                            properties:
+                              identityProviderId:
+                                type: string
+                              name:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        saml:
+                          items:
+                            properties:
+                              attributeName:
+                                type: string
+                              attributeValue:
+                                type: string
+                              identityProviderId:
+                                type: string
+                            type: object
+                          type: array
+                        serviceToken:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  zoneId:
+                    description: The zone identifier to target for the resource. Conflicts
+                      with `account_id`.
                     type: string
                 type: object
               conditions:

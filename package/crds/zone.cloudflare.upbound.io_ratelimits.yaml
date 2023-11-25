@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: RateLimit is the Schema for the RateLimits API. <no value>
+        description: RateLimit is the Schema for the RateLimits API. Provides a Cloudflare
+          rate limit resource for a particular zone.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,74 +68,160 @@ spec:
               forProvider:
                 properties:
                   action:
+                    description: The action to be performed when the threshold of
+                      matched traffic within the period defined is exceeded. The action
+                      to be performed when the threshold of matched traffic within
+                      the period defined is exceeded.
                     items:
                       properties:
                         mode:
+                          description: 'The type of action to perform. Allowable values
+                            are ''simulate'', ''ban'', ''challenge'', ''js_challenge''
+                            and ''managed_challenge''. The type of action to perform.
+                            Available values: `simulate`, `ban`, `challenge`, `js_challenge`,
+                            `managed_challenge`.'
                           type: string
                         response:
+                          description: Matches HTTP responses before they are returned
+                            to the client from Cloudflare. If this is defined, then
+                            the entire counting of traffic occurs at this stage. This
+                            field is not required. Custom content-type and body to
+                            return, this overrides the custom error for the zone.
+                            This field is not required. Omission will result in default
+                            HTML error page.
                           items:
                             properties:
                               body:
+                                description: The body to return, the content here
+                                  should conform to the content_type. The body to
+                                  return, the content here should conform to the `content_type`.
                                 type: string
                               contentType:
+                                description: 'The content-type of the body, must be
+                                  one of: ''text/plain'', ''text/xml'', ''application/json''.
+                                  The content-type of the body. Available values:
+                                  `text/plain`, `text/xml`, `application/json`.'
                                 type: string
-                            required:
-                            - body
-                            - contentType
                             type: object
                           type: array
                         timeout:
+                          description: 'The time in seconds as an integer to perform
+                            the mitigation action. This field is required if the mode
+                            is either simulate or ban. Must be the same or greater
+                            than the period (min: 1, max: 86400). The time in seconds
+                            as an integer to perform the mitigation action. This field
+                            is required if the `mode` is either `simulate` or `ban`.
+                            Must be the same or greater than the period.'
                           type: number
-                      required:
-                      - mode
                       type: object
                     type: array
                   bypassUrlPatterns:
+                    description: URLs matching the patterns specified here will be
+                      excluded from rate limiting.
                     items:
                       type: string
                     type: array
                   correlate:
+                    description: Determines how rate limiting is applied. By default
+                      if not specified, rate limiting applies to the clients IP address.
+                      Determines how rate limiting is applied. By default if not specified,
+                      rate limiting applies to the clients IP address.
                     items:
                       properties:
                         by:
+                          description: 'If set to ''nat'', NAT support will be enabled
+                            for rate limiting. If set to ''nat'', NAT support will
+                            be enabled for rate limiting. Available values: `nat`.'
                           type: string
                       type: object
                     type: array
                   description:
+                    description: A note that you can use to describe the reason for
+                      a rate limit. This value is sanitized and all tags are removed.
+                      A note that you can use to describe the reason for a rate limit.
+                      This value is sanitized and all tags are removed.
                     type: string
                   disabled:
-                    description: Defaults to `false`.
+                    description: 'Whether this ratelimit is currently disabled. Default:
+                      false. Whether this ratelimit is currently disabled. Defaults
+                      to `false`.'
                     type: boolean
                   match:
+                    description: Determines which traffic the rate limit counts towards
+                      the threshold. By default matches all traffic in the zone. See
+                      definition below. Determines which traffic the rate limit counts
+                      towards the threshold. By default matches all traffic in the
+                      zone.
                     items:
                       properties:
                         request:
+                          description: Matches HTTP requests (from the client to Cloudflare).
+                            See definition below. Matches HTTP requests (from the
+                            client to Cloudflare).
                           items:
                             properties:
                               methods:
+                                description: 'HTTP Methods, can be a subset [''POST'',''PUT'']
+                                  or all [''_ALL_'']. Default: [''_ALL_'']. HTTP Methods
+                                  to match traffic on. Available values: `GET`, `POST`,
+                                  `PUT`, `DELETE`, `PATCH`, `HEAD`, `_ALL_`.'
                                 items:
                                   type: string
                                 type: array
                               schemes:
+                                description: 'HTTP Schemes, can be one [''HTTPS''],
+                                  both [''HTTP'',''HTTPS''] or all [''_ALL_'']. Default:
+                                  [''_ALL_'']. HTTP schemes to match traffic on. Available
+                                  values: `HTTP`, `HTTPS`, `_ALL_`.'
                                 items:
                                   type: string
                                 type: array
                               urlPattern:
+                                description: 'The URL pattern to match comprised of
+                                  the host and path, i.e. example.org/path. Wildcard
+                                  are expanded to match applicable traffic, query
+                                  strings are not matched. Use _ for all traffic to
+                                  your zone. Default: ''_''. The URL pattern to match
+                                  comprised of the host and path, i.e. example.org/path.
+                                  Wildcard are expanded to match applicable traffic,
+                                  query strings are not matched. Use _ for all traffic
+                                  to your zone.'
                                 type: string
                             type: object
                           type: array
                         response:
+                          description: Matches HTTP responses before they are returned
+                            to the client from Cloudflare. If this is defined, then
+                            the entire counting of traffic occurs at this stage. This
+                            field is not required. Matches HTTP responses before they
+                            are returned to the client from Cloudflare. If this is
+                            defined, then the entire counting of traffic occurs at
+                            this stage.
                           items:
                             properties:
                               headers:
+                                description: 'block is a list of maps with the following
+                                  attributes: List of HTTP headers maps to match the
+                                  origin response on.'
                                 items:
                                   additionalProperties:
                                     type: string
                                   type: object
                                 type: array
                               originTraffic:
+                                description: 'Only count traffic that has come from
+                                  your origin servers. If true, cached items that
+                                  Cloudflare serve will not count towards rate limiting.
+                                  Default: true. Only count traffic that has come
+                                  from your origin servers. If true, cached items
+                                  that Cloudflare serve will not count towards rate
+                                  limiting.'
                                 type: boolean
                               statuses:
+                                description: HTTP Status codes, can be one [403],
+                                  many [401,403] or indicate all by not providing
+                                  this value. HTTP Status codes, can be one, many
+                                  or indicate all by not providing this value.
                                 items:
                                   type: number
                                 type: array
@@ -143,12 +230,22 @@ spec:
                       type: object
                     type: array
                   period:
+                    description: 'The time in seconds to count matching traffic. If
+                      the count exceeds threshold within this period the action will
+                      be performed (min: 1, max: 86,400). The time in seconds to count
+                      matching traffic. If the count exceeds threshold within this
+                      period the action will be performed.'
                     type: number
                   threshold:
+                    description: 'The threshold that triggers the rate limit mitigations,
+                      combine with period. i.e. threshold per period (min: 2, max:
+                      1,000,000). The threshold that triggers the rate limit mitigations,
+                      combine with period.'
                     type: number
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: The DNS zone ID to apply rate limiting to. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone to populate zoneId.
@@ -223,10 +320,195 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - action
-                - period
-                - threshold
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  action:
+                    description: The action to be performed when the threshold of
+                      matched traffic within the period defined is exceeded. The action
+                      to be performed when the threshold of matched traffic within
+                      the period defined is exceeded.
+                    items:
+                      properties:
+                        mode:
+                          description: 'The type of action to perform. Allowable values
+                            are ''simulate'', ''ban'', ''challenge'', ''js_challenge''
+                            and ''managed_challenge''. The type of action to perform.
+                            Available values: `simulate`, `ban`, `challenge`, `js_challenge`,
+                            `managed_challenge`.'
+                          type: string
+                        response:
+                          description: Matches HTTP responses before they are returned
+                            to the client from Cloudflare. If this is defined, then
+                            the entire counting of traffic occurs at this stage. This
+                            field is not required. Custom content-type and body to
+                            return, this overrides the custom error for the zone.
+                            This field is not required. Omission will result in default
+                            HTML error page.
+                          items:
+                            properties:
+                              body:
+                                description: The body to return, the content here
+                                  should conform to the content_type. The body to
+                                  return, the content here should conform to the `content_type`.
+                                type: string
+                              contentType:
+                                description: 'The content-type of the body, must be
+                                  one of: ''text/plain'', ''text/xml'', ''application/json''.
+                                  The content-type of the body. Available values:
+                                  `text/plain`, `text/xml`, `application/json`.'
+                                type: string
+                            type: object
+                          type: array
+                        timeout:
+                          description: 'The time in seconds as an integer to perform
+                            the mitigation action. This field is required if the mode
+                            is either simulate or ban. Must be the same or greater
+                            than the period (min: 1, max: 86400). The time in seconds
+                            as an integer to perform the mitigation action. This field
+                            is required if the `mode` is either `simulate` or `ban`.
+                            Must be the same or greater than the period.'
+                          type: number
+                      type: object
+                    type: array
+                  bypassUrlPatterns:
+                    description: URLs matching the patterns specified here will be
+                      excluded from rate limiting.
+                    items:
+                      type: string
+                    type: array
+                  correlate:
+                    description: Determines how rate limiting is applied. By default
+                      if not specified, rate limiting applies to the clients IP address.
+                      Determines how rate limiting is applied. By default if not specified,
+                      rate limiting applies to the clients IP address.
+                    items:
+                      properties:
+                        by:
+                          description: 'If set to ''nat'', NAT support will be enabled
+                            for rate limiting. If set to ''nat'', NAT support will
+                            be enabled for rate limiting. Available values: `nat`.'
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: A note that you can use to describe the reason for
+                      a rate limit. This value is sanitized and all tags are removed.
+                      A note that you can use to describe the reason for a rate limit.
+                      This value is sanitized and all tags are removed.
+                    type: string
+                  disabled:
+                    description: 'Whether this ratelimit is currently disabled. Default:
+                      false. Whether this ratelimit is currently disabled. Defaults
+                      to `false`.'
+                    type: boolean
+                  match:
+                    description: Determines which traffic the rate limit counts towards
+                      the threshold. By default matches all traffic in the zone. See
+                      definition below. Determines which traffic the rate limit counts
+                      towards the threshold. By default matches all traffic in the
+                      zone.
+                    items:
+                      properties:
+                        request:
+                          description: Matches HTTP requests (from the client to Cloudflare).
+                            See definition below. Matches HTTP requests (from the
+                            client to Cloudflare).
+                          items:
+                            properties:
+                              methods:
+                                description: 'HTTP Methods, can be a subset [''POST'',''PUT'']
+                                  or all [''_ALL_'']. Default: [''_ALL_'']. HTTP Methods
+                                  to match traffic on. Available values: `GET`, `POST`,
+                                  `PUT`, `DELETE`, `PATCH`, `HEAD`, `_ALL_`.'
+                                items:
+                                  type: string
+                                type: array
+                              schemes:
+                                description: 'HTTP Schemes, can be one [''HTTPS''],
+                                  both [''HTTP'',''HTTPS''] or all [''_ALL_'']. Default:
+                                  [''_ALL_'']. HTTP schemes to match traffic on. Available
+                                  values: `HTTP`, `HTTPS`, `_ALL_`.'
+                                items:
+                                  type: string
+                                type: array
+                              urlPattern:
+                                description: 'The URL pattern to match comprised of
+                                  the host and path, i.e. example.org/path. Wildcard
+                                  are expanded to match applicable traffic, query
+                                  strings are not matched. Use _ for all traffic to
+                                  your zone. Default: ''_''. The URL pattern to match
+                                  comprised of the host and path, i.e. example.org/path.
+                                  Wildcard are expanded to match applicable traffic,
+                                  query strings are not matched. Use _ for all traffic
+                                  to your zone.'
+                                type: string
+                            type: object
+                          type: array
+                        response:
+                          description: Matches HTTP responses before they are returned
+                            to the client from Cloudflare. If this is defined, then
+                            the entire counting of traffic occurs at this stage. This
+                            field is not required. Matches HTTP responses before they
+                            are returned to the client from Cloudflare. If this is
+                            defined, then the entire counting of traffic occurs at
+                            this stage.
+                          items:
+                            properties:
+                              headers:
+                                description: 'block is a list of maps with the following
+                                  attributes: List of HTTP headers maps to match the
+                                  origin response on.'
+                                items:
+                                  additionalProperties:
+                                    type: string
+                                  type: object
+                                type: array
+                              originTraffic:
+                                description: 'Only count traffic that has come from
+                                  your origin servers. If true, cached items that
+                                  Cloudflare serve will not count towards rate limiting.
+                                  Default: true. Only count traffic that has come
+                                  from your origin servers. If true, cached items
+                                  that Cloudflare serve will not count towards rate
+                                  limiting.'
+                                type: boolean
+                              statuses:
+                                description: HTTP Status codes, can be one [403],
+                                  many [401,403] or indicate all by not providing
+                                  this value. HTTP Status codes, can be one, many
+                                  or indicate all by not providing this value.
+                                items:
+                                  type: number
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  period:
+                    description: 'The time in seconds to count matching traffic. If
+                      the count exceeds threshold within this period the action will
+                      be performed (min: 1, max: 86,400). The time in seconds to count
+                      matching traffic. If the count exceeds threshold within this
+                      period the action will be performed.'
+                    type: number
+                  threshold:
+                    description: 'The threshold that triggers the rate limit mitigations,
+                      combine with period. i.e. threshold per period (min: 2, max:
+                      1,000,000). The threshold that triggers the rate limit mitigations,
+                      combine with period.'
+                    type: number
                 type: object
               managementPolicies:
                 default:
@@ -425,12 +707,206 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: action is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.action)
+                || has(self.initProvider.action)'
+            - message: period is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.period)
+                || has(self.initProvider.period)'
+            - message: threshold is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.threshold)
+                || has(self.initProvider.threshold)'
           status:
             description: RateLimitStatus defines the observed state of RateLimit.
             properties:
               atProvider:
                 properties:
+                  action:
+                    description: The action to be performed when the threshold of
+                      matched traffic within the period defined is exceeded. The action
+                      to be performed when the threshold of matched traffic within
+                      the period defined is exceeded.
+                    items:
+                      properties:
+                        mode:
+                          description: 'The type of action to perform. Allowable values
+                            are ''simulate'', ''ban'', ''challenge'', ''js_challenge''
+                            and ''managed_challenge''. The type of action to perform.
+                            Available values: `simulate`, `ban`, `challenge`, `js_challenge`,
+                            `managed_challenge`.'
+                          type: string
+                        response:
+                          description: Matches HTTP responses before they are returned
+                            to the client from Cloudflare. If this is defined, then
+                            the entire counting of traffic occurs at this stage. This
+                            field is not required. Custom content-type and body to
+                            return, this overrides the custom error for the zone.
+                            This field is not required. Omission will result in default
+                            HTML error page.
+                          items:
+                            properties:
+                              body:
+                                description: The body to return, the content here
+                                  should conform to the content_type. The body to
+                                  return, the content here should conform to the `content_type`.
+                                type: string
+                              contentType:
+                                description: 'The content-type of the body, must be
+                                  one of: ''text/plain'', ''text/xml'', ''application/json''.
+                                  The content-type of the body. Available values:
+                                  `text/plain`, `text/xml`, `application/json`.'
+                                type: string
+                            type: object
+                          type: array
+                        timeout:
+                          description: 'The time in seconds as an integer to perform
+                            the mitigation action. This field is required if the mode
+                            is either simulate or ban. Must be the same or greater
+                            than the period (min: 1, max: 86400). The time in seconds
+                            as an integer to perform the mitigation action. This field
+                            is required if the `mode` is either `simulate` or `ban`.
+                            Must be the same or greater than the period.'
+                          type: number
+                      type: object
+                    type: array
+                  bypassUrlPatterns:
+                    description: URLs matching the patterns specified here will be
+                      excluded from rate limiting.
+                    items:
+                      type: string
+                    type: array
+                  correlate:
+                    description: Determines how rate limiting is applied. By default
+                      if not specified, rate limiting applies to the clients IP address.
+                      Determines how rate limiting is applied. By default if not specified,
+                      rate limiting applies to the clients IP address.
+                    items:
+                      properties:
+                        by:
+                          description: 'If set to ''nat'', NAT support will be enabled
+                            for rate limiting. If set to ''nat'', NAT support will
+                            be enabled for rate limiting. Available values: `nat`.'
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: A note that you can use to describe the reason for
+                      a rate limit. This value is sanitized and all tags are removed.
+                      A note that you can use to describe the reason for a rate limit.
+                      This value is sanitized and all tags are removed.
+                    type: string
+                  disabled:
+                    description: 'Whether this ratelimit is currently disabled. Default:
+                      false. Whether this ratelimit is currently disabled. Defaults
+                      to `false`.'
+                    type: boolean
                   id:
+                    description: The Rate limit ID.
+                    type: string
+                  match:
+                    description: Determines which traffic the rate limit counts towards
+                      the threshold. By default matches all traffic in the zone. See
+                      definition below. Determines which traffic the rate limit counts
+                      towards the threshold. By default matches all traffic in the
+                      zone.
+                    items:
+                      properties:
+                        request:
+                          description: Matches HTTP requests (from the client to Cloudflare).
+                            See definition below. Matches HTTP requests (from the
+                            client to Cloudflare).
+                          items:
+                            properties:
+                              methods:
+                                description: 'HTTP Methods, can be a subset [''POST'',''PUT'']
+                                  or all [''_ALL_'']. Default: [''_ALL_'']. HTTP Methods
+                                  to match traffic on. Available values: `GET`, `POST`,
+                                  `PUT`, `DELETE`, `PATCH`, `HEAD`, `_ALL_`.'
+                                items:
+                                  type: string
+                                type: array
+                              schemes:
+                                description: 'HTTP Schemes, can be one [''HTTPS''],
+                                  both [''HTTP'',''HTTPS''] or all [''_ALL_'']. Default:
+                                  [''_ALL_'']. HTTP schemes to match traffic on. Available
+                                  values: `HTTP`, `HTTPS`, `_ALL_`.'
+                                items:
+                                  type: string
+                                type: array
+                              urlPattern:
+                                description: 'The URL pattern to match comprised of
+                                  the host and path, i.e. example.org/path. Wildcard
+                                  are expanded to match applicable traffic, query
+                                  strings are not matched. Use _ for all traffic to
+                                  your zone. Default: ''_''. The URL pattern to match
+                                  comprised of the host and path, i.e. example.org/path.
+                                  Wildcard are expanded to match applicable traffic,
+                                  query strings are not matched. Use _ for all traffic
+                                  to your zone.'
+                                type: string
+                            type: object
+                          type: array
+                        response:
+                          description: Matches HTTP responses before they are returned
+                            to the client from Cloudflare. If this is defined, then
+                            the entire counting of traffic occurs at this stage. This
+                            field is not required. Matches HTTP responses before they
+                            are returned to the client from Cloudflare. If this is
+                            defined, then the entire counting of traffic occurs at
+                            this stage.
+                          items:
+                            properties:
+                              headers:
+                                description: 'block is a list of maps with the following
+                                  attributes: List of HTTP headers maps to match the
+                                  origin response on.'
+                                items:
+                                  additionalProperties:
+                                    type: string
+                                  type: object
+                                type: array
+                              originTraffic:
+                                description: 'Only count traffic that has come from
+                                  your origin servers. If true, cached items that
+                                  Cloudflare serve will not count towards rate limiting.
+                                  Default: true. Only count traffic that has come
+                                  from your origin servers. If true, cached items
+                                  that Cloudflare serve will not count towards rate
+                                  limiting.'
+                                type: boolean
+                              statuses:
+                                description: HTTP Status codes, can be one [403],
+                                  many [401,403] or indicate all by not providing
+                                  this value. HTTP Status codes, can be one, many
+                                  or indicate all by not providing this value.
+                                items:
+                                  type: number
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  period:
+                    description: 'The time in seconds to count matching traffic. If
+                      the count exceeds threshold within this period the action will
+                      be performed (min: 1, max: 86,400). The time in seconds to count
+                      matching traffic. If the count exceeds threshold within this
+                      period the action will be performed.'
+                    type: number
+                  threshold:
+                    description: 'The threshold that triggers the rate limit mitigations,
+                      combine with period. i.e. threshold per period (min: 2, max:
+                      1,000,000). The threshold that triggers the rate limit mitigations,
+                      combine with period.'
+                    type: number
+                  zoneId:
+                    description: The DNS zone ID to apply rate limiting to. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

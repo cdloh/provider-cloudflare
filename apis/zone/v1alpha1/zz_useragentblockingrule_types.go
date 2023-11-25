@@ -13,41 +13,87 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ConfigurationInitParameters struct {
+
+	// The configuration target for this rule. You must set the target to ua for User Agent Blocking rules.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The exact user agent string to match. This value will be compared to the received User-Agent HTTP header value.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type ConfigurationObservation struct {
+
+	// The configuration target for this rule. You must set the target to ua for User Agent Blocking rules.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The exact user agent string to match. This value will be compared to the received User-Agent HTTP header value.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type ConfigurationParameters struct {
 
 	// The configuration target for this rule. You must set the target to ua for User Agent Blocking rules.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
 	// The exact user agent string to match. This value will be compared to the received User-Agent HTTP header value.
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type UserAgentBlockingRuleInitParameters struct {
+
+	// The configuration object for the current rule.
+	Configuration []ConfigurationInitParameters `json:"configuration,omitempty" tf:"configuration,omitempty"`
+
+	// An informative summary of the rule.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The action to apply to a matched request. Available values: `block`, `challenge`, `js_challenge`, `managed_challenge`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// When true, indicates that the rule is currently paused.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
 }
 
 type UserAgentBlockingRuleObservation struct {
+
+	// The configuration object for the current rule.
+	Configuration []ConfigurationObservation `json:"configuration,omitempty" tf:"configuration,omitempty"`
+
+	// An informative summary of the rule.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The action to apply to a matched request. Available values: `block`, `challenge`, `js_challenge`, `managed_challenge`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// When true, indicates that the rule is currently paused.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type UserAgentBlockingRuleParameters struct {
 
 	// The configuration object for the current rule.
-	// +kubebuilder:validation:Required
-	Configuration []ConfigurationParameters `json:"configuration" tf:"configuration,omitempty"`
+	// +kubebuilder:validation:Optional
+	Configuration []ConfigurationParameters `json:"configuration,omitempty" tf:"configuration,omitempty"`
 
 	// An informative summary of the rule.
-	// +kubebuilder:validation:Required
-	Description *string `json:"description" tf:"description,omitempty"`
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The action to apply to a matched request. Available values: `block`, `challenge`, `js_challenge`, `managed_challenge`.
-	// +kubebuilder:validation:Required
-	Mode *string `json:"mode" tf:"mode,omitempty"`
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 
 	// When true, indicates that the rule is currently paused.
-	// +kubebuilder:validation:Required
-	Paused *bool `json:"paused" tf:"paused,omitempty"`
+	// +kubebuilder:validation:Optional
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=Zone
@@ -67,6 +113,18 @@ type UserAgentBlockingRuleParameters struct {
 type UserAgentBlockingRuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     UserAgentBlockingRuleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider UserAgentBlockingRuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // UserAgentBlockingRuleStatus defines the observed state of UserAgentBlockingRule.
@@ -87,8 +145,12 @@ type UserAgentBlockingRuleStatus struct {
 type UserAgentBlockingRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              UserAgentBlockingRuleSpec   `json:"spec"`
-	Status            UserAgentBlockingRuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.configuration) || has(self.initProvider.configuration)",message="configuration is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.description) || has(self.initProvider.description)",message="description is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.mode) || has(self.initProvider.mode)",message="mode is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.paused) || has(self.initProvider.paused)",message="paused is a required parameter"
+	Spec   UserAgentBlockingRuleSpec   `json:"spec"`
+	Status UserAgentBlockingRuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -27,7 +27,7 @@ EOF
 
 Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
 
-You can see the API reference [here](https://doc.crds.dev/github.com/cdloh/provider-cloudflare).
+You can see the API reference [here](https://doc.crds.dev/github.com/clementblaise/provider-cloudflare).
 
 ## Resource Refrence and Status
 
@@ -159,4 +159,4 @@ make build
 ## Report a Bug
 
 For filing bugs, suggesting improvements, or requesting new features, please
-open an [issue](https://github.com/cdloh/provider-cloudflare/issues).
+open an [issue](https://github.com/clementblaise/provider-cloudflare/issues).

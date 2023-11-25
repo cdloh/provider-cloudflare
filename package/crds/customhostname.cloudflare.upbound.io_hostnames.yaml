@@ -85,9 +85,17 @@ spec:
                       **Modifying this attribute will force creation of a new resource.**
                     type: string
                   ssl:
-                    description: SSL configuration of the certificate.
+                    description: SSL properties used when creating the custom hostname.
                     items:
                       properties:
+                        bundleMethod:
+                          description: 'A ubiquitous bundle has the highest probability
+                            of being verified everywhere, even by clients using outdated
+                            or unusual trust stores. An optimal bundle uses the shortest
+                            chain and newest intermediates. And the force bundle verifies
+                            the chain, but does not otherwise modify it. Available
+                            values: `ubiquitous`, `optimal`, `force`.'
+                          type: string
                         certificateAuthority:
                           type: string
                         customCertificate:
@@ -221,8 +229,106 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - hostname
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  customMetadata:
+                    additionalProperties:
+                      type: string
+                    description: Custom metadata associated with custom hostname.
+                      Only supports primitive string values, all other values are
+                      accessible via the API directly.
+                    type: object
+                  customOriginServer:
+                    description: The custom origin server used for certificates.
+                    type: string
+                  customOriginSni:
+                    description: The [custom origin SNI](https://developers.cloudflare.com/ssl/ssl-for-saas/hostname-specific-behavior/custom-origin)
+                      used for certificates.
+                    type: string
+                  hostname:
+                    description: Hostname you intend to request a certificate for.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
+                  ssl:
+                    description: SSL properties used when creating the custom hostname.
+                    items:
+                      properties:
+                        bundleMethod:
+                          description: 'A ubiquitous bundle has the highest probability
+                            of being verified everywhere, even by clients using outdated
+                            or unusual trust stores. An optimal bundle uses the shortest
+                            chain and newest intermediates. And the force bundle verifies
+                            the chain, but does not otherwise modify it. Available
+                            values: `ubiquitous`, `optimal`, `force`.'
+                          type: string
+                        certificateAuthority:
+                          type: string
+                        customCertificate:
+                          description: If a custom uploaded certificate is used.
+                          type: string
+                        customKey:
+                          description: The key for a custom uploaded certificate.
+                          type: string
+                        method:
+                          description: 'Domain control validation (DCV) method used
+                            for this hostname. Available values: `http`, `txt`, `email`.'
+                          type: string
+                        settings:
+                          description: SSL/TLS settings for the certificate.
+                          items:
+                            properties:
+                              ciphers:
+                                description: List of SSL/TLS ciphers to associate
+                                  with this certificate.
+                                items:
+                                  type: string
+                                type: array
+                              earlyHints:
+                                description: 'Whether early hints should be supported.
+                                  Available values: `on`, `off`.'
+                                type: string
+                              http2:
+                                description: 'Whether HTTP2 should be supported. Available
+                                  values: `on`, `off`.'
+                                type: string
+                              minTlsVersion:
+                                description: 'Lowest version of TLS this certificate
+                                  should support. Available values: `1.0`, `1.1`,
+                                  `1.2`, `1.3`.'
+                                type: string
+                              tls13:
+                                description: 'Whether TLSv1.3 should be supported.
+                                  Available values: `on`, `off`.'
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: 'Level of validation to be used for this hostname.
+                            Available values: `dv`. Defaults to `dv`.'
+                          type: string
+                        wildcard:
+                          description: Indicates whether the certificate covers a
+                            wildcard.
+                          type: boolean
+                      type: object
+                    type: array
+                  waitForSslPendingValidation:
+                    description: Whether to wait for a custom hostname SSL sub-object
+                      to reach status `pending_validation` during creation. Defaults
+                      to `false`.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -421,11 +527,34 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: hostname is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.hostname)
+                || has(self.initProvider.hostname)'
           status:
             description: HostnameStatus defines the observed state of Hostname.
             properties:
               atProvider:
                 properties:
+                  customMetadata:
+                    additionalProperties:
+                      type: string
+                    description: Custom metadata associated with custom hostname.
+                      Only supports primitive string values, all other values are
+                      accessible via the API directly.
+                    type: object
+                  customOriginServer:
+                    description: The custom origin server used for certificates.
+                    type: string
+                  customOriginSni:
+                    description: The [custom origin SNI](https://developers.cloudflare.com/ssl/ssl-for-saas/hostname-specific-behavior/custom-origin)
+                      used for certificates.
+                    type: string
+                  hostname:
+                    description: Hostname you intend to request a certificate for.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
                   id:
                     type: string
                   ownershipVerification:
@@ -437,10 +566,63 @@ spec:
                       type: string
                     type: object
                   ssl:
-                    description: SSL configuration of the certificate.
+                    description: SSL properties used when creating the custom hostname.
                     items:
                       properties:
+                        bundleMethod:
+                          description: 'A ubiquitous bundle has the highest probability
+                            of being verified everywhere, even by clients using outdated
+                            or unusual trust stores. An optimal bundle uses the shortest
+                            chain and newest intermediates. And the force bundle verifies
+                            the chain, but does not otherwise modify it. Available
+                            values: `ubiquitous`, `optimal`, `force`.'
+                          type: string
+                        certificateAuthority:
+                          type: string
+                        customCertificate:
+                          description: If a custom uploaded certificate is used.
+                          type: string
+                        customKey:
+                          description: The key for a custom uploaded certificate.
+                          type: string
+                        method:
+                          description: 'Domain control validation (DCV) method used
+                            for this hostname. Available values: `http`, `txt`, `email`.'
+                          type: string
+                        settings:
+                          description: SSL/TLS settings for the certificate.
+                          items:
+                            properties:
+                              ciphers:
+                                description: List of SSL/TLS ciphers to associate
+                                  with this certificate.
+                                items:
+                                  type: string
+                                type: array
+                              earlyHints:
+                                description: 'Whether early hints should be supported.
+                                  Available values: `on`, `off`.'
+                                type: string
+                              http2:
+                                description: 'Whether HTTP2 should be supported. Available
+                                  values: `on`, `off`.'
+                                type: string
+                              minTlsVersion:
+                                description: 'Lowest version of TLS this certificate
+                                  should support. Available values: `1.0`, `1.1`,
+                                  `1.2`, `1.3`.'
+                                type: string
+                              tls13:
+                                description: 'Whether TLSv1.3 should be supported.
+                                  Available values: `on`, `off`.'
+                                type: string
+                            type: object
+                          type: array
                         status:
+                          type: string
+                        type:
+                          description: 'Level of validation to be used for this hostname.
+                            Available values: `dv`. Defaults to `dv`.'
                           type: string
                         validationErrors:
                           items:
@@ -470,10 +652,23 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        wildcard:
+                          description: Indicates whether the certificate covers a
+                            wildcard.
+                          type: boolean
                       type: object
                     type: array
                   status:
                     description: Status of the certificate.
+                    type: string
+                  waitForSslPendingValidation:
+                    description: Whether to wait for a custom hostname SSL sub-object
+                      to reach status `pending_validation` during creation. Defaults
+                      to `false`.
+                    type: boolean
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

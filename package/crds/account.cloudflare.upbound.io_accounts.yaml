@@ -79,8 +79,33 @@ spec:
                       Defaults to `standard`. **Modifying this attribute will force
                       creation of a new resource.**'
                     type: string
-                required:
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  enforceTwofactor:
+                    description: Whether 2FA is enforced on the account. Defaults
+                      to `false`.
+                    type: boolean
+                  name:
+                    description: The name of the account that is displayed in the
+                      Cloudflare dashboard.
+                    type: string
+                  type:
+                    description: 'Account type. Available values: `enterprise`, `standard`.
+                      Defaults to `standard`. **Modifying this attribute will force
+                      creation of a new resource.**'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -279,12 +304,30 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: AccountStatus defines the observed state of Account.
             properties:
               atProvider:
                 properties:
+                  enforceTwofactor:
+                    description: Whether 2FA is enforced on the account. Defaults
+                      to `false`.
+                    type: boolean
                   id:
+                    type: string
+                  name:
+                    description: The name of the account that is displayed in the
+                      Cloudflare dashboard.
+                    type: string
+                  type:
+                    description: 'Account type. Available values: `enterprise`, `standard`.
+                      Defaults to `standard`. **Modifying this attribute will force
+                      creation of a new resource.**'
                     type: string
                 type: object
               conditions:

@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Rule is the Schema for the Rules API. <no value>
+        description: Rule is the Schema for the Rules API. Provides a Cloudflare Teams
+          rule resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,7 +68,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The account to which the teams rule should be added.
+                      The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -143,90 +145,419 @@ spec:
                         type: object
                     type: object
                   action:
+                    description: 'The action executed by matched teams rule. The action
+                      executed by matched teams rule. Available values: `allow`, `block`,
+                      `safesearch`, `ytrestricted`, `on`, `off`, `scan`, `noscan`,
+                      `isolate`, `noisolate`, `override`, `l4_override`, `egress`,
+                      `audit_ssh`.'
                     type: string
                   description:
+                    description: The description of the teams rule. The description
+                      of the teams rule.
                     type: string
                   devicePosture:
+                    description: The wirefilter expression to be used for device_posture
+                      check matching. The wirefilter expression to be used for device_posture
+                      check matching.
                     type: string
                   enabled:
+                    description: Indicator of rule enablement. Indicator of rule enablement.
                     type: boolean
                   filters:
+                    description: The protocol or layer to evaluate the traffic and
+                      identity expressions. The protocol or layer to evaluate the
+                      traffic and identity expressions.
                     items:
                       type: string
                     type: array
                   identity:
+                    description: The wirefilter expression to be used for identity
+                      matching. The wirefilter expression to be used for identity
+                      matching.
                     type: string
                   name:
+                    description: The name of the teams rule. The name of the teams
+                      rule.
                     type: string
                   precedence:
+                    description: The evaluation precedence of the teams rule. The
+                      evaluation precedence of the teams rule.
                     type: number
                   ruleSettings:
+                    description: Additional rule settings (refer to the nested schema).
+                      Additional rule settings.
                     items:
                       properties:
                         addHeaders:
                           additionalProperties:
                             type: string
+                          description: Add custom headers to allowed requests in the
+                            form of key-value pairs. Add custom headers to allowed
+                            requests in the form of key-value pairs.
                           type: object
+                        allowChildBypass:
+                          description: Allow parent MSP accounts to enable bypass
+                            their children's rules.
+                          type: boolean
+                        auditSsh:
+                          description: Settings for auditing SSH usage.
+                          items:
+                            properties:
+                              commandLogging:
+                                description: Log all SSH commands.
+                                type: boolean
+                            type: object
+                          type: array
                         bisoAdminControls:
+                          description: Configure how browser isolation behaves (refer
+                            to the nested schema). Configure how browser isolation
+                            behaves.
                           items:
                             properties:
                               disableCopyPaste:
+                                description: (Boolean) Disable copy-paste. Disable
+                                  copy-paste.
                                 type: boolean
                               disableDownload:
+                                description: (Boolean) Disable download. Disable download.
                                 type: boolean
                               disableKeyboard:
+                                description: (Boolean) Disable keyboard usage. Disable
+                                  keyboard usage.
                                 type: boolean
                               disablePrinting:
+                                description: (Boolean) Disable printing. Disable printing.
                                 type: boolean
                               disableUpload:
+                                description: (Boolean) Disable upload. Disable upload.
                                 type: boolean
                             type: object
                           type: array
                         blockPageEnabled:
+                          description: Indicator of block page enablement. Indicator
+                            of block page enablement.
                           type: boolean
                         blockPageReason:
+                          description: The displayed reason for a user being blocked.
+                            The displayed reason for a user being blocked.
                           type: string
+                        bypassParentRule:
+                          description: Allow child MSP accounts to bypass their parent's
+                            rule.
+                          type: boolean
                         checkSession:
+                          description: Configure how session check behaves (refer
+                            to the nested schema). Configure how session check behaves.
                           items:
                             properties:
                               duration:
+                                description: Configure how fresh the session needs
+                                  to be to be considered valid. Configure how fresh
+                                  the session needs to be to be considered valid.
                                 type: string
                               enforce:
+                                description: Enable session enforcement for this rule.
+                                  Enable session enforcement for this rule.
                                 type: boolean
-                            required:
-                            - duration
-                            - enforce
+                            type: object
+                          type: array
+                        egress:
+                          description: Configure how Proxy traffic egresses. Can be
+                            set for rules with Egress action and Egress filter. Can
+                            be omitted to indicate local egress via Warp IPs.
+                          items:
+                            properties:
+                              ipv4:
+                                description: The IPv4 address to be used for egress.
+                                type: string
+                              ipv4Fallback:
+                                description: The IPv4 address to be used for egress
+                                  in the event of an error egressing with the primary
+                                  IPv4. Can be '0.0.0.0' to indicate local egreass
+                                  via Warp IPs.
+                                type: string
+                              ipv6:
+                                description: The IPv6 range to be used for egress.
+                                type: string
                             type: object
                           type: array
                         insecureDisableDnssecValidation:
+                          description: Disable DNSSEC validation (must be Allow rule)
+                            Disable DNSSEC validation (must be Allow rule).
+                          type: boolean
+                        ipCategories:
+                          description: Turns on IP category based filter on dns if
+                            the rule contains dns category checks.
                           type: boolean
                         l4override:
+                          description: Settings to forward layer 4 traffic (refer
+                            to the nested schema). Settings to forward layer 4 traffic.
                           items:
                             properties:
                               ip:
+                                description: Override IP to forward traffic to. Override
+                                  IP to forward traffic to.
                                 type: string
                               port:
+                                description: Override Port to forward traffic to.
+                                  Override Port to forward traffic to.
                                 type: number
-                            required:
-                            - ip
-                            - port
                             type: object
                           type: array
                         overrideHost:
+                          description: The host to override matching DNS queries with.
+                            The host to override matching DNS queries with.
                           type: string
                         overrideIps:
+                          description: The IPs to override matching DNS queries with.
+                            The IPs to override matching DNS queries with.
                           items:
                             type: string
+                          type: array
+                        payloadLog:
+                          description: Configure DLP Payload Logging settings for
+                            this rule.
+                          items:
+                            properties:
+                              enabled:
+                                description: Indicator of rule enablement. Enable
+                                  or disable DLP Payload Logging for this rule.
+                                type: boolean
+                            type: object
+                          type: array
+                        untrustedCert:
+                          description: Configure untrusted certificate settings for
+                            this rule.
+                          items:
+                            properties:
+                              action:
+                                description: 'The action executed by matched teams
+                                  rule. Action to be taken when the SSL certificate
+                                  of upstream is invalid. Available values: `pass_through`,
+                                  `block`, `error`.'
+                                type: string
+                            type: object
                           type: array
                       type: object
                     type: array
                   traffic:
+                    description: The wirefilter expression to be used for traffic
+                      matching. The wirefilter expression to be used for traffic matching.
                     type: string
-                required:
-                - action
-                - description
-                - name
-                - precedence
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  action:
+                    description: 'The action executed by matched teams rule. The action
+                      executed by matched teams rule. Available values: `allow`, `block`,
+                      `safesearch`, `ytrestricted`, `on`, `off`, `scan`, `noscan`,
+                      `isolate`, `noisolate`, `override`, `l4_override`, `egress`,
+                      `audit_ssh`.'
+                    type: string
+                  description:
+                    description: The description of the teams rule. The description
+                      of the teams rule.
+                    type: string
+                  devicePosture:
+                    description: The wirefilter expression to be used for device_posture
+                      check matching. The wirefilter expression to be used for device_posture
+                      check matching.
+                    type: string
+                  enabled:
+                    description: Indicator of rule enablement. Indicator of rule enablement.
+                    type: boolean
+                  filters:
+                    description: The protocol or layer to evaluate the traffic and
+                      identity expressions. The protocol or layer to evaluate the
+                      traffic and identity expressions.
+                    items:
+                      type: string
+                    type: array
+                  identity:
+                    description: The wirefilter expression to be used for identity
+                      matching. The wirefilter expression to be used for identity
+                      matching.
+                    type: string
+                  name:
+                    description: The name of the teams rule. The name of the teams
+                      rule.
+                    type: string
+                  precedence:
+                    description: The evaluation precedence of the teams rule. The
+                      evaluation precedence of the teams rule.
+                    type: number
+                  ruleSettings:
+                    description: Additional rule settings (refer to the nested schema).
+                      Additional rule settings.
+                    items:
+                      properties:
+                        addHeaders:
+                          additionalProperties:
+                            type: string
+                          description: Add custom headers to allowed requests in the
+                            form of key-value pairs. Add custom headers to allowed
+                            requests in the form of key-value pairs.
+                          type: object
+                        allowChildBypass:
+                          description: Allow parent MSP accounts to enable bypass
+                            their children's rules.
+                          type: boolean
+                        auditSsh:
+                          description: Settings for auditing SSH usage.
+                          items:
+                            properties:
+                              commandLogging:
+                                description: Log all SSH commands.
+                                type: boolean
+                            type: object
+                          type: array
+                        bisoAdminControls:
+                          description: Configure how browser isolation behaves (refer
+                            to the nested schema). Configure how browser isolation
+                            behaves.
+                          items:
+                            properties:
+                              disableCopyPaste:
+                                description: (Boolean) Disable copy-paste. Disable
+                                  copy-paste.
+                                type: boolean
+                              disableDownload:
+                                description: (Boolean) Disable download. Disable download.
+                                type: boolean
+                              disableKeyboard:
+                                description: (Boolean) Disable keyboard usage. Disable
+                                  keyboard usage.
+                                type: boolean
+                              disablePrinting:
+                                description: (Boolean) Disable printing. Disable printing.
+                                type: boolean
+                              disableUpload:
+                                description: (Boolean) Disable upload. Disable upload.
+                                type: boolean
+                            type: object
+                          type: array
+                        blockPageEnabled:
+                          description: Indicator of block page enablement. Indicator
+                            of block page enablement.
+                          type: boolean
+                        blockPageReason:
+                          description: The displayed reason for a user being blocked.
+                            The displayed reason for a user being blocked.
+                          type: string
+                        bypassParentRule:
+                          description: Allow child MSP accounts to bypass their parent's
+                            rule.
+                          type: boolean
+                        checkSession:
+                          description: Configure how session check behaves (refer
+                            to the nested schema). Configure how session check behaves.
+                          items:
+                            properties:
+                              duration:
+                                description: Configure how fresh the session needs
+                                  to be to be considered valid. Configure how fresh
+                                  the session needs to be to be considered valid.
+                                type: string
+                              enforce:
+                                description: Enable session enforcement for this rule.
+                                  Enable session enforcement for this rule.
+                                type: boolean
+                            type: object
+                          type: array
+                        egress:
+                          description: Configure how Proxy traffic egresses. Can be
+                            set for rules with Egress action and Egress filter. Can
+                            be omitted to indicate local egress via Warp IPs.
+                          items:
+                            properties:
+                              ipv4:
+                                description: The IPv4 address to be used for egress.
+                                type: string
+                              ipv4Fallback:
+                                description: The IPv4 address to be used for egress
+                                  in the event of an error egressing with the primary
+                                  IPv4. Can be '0.0.0.0' to indicate local egreass
+                                  via Warp IPs.
+                                type: string
+                              ipv6:
+                                description: The IPv6 range to be used for egress.
+                                type: string
+                            type: object
+                          type: array
+                        insecureDisableDnssecValidation:
+                          description: Disable DNSSEC validation (must be Allow rule)
+                            Disable DNSSEC validation (must be Allow rule).
+                          type: boolean
+                        ipCategories:
+                          description: Turns on IP category based filter on dns if
+                            the rule contains dns category checks.
+                          type: boolean
+                        l4override:
+                          description: Settings to forward layer 4 traffic (refer
+                            to the nested schema). Settings to forward layer 4 traffic.
+                          items:
+                            properties:
+                              ip:
+                                description: Override IP to forward traffic to. Override
+                                  IP to forward traffic to.
+                                type: string
+                              port:
+                                description: Override Port to forward traffic to.
+                                  Override Port to forward traffic to.
+                                type: number
+                            type: object
+                          type: array
+                        overrideHost:
+                          description: The host to override matching DNS queries with.
+                            The host to override matching DNS queries with.
+                          type: string
+                        overrideIps:
+                          description: The IPs to override matching DNS queries with.
+                            The IPs to override matching DNS queries with.
+                          items:
+                            type: string
+                          type: array
+                        payloadLog:
+                          description: Configure DLP Payload Logging settings for
+                            this rule.
+                          items:
+                            properties:
+                              enabled:
+                                description: Indicator of rule enablement. Enable
+                                  or disable DLP Payload Logging for this rule.
+                                type: boolean
+                            type: object
+                          type: array
+                        untrustedCert:
+                          description: Configure untrusted certificate settings for
+                            this rule.
+                          items:
+                            properties:
+                              action:
+                                description: 'The action executed by matched teams
+                                  rule. Action to be taken when the SSL certificate
+                                  of upstream is invalid. Available values: `pass_through`,
+                                  `block`, `error`.'
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  traffic:
+                    description: The wirefilter expression to be used for traffic
+                      matching. The wirefilter expression to be used for traffic matching.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -425,12 +756,233 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: action is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.action)
+                || has(self.initProvider.action)'
+            - message: description is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.description)
+                || has(self.initProvider.description)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: precedence is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.precedence)
+                || has(self.initProvider.precedence)'
           status:
             description: RuleStatus defines the observed state of Rule.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account to which the teams rule should be added.
+                      The account identifier to target for the resource.
+                    type: string
+                  action:
+                    description: 'The action executed by matched teams rule. The action
+                      executed by matched teams rule. Available values: `allow`, `block`,
+                      `safesearch`, `ytrestricted`, `on`, `off`, `scan`, `noscan`,
+                      `isolate`, `noisolate`, `override`, `l4_override`, `egress`,
+                      `audit_ssh`.'
+                    type: string
+                  description:
+                    description: The description of the teams rule. The description
+                      of the teams rule.
+                    type: string
+                  devicePosture:
+                    description: The wirefilter expression to be used for device_posture
+                      check matching. The wirefilter expression to be used for device_posture
+                      check matching.
+                    type: string
+                  enabled:
+                    description: Indicator of rule enablement. Indicator of rule enablement.
+                    type: boolean
+                  filters:
+                    description: The protocol or layer to evaluate the traffic and
+                      identity expressions. The protocol or layer to evaluate the
+                      traffic and identity expressions.
+                    items:
+                      type: string
+                    type: array
                   id:
+                    type: string
+                  identity:
+                    description: The wirefilter expression to be used for identity
+                      matching. The wirefilter expression to be used for identity
+                      matching.
+                    type: string
+                  name:
+                    description: The name of the teams rule. The name of the teams
+                      rule.
+                    type: string
+                  precedence:
+                    description: The evaluation precedence of the teams rule. The
+                      evaluation precedence of the teams rule.
+                    type: number
+                  ruleSettings:
+                    description: Additional rule settings (refer to the nested schema).
+                      Additional rule settings.
+                    items:
+                      properties:
+                        addHeaders:
+                          additionalProperties:
+                            type: string
+                          description: Add custom headers to allowed requests in the
+                            form of key-value pairs. Add custom headers to allowed
+                            requests in the form of key-value pairs.
+                          type: object
+                        allowChildBypass:
+                          description: Allow parent MSP accounts to enable bypass
+                            their children's rules.
+                          type: boolean
+                        auditSsh:
+                          description: Settings for auditing SSH usage.
+                          items:
+                            properties:
+                              commandLogging:
+                                description: Log all SSH commands.
+                                type: boolean
+                            type: object
+                          type: array
+                        bisoAdminControls:
+                          description: Configure how browser isolation behaves (refer
+                            to the nested schema). Configure how browser isolation
+                            behaves.
+                          items:
+                            properties:
+                              disableCopyPaste:
+                                description: (Boolean) Disable copy-paste. Disable
+                                  copy-paste.
+                                type: boolean
+                              disableDownload:
+                                description: (Boolean) Disable download. Disable download.
+                                type: boolean
+                              disableKeyboard:
+                                description: (Boolean) Disable keyboard usage. Disable
+                                  keyboard usage.
+                                type: boolean
+                              disablePrinting:
+                                description: (Boolean) Disable printing. Disable printing.
+                                type: boolean
+                              disableUpload:
+                                description: (Boolean) Disable upload. Disable upload.
+                                type: boolean
+                            type: object
+                          type: array
+                        blockPageEnabled:
+                          description: Indicator of block page enablement. Indicator
+                            of block page enablement.
+                          type: boolean
+                        blockPageReason:
+                          description: The displayed reason for a user being blocked.
+                            The displayed reason for a user being blocked.
+                          type: string
+                        bypassParentRule:
+                          description: Allow child MSP accounts to bypass their parent's
+                            rule.
+                          type: boolean
+                        checkSession:
+                          description: Configure how session check behaves (refer
+                            to the nested schema). Configure how session check behaves.
+                          items:
+                            properties:
+                              duration:
+                                description: Configure how fresh the session needs
+                                  to be to be considered valid. Configure how fresh
+                                  the session needs to be to be considered valid.
+                                type: string
+                              enforce:
+                                description: Enable session enforcement for this rule.
+                                  Enable session enforcement for this rule.
+                                type: boolean
+                            type: object
+                          type: array
+                        egress:
+                          description: Configure how Proxy traffic egresses. Can be
+                            set for rules with Egress action and Egress filter. Can
+                            be omitted to indicate local egress via Warp IPs.
+                          items:
+                            properties:
+                              ipv4:
+                                description: The IPv4 address to be used for egress.
+                                type: string
+                              ipv4Fallback:
+                                description: The IPv4 address to be used for egress
+                                  in the event of an error egressing with the primary
+                                  IPv4. Can be '0.0.0.0' to indicate local egreass
+                                  via Warp IPs.
+                                type: string
+                              ipv6:
+                                description: The IPv6 range to be used for egress.
+                                type: string
+                            type: object
+                          type: array
+                        insecureDisableDnssecValidation:
+                          description: Disable DNSSEC validation (must be Allow rule)
+                            Disable DNSSEC validation (must be Allow rule).
+                          type: boolean
+                        ipCategories:
+                          description: Turns on IP category based filter on dns if
+                            the rule contains dns category checks.
+                          type: boolean
+                        l4override:
+                          description: Settings to forward layer 4 traffic (refer
+                            to the nested schema). Settings to forward layer 4 traffic.
+                          items:
+                            properties:
+                              ip:
+                                description: Override IP to forward traffic to. Override
+                                  IP to forward traffic to.
+                                type: string
+                              port:
+                                description: Override Port to forward traffic to.
+                                  Override Port to forward traffic to.
+                                type: number
+                            type: object
+                          type: array
+                        overrideHost:
+                          description: The host to override matching DNS queries with.
+                            The host to override matching DNS queries with.
+                          type: string
+                        overrideIps:
+                          description: The IPs to override matching DNS queries with.
+                            The IPs to override matching DNS queries with.
+                          items:
+                            type: string
+                          type: array
+                        payloadLog:
+                          description: Configure DLP Payload Logging settings for
+                            this rule.
+                          items:
+                            properties:
+                              enabled:
+                                description: Indicator of rule enablement. Enable
+                                  or disable DLP Payload Logging for this rule.
+                                type: boolean
+                            type: object
+                          type: array
+                        untrustedCert:
+                          description: Configure untrusted certificate settings for
+                            this rule.
+                          items:
+                            properties:
+                              action:
+                                description: 'The action executed by matched teams
+                                  rule. Action to be taken when the SSL certificate
+                                  of upstream is invalid. Available values: `pass_through`,
+                                  `block`, `error`.'
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  traffic:
+                    description: The wirefilter expression to be used for traffic
+                      matching. The wirefilter expression to be used for traffic matching.
                     type: string
                   version:
                     type: number

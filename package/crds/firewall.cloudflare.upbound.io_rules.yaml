@@ -244,8 +244,44 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - action
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  action:
+                    description: 'The action to apply to a matched request. Available
+                      values: `block`, `challenge`, `allow`, `js_challenge`, `managed_challenge`,
+                      `log`, `bypass`.'
+                    type: string
+                  description:
+                    description: A description of the rule to help identify it.
+                    type: string
+                  paused:
+                    description: Whether this filter based firewall rule is currently
+                      paused.
+                    type: boolean
+                  priority:
+                    description: The priority of the rule to allow control of processing
+                      order. A lower number indicates high priority. If not provided,
+                      any rules with a priority will be sequenced before those without.
+                    type: number
+                  products:
+                    description: 'List of products to bypass for a request when the
+                      bypass action is used. Available values: `zoneLockdown`, `uaBlock`,
+                      `bic`, `hot`, `securityLevel`, `rateLimit`, `waf`.'
+                    items:
+                      type: string
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -444,12 +480,49 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: action is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.action)
+                || has(self.initProvider.action)'
           status:
             description: RuleStatus defines the observed state of Rule.
             properties:
               atProvider:
                 properties:
+                  action:
+                    description: 'The action to apply to a matched request. Available
+                      values: `block`, `challenge`, `allow`, `js_challenge`, `managed_challenge`,
+                      `log`, `bypass`.'
+                    type: string
+                  description:
+                    description: A description of the rule to help identify it.
+                    type: string
+                  filterId:
+                    description: The identifier of the Filter to use for determining
+                      if the Firewall Rule should be triggered.
+                    type: string
                   id:
+                    type: string
+                  paused:
+                    description: Whether this filter based firewall rule is currently
+                      paused.
+                    type: boolean
+                  priority:
+                    description: The priority of the rule to allow control of processing
+                      order. A lower number indicates high priority. If not provided,
+                      any rules with a priority will be sequenced before those without.
+                    type: number
+                  products:
+                    description: 'List of products to bypass for a request when the
+                      bypass action is used. Available values: `zoneLockdown`, `uaBlock`,
+                      `bic`, `hot`, `securityLevel`, `rateLimit`, `waf`.'
+                    items:
+                      type: string
+                    type: array
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

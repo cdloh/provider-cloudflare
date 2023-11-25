@@ -68,7 +68,8 @@ spec:
                 properties:
                   accountId:
                     description: The account identifier to target for the resource.
-                      **Modifying this attribute will force creation of a new resource.**
+                      Must provide only one of `account_id`, `zone_id`. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -158,9 +159,6 @@ spec:
                             **Modifying this attribute will force creation of a new
                             resource.**
                           type: string
-                      required:
-                      - target
-                      - value
                       type: object
                     type: array
                   mode:
@@ -172,8 +170,9 @@ spec:
                       a reminder or explanation for the rule.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: The zone identifier to target for the resource. Must
+                      provide only one of `account_id`, `zone_id`. **Modifying this
+                      attribute will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -248,9 +247,45 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - configuration
-                - mode
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  configuration:
+                    description: Rule configuration to apply to a matched request.
+                      **Modifying this attribute will force creation of a new resource.**
+                    items:
+                      properties:
+                        target:
+                          description: 'The request property to target. Available
+                            values: `ip`, `ip6`, `ip_range`, `asn`, `country`. **Modifying
+                            this attribute will force creation of a new resource.**'
+                          type: string
+                        value:
+                          description: The value to target. Depends on target's type.
+                            **Modifying this attribute will force creation of a new
+                            resource.**
+                          type: string
+                      type: object
+                    type: array
+                  mode:
+                    description: 'The action to apply to a matched request. Available
+                      values: `block`, `challenge`, `whitelist`, `js_challenge`, `managed_challenge`.'
+                    type: string
+                  notes:
+                    description: A personal note about the rule. Typically used as
+                      a reminder or explanation for the rule.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -449,12 +484,56 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: configuration is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.configuration)
+                || has(self.initProvider.configuration)'
+            - message: mode is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.mode)
+                || has(self.initProvider.mode)'
           status:
             description: RuleStatus defines the observed state of Rule.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      Must provide only one of `account_id`, `zone_id`. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
+                  configuration:
+                    description: Rule configuration to apply to a matched request.
+                      **Modifying this attribute will force creation of a new resource.**
+                    items:
+                      properties:
+                        target:
+                          description: 'The request property to target. Available
+                            values: `ip`, `ip6`, `ip_range`, `asn`, `country`. **Modifying
+                            this attribute will force creation of a new resource.**'
+                          type: string
+                        value:
+                          description: The value to target. Depends on target's type.
+                            **Modifying this attribute will force creation of a new
+                            resource.**
+                          type: string
+                      type: object
+                    type: array
                   id:
+                    type: string
+                  mode:
+                    description: 'The action to apply to a matched request. Available
+                      values: `block`, `challenge`, `whitelist`, `js_challenge`, `managed_challenge`.'
+                    type: string
+                  notes:
+                    description: A personal note about the rule. Typically used as
+                      a reminder or explanation for the rule.
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. Must
+                      provide only one of `account_id`, `zone_id`. **Modifying this
+                      attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

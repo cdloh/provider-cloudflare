@@ -79,9 +79,6 @@ spec:
                           items:
                             type: string
                           type: array
-                      required:
-                      - type
-                      - value
                       type: object
                     type: array
                   enabled:
@@ -94,8 +91,6 @@ spec:
                         type:
                           description: 'Type of matcher. Available values: `all`.'
                           type: string
-                      required:
-                      - type
                       type: object
                     type: array
                   name:
@@ -177,10 +172,50 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - action
-                - matcher
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  action:
+                    description: List actions patterns.
+                    items:
+                      properties:
+                        type:
+                          description: 'Type of supported action. Available values:
+                            `drop`, `forward`, `worker`.'
+                          type: string
+                        value:
+                          description: A list with items in the following form.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  enabled:
+                    description: Routing rule status.
+                    type: boolean
+                  matcher:
+                    description: Matching patterns to forward to your actions.
+                    items:
+                      properties:
+                        type:
+                          description: 'Type of matcher. Available values: `all`.'
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Routing rule name.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -379,15 +414,61 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: action is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.action)
+                || has(self.initProvider.action)'
+            - message: matcher is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.matcher)
+                || has(self.initProvider.matcher)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: CatchAllStatus defines the observed state of CatchAll.
             properties:
               atProvider:
                 properties:
+                  action:
+                    description: List actions patterns.
+                    items:
+                      properties:
+                        type:
+                          description: 'Type of supported action. Available values:
+                            `drop`, `forward`, `worker`.'
+                          type: string
+                        value:
+                          description: A list with items in the following form.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  enabled:
+                    description: Routing rule status.
+                    type: boolean
                   id:
+                    type: string
+                  matcher:
+                    description: Matching patterns to forward to your actions.
+                    items:
+                      properties:
+                        type:
+                          description: 'Type of matcher. Available values: `all`.'
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Routing rule name.
                     type: string
                   tag:
                     description: Routing rule identifier.
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource.
                     type: string
                 type: object
               conditions:

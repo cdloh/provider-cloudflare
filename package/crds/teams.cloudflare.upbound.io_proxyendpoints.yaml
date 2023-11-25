@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ProxyEndpoint is the Schema for the ProxyEndpoints API. <no value>
+        description: ProxyEndpoint is the Schema for the ProxyEndpoints API. Provides
+          a Cloudflare Teams Proxy Endpoint resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,7 +68,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The account to which the teams proxy endpoint should
+                      be added. The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -143,14 +145,41 @@ spec:
                         type: object
                     type: object
                   ips:
+                    description: The networks CIDRs that will be allowed to initiate
+                      proxy connections. The networks CIDRs that will be allowed to
+                      initiate proxy connections.
                     items:
                       type: string
                     type: array
                   name:
+                    description: Name of the teams proxy endpoint. Name of the teams
+                      proxy endpoint.
                     type: string
-                required:
-                - ips
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  ips:
+                    description: The networks CIDRs that will be allowed to initiate
+                      proxy connections. The networks CIDRs that will be allowed to
+                      initiate proxy connections.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: Name of the teams proxy endpoint. Name of the teams
+                      proxy endpoint.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -349,14 +378,41 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: ips is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.ips)
+                || has(self.initProvider.ips)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: ProxyEndpointStatus defines the observed state of ProxyEndpoint.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account to which the teams proxy endpoint should
+                      be added. The account identifier to target for the resource.
+                    type: string
                   id:
+                    description: ID of the teams proxy endpoint.
+                    type: string
+                  ips:
+                    description: The networks CIDRs that will be allowed to initiate
+                      proxy connections. The networks CIDRs that will be allowed to
+                      initiate proxy connections.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: Name of the teams proxy endpoint. Name of the teams
+                      proxy endpoint.
                     type: string
                   subdomain:
+                    description: The FQDN that proxy clients should be pointed at.
+                      The FQDN that proxy clients should be pointed at.
                     type: string
                 type: object
               conditions:

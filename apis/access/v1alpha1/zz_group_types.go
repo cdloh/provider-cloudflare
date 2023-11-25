@@ -13,25 +13,173 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type AzureObservation struct {
+type AuthContextInitParameters struct {
+
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
-type AzureParameters struct {
+type AuthContextObservation struct {
 
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type AuthContextParameters struct {
+
+	// The ACID of the Authentication Context.
 	// +kubebuilder:validation:Optional
-	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
 
+	// The ID of the Authentication Context.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type AzureInitParameters struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type AzureObservation struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type AzureParameters struct {
+
+	// The ID of the Azure group or user.
+	// +kubebuilder:validation:Optional
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	// +kubebuilder:validation:Optional
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type ExcludeInitParameters struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []AuthContextInitParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []AzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []ExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []GithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []GsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []OktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []SAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type ExcludeObservation struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []AuthContextObservation `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []AzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []ExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []GithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []GsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []OktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []SAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type ExcludeParameters struct {
 
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	AuthContext []AuthContextParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
@@ -72,8 +220,13 @@ type ExcludeParameters struct {
 	// +kubebuilder:validation:Optional
 	Gsuite []GsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// An IPv4 or IPv6 CIDR block.
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	// +kubebuilder:validation:Optional
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
@@ -88,7 +241,16 @@ type ExcludeParameters struct {
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type ExternalEvaluationInitParameters struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type ExternalEvaluationObservation struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type ExternalEvaluationParameters struct {
@@ -100,7 +262,20 @@ type ExternalEvaluationParameters struct {
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type GithubInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type GithubObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type GithubParameters struct {
@@ -115,14 +290,39 @@ type GithubParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type GroupInitParameters struct {
+	Exclude []ExcludeInitParameters `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	Include []IncludeInitParameters `json:"include,omitempty" tf:"include,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Require []RequireInitParameters `json:"require,omitempty" tf:"require,omitempty"`
+}
+
 type GroupObservation struct {
+
+	// The account identifier to target for the resource. Conflicts with `zone_id`. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	Exclude []ExcludeObservation `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Include []IncludeObservation `json:"include,omitempty" tf:"include,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Require []RequireObservation `json:"require,omitempty" tf:"require,omitempty"`
+
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type GroupParameters struct {
 
 	// The account identifier to target for the resource. Conflicts with `zone_id`. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -137,17 +337,17 @@ type GroupParameters struct {
 	// +kubebuilder:validation:Optional
 	Exclude []ExcludeParameters `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Include []IncludeParameters `json:"include" tf:"include,omitempty"`
+	// +kubebuilder:validation:Optional
+	Include []IncludeParameters `json:"include,omitempty" tf:"include,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Require []RequireParameters `json:"require,omitempty" tf:"require,omitempty"`
 
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -160,7 +360,16 @@ type GroupParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type GsuiteInitParameters struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type GsuiteObservation struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type GsuiteParameters struct {
@@ -172,19 +381,84 @@ type GsuiteParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
-type IncludeAzureObservation struct {
+type IncludeAuthContextInitParameters struct {
+
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
-type IncludeAzureParameters struct {
+type IncludeAuthContextObservation struct {
 
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type IncludeAuthContextParameters struct {
+
+	// The ACID of the Authentication Context.
 	// +kubebuilder:validation:Optional
-	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
 
+	// The ID of the Authentication Context.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type IncludeAzureInitParameters struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type IncludeAzureObservation struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type IncludeAzureParameters struct {
+
+	// The ID of the Azure group or user.
+	// +kubebuilder:validation:Optional
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	// +kubebuilder:validation:Optional
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type IncludeExternalEvaluationInitParameters struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type IncludeExternalEvaluationObservation struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type IncludeExternalEvaluationParameters struct {
@@ -196,7 +470,20 @@ type IncludeExternalEvaluationParameters struct {
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type IncludeGithubInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type IncludeGithubObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type IncludeGithubParameters struct {
@@ -211,7 +498,16 @@ type IncludeGithubParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type IncludeGsuiteInitParameters struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type IncludeGsuiteObservation struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type IncludeGsuiteParameters struct {
@@ -223,10 +519,108 @@ type IncludeGsuiteParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type IncludeInitParameters struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []IncludeAuthContextInitParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []IncludeAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []IncludeExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []IncludeGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []IncludeGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []IncludeOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []IncludeSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type IncludeObservation struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []IncludeAuthContextObservation `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []IncludeAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []IncludeExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []IncludeGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []IncludeGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []IncludeOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []IncludeSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
+type IncludeOktaInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type IncludeOktaObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type IncludeOktaParameters struct {
@@ -242,6 +636,9 @@ type IncludeParameters struct {
 
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	AuthContext []IncludeAuthContextParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
@@ -282,8 +679,13 @@ type IncludeParameters struct {
 	// +kubebuilder:validation:Optional
 	Gsuite []IncludeGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// An IPv4 or IPv6 CIDR block.
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	// +kubebuilder:validation:Optional
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
@@ -298,7 +700,20 @@ type IncludeParameters struct {
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type IncludeSAMLInitParameters struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type IncludeSAMLObservation struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type IncludeSAMLParameters struct {
@@ -313,7 +728,16 @@ type IncludeSAMLParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type OktaInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type OktaObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type OktaParameters struct {
@@ -325,19 +749,84 @@ type OktaParameters struct {
 	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
-type RequireAzureObservation struct {
+type RequireAuthContextInitParameters struct {
+
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
-type RequireAzureParameters struct {
+type RequireAuthContextObservation struct {
 
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type RequireAuthContextParameters struct {
+
+	// The ACID of the Authentication Context.
 	// +kubebuilder:validation:Optional
-	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
 
+	// The ID of the Authentication Context.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type RequireAzureInitParameters struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type RequireAzureObservation struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type RequireAzureParameters struct {
+
+	// The ID of the Azure group or user.
+	// +kubebuilder:validation:Optional
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	// +kubebuilder:validation:Optional
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type RequireExternalEvaluationInitParameters struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type RequireExternalEvaluationObservation struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type RequireExternalEvaluationParameters struct {
@@ -349,7 +838,20 @@ type RequireExternalEvaluationParameters struct {
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type RequireGithubInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type RequireGithubObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type RequireGithubParameters struct {
@@ -364,7 +866,16 @@ type RequireGithubParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type RequireGsuiteInitParameters struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type RequireGsuiteObservation struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type RequireGsuiteParameters struct {
@@ -376,10 +887,108 @@ type RequireGsuiteParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type RequireInitParameters struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []RequireAuthContextInitParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []RequireAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []RequireExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []RequireGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []RequireGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []RequireOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []RequireSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type RequireObservation struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []RequireAuthContextObservation `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []RequireAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []RequireExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []RequireGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []RequireGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []RequireOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []RequireSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
+type RequireOktaInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type RequireOktaObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type RequireOktaParameters struct {
@@ -395,6 +1004,9 @@ type RequireParameters struct {
 
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	AuthContext []RequireAuthContextParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
@@ -435,8 +1047,13 @@ type RequireParameters struct {
 	// +kubebuilder:validation:Optional
 	Gsuite []RequireGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// An IPv4 or IPv6 CIDR block.
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	// +kubebuilder:validation:Optional
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
@@ -451,7 +1068,20 @@ type RequireParameters struct {
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type RequireSAMLInitParameters struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type RequireSAMLObservation struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type RequireSAMLParameters struct {
@@ -466,7 +1096,20 @@ type RequireSAMLParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type SAMLInitParameters struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type SAMLObservation struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type SAMLParameters struct {
@@ -485,6 +1128,18 @@ type SAMLParameters struct {
 type GroupSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     GroupParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider GroupInitParameters `json:"initProvider,omitempty"`
 }
 
 // GroupStatus defines the observed state of Group.
@@ -505,8 +1160,10 @@ type GroupStatus struct {
 type Group struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              GroupSpec   `json:"spec"`
-	Status            GroupStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.include) || has(self.initProvider.include)",message="include is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   GroupSpec   `json:"spec"`
+	Status GroupStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

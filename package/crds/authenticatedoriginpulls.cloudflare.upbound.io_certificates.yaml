@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Certificate is the Schema for the Certificates API. <no value>
+        description: Certificate is the Schema for the Certificates API. Provides
+          a Cloudflare Authenticated Origin Pulls certificate resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,12 +68,14 @@ spec:
               forProvider:
                 properties:
                   certificate:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: The public client certificate. The public client
+                      certificate. **Modifying this attribute will force creation
+                      of a new resource.**
                     type: string
                   privateKeySecretRef:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: The private key of the client certificate. The private
+                      key of the client certificate. **Modifying this attribute will
+                      force creation of a new resource.**
                     properties:
                       key:
                         description: The key to select.
@@ -89,12 +92,15 @@ spec:
                     - namespace
                     type: object
                   type:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: 'The form of Authenticated Origin Pulls to upload
+                      the certificate to. The form of Authenticated Origin Pulls to
+                      upload the certificate to. Available values: `per-zone`, `per-hostname`.
+                      **Modifying this attribute will force creation of a new resource.**'
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: The zone ID to upload the certificate to. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -169,10 +175,31 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - certificate
-                - privateKeySecretRef
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  certificate:
+                    description: The public client certificate. The public client
+                      certificate. **Modifying this attribute will force creation
+                      of a new resource.**
+                    type: string
+                  type:
+                    description: 'The form of Authenticated Origin Pulls to upload
+                      the certificate to. The form of Authenticated Origin Pulls to
+                      upload the certificate to. Available values: `per-zone`, `per-hostname`.
+                      **Modifying this attribute will force creation of a new resource.**'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -371,11 +398,28 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: certificate is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.certificate)
+                || has(self.initProvider.certificate)'
+            - message: privateKeySecretRef is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.privateKeySecretRef)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: CertificateStatus defines the observed state of Certificate.
             properties:
               atProvider:
                 properties:
+                  certificate:
+                    description: The public client certificate. The public client
+                      certificate. **Modifying this attribute will force creation
+                      of a new resource.**
+                    type: string
                   expiresOn:
                     description: '**Modifying this attribute will force creation of
                       a new resource.**'
@@ -398,9 +442,20 @@ spec:
                     description: '**Modifying this attribute will force creation of
                       a new resource.**'
                     type: string
+                  type:
+                    description: 'The form of Authenticated Origin Pulls to upload
+                      the certificate to. The form of Authenticated Origin Pulls to
+                      upload the certificate to. Available values: `per-zone`, `per-hostname`.
+                      **Modifying this attribute will force creation of a new resource.**'
+                    type: string
                   uploadedOn:
                     description: '**Modifying this attribute will force creation of
                       a new resource.**'
+                    type: string
+                  zoneId:
+                    description: The zone ID to upload the certificate to. The zone
+                      identifier to target for the resource. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

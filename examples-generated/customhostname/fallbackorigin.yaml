@@ -1,0 +1,14 @@
+apiVersion: customhostname.cloudflare.upbound.io/v1alpha1
+kind: FallbackOrigin
+metadata:
+  annotations:
+    meta.upbound.io/example-id: customhostname/v1alpha1/fallbackorigin
+  labels:
+    testing.upbound.io/example-name: fallback_origin
+  name: fallback-origin
+spec:
+  forProvider:
+    origin: fallback.example.com
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

@@ -13,15 +13,30 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RouteInitParameters struct {
+
+	// The [route pattern](https://developers.cloudflare.com/workers/about/routes/) to associate the Worker with.
+	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
+}
+
 type RouteObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The [route pattern](https://developers.cloudflare.com/workers/about/routes/) to associate the Worker with.
+	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
+
+	// Worker script name to invoke for requests that match the route pattern.
+	ScriptName *string `json:"scriptName,omitempty" tf:"script_name,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RouteParameters struct {
 
 	// The [route pattern](https://developers.cloudflare.com/workers/about/routes/) to associate the Worker with.
-	// +kubebuilder:validation:Required
-	Pattern *string `json:"pattern" tf:"pattern,omitempty"`
+	// +kubebuilder:validation:Optional
+	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
 	// Worker script name to invoke for requests that match the route pattern.
 	// +crossplane:generate:reference:type=Script
@@ -37,7 +52,7 @@ type RouteParameters struct {
 	ScriptNameSelector *v1.Selector `json:"scriptNameSelector,omitempty" tf:"-"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -54,6 +69,18 @@ type RouteParameters struct {
 type RouteSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RouteParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RouteInitParameters `json:"initProvider,omitempty"`
 }
 
 // RouteStatus defines the observed state of Route.
@@ -74,8 +101,9 @@ type RouteStatus struct {
 type Route struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RouteSpec   `json:"spec"`
-	Status            RouteStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.pattern) || has(self.initProvider.pattern)",message="pattern is a required parameter"
+	Spec   RouteSpec   `json:"spec"`
+	Status RouteStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

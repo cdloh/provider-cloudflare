@@ -1,4 +1,4 @@
-module github.com/cdloh/provider-cloudflare
+module github.com/clementblaise/provider-cloudflare
 
 go 1.19
 

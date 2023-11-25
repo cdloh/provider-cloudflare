@@ -18,7 +18,7 @@ import (
 	"github.com/upbound/upjet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/access/v1alpha1"
+	v1alpha1 "github.com/clementblaise/provider-cloudflare/apis/access/v1alpha1"
 )
 
 // Setup adds a controller that reconciles MutualTLSCertificate managed resources.
@@ -27,25 +27,27 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 	var initializers managed.InitializerChain
 	cps := []managed.ConnectionPublisher{managed.NewAPISecretPublisher(mgr.GetClient(), mgr.GetScheme())}
 	if o.SecretStoreConfigGVK != nil {
-		cps = append(cps, connection.NewDetailsManager(mgr.GetClient(), *o.SecretStoreConfigGVK))
+		cps = append(cps, connection.NewDetailsManager(mgr.GetClient(), *o.SecretStoreConfigGVK, connection.WithTLSConfig(o.ESSOptions.TLSConfig)))
 	}
-	r := managed.NewReconciler(mgr,
-		xpresource.ManagedKind(v1alpha1.MutualTLSCertificate_GroupVersionKind),
-		managed.WithExternalConnecter(tjcontroller.NewConnector(mgr.GetClient(), o.WorkspaceStore, o.SetupFn, o.Provider.Resources["cloudflare_access_mutual_tls_certificate"],
-			tjcontroller.WithCallbackProvider(tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha1.MutualTLSCertificate_GroupVersionKind))),
+	ac := tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha1.MutualTLSCertificate_GroupVersionKind), tjcontroller.WithEventHandler(o.EventHandler))
+	opts := []managed.ReconcilerOption{
+		managed.WithExternalConnecter(tjcontroller.NewConnector(mgr.GetClient(), o.WorkspaceStore, o.SetupFn, o.Provider.Resources["cloudflare_access_mutual_tls_certificate"], tjcontroller.WithLogger(o.Logger), tjcontroller.WithConnectorEventHandler(o.EventHandler),
+			tjcontroller.WithCallbackProvider(ac),
 		)),
 		managed.WithLogger(o.Logger.WithValues("controller", name)),
 		managed.WithRecorder(event.NewAPIRecorder(mgr.GetEventRecorderFor(name))),
 		managed.WithFinalizer(terraform.NewWorkspaceFinalizer(o.WorkspaceStore, xpresource.NewAPIFinalizer(mgr.GetClient(), managed.FinalizerName))),
-		managed.WithTimeout(3*time.Minute),
+		managed.WithTimeout(3 * time.Minute),
 		managed.WithInitializers(initializers),
 		managed.WithConnectionPublishers(cps...),
 		managed.WithPollInterval(o.PollInterval),
-	)
+	}
+	r := managed.NewReconciler(mgr, xpresource.ManagedKind(v1alpha1.MutualTLSCertificate_GroupVersionKind), opts...)
 
 	return ctrl.NewControllerManagedBy(mgr).
 		Named(name).
 		WithOptions(o.ForControllerRuntime()).
-		For(&v1alpha1.MutualTLSCertificate{}).
+		WithEventFilter(xpresource.DesiredStateChanged()).
+		Watches(&v1alpha1.MutualTLSCertificate{}, o.EventHandler).
 		Complete(ratelimiter.NewReconciler(name, r, o.GlobalRateLimiter))
 }

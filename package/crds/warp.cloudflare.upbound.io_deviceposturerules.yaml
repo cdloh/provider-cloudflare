@@ -153,14 +153,37 @@ spec:
                   input:
                     items:
                       properties:
+                        activeThreats:
+                          description: The number of active threats from SentinelOne.
+                          type: number
+                        certificateId:
+                          description: The UUID of a Cloudflare managed certificate.
+                          type: string
+                        checkDisks:
+                          description: Specific volume(s) to check for encryption.
+                          items:
+                            type: string
+                          type: array
+                        cn:
+                          description: The common name for a certificate.
+                          type: string
                         complianceStatus:
-                          description: The workspace one device compliance status.
+                          description: 'The workspace one device compliance status.
+                            Available values: `compliant`, `noncompliant`.'
                           type: string
                         connectionId:
                           description: The workspace one connection id.
                           type: string
+                        countOperator:
+                          description: 'The count comparison operator for kolide.
+                            Available values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
                         domain:
                           description: The domain that the client must join.
+                          type: string
+                        eidLastSeen:
+                          description: The datetime a device last seen in RFC 3339
+                            format from Tanium.
                           type: string
                         enabled:
                           description: True if the firewall must be enabled.
@@ -171,8 +194,27 @@ spec:
                         id:
                           description: The Teams List id.
                           type: string
+                        infected:
+                          description: True if SentinelOne device is infected.
+                          type: boolean
+                        isActive:
+                          description: True if SentinelOne device is active.
+                          type: boolean
+                        issueCount:
+                          description: The number of issues for kolide.
+                          type: string
+                        networkStatus:
+                          description: 'The network status from SentinelOne. Available
+                            values: `connected`, `disconnected`, `disconnecting`,
+                            `connecting`.'
+                          type: string
                         operator:
-                          description: The version comparison operator.
+                          description: 'The version comparison operator. Available
+                            values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
+                        os:
+                          description: OS signal score from Crowdstrike. Value must
+                            be between 1 and 100.
                           type: string
                         osDistroName:
                           description: The operating system excluding version information.
@@ -181,23 +223,42 @@ spec:
                           description: The operating system version excluding OS name
                             information or release name.
                           type: string
+                        overall:
+                          description: Overall ZTA score from Crowdstrike. Value must
+                            be between 1 and 100.
+                          type: string
                         path:
                           description: The path to the file.
                           type: string
                         requireAll:
                           description: True if all drives must be encrypted.
                           type: boolean
+                        riskLevel:
+                          description: 'The risk level from Tanium. Available values:
+                            `low`, `medium`, `high`, `critical`.'
+                          type: string
                         running:
                           description: Checks if the application should be running.
                           type: boolean
+                        sensorConfig:
+                          description: Sensor signal score from Crowdstrike. Value
+                            must be between 1 and 100.
+                          type: string
                         sha256:
                           description: The sha256 hash of the file.
                           type: string
                         thumbprint:
                           description: The thumbprint of the file certificate.
                           type: string
+                        totalScore:
+                          description: The total score from Tanium.
+                          type: number
                         version:
                           description: The operating system semantic version.
+                          type: string
+                        versionOperator:
+                          description: 'The version comparison operator for crowdstrike.
+                            Available values: `>`, `>=`, `<`, `<=`, `==`.'
                           type: string
                       type: object
                     type: array
@@ -223,11 +284,169 @@ spec:
                   type:
                     description: 'The device posture rule type. Available values:
                       `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`,
-                      `os_version`, `disk_encryption`, `firewall`, `workspace_one`,
-                      `unique_client_id`.'
+                      `os_version`, `disk_encryption`, `firewall`, `client_certificate`,
+                      `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`,
+                      `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.'
                     type: string
-                required:
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  description:
+                    type: string
+                  expiration:
+                    description: Expire posture results after the specified amount
+                      of time. Must be in the format `1h` or `30m`. Valid units are
+                      `h` and `m`.
+                    type: string
+                  input:
+                    items:
+                      properties:
+                        activeThreats:
+                          description: The number of active threats from SentinelOne.
+                          type: number
+                        certificateId:
+                          description: The UUID of a Cloudflare managed certificate.
+                          type: string
+                        checkDisks:
+                          description: Specific volume(s) to check for encryption.
+                          items:
+                            type: string
+                          type: array
+                        cn:
+                          description: The common name for a certificate.
+                          type: string
+                        complianceStatus:
+                          description: 'The workspace one device compliance status.
+                            Available values: `compliant`, `noncompliant`.'
+                          type: string
+                        connectionId:
+                          description: The workspace one connection id.
+                          type: string
+                        countOperator:
+                          description: 'The count comparison operator for kolide.
+                            Available values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
+                        domain:
+                          description: The domain that the client must join.
+                          type: string
+                        eidLastSeen:
+                          description: The datetime a device last seen in RFC 3339
+                            format from Tanium.
+                          type: string
+                        enabled:
+                          description: True if the firewall must be enabled.
+                          type: boolean
+                        exists:
+                          description: Checks if the file should exist.
+                          type: boolean
+                        id:
+                          description: The Teams List id.
+                          type: string
+                        infected:
+                          description: True if SentinelOne device is infected.
+                          type: boolean
+                        isActive:
+                          description: True if SentinelOne device is active.
+                          type: boolean
+                        issueCount:
+                          description: The number of issues for kolide.
+                          type: string
+                        networkStatus:
+                          description: 'The network status from SentinelOne. Available
+                            values: `connected`, `disconnected`, `disconnecting`,
+                            `connecting`.'
+                          type: string
+                        operator:
+                          description: 'The version comparison operator. Available
+                            values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
+                        os:
+                          description: OS signal score from Crowdstrike. Value must
+                            be between 1 and 100.
+                          type: string
+                        osDistroName:
+                          description: The operating system excluding version information.
+                          type: string
+                        osDistroRevision:
+                          description: The operating system version excluding OS name
+                            information or release name.
+                          type: string
+                        overall:
+                          description: Overall ZTA score from Crowdstrike. Value must
+                            be between 1 and 100.
+                          type: string
+                        path:
+                          description: The path to the file.
+                          type: string
+                        requireAll:
+                          description: True if all drives must be encrypted.
+                          type: boolean
+                        riskLevel:
+                          description: 'The risk level from Tanium. Available values:
+                            `low`, `medium`, `high`, `critical`.'
+                          type: string
+                        running:
+                          description: Checks if the application should be running.
+                          type: boolean
+                        sensorConfig:
+                          description: Sensor signal score from Crowdstrike. Value
+                            must be between 1 and 100.
+                          type: string
+                        sha256:
+                          description: The sha256 hash of the file.
+                          type: string
+                        thumbprint:
+                          description: The thumbprint of the file certificate.
+                          type: string
+                        totalScore:
+                          description: The total score from Tanium.
+                          type: number
+                        version:
+                          description: The operating system semantic version.
+                          type: string
+                        versionOperator:
+                          description: 'The version comparison operator for crowdstrike.
+                            Available values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
+                      type: object
+                    type: array
+                  match:
+                    description: The conditions that the client must match to run
+                      the rule.
+                    items:
+                      properties:
+                        platform:
+                          description: 'The platform of the device. Available values:
+                            `windows`, `mac`, `linux`, `android`, `ios`, `chromeos`.'
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the device posture rule.
+                    type: string
+                  schedule:
+                    description: Tells the client when to run the device posture check.
+                      Must be in the format `1h` or `30m`. Valid units are `h` and
+                      `m`.
+                    type: string
+                  type:
+                    description: 'The device posture rule type. Available values:
+                      `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`,
+                      `os_version`, `disk_encryption`, `firewall`, `client_certificate`,
+                      `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`,
+                      `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -426,12 +645,165 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: DevicePostureRuleStatus defines the observed state of DevicePostureRule.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  description:
+                    type: string
+                  expiration:
+                    description: Expire posture results after the specified amount
+                      of time. Must be in the format `1h` or `30m`. Valid units are
+                      `h` and `m`.
+                    type: string
                   id:
+                    type: string
+                  input:
+                    items:
+                      properties:
+                        activeThreats:
+                          description: The number of active threats from SentinelOne.
+                          type: number
+                        certificateId:
+                          description: The UUID of a Cloudflare managed certificate.
+                          type: string
+                        checkDisks:
+                          description: Specific volume(s) to check for encryption.
+                          items:
+                            type: string
+                          type: array
+                        cn:
+                          description: The common name for a certificate.
+                          type: string
+                        complianceStatus:
+                          description: 'The workspace one device compliance status.
+                            Available values: `compliant`, `noncompliant`.'
+                          type: string
+                        connectionId:
+                          description: The workspace one connection id.
+                          type: string
+                        countOperator:
+                          description: 'The count comparison operator for kolide.
+                            Available values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
+                        domain:
+                          description: The domain that the client must join.
+                          type: string
+                        eidLastSeen:
+                          description: The datetime a device last seen in RFC 3339
+                            format from Tanium.
+                          type: string
+                        enabled:
+                          description: True if the firewall must be enabled.
+                          type: boolean
+                        exists:
+                          description: Checks if the file should exist.
+                          type: boolean
+                        id:
+                          description: The Teams List id.
+                          type: string
+                        infected:
+                          description: True if SentinelOne device is infected.
+                          type: boolean
+                        isActive:
+                          description: True if SentinelOne device is active.
+                          type: boolean
+                        issueCount:
+                          description: The number of issues for kolide.
+                          type: string
+                        networkStatus:
+                          description: 'The network status from SentinelOne. Available
+                            values: `connected`, `disconnected`, `disconnecting`,
+                            `connecting`.'
+                          type: string
+                        operator:
+                          description: 'The version comparison operator. Available
+                            values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
+                        os:
+                          description: OS signal score from Crowdstrike. Value must
+                            be between 1 and 100.
+                          type: string
+                        osDistroName:
+                          description: The operating system excluding version information.
+                          type: string
+                        osDistroRevision:
+                          description: The operating system version excluding OS name
+                            information or release name.
+                          type: string
+                        overall:
+                          description: Overall ZTA score from Crowdstrike. Value must
+                            be between 1 and 100.
+                          type: string
+                        path:
+                          description: The path to the file.
+                          type: string
+                        requireAll:
+                          description: True if all drives must be encrypted.
+                          type: boolean
+                        riskLevel:
+                          description: 'The risk level from Tanium. Available values:
+                            `low`, `medium`, `high`, `critical`.'
+                          type: string
+                        running:
+                          description: Checks if the application should be running.
+                          type: boolean
+                        sensorConfig:
+                          description: Sensor signal score from Crowdstrike. Value
+                            must be between 1 and 100.
+                          type: string
+                        sha256:
+                          description: The sha256 hash of the file.
+                          type: string
+                        thumbprint:
+                          description: The thumbprint of the file certificate.
+                          type: string
+                        totalScore:
+                          description: The total score from Tanium.
+                          type: number
+                        version:
+                          description: The operating system semantic version.
+                          type: string
+                        versionOperator:
+                          description: 'The version comparison operator for crowdstrike.
+                            Available values: `>`, `>=`, `<`, `<=`, `==`.'
+                          type: string
+                      type: object
+                    type: array
+                  match:
+                    description: The conditions that the client must match to run
+                      the rule.
+                    items:
+                      properties:
+                        platform:
+                          description: 'The platform of the device. Available values:
+                            `windows`, `mac`, `linux`, `android`, `ios`, `chromeos`.'
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the device posture rule.
+                    type: string
+                  schedule:
+                    description: Tells the client when to run the device posture check.
+                      Must be in the format `1h` or `30m`. Valid units are `h` and
+                      `m`.
+                    type: string
+                  type:
+                    description: 'The device posture rule type. Available values:
+                      `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`,
+                      `os_version`, `disk_encryption`, `firewall`, `client_certificate`,
+                      `workspace_one`, `unique_client_id`, `crowdstrike_s2s`, `sentinelone`,
+                      `kolide`, `tanium_s2s`, `intune`, `sentinelone_s2s`.'
                     type: string
                 type: object
               conditions:

@@ -147,6 +147,22 @@ spec:
                     description: The unique subdomain assigned to your Zero Trust
                       organization.
                     type: string
+                  autoRedirectToIdentity:
+                    description: When set to true, users skip the identity provider
+                      selection step during login.
+                    type: boolean
+                  customPages:
+                    description: Custom pages for your Zero Trust organization.
+                    items:
+                      properties:
+                        forbidden:
+                          description: The id of the forbidden page.
+                          type: string
+                        identityDenied:
+                          description: The id of the identity denied page.
+                          type: string
+                      type: object
+                    type: array
                   isUiReadOnly:
                     description: When set to true, this will disable all editing of
                       Access resources via the Zero Trust Dashboard.
@@ -173,6 +189,20 @@ spec:
                     type: array
                   name:
                     description: The name of your Zero Trust organization.
+                    type: string
+                  sessionDuration:
+                    description: How often a user will be forced to re-authorise.
+                      Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    type: string
+                  uiReadOnlyToggleReason:
+                    description: A description of the reason why the UI read only
+                      field is being toggled.
+                    type: string
+                  userSeatExpirationInactiveTime:
+                    description: The amount of time a user seat is inactive before
+                      it expires. When the user seat exceeds the set time of inactivity,
+                      the user is removed as an active seat and no longer counts against
+                      your Teams seat count. Must be in the format `300ms` or `2h45m`.
                     type: string
                   zoneId:
                     description: The zone identifier to target for the resource. Conflicts
@@ -251,8 +281,81 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - authDomain
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  authDomain:
+                    description: The unique subdomain assigned to your Zero Trust
+                      organization.
+                    type: string
+                  autoRedirectToIdentity:
+                    description: When set to true, users skip the identity provider
+                      selection step during login.
+                    type: boolean
+                  customPages:
+                    description: Custom pages for your Zero Trust organization.
+                    items:
+                      properties:
+                        forbidden:
+                          description: The id of the forbidden page.
+                          type: string
+                        identityDenied:
+                          description: The id of the identity denied page.
+                          type: string
+                      type: object
+                    type: array
+                  isUiReadOnly:
+                    description: When set to true, this will disable all editing of
+                      Access resources via the Zero Trust Dashboard.
+                    type: boolean
+                  loginDesign:
+                    items:
+                      properties:
+                        backgroundColor:
+                          description: The background color on the login page.
+                          type: string
+                        footerText:
+                          description: The text at the bottom of the login page.
+                          type: string
+                        headerText:
+                          description: The text at the top of the login page.
+                          type: string
+                        logoPath:
+                          description: The URL of the logo on the login page.
+                          type: string
+                        textColor:
+                          description: The text color on the login page.
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: The name of your Zero Trust organization.
+                    type: string
+                  sessionDuration:
+                    description: How often a user will be forced to re-authorise.
+                      Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    type: string
+                  uiReadOnlyToggleReason:
+                    description: A description of the reason why the UI read only
+                      field is being toggled.
+                    type: string
+                  userSeatExpirationInactiveTime:
+                    description: The amount of time a user seat is inactive before
+                      it expires. When the user seat exceeds the set time of inactivity,
+                      the user is removed as an active seat and no longer counts against
+                      your Teams seat count. Must be in the format `300ms` or `2h45m`.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -451,12 +554,86 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: authDomain is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.authDomain)
+                || has(self.initProvider.authDomain)'
           status:
             description: OrganizationStatus defines the observed state of Organization.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      Conflicts with `zone_id`.
+                    type: string
+                  authDomain:
+                    description: The unique subdomain assigned to your Zero Trust
+                      organization.
+                    type: string
+                  autoRedirectToIdentity:
+                    description: When set to true, users skip the identity provider
+                      selection step during login.
+                    type: boolean
+                  customPages:
+                    description: Custom pages for your Zero Trust organization.
+                    items:
+                      properties:
+                        forbidden:
+                          description: The id of the forbidden page.
+                          type: string
+                        identityDenied:
+                          description: The id of the identity denied page.
+                          type: string
+                      type: object
+                    type: array
                   id:
+                    type: string
+                  isUiReadOnly:
+                    description: When set to true, this will disable all editing of
+                      Access resources via the Zero Trust Dashboard.
+                    type: boolean
+                  loginDesign:
+                    items:
+                      properties:
+                        backgroundColor:
+                          description: The background color on the login page.
+                          type: string
+                        footerText:
+                          description: The text at the bottom of the login page.
+                          type: string
+                        headerText:
+                          description: The text at the top of the login page.
+                          type: string
+                        logoPath:
+                          description: The URL of the logo on the login page.
+                          type: string
+                        textColor:
+                          description: The text color on the login page.
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: The name of your Zero Trust organization.
+                    type: string
+                  sessionDuration:
+                    description: How often a user will be forced to re-authorise.
+                      Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    type: string
+                  uiReadOnlyToggleReason:
+                    description: A description of the reason why the UI read only
+                      field is being toggled.
+                    type: string
+                  userSeatExpirationInactiveTime:
+                    description: The amount of time a user seat is inactive before
+                      it expires. When the user seat exceeds the set time of inactivity,
+                      the user is removed as an active seat and no longer counts against
+                      your Teams seat count. Must be in the format `300ms` or `2h45m`.
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. Conflicts
+                      with `account_id`.
                     type: string
                 type: object
               conditions:

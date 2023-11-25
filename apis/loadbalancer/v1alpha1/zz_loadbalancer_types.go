@@ -13,7 +13,16 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AdaptiveRoutingInitParameters struct {
+
+	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool. Defaults to `false`.
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
+}
+
 type AdaptiveRoutingObservation struct {
+
+	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool. Defaults to `false`.
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
 type AdaptiveRoutingParameters struct {
@@ -23,14 +32,26 @@ type AdaptiveRoutingParameters struct {
 	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
+type CountryPoolsInitParameters struct {
+
+	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+}
+
 type CountryPoolsObservation struct {
+
+	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// A list of pool IDs in failover priority to use in the given country.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
 }
 
 type CountryPoolsParameters struct {
 
 	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
-	// +kubebuilder:validation:Required
-	Country *string `json:"country" tf:"country,omitempty"`
+	// +kubebuilder:validation:Optional
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
 
 	// A list of pool IDs in failover priority to use in the given country.
 	// +crossplane:generate:reference:type=Pool
@@ -46,7 +67,34 @@ type CountryPoolsParameters struct {
 	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
 }
 
+type FixedResponseInitParameters struct {
+
+	// The value of the HTTP context-type header for this fixed response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// The value of the HTTP location header for this fixed response.
+	Location *string `json:"location,omitempty" tf:"location,omitempty"`
+
+	// The text used as the html body for this fixed response.
+	MessageBody *string `json:"messageBody,omitempty" tf:"message_body,omitempty"`
+
+	// The HTTP status code used for this fixed response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+}
+
 type FixedResponseObservation struct {
+
+	// The value of the HTTP context-type header for this fixed response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// The value of the HTTP location header for this fixed response.
+	Location *string `json:"location,omitempty" tf:"location,omitempty"`
+
+	// The text used as the html body for this fixed response.
+	MessageBody *string `json:"messageBody,omitempty" tf:"message_body,omitempty"`
+
+	// The HTTP status code used for this fixed response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 }
 
 type FixedResponseParameters struct {
@@ -68,15 +116,123 @@ type FixedResponseParameters struct {
 	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 }
 
+type LoadBalancerInitParameters struct {
+
+	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
+	AdaptiveRouting []AdaptiveRoutingInitParameters `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
+	CountryPools []CountryPoolsInitParameters `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
+
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Enable or disable the load balancer. Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Controls location-based steering for non-proxied requests.
+	LocationStrategy []LocationStrategyInitParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
+
+	// The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
+	PopPools []PopPoolsInitParameters `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// Whether the hostname gets Cloudflare's origin protection. Defaults to `false`. Conflicts with `ttl`.
+	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
+
+	// Configures pool weights. When [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy="least_outstanding_requests"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy="least_connections"`](#steering_policy), pool weights are used to scale each pool's open connections.
+	RandomSteering []RandomSteeringInitParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
+	RegionPools []RegionPoolsInitParameters `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// A list of rules for this load balancer to execute.
+	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// Specifies the type of session affinity the load balancer should use unless specified as `none` or `""` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `""`, `none`, `cookie`, `ip_cookie`, `header`. Defaults to `none`.
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// Configure attributes for session affinity.
+	SessionAffinityAttributes []LoadBalancerSessionAffinityAttributesInitParameters `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `""` Defaults to `""`.
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`. Conflicts with `proxied`.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+}
+
 type LoadBalancerObservation struct {
+
+	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
+	AdaptiveRouting []AdaptiveRoutingObservation `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
+	CountryPools []CountryPoolsObservation `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
 
 	// The RFC3339 timestamp of when the load balancer was created.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
 
+	// A list of pool IDs ordered by their failover priority. Used whenever [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) are not defined.
+	DefaultPoolIds []*string `json:"defaultPoolIds,omitempty" tf:"default_pool_ids,omitempty"`
+
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Enable or disable the load balancer. Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// The pool ID to use when all other pools are detected as unhealthy.
+	FallbackPoolID *string `json:"fallbackPoolId,omitempty" tf:"fallback_pool_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Controls location-based steering for non-proxied requests.
+	LocationStrategy []LocationStrategyObservation `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
 
 	// The RFC3339 timestamp of when the load balancer was last modified.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+
+	// The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
+	PopPools []PopPoolsObservation `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// Whether the hostname gets Cloudflare's origin protection. Defaults to `false`. Conflicts with `ttl`.
+	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
+
+	// Configures pool weights. When [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy="least_outstanding_requests"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy="least_connections"`](#steering_policy), pool weights are used to scale each pool's open connections.
+	RandomSteering []RandomSteeringObservation `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
+	RegionPools []RegionPoolsObservation `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// A list of rules for this load balancer to execute.
+	Rules []RulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// Specifies the type of session affinity the load balancer should use unless specified as `none` or `""` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `""`, `none`, `cookie`, `ip_cookie`, `header`. Defaults to `none`.
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// Configure attributes for session affinity.
+	SessionAffinityAttributes []LoadBalancerSessionAffinityAttributesObservation `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `""` Defaults to `""`.
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`. Conflicts with `proxied`.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// The zone ID to add the load balancer to. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type LoadBalancerParameters struct {
@@ -128,8 +284,8 @@ type LoadBalancerParameters struct {
 	LocationStrategy []LocationStrategyParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
 
 	// The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
 	// +kubebuilder:validation:Optional
@@ -139,7 +295,7 @@ type LoadBalancerParameters struct {
 	// +kubebuilder:validation:Optional
 	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
 
-	// Configures pool weights for random steering. When the [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to these pool weights.
+	// Configures pool weights. When [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy="least_outstanding_requests"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy="least_connections"`](#steering_policy), pool weights are used to scale each pool's open connections.
 	// +kubebuilder:validation:Optional
 	RandomSteering []RandomSteeringParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
 
@@ -151,19 +307,19 @@ type LoadBalancerParameters struct {
 	// +kubebuilder:validation:Optional
 	Rules []RulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
-	// Specifies the type of session affinity the load balancer should use unless specified as `none` or `""` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `""`, `none`, `cookie`, `ip_cookie`. Defaults to `none`.
+	// Specifies the type of session affinity the load balancer should use unless specified as `none` or `""` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `""`, `none`, `cookie`, `ip_cookie`, `header`. Defaults to `none`.
 	// +kubebuilder:validation:Optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
 
-	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes).
+	// Configure attributes for session affinity.
 	// +kubebuilder:validation:Optional
-	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+	SessionAffinityAttributes []LoadBalancerSessionAffinityAttributesParameters `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
 
 	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
 	// +kubebuilder:validation:Optional
 	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
 
-	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `""` Defaults to `""`.
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `""` Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
 
@@ -172,7 +328,7 @@ type LoadBalancerParameters struct {
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
 	// The zone ID to add the load balancer to. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -185,7 +341,91 @@ type LoadBalancerParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type LoadBalancerSessionAffinityAttributesInitParameters struct {
+
+	// Configures the drain duration in seconds. This field is only used when session affinity is enabled on the load balancer. Defaults to `0`.
+	DrainDuration *float64 `json:"drainDuration,omitempty" tf:"drain_duration,omitempty"`
+
+	// Configures the HTTP header names to use when header session affinity is enabled.
+	Headers []*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.
+	RequireAllHeaders *bool `json:"requireAllHeaders,omitempty" tf:"require_all_headers,omitempty"`
+
+	// Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure="Never"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`. Defaults to `Auto`.
+	Samesite *string `json:"samesite,omitempty" tf:"samesite,omitempty"`
+
+	// Configures the Secure attribute on session affinity cookie. Value `Always` indicates the Secure attribute will be set in the Set-Cookie header, `Never` indicates the Secure attribute will not be set, and `Auto` will set the Secure attribute depending if Always Use HTTPS is enabled. Available values: `Auto`, `Always`, `Never`. Defaults to `Auto`.
+	Secure *string `json:"secure,omitempty" tf:"secure,omitempty"`
+
+	// Configures the zero-downtime failover between origins within a pool when session affinity is enabled. Value `none` means no failover takes place for sessions pinned to the origin. Value `temporary` means traffic will be sent to another other healthy origin until the originally pinned origin is available; note that this can potentially result in heavy origin flapping. Value `sticky` means the session affinity cookie is updated and subsequent requests are sent to the new origin. This feature is currently incompatible with Argo, Tiered Cache, and Bandwidth Alliance. Available values: `none`, `temporary`, `sticky`. Defaults to `none`.
+	ZeroDowntimeFailover *string `json:"zeroDowntimeFailover,omitempty" tf:"zero_downtime_failover,omitempty"`
+}
+
+type LoadBalancerSessionAffinityAttributesObservation struct {
+
+	// Configures the drain duration in seconds. This field is only used when session affinity is enabled on the load balancer. Defaults to `0`.
+	DrainDuration *float64 `json:"drainDuration,omitempty" tf:"drain_duration,omitempty"`
+
+	// Configures the HTTP header names to use when header session affinity is enabled.
+	Headers []*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.
+	RequireAllHeaders *bool `json:"requireAllHeaders,omitempty" tf:"require_all_headers,omitempty"`
+
+	// Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure="Never"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`. Defaults to `Auto`.
+	Samesite *string `json:"samesite,omitempty" tf:"samesite,omitempty"`
+
+	// Configures the Secure attribute on session affinity cookie. Value `Always` indicates the Secure attribute will be set in the Set-Cookie header, `Never` indicates the Secure attribute will not be set, and `Auto` will set the Secure attribute depending if Always Use HTTPS is enabled. Available values: `Auto`, `Always`, `Never`. Defaults to `Auto`.
+	Secure *string `json:"secure,omitempty" tf:"secure,omitempty"`
+
+	// Configures the zero-downtime failover between origins within a pool when session affinity is enabled. Value `none` means no failover takes place for sessions pinned to the origin. Value `temporary` means traffic will be sent to another other healthy origin until the originally pinned origin is available; note that this can potentially result in heavy origin flapping. Value `sticky` means the session affinity cookie is updated and subsequent requests are sent to the new origin. This feature is currently incompatible with Argo, Tiered Cache, and Bandwidth Alliance. Available values: `none`, `temporary`, `sticky`. Defaults to `none`.
+	ZeroDowntimeFailover *string `json:"zeroDowntimeFailover,omitempty" tf:"zero_downtime_failover,omitempty"`
+}
+
+type LoadBalancerSessionAffinityAttributesParameters struct {
+
+	// Configures the drain duration in seconds. This field is only used when session affinity is enabled on the load balancer. Defaults to `0`.
+	// +kubebuilder:validation:Optional
+	DrainDuration *float64 `json:"drainDuration,omitempty" tf:"drain_duration,omitempty"`
+
+	// Configures the HTTP header names to use when header session affinity is enabled.
+	// +kubebuilder:validation:Optional
+	Headers []*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	RequireAllHeaders *bool `json:"requireAllHeaders,omitempty" tf:"require_all_headers,omitempty"`
+
+	// Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure="Never"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`. Defaults to `Auto`.
+	// +kubebuilder:validation:Optional
+	Samesite *string `json:"samesite,omitempty" tf:"samesite,omitempty"`
+
+	// Configures the Secure attribute on session affinity cookie. Value `Always` indicates the Secure attribute will be set in the Set-Cookie header, `Never` indicates the Secure attribute will not be set, and `Auto` will set the Secure attribute depending if Always Use HTTPS is enabled. Available values: `Auto`, `Always`, `Never`. Defaults to `Auto`.
+	// +kubebuilder:validation:Optional
+	Secure *string `json:"secure,omitempty" tf:"secure,omitempty"`
+
+	// Configures the zero-downtime failover between origins within a pool when session affinity is enabled. Value `none` means no failover takes place for sessions pinned to the origin. Value `temporary` means traffic will be sent to another other healthy origin until the originally pinned origin is available; note that this can potentially result in heavy origin flapping. Value `sticky` means the session affinity cookie is updated and subsequent requests are sent to the new origin. This feature is currently incompatible with Argo, Tiered Cache, and Bandwidth Alliance. Available values: `none`, `temporary`, `sticky`. Defaults to `none`.
+	// +kubebuilder:validation:Optional
+	ZeroDowntimeFailover *string `json:"zeroDowntimeFailover,omitempty" tf:"zero_downtime_failover,omitempty"`
+}
+
+type LocationStrategyInitParameters struct {
+
+	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`. Defaults to `pop`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`. Defaults to `proximity`.
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
+}
+
 type LocationStrategyObservation struct {
+
+	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`. Defaults to `pop`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`. Defaults to `proximity`.
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
 type LocationStrategyParameters struct {
@@ -199,145 +439,322 @@ type LocationStrategyParameters struct {
 	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
+type OverridesAdaptiveRoutingInitParameters struct {
+
+	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool.
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
+}
+
 type OverridesAdaptiveRoutingObservation struct {
+
+	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool.
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
 type OverridesAdaptiveRoutingParameters struct {
 
-	// See [`failover_across_pools`](#failover_across_pools).
+	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool.
 	// +kubebuilder:validation:Optional
 	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
+type OverridesCountryPoolsInitParameters struct {
+
+	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// A list of pool IDs in failover priority to use in the given country.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+}
+
 type OverridesCountryPoolsObservation struct {
+
+	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// A list of pool IDs in failover priority to use in the given country.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
 }
 
 type OverridesCountryPoolsParameters struct {
 
-	// See [`country`](#country).
-	// +kubebuilder:validation:Required
-	Country *string `json:"country" tf:"country,omitempty"`
+	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
+	// +kubebuilder:validation:Optional
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
 
-	// See [`pool_ids`](#pool_ids).
-	// +kubebuilder:validation:Required
-	PoolIds []*string `json:"poolIds" tf:"pool_ids,omitempty"`
+	// A list of pool IDs in failover priority to use in the given country.
+	// +kubebuilder:validation:Optional
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+}
+
+type OverridesInitParameters struct {
+
+	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
+	AdaptiveRouting []OverridesAdaptiveRoutingInitParameters `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
+	CountryPools []OverridesCountryPoolsInitParameters `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
+
+	// A list of pool IDs ordered by their failover priority. Used whenever [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) are not defined.
+	DefaultPools []*string `json:"defaultPools,omitempty" tf:"default_pools,omitempty"`
+
+	// The pool ID to use when all other pools are detected as unhealthy.
+	FallbackPool *string `json:"fallbackPool,omitempty" tf:"fallback_pool,omitempty"`
+
+	// Controls location-based steering for non-proxied requests.
+	LocationStrategy []OverridesLocationStrategyInitParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
+
+	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
+	PopPools []OverridesPopPoolsInitParameters `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// Configures pool weights. When [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy="least_outstanding_requests"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy="least_connections"`](#steering_policy), pool weights are used to scale each pool's open connections.
+	RandomSteering []OverridesRandomSteeringInitParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
+	RegionPools []OverridesRegionPoolsInitParameters `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// Configure attributes for session affinity.
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// Configure attributes for session affinity. Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.
+	SessionAffinityAttributes []SessionAffinityAttributesInitParameters `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `""` Defaults to `""`.
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+}
+
+type OverridesLocationStrategyInitParameters struct {
+
+	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`.
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
 type OverridesLocationStrategyObservation struct {
+
+	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`.
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
 type OverridesLocationStrategyParameters struct {
 
-	// See [`mode`](#mode).
+	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`.
 	// +kubebuilder:validation:Optional
 	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 
-	// See [`prefer_ecs`](#prefer_ecs).
+	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`.
 	// +kubebuilder:validation:Optional
 	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
 type OverridesObservation struct {
+
+	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
+	AdaptiveRouting []OverridesAdaptiveRoutingObservation `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
+	CountryPools []OverridesCountryPoolsObservation `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
+
+	// A list of pool IDs ordered by their failover priority. Used whenever [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) are not defined.
+	DefaultPools []*string `json:"defaultPools,omitempty" tf:"default_pools,omitempty"`
+
+	// The pool ID to use when all other pools are detected as unhealthy.
+	FallbackPool *string `json:"fallbackPool,omitempty" tf:"fallback_pool,omitempty"`
+
+	// Controls location-based steering for non-proxied requests.
+	LocationStrategy []OverridesLocationStrategyObservation `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
+
+	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
+	PopPools []OverridesPopPoolsObservation `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// Configures pool weights. When [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy="least_outstanding_requests"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy="least_connections"`](#steering_policy), pool weights are used to scale each pool's open connections.
+	RandomSteering []OverridesRandomSteeringObservation `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
+	RegionPools []OverridesRegionPoolsObservation `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// Configure attributes for session affinity.
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// Configure attributes for session affinity. Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.
+	SessionAffinityAttributes []SessionAffinityAttributesObservation `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `""` Defaults to `""`.
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type OverridesParameters struct {
 
-	// See [`adaptive_routing`](#adaptive_routing).
+	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
 	// +kubebuilder:validation:Optional
 	AdaptiveRouting []OverridesAdaptiveRoutingParameters `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
 
-	// See [`country_pools`](#country_pools).
+	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
 	// +kubebuilder:validation:Optional
 	CountryPools []OverridesCountryPoolsParameters `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
 
-	// See [`default_pool_ids`](#default_pool_ids).
+	// A list of pool IDs ordered by their failover priority. Used whenever [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) are not defined.
 	// +kubebuilder:validation:Optional
 	DefaultPools []*string `json:"defaultPools,omitempty" tf:"default_pools,omitempty"`
 
-	// See [`fallback_pool_id`](#fallback_pool_id).
+	// The pool ID to use when all other pools are detected as unhealthy.
 	// +kubebuilder:validation:Optional
 	FallbackPool *string `json:"fallbackPool,omitempty" tf:"fallback_pool,omitempty"`
 
-	// See [`location_strategy`](#location_strategy).
+	// Controls location-based steering for non-proxied requests.
 	// +kubebuilder:validation:Optional
 	LocationStrategy []OverridesLocationStrategyParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
 
-	// See [`pop_pools`](#pop_pools).
+	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
 	// +kubebuilder:validation:Optional
 	PopPools []OverridesPopPoolsParameters `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
 
-	// See [`random_steering`](#random_steering).
+	// Configures pool weights. When [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to pool weights. When [`steering_policy="least_outstanding_requests"`](#steering_policy), pool weights are used to scale each pool's outstanding requests. When [`steering_policy="least_connections"`](#steering_policy), pool weights are used to scale each pool's open connections.
 	// +kubebuilder:validation:Optional
 	RandomSteering []OverridesRandomSteeringParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
 
-	// See [`region_pools`](#region_pools).
+	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
 	// +kubebuilder:validation:Optional
 	RegionPools []OverridesRegionPoolsParameters `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
 
-	// See [`session_affinity`](#session_affinity).
+	// Configure attributes for session affinity.
 	// +kubebuilder:validation:Optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
 
-	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes). Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.
+	// Configure attributes for session affinity. Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.
 	// +kubebuilder:validation:Optional
-	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+	SessionAffinityAttributes []SessionAffinityAttributesParameters `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
 
-	// See [`session_affinity_ttl`](#session_affinity_ttl).
+	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
 	// +kubebuilder:validation:Optional
 	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
 
-	// See [`steering_policy`](#steering_policy).
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `least_outstanding_requests` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of outstanding requests. Pools with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects a pool by taking into consideration [`random_steering`](#random_steering) weights, as well as each pool's number of open connections. Pools with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `least_outstanding_requests`, `least_connections`, `""` Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
 
-	// See [`ttl`](#ttl).
+	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`.
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
+type OverridesPopPoolsInitParameters struct {
+
+	// A list of pool IDs in failover priority to use for traffic reaching the given PoP.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
+}
+
 type OverridesPopPoolsObservation struct {
+
+	// A list of pool IDs in failover priority to use for traffic reaching the given PoP.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
 }
 
 type OverridesPopPoolsParameters struct {
 
-	// See [`pool_ids`](#pool_ids).
-	// +kubebuilder:validation:Required
-	PoolIds []*string `json:"poolIds" tf:"pool_ids,omitempty"`
+	// A list of pool IDs in failover priority to use for traffic reaching the given PoP.
+	// +kubebuilder:validation:Optional
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
 
-	// See [`pop`](#pop).
-	// +kubebuilder:validation:Required
-	Pop *string `json:"pop" tf:"pop,omitempty"`
+	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
+	// +kubebuilder:validation:Optional
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
+}
+
+type OverridesRandomSteeringInitParameters struct {
+
+	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
 type OverridesRandomSteeringObservation struct {
+
+	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
 type OverridesRandomSteeringParameters struct {
 
-	// See [`default_weight`](#default_weight).
+	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
 	// +kubebuilder:validation:Optional
 	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
 
-	// See [`pool_weights`](#pool_weights).
+	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
 	// +kubebuilder:validation:Optional
 	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
+type OverridesRegionPoolsInitParameters struct {
+
+	// A list of pool IDs in failover priority to use in the given region.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type OverridesRegionPoolsObservation struct {
+
+	// A list of pool IDs in failover priority to use in the given region.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type OverridesRegionPoolsParameters struct {
 
-	// See [`pool_ids`](#pool_ids).
-	// +kubebuilder:validation:Required
-	PoolIds []*string `json:"poolIds" tf:"pool_ids,omitempty"`
+	// A list of pool IDs in failover priority to use in the given region.
+	// +kubebuilder:validation:Optional
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
 
-	// See [`region`](#region).
-	// +kubebuilder:validation:Required
-	Region *string `json:"region" tf:"region,omitempty"`
+	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
+	// +kubebuilder:validation:Optional
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
+type PopPoolsInitParameters struct {
+
+	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
 }
 
 type PopPoolsObservation struct {
+
+	// A list of pool IDs in failover priority to use for traffic reaching the given PoP.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
 }
 
 type PopPoolsParameters struct {
@@ -356,11 +773,26 @@ type PopPoolsParameters struct {
 	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
 
 	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
-	// +kubebuilder:validation:Required
-	Pop *string `json:"pop" tf:"pop,omitempty"`
+	// +kubebuilder:validation:Optional
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
+}
+
+type RandomSteeringInitParameters struct {
+
+	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
 type RandomSteeringObservation struct {
+
+	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
 type RandomSteeringParameters struct {
@@ -374,7 +806,19 @@ type RandomSteeringParameters struct {
 	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
+type RegionPoolsInitParameters struct {
+
+	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type RegionPoolsObservation struct {
+
+	// A list of pool IDs in failover priority to use in the given region.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type RegionPoolsParameters struct {
@@ -393,11 +837,56 @@ type RegionPoolsParameters struct {
 	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
 
 	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
-	// +kubebuilder:validation:Required
-	Region *string `json:"region" tf:"region,omitempty"`
+	// +kubebuilder:validation:Optional
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
+type RulesInitParameters struct {
+
+	// The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See [load balancing rules](https://developers.cloudflare.com/load-balancing/understand-basics/load-balancing-rules).
+	Condition *string `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// A disabled rule will not be executed.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	FixedResponse []FixedResponseInitParameters `json:"fixedResponse,omitempty" tf:"fixed_response,omitempty"`
+
+	// Human readable name for this rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The load balancer settings to alter if this rule's [`condition`](#condition) is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	Overrides []OverridesInitParameters `json:"overrides,omitempty" tf:"overrides,omitempty"`
+
+	// Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// Terminates indicates that if this rule is true no further rules should be executed. Note: setting a [`fixed_response`](#fixed_response) forces this field to `true`.
+	Terminates *bool `json:"terminates,omitempty" tf:"terminates,omitempty"`
 }
 
 type RulesObservation struct {
+
+	// The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See [load balancing rules](https://developers.cloudflare.com/load-balancing/understand-basics/load-balancing-rules).
+	Condition *string `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// A disabled rule will not be executed.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	FixedResponse []FixedResponseObservation `json:"fixedResponse,omitempty" tf:"fixed_response,omitempty"`
+
+	// Human readable name for this rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The load balancer settings to alter if this rule's [`condition`](#condition) is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	Overrides []OverridesObservation `json:"overrides,omitempty" tf:"overrides,omitempty"`
+
+	// Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// Terminates indicates that if this rule is true no further rules should be executed. Note: setting a [`fixed_response`](#fixed_response) forces this field to `true`.
+	Terminates *bool `json:"terminates,omitempty" tf:"terminates,omitempty"`
 }
 
 type RulesParameters struct {
@@ -415,8 +904,8 @@ type RulesParameters struct {
 	FixedResponse []FixedResponseParameters `json:"fixedResponse,omitempty" tf:"fixed_response,omitempty"`
 
 	// Human readable name for this rule.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The load balancer settings to alter if this rule's [`condition`](#condition) is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
 	// +kubebuilder:validation:Optional
@@ -431,10 +920,81 @@ type RulesParameters struct {
 	Terminates *bool `json:"terminates,omitempty" tf:"terminates,omitempty"`
 }
 
+type SessionAffinityAttributesInitParameters struct {
+
+	// Configures the HTTP header names to use when header session affinity is enabled.
+	Headers []*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.
+	RequireAllHeaders *bool `json:"requireAllHeaders,omitempty" tf:"require_all_headers,omitempty"`
+
+	// Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure="Never"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`.
+	Samesite *string `json:"samesite,omitempty" tf:"samesite,omitempty"`
+
+	// Configures the Secure attribute on session affinity cookie. Value `Always` indicates the Secure attribute will be set in the Set-Cookie header, `Never` indicates the Secure attribute will not be set, and `Auto` will set the Secure attribute depending if Always Use HTTPS is enabled. Available values: `Auto`, `Always`, `Never`.
+	Secure *string `json:"secure,omitempty" tf:"secure,omitempty"`
+
+	// Configures the zero-downtime failover between origins within a pool when session affinity is enabled. Value `none` means no failover takes place for sessions pinned to the origin. Value `temporary` means traffic will be sent to another other healthy origin until the originally pinned origin is available; note that this can potentially result in heavy origin flapping. Value `sticky` means the session affinity cookie is updated and subsequent requests are sent to the new origin. This feature is currently incompatible with Argo, Tiered Cache, and Bandwidth Alliance. Available values: `none`, `temporary`, `sticky`.
+	ZeroDowntimeFailover *string `json:"zeroDowntimeFailover,omitempty" tf:"zero_downtime_failover,omitempty"`
+}
+
+type SessionAffinityAttributesObservation struct {
+
+	// Configures the HTTP header names to use when header session affinity is enabled.
+	Headers []*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.
+	RequireAllHeaders *bool `json:"requireAllHeaders,omitempty" tf:"require_all_headers,omitempty"`
+
+	// Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure="Never"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`.
+	Samesite *string `json:"samesite,omitempty" tf:"samesite,omitempty"`
+
+	// Configures the Secure attribute on session affinity cookie. Value `Always` indicates the Secure attribute will be set in the Set-Cookie header, `Never` indicates the Secure attribute will not be set, and `Auto` will set the Secure attribute depending if Always Use HTTPS is enabled. Available values: `Auto`, `Always`, `Never`.
+	Secure *string `json:"secure,omitempty" tf:"secure,omitempty"`
+
+	// Configures the zero-downtime failover between origins within a pool when session affinity is enabled. Value `none` means no failover takes place for sessions pinned to the origin. Value `temporary` means traffic will be sent to another other healthy origin until the originally pinned origin is available; note that this can potentially result in heavy origin flapping. Value `sticky` means the session affinity cookie is updated and subsequent requests are sent to the new origin. This feature is currently incompatible with Argo, Tiered Cache, and Bandwidth Alliance. Available values: `none`, `temporary`, `sticky`.
+	ZeroDowntimeFailover *string `json:"zeroDowntimeFailover,omitempty" tf:"zero_downtime_failover,omitempty"`
+}
+
+type SessionAffinityAttributesParameters struct {
+
+	// Configures the HTTP header names to use when header session affinity is enabled.
+	// +kubebuilder:validation:Optional
+	Headers []*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// Configures how headers are used when header session affinity is enabled. Set to true to require all headers to be present on requests in order for sessions to be created or false to require at least one header to be present. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	RequireAllHeaders *bool `json:"requireAllHeaders,omitempty" tf:"require_all_headers,omitempty"`
+
+	// Configures the SameSite attribute on session affinity cookie. Value `Auto` will be translated to `Lax` or `None` depending if Always Use HTTPS is enabled. Note: when using value `None`, then you can not set [`secure="Never"`](#secure). Available values: `Auto`, `Lax`, `None`, `Strict`.
+	// +kubebuilder:validation:Optional
+	Samesite *string `json:"samesite,omitempty" tf:"samesite,omitempty"`
+
+	// Configures the Secure attribute on session affinity cookie. Value `Always` indicates the Secure attribute will be set in the Set-Cookie header, `Never` indicates the Secure attribute will not be set, and `Auto` will set the Secure attribute depending if Always Use HTTPS is enabled. Available values: `Auto`, `Always`, `Never`.
+	// +kubebuilder:validation:Optional
+	Secure *string `json:"secure,omitempty" tf:"secure,omitempty"`
+
+	// Configures the zero-downtime failover between origins within a pool when session affinity is enabled. Value `none` means no failover takes place for sessions pinned to the origin. Value `temporary` means traffic will be sent to another other healthy origin until the originally pinned origin is available; note that this can potentially result in heavy origin flapping. Value `sticky` means the session affinity cookie is updated and subsequent requests are sent to the new origin. This feature is currently incompatible with Argo, Tiered Cache, and Bandwidth Alliance. Available values: `none`, `temporary`, `sticky`.
+	// +kubebuilder:validation:Optional
+	ZeroDowntimeFailover *string `json:"zeroDowntimeFailover,omitempty" tf:"zero_downtime_failover,omitempty"`
+}
+
 // LoadBalancerSpec defines the desired state of LoadBalancer
 type LoadBalancerSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     LoadBalancerParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider LoadBalancerInitParameters `json:"initProvider,omitempty"`
 }
 
 // LoadBalancerStatus defines the observed state of LoadBalancer.
@@ -455,8 +1015,9 @@ type LoadBalancerStatus struct {
 type LoadBalancer struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              LoadBalancerSpec   `json:"spec"`
-	Status            LoadBalancerStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   LoadBalancerSpec   `json:"spec"`
+	Status LoadBalancerStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

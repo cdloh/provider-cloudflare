@@ -77,9 +77,6 @@ spec:
                         id:
                           description: Unique headers rule identifier.
                           type: string
-                      required:
-                      - enabled
-                      - id
                       type: object
                     type: array
                   managedResponseHeaders:
@@ -92,9 +89,6 @@ spec:
                         id:
                           description: Unique headers rule identifier.
                           type: string
-                      required:
-                      - enabled
-                      - id
                       type: object
                     type: array
                   zoneId:
@@ -173,6 +167,44 @@ spec:
                             type: string
                         type: object
                     type: object
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  managedRequestHeaders:
+                    description: The list of managed request headers.
+                    items:
+                      properties:
+                        enabled:
+                          description: Whether the headers rule is active.
+                          type: boolean
+                        id:
+                          description: Unique headers rule identifier.
+                          type: string
+                      type: object
+                    type: array
+                  managedResponseHeaders:
+                    description: The list of managed response headers.
+                    items:
+                      properties:
+                        enabled:
+                          description: Whether the headers rule is active.
+                          type: boolean
+                        id:
+                          description: Unique headers rule identifier.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -377,6 +409,33 @@ spec:
               atProvider:
                 properties:
                   id:
+                    type: string
+                  managedRequestHeaders:
+                    description: The list of managed request headers.
+                    items:
+                      properties:
+                        enabled:
+                          description: Whether the headers rule is active.
+                          type: boolean
+                        id:
+                          description: Unique headers rule identifier.
+                          type: string
+                      type: object
+                    type: array
+                  managedResponseHeaders:
+                    description: The list of managed response headers.
+                    items:
+                      properties:
+                        enabled:
+                          description: Whether the headers rule is active.
+                          type: boolean
+                        id:
+                          description: Unique headers rule identifier.
+                          type: string
+                      type: object
+                    type: array
+                  zoneId:
+                    description: The zone identifier to target for the resource.
                     type: string
                 type: object
               conditions:

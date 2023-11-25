@@ -68,7 +68,6 @@ spec:
                 properties:
                   accountId:
                     description: The account identifier to target for the resource.
-                      Conflicts with `zone_id`.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -148,23 +147,21 @@ spec:
                     type: string
                   kind:
                     description: 'Type of Ruleset to create. Available values: `custom`,
-                      `managed`, `root`, `schema`, `zone`.'
+                      `managed`, `root`, `zone`.'
                     type: string
                   name:
-                    description: Name of the ruleset. **Modifying this attribute will
-                      force creation of a new resource.**
+                    description: Name of the ruleset.
                     type: string
                   phase:
                     description: 'Point in the request/response lifecycle where the
                       ruleset will be created. Available values: `ddos_l4`, `ddos_l7`,
-                      `http_custom_errors`, `http_log_custom_fields`, `http_request_cache_settings`,
+                      `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`,
+                      `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`,
                       `http_request_firewall_custom`, `http_request_firewall_managed`,
-                      `http_request_late_transform`, `http_request_late_transform_managed`,
-                      `http_request_main`, `http_request_origin`, `http_request_dynamic_redirect`,
-                      `http_request_redirect`, `http_request_sanitize`, `http_request_transform`,
-                      `http_response_firewall_managed`, `http_response_headers_transform`,
-                      `http_response_headers_transform_managed`, `magic_transit`,
-                      `http_ratelimit`, `http_request_sbfm`, `http_config_settings`.'
+                      `http_request_late_transform`, `http_request_origin`, `http_request_redirect`,
+                      `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`,
+                      `http_response_compression`, `http_response_firewall_managed`,
+                      `http_response_headers_transform`, `magic_transit`.'
                     type: string
                   rules:
                     description: List of rules to apply to the ruleset.
@@ -172,16 +169,35 @@ spec:
                       properties:
                         action:
                           description: 'Action to perform in the ruleset rule. Available
-                            values: `block`, `challenge`, `ddos_dynamic`, `execute`,
-                            `force_connection_close`, `js_challenge`, `log`, `log_custom_field`,
-                            `managed_challenge`, `redirect`, `rewrite`, `route`, `score`,
-                            `set_cache_settings`, `set_config`, `serve_error`, `skip`.'
+                            values: `block`, `challenge`, `compress_response`, `ddos_dynamic`,
+                            `ddos_mitigation`, `execute`, `force_connection_close`,
+                            `js_challenge`, `log`, `log_custom_field`, `managed_challenge`,
+                            `redirect`, `rewrite`, `route`, `score`, `serve_error`,
+                            `set_cache_settings`, `set_config`, `skip`.'
                           type: string
                         actionParameters:
                           description: List of parameters that configure the behavior
                             of the ruleset rule action.
                           items:
                             properties:
+                              additionalCacheablePorts:
+                                description: Specifies uncommon ports to allow cacheable
+                                  assets to be served from.
+                                items:
+                                  type: number
+                                type: array
+                              algorithms:
+                                description: Compression algorithms to use in order
+                                  of preference.
+                                items:
+                                  properties:
+                                    name:
+                                      description: 'Name of the compression algorithm
+                                        to use. Available values: `gzip`, `brotli`,
+                                        `auto`, `default`, `none`'
+                                      type: string
+                                  type: object
+                                type: array
                               automaticHttpsRewrites:
                                 description: Turn on or off Cloudflare Automatic HTTPS
                                   rewrites.
@@ -192,7 +208,7 @@ spec:
                                 items:
                                   properties:
                                     css:
-                                      description: SSL minification.
+                                      description: CSS minification.
                                       type: boolean
                                     html:
                                       description: HTML minification.
@@ -212,13 +228,14 @@ spec:
                                 items:
                                   properties:
                                     default:
-                                      description: Default browser TTL.
+                                      description: Default browser TTL. This value
+                                        is required when override_origin is set
                                       type: number
                                     mode:
-                                      description: Mode of the browser TTL.
+                                      description: 'Mode of the browser TTL. Available
+                                        values: `override_origin`, `respect_origin`,
+                                        `bypass`'
                                       type: string
-                                  required:
-                                  - mode
                                   type: object
                                 type: array
                               cache:
@@ -230,8 +247,7 @@ spec:
                                 items:
                                   properties:
                                     cacheByDeviceType:
-                                      description: Cache by device type. Conflicts
-                                        with "custom_key.user.device_type".
+                                      description: Cache by device type.
                                       type: boolean
                                     cacheDeceptionArmor:
                                       description: Cache deception armor.
@@ -303,14 +319,14 @@ spec:
                                                 exclude:
                                                   description: List of query string
                                                     parameters to exclude from the
-                                                    custom key. Conflicts with "include".
+                                                    custom key.
                                                   items:
                                                     type: string
                                                   type: array
                                                 include:
                                                   description: List of query string
                                                     parameters to include in the custom
-                                                    key. Conflicts with "exclude".
+                                                    key.
                                                   items:
                                                     type: string
                                                   type: array
@@ -323,8 +339,7 @@ spec:
                                               properties:
                                                 deviceType:
                                                   description: Add device type to
-                                                    the custom key. Conflicts with
-                                                    "cache_key.cache_by_device_type".
+                                                    the custom key.
                                                   type: boolean
                                                 geo:
                                                   description: Add geo data to the
@@ -374,7 +389,9 @@ spec:
                                       description: Default edge TTL.
                                       type: number
                                     mode:
-                                      description: Mode of the edge TTL.
+                                      description: 'Mode of the edge TTL. Available
+                                        values: `override_origin`, `respect_origin`,
+                                        `bypass_by_default`'
                                       type: string
                                     statusCodeTtl:
                                       description: Edge TTL for the status codes.
@@ -382,13 +399,11 @@ spec:
                                         properties:
                                           statusCode:
                                             description: Status code for which the
-                                              edge TTL is applied. Conflicts with
-                                              "status_code_range".
+                                              edge TTL is applied.
                                             type: number
                                           statusCodeRange:
                                             description: Status code range for which
-                                              the edge TTL is applied. Conflicts with
-                                              "status_code".
+                                              the edge TTL is applied.
                                             items:
                                               properties:
                                                 from:
@@ -402,12 +417,8 @@ spec:
                                           value:
                                             description: Status code edge TTL value.
                                             type: number
-                                        required:
-                                        - value
                                         type: object
                                       type: array
-                                  required:
-                                  - mode
                                   type: object
                                 type: array
                               emailObfuscation:
@@ -426,9 +437,6 @@ spec:
                                     name:
                                       description: Name of the list.
                                       type: string
-                                  required:
-                                  - key
-                                  - name
                                   type: object
                                 type: array
                               fromValue:
@@ -453,21 +461,21 @@ spec:
                                               based on Wireshark display filters.
                                               Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
                                               documentation for all available fields,
-                                              operators, and functions. Conflicts
-                                              with `"value"`.
+                                              operators, and functions.
                                             type: string
                                           value:
                                             description: Static value to provide as
-                                              the HTTP request header value. Conflicts
-                                              with `"expression"`.
+                                              the HTTP request header value.
                                             type: string
                                         type: object
                                       type: array
                                   type: object
                                 type: array
                               headers:
-                                description: List of HTTP header modifications to
-                                  perform in the ruleset rule.
+                                description: 'List of HTTP header modifications to
+                                  perform in the ruleset rule. Note: Headers are order
+                                  dependent and must be provided sorted alphabetically
+                                  ascending based on the `name` value.'
                                 items:
                                   properties:
                                     expression:
@@ -476,7 +484,7 @@ spec:
                                         based on Wireshark display filters. Refer
                                         to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
                                         documentation for all available fields, operators,
-                                        and functions. Conflicts with `"value"`.
+                                        and functions.
                                       type: string
                                     name:
                                       description: Name of the HTTP request header
@@ -485,12 +493,11 @@ spec:
                                     operation:
                                       description: 'Action to perform on the HTTP
                                         request header. Available values: `remove`,
-                                        `set`.'
+                                        `set`, `add`.'
                                       type: string
                                     value:
                                       description: Static value to provide as the
-                                        HTTP request header value. Conflicts with
-                                        `"expression"`.
+                                        HTTP request header value.
                                       type: string
                                   type: object
                                 type: array
@@ -544,6 +551,11 @@ spec:
                                       type: number
                                   type: object
                                 type: array
+                              originCacheControl:
+                                description: Enable or disable the use of a more compliant
+                                  Cache Control parsing mechanism, enabled by default
+                                  for most zones.
+                                type: boolean
                               originErrorPagePassthru:
                                 description: Pass-through error page for origin.
                                 type: boolean
@@ -555,11 +567,11 @@ spec:
                                     action:
                                       description: 'Action to perform in the rule-level
                                         override. Available values: `block`, `challenge`,
-                                        `ddos_dynamic`, `execute`, `force_connection_close`,
-                                        `js_challenge`, `log`, `log_custom_field`,
-                                        `managed_challenge`, `redirect`, `rewrite`,
-                                        `route`, `score`, `set_cache_settings`, `set_config`,
-                                        `serve_error`, `skip`.'
+                                        `compress_response`, `ddos_dynamic`, `ddos_mitigation`,
+                                        `execute`, `force_connection_close`, `js_challenge`,
+                                        `log`, `log_custom_field`, `managed_challenge`,
+                                        `redirect`, `rewrite`, `route`, `score`, `serve_error`,
+                                        `set_cache_settings`, `set_config`, `skip`.'
                                       type: string
                                     categories:
                                       description: List of tag-based overrides.
@@ -568,23 +580,17 @@ spec:
                                           action:
                                             description: 'Action to perform in the
                                               tag-level override. Available values:
-                                              `block`, `challenge`, `ddos_dynamic`,
-                                              `execute`, `force_connection_close`,
-                                              `js_challenge`, `log`, `log_custom_field`,
-                                              `managed_challenge`, `redirect`, `rewrite`,
-                                              `route`, `score`, `set_cache_settings`,
-                                              `set_config`, `serve_error`, `skip`.'
+                                              `block`, `challenge`, `compress_response`,
+                                              `ddos_dynamic`, `ddos_mitigation`, `execute`,
+                                              `force_connection_close`, `js_challenge`,
+                                              `log`, `log_custom_field`, `managed_challenge`,
+                                              `redirect`, `rewrite`, `route`, `score`,
+                                              `serve_error`, `set_cache_settings`,
+                                              `set_config`, `skip`.'
                                             type: string
                                           category:
                                             description: Tag name to apply the ruleset
                                               rule override to.
-                                            type: string
-                                          status:
-                                            description: 'Defines if the current tag-level
-                                              override enables or disables the ruleset
-                                              rules with the specified tag. Available
-                                              values: `enabled`, `disabled`. Defaults
-                                              to `""`.'
                                             type: string
                                         type: object
                                       type: array
@@ -595,12 +601,13 @@ spec:
                                           action:
                                             description: 'Action to perform in the
                                               rule-level override. Available values:
-                                              `block`, `challenge`, `ddos_dynamic`,
-                                              `execute`, `force_connection_close`,
-                                              `js_challenge`, `log`, `log_custom_field`,
-                                              `managed_challenge`, `redirect`, `rewrite`,
-                                              `route`, `score`, `set_cache_settings`,
-                                              `set_config`, `serve_error`, `skip`.'
+                                              `block`, `challenge`, `compress_response`,
+                                              `ddos_dynamic`, `ddos_mitigation`, `execute`,
+                                              `force_connection_close`, `js_challenge`,
+                                              `log`, `log_custom_field`, `managed_challenge`,
+                                              `redirect`, `rewrite`, `route`, `score`,
+                                              `serve_error`, `set_cache_settings`,
+                                              `set_config`, `skip`.'
                                             type: string
                                           id:
                                             description: Rule ID to apply the override
@@ -616,12 +623,6 @@ spec:
                                             description: Sensitivity level for a ruleset
                                               rule override.
                                             type: string
-                                          status:
-                                            description: 'Defines if the current rule-level
-                                              override enables or disables the rule.
-                                              Available values: `enabled`, `disabled`.
-                                              Defaults to `""`.'
-                                            type: string
                                         type: object
                                       type: array
                                     sensitivityLevel:
@@ -629,27 +630,19 @@ spec:
                                         for all ruleset rules. Available values: `default`,
                                         `medium`, `low`, `eoff`.'
                                       type: string
-                                    status:
-                                      description: 'Defines if the current ruleset-level
-                                        override enables or disables the ruleset.
-                                        Available values: `enabled`, `disabled`. Defaults
-                                        to `""`.'
-                                      type: string
                                   type: object
                                 type: array
                               phases:
                                 description: 'Point in the request/response lifecycle
                                   where the ruleset will be created. Available values:
-                                  `ddos_l4`, `ddos_l7`, `http_custom_errors`, `http_log_custom_fields`,
-                                  `http_request_cache_settings`, `http_request_firewall_custom`,
+                                  `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`,
+                                  `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`,
+                                  `http_request_dynamic_redirect`, `http_request_firewall_custom`,
                                   `http_request_firewall_managed`, `http_request_late_transform`,
-                                  `http_request_late_transform_managed`, `http_request_main`,
-                                  `http_request_origin`, `http_request_dynamic_redirect`,
-                                  `http_request_redirect`, `http_request_sanitize`,
-                                  `http_request_transform`, `http_response_firewall_managed`,
-                                  `http_response_headers_transform`, `http_response_headers_transform_managed`,
-                                  `magic_transit`, `http_ratelimit`, `http_request_sbfm`,
-                                  `http_config_settings`.'
+                                  `http_request_origin`, `http_request_redirect`,
+                                  `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`,
+                                  `http_response_compression`, `http_response_firewall_managed`,
+                                  `http_response_headers_transform`, `magic_transit`.'
                                 items:
                                   type: string
                                 type: array
@@ -664,6 +657,10 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                              readTimeout:
+                                description: Specifies a maximum timeout for reading
+                                  content from an origin server.
+                                type: number
                               requestFields:
                                 description: List of request headers to include as
                                   part of custom fields logging, in lowercase.
@@ -851,14 +848,8 @@ spec:
                           type: string
                         logging:
                           description: List parameters to configure how the rule generates
-                            logs.
+                            logs. Only valid for skip action.
                           items:
-                            properties:
-                              status:
-                                description: 'Override the default logging behavior
-                                  when a rule is matched. Available values: `enabled`,
-                                  `disabled`. Defaults to `""`.'
-                                type: string
                             type: object
                           type: array
                         ratelimit:
@@ -897,18 +888,24 @@ spec:
                                 description: Whether to include requests to origin
                                   within the Rate Limiting count.
                                 type: boolean
+                              scorePerPeriod:
+                                description: The maximum aggregate score over the
+                                  period of time that will trigger Rate Limiting rule.
+                                type: number
+                              scoreResponseHeaderName:
+                                description: Name of HTTP header in the response,
+                                  set by the origin server, with the score for the
+                                  current request.
+                                type: string
                             type: object
                           type: array
-                      required:
-                      - expression
+                        ref:
+                          description: Rule reference.
+                          type: string
                       type: object
                     type: array
-                  shareableEntitlementName:
-                    description: Name of entitlement that is shareable between entities.
-                    type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. Conflicts
-                      with `account_id`.
+                    description: The zone identifier to target for the resource.
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -983,10 +980,782 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - kind
-                - name
-                - phase
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  description:
+                    description: Brief summary of the ruleset and its intended use.
+                    type: string
+                  kind:
+                    description: 'Type of Ruleset to create. Available values: `custom`,
+                      `managed`, `root`, `zone`.'
+                    type: string
+                  name:
+                    description: Name of the ruleset.
+                    type: string
+                  phase:
+                    description: 'Point in the request/response lifecycle where the
+                      ruleset will be created. Available values: `ddos_l4`, `ddos_l7`,
+                      `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`,
+                      `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`,
+                      `http_request_firewall_custom`, `http_request_firewall_managed`,
+                      `http_request_late_transform`, `http_request_origin`, `http_request_redirect`,
+                      `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`,
+                      `http_response_compression`, `http_response_firewall_managed`,
+                      `http_response_headers_transform`, `magic_transit`.'
+                    type: string
+                  rules:
+                    description: List of rules to apply to the ruleset.
+                    items:
+                      properties:
+                        action:
+                          description: 'Action to perform in the ruleset rule. Available
+                            values: `block`, `challenge`, `compress_response`, `ddos_dynamic`,
+                            `ddos_mitigation`, `execute`, `force_connection_close`,
+                            `js_challenge`, `log`, `log_custom_field`, `managed_challenge`,
+                            `redirect`, `rewrite`, `route`, `score`, `serve_error`,
+                            `set_cache_settings`, `set_config`, `skip`.'
+                          type: string
+                        actionParameters:
+                          description: List of parameters that configure the behavior
+                            of the ruleset rule action.
+                          items:
+                            properties:
+                              additionalCacheablePorts:
+                                description: Specifies uncommon ports to allow cacheable
+                                  assets to be served from.
+                                items:
+                                  type: number
+                                type: array
+                              algorithms:
+                                description: Compression algorithms to use in order
+                                  of preference.
+                                items:
+                                  properties:
+                                    name:
+                                      description: 'Name of the compression algorithm
+                                        to use. Available values: `gzip`, `brotli`,
+                                        `auto`, `default`, `none`'
+                                      type: string
+                                  type: object
+                                type: array
+                              automaticHttpsRewrites:
+                                description: Turn on or off Cloudflare Automatic HTTPS
+                                  rewrites.
+                                type: boolean
+                              autominify:
+                                description: Indicate which file extensions to minify
+                                  automatically.
+                                items:
+                                  properties:
+                                    css:
+                                      description: CSS minification.
+                                      type: boolean
+                                    html:
+                                      description: HTML minification.
+                                      type: boolean
+                                    js:
+                                      description: JS minification.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              bic:
+                                description: Inspect the visitor's browser for headers
+                                  commonly associated with spammers and certain bots.
+                                type: boolean
+                              browserTtl:
+                                description: List of browser TTL parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    default:
+                                      description: Default browser TTL. This value
+                                        is required when override_origin is set
+                                      type: number
+                                    mode:
+                                      description: 'Mode of the browser TTL. Available
+                                        values: `override_origin`, `respect_origin`,
+                                        `bypass`'
+                                      type: string
+                                  type: object
+                                type: array
+                              cache:
+                                description: Whether to cache if expression matches.
+                                type: boolean
+                              cacheKey:
+                                description: List of cache key parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    cacheByDeviceType:
+                                      description: Cache by device type.
+                                      type: boolean
+                                    cacheDeceptionArmor:
+                                      description: Cache deception armor.
+                                      type: boolean
+                                    customKey:
+                                      description: Custom key parameters for the request.
+                                      items:
+                                        properties:
+                                          cookie:
+                                            description: Cookie parameters for the
+                                              custom key.
+                                            items:
+                                              properties:
+                                                checkPresence:
+                                                  description: List of cookies to
+                                                    check for presence in the custom
+                                                    key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                                include:
+                                                  description: List of cookies to
+                                                    include in the custom key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                              type: object
+                                            type: array
+                                          header:
+                                            description: Header parameters for the
+                                              custom key.
+                                            items:
+                                              properties:
+                                                checkPresence:
+                                                  description: List of headers to
+                                                    check for presence in the custom
+                                                    key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                                excludeOrigin:
+                                                  description: Exclude the origin
+                                                    header from the custom key.
+                                                  type: boolean
+                                                include:
+                                                  description: List of headers to
+                                                    include in the custom key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                              type: object
+                                            type: array
+                                          host:
+                                            description: Host parameters for the custom
+                                              key.
+                                            items:
+                                              properties:
+                                                resolved:
+                                                  description: Resolve hostname to
+                                                    IP address.
+                                                  type: boolean
+                                              type: object
+                                            type: array
+                                          queryString:
+                                            description: Query string parameters for
+                                              the custom key.
+                                            items:
+                                              properties:
+                                                exclude:
+                                                  description: List of query string
+                                                    parameters to exclude from the
+                                                    custom key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                                include:
+                                                  description: List of query string
+                                                    parameters to include in the custom
+                                                    key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                              type: object
+                                            type: array
+                                          user:
+                                            description: User parameters for the custom
+                                              key.
+                                            items:
+                                              properties:
+                                                deviceType:
+                                                  description: Add device type to
+                                                    the custom key.
+                                                  type: boolean
+                                                geo:
+                                                  description: Add geo data to the
+                                                    custom key.
+                                                  type: boolean
+                                                lang:
+                                                  description: Add language data to
+                                                    the custom key.
+                                                  type: boolean
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    ignoreQueryStringsOrder:
+                                      description: Ignore query strings order.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              content:
+                                description: Content of the custom error response.
+                                type: string
+                              contentType:
+                                description: Content-Type of the custom error response.
+                                type: string
+                              cookieFields:
+                                description: List of cookie values to include as part
+                                  of custom fields logging.
+                                items:
+                                  type: string
+                                type: array
+                              disableApps:
+                                description: Turn off all active Cloudflare Apps.
+                                type: boolean
+                              disableRailgun:
+                                description: Turn off railgun feature of the Cloudflare
+                                  Speed app.
+                                type: boolean
+                              disableZaraz:
+                                description: Turn off zaraz feature.
+                                type: boolean
+                              edgeTtl:
+                                description: List of edge TTL parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    default:
+                                      description: Default edge TTL.
+                                      type: number
+                                    mode:
+                                      description: 'Mode of the edge TTL. Available
+                                        values: `override_origin`, `respect_origin`,
+                                        `bypass_by_default`'
+                                      type: string
+                                    statusCodeTtl:
+                                      description: Edge TTL for the status codes.
+                                      items:
+                                        properties:
+                                          statusCode:
+                                            description: Status code for which the
+                                              edge TTL is applied.
+                                            type: number
+                                          statusCodeRange:
+                                            description: Status code range for which
+                                              the edge TTL is applied.
+                                            items:
+                                              properties:
+                                                from:
+                                                  description: From status code.
+                                                  type: number
+                                                to:
+                                                  description: To status code.
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          value:
+                                            description: Status code edge TTL value.
+                                            type: number
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              emailObfuscation:
+                                description: Turn on or off the Cloudflare Email Obfuscation
+                                  feature of the Cloudflare Scrape Shield app.
+                                type: boolean
+                              fromList:
+                                description: Use a list to lookup information for
+                                  the action.
+                                items:
+                                  properties:
+                                    key:
+                                      description: Expression to use for the list
+                                        lookup.
+                                      type: string
+                                    name:
+                                      description: Name of the list.
+                                      type: string
+                                  type: object
+                                type: array
+                              fromValue:
+                                description: Use a value to lookup information for
+                                  the action.
+                                items:
+                                  properties:
+                                    preserveQueryString:
+                                      description: Preserve query string for redirect
+                                        URL.
+                                      type: boolean
+                                    statusCode:
+                                      description: Status code for redirect.
+                                      type: number
+                                    targetUrl:
+                                      description: Target URL for redirect.
+                                      items:
+                                        properties:
+                                          expression:
+                                            description: Use a value dynamically determined
+                                              by the Firewall Rules expression language
+                                              based on Wireshark display filters.
+                                              Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                              documentation for all available fields,
+                                              operators, and functions.
+                                            type: string
+                                          value:
+                                            description: Static value to provide as
+                                              the HTTP request header value.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              headers:
+                                description: 'List of HTTP header modifications to
+                                  perform in the ruleset rule. Note: Headers are order
+                                  dependent and must be provided sorted alphabetically
+                                  ascending based on the `name` value.'
+                                items:
+                                  properties:
+                                    expression:
+                                      description: Use a value dynamically determined
+                                        by the Firewall Rules expression language
+                                        based on Wireshark display filters. Refer
+                                        to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                        documentation for all available fields, operators,
+                                        and functions.
+                                      type: string
+                                    name:
+                                      description: Name of the HTTP request header
+                                        to target.
+                                      type: string
+                                    operation:
+                                      description: 'Action to perform on the HTTP
+                                        request header. Available values: `remove`,
+                                        `set`, `add`.'
+                                      type: string
+                                    value:
+                                      description: Static value to provide as the
+                                        HTTP request header value.
+                                      type: string
+                                  type: object
+                                type: array
+                              hostHeader:
+                                description: Host Header that request origin receives.
+                                type: string
+                              hotlinkProtection:
+                                description: Turn on or off the hotlink protection
+                                  feature.
+                                type: boolean
+                              id:
+                                description: Identifier of the action parameter to
+                                  modify.
+                                type: string
+                              increment:
+                                type: number
+                              matchedData:
+                                description: List of properties to configure WAF payload
+                                  logging.
+                                items:
+                                  properties:
+                                    publicKey:
+                                      description: Public key to use within WAF Ruleset
+                                        payload logging to view the HTTP request parameters.
+                                        You can generate a public key [using the `matched-data-cli`
+                                        command-line tool](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/command-line/generate-key-pair)
+                                        or [in the Cloudflare dashboard](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/configure).
+                                      type: string
+                                  type: object
+                                type: array
+                              mirage:
+                                description: Turn on or off Cloudflare Mirage of the
+                                  Cloudflare Speed app.
+                                type: boolean
+                              opportunisticEncryption:
+                                description: Turn on or off the Cloudflare Opportunistic
+                                  Encryption feature of the Edge Certificates tab
+                                  in the Cloudflare SSL/TLS app.
+                                type: boolean
+                              origin:
+                                description: List of properties to change request
+                                  origin.
+                                items:
+                                  properties:
+                                    host:
+                                      description: Origin Hostname where request is
+                                        sent.
+                                      type: string
+                                    port:
+                                      description: Origin Port where request is sent.
+                                      type: number
+                                  type: object
+                                type: array
+                              originCacheControl:
+                                description: Enable or disable the use of a more compliant
+                                  Cache Control parsing mechanism, enabled by default
+                                  for most zones.
+                                type: boolean
+                              originErrorPagePassthru:
+                                description: Pass-through error page for origin.
+                                type: boolean
+                              overrides:
+                                description: List of override configurations to apply
+                                  to the ruleset.
+                                items:
+                                  properties:
+                                    action:
+                                      description: 'Action to perform in the rule-level
+                                        override. Available values: `block`, `challenge`,
+                                        `compress_response`, `ddos_dynamic`, `ddos_mitigation`,
+                                        `execute`, `force_connection_close`, `js_challenge`,
+                                        `log`, `log_custom_field`, `managed_challenge`,
+                                        `redirect`, `rewrite`, `route`, `score`, `serve_error`,
+                                        `set_cache_settings`, `set_config`, `skip`.'
+                                      type: string
+                                    categories:
+                                      description: List of tag-based overrides.
+                                      items:
+                                        properties:
+                                          action:
+                                            description: 'Action to perform in the
+                                              tag-level override. Available values:
+                                              `block`, `challenge`, `compress_response`,
+                                              `ddos_dynamic`, `ddos_mitigation`, `execute`,
+                                              `force_connection_close`, `js_challenge`,
+                                              `log`, `log_custom_field`, `managed_challenge`,
+                                              `redirect`, `rewrite`, `route`, `score`,
+                                              `serve_error`, `set_cache_settings`,
+                                              `set_config`, `skip`.'
+                                            type: string
+                                          category:
+                                            description: Tag name to apply the ruleset
+                                              rule override to.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    rules:
+                                      description: List of rule-based overrides.
+                                      items:
+                                        properties:
+                                          action:
+                                            description: 'Action to perform in the
+                                              rule-level override. Available values:
+                                              `block`, `challenge`, `compress_response`,
+                                              `ddos_dynamic`, `ddos_mitigation`, `execute`,
+                                              `force_connection_close`, `js_challenge`,
+                                              `log`, `log_custom_field`, `managed_challenge`,
+                                              `redirect`, `rewrite`, `route`, `score`,
+                                              `serve_error`, `set_cache_settings`,
+                                              `set_config`, `skip`.'
+                                            type: string
+                                          id:
+                                            description: Rule ID to apply the override
+                                              to.
+                                            type: string
+                                          scoreThreshold:
+                                            description: Anomaly score threshold to
+                                              apply in the ruleset rule override.
+                                              Only applicable to modsecurity-based
+                                              rulesets.
+                                            type: number
+                                          sensitivityLevel:
+                                            description: Sensitivity level for a ruleset
+                                              rule override.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    sensitivityLevel:
+                                      description: 'Sensitivity level to override
+                                        for all ruleset rules. Available values: `default`,
+                                        `medium`, `low`, `eoff`.'
+                                      type: string
+                                  type: object
+                                type: array
+                              phases:
+                                description: 'Point in the request/response lifecycle
+                                  where the ruleset will be created. Available values:
+                                  `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`,
+                                  `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`,
+                                  `http_request_dynamic_redirect`, `http_request_firewall_custom`,
+                                  `http_request_firewall_managed`, `http_request_late_transform`,
+                                  `http_request_origin`, `http_request_redirect`,
+                                  `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`,
+                                  `http_response_compression`, `http_response_firewall_managed`,
+                                  `http_response_headers_transform`, `magic_transit`.'
+                                items:
+                                  type: string
+                                type: array
+                              polish:
+                                description: Apply options from the Polish feature
+                                  of the Cloudflare Speed app.
+                                type: string
+                              products:
+                                description: 'Products to target with the actions.
+                                  Available values: `bic`, `hot`, `ratelimit`, `securityLevel`,
+                                  `uablock`, `waf`, `zonelockdown`.'
+                                items:
+                                  type: string
+                                type: array
+                              readTimeout:
+                                description: Specifies a maximum timeout for reading
+                                  content from an origin server.
+                                type: number
+                              requestFields:
+                                description: List of request headers to include as
+                                  part of custom fields logging, in lowercase.
+                                items:
+                                  type: string
+                                type: array
+                              respectStrongEtags:
+                                description: Respect strong ETags.
+                                type: boolean
+                              response:
+                                description: List of parameters that configure the
+                                  response given to end users.
+                                items:
+                                  properties:
+                                    content:
+                                      description: Body content to include in the
+                                        response.
+                                      type: string
+                                    contentType:
+                                      description: HTTP content type to send in the
+                                        response.
+                                      type: string
+                                    statusCode:
+                                      description: HTTP status code to send in the
+                                        response.
+                                      type: number
+                                  type: object
+                                type: array
+                              responseFields:
+                                description: List of response headers to include as
+                                  part of custom fields logging, in lowercase.
+                                items:
+                                  type: string
+                                type: array
+                              rocketLoader:
+                                description: Turn on or off Cloudflare Rocket Loader
+                                  in the Cloudflare Speed app.
+                                type: boolean
+                              rules:
+                                additionalProperties:
+                                  type: string
+                                description: 'Map of managed WAF rule ID to comma-delimited
+                                  string of ruleset rule IDs. Example: `rules = {
+                                  "efb7b8c949ac4650a09736fc376e9aee" = "5de7edfa648c4d6891dc3e7f84534ffa,e3a567afc347477d9702d9047e97d760"
+                                  }`.'
+                                type: object
+                              ruleset:
+                                description: Which ruleset ID to target.
+                                type: string
+                              rulesets:
+                                description: List of managed WAF rule IDs to target.
+                                  Only valid when the `"action"` is set to skip.
+                                items:
+                                  type: string
+                                type: array
+                              securityLevel:
+                                description: Control options for the Security Level
+                                  feature from the Security app.
+                                type: string
+                              serveStale:
+                                description: List of serve stale parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    disableStaleWhileUpdating:
+                                      description: Disable stale while updating.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              serverSideExcludes:
+                                description: Turn on or off the Server Side Excludes
+                                  feature of the Cloudflare Scrape Shield app.
+                                type: boolean
+                              sni:
+                                description: List of properties to manange Server
+                                  Name Indication.
+                                items:
+                                  properties:
+                                    value:
+                                      description: Value to define for SNI.
+                                      type: string
+                                  type: object
+                                type: array
+                              ssl:
+                                description: Control options for the SSL feature of
+                                  the Edge Certificates tab in the Cloudflare SSL/TLS
+                                  app.
+                                type: string
+                              statusCode:
+                                description: HTTP status code of the custom error
+                                  response.
+                                type: number
+                              sxg:
+                                description: Turn on or off the SXG feature.
+                                type: boolean
+                              uri:
+                                description: List of URI properties to configure for
+                                  the ruleset rule when performing URL rewrite transformations.
+                                items:
+                                  properties:
+                                    origin:
+                                      type: boolean
+                                    path:
+                                      description: URI path configuration when performing
+                                        a URL rewrite.
+                                      items:
+                                        properties:
+                                          expression:
+                                            description: Expression that defines the
+                                              updated (dynamic) value of the URI path
+                                              or query string component. Uses the
+                                              Firewall Rules expression language based
+                                              on Wireshark display filters. Refer
+                                              to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                              documentation for all available fields,
+                                              operators, and functions.
+                                            type: string
+                                          value:
+                                            description: Static string value of the
+                                              updated URI path or query string component.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    query:
+                                      description: Query string configuration when
+                                        performing a URL rewrite.
+                                      items:
+                                        properties:
+                                          expression:
+                                            description: Expression that defines the
+                                              updated (dynamic) value of the URI path
+                                              or query string component. Uses the
+                                              Firewall Rules expression language based
+                                              on Wireshark display filters. Refer
+                                              to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                              documentation for all available fields,
+                                              operators, and functions.
+                                            type: string
+                                          value:
+                                            description: Static string value of the
+                                              updated URI path or query string component.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              version:
+                                description: Version of the ruleset to deploy.
+                                type: string
+                            type: object
+                          type: array
+                        description:
+                          description: Brief summary of the ruleset rule and its intended
+                            use.
+                          type: string
+                        enabled:
+                          description: Whether the rule is active.
+                          type: boolean
+                        exposedCredentialCheck:
+                          description: List of parameters that configure exposed credential
+                            checks.
+                          items:
+                            properties:
+                              passwordExpression:
+                                description: Firewall Rules expression language based
+                                  on Wireshark display filters for where to check
+                                  for the "password" value. Refer to the [Firewall
+                                  Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+                                type: string
+                              usernameExpression:
+                                description: Firewall Rules expression language based
+                                  on Wireshark display filters for where to check
+                                  for the "username" value. Refer to the [Firewall
+                                  Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+                                type: string
+                            type: object
+                          type: array
+                        expression:
+                          description: Criteria for an HTTP request to trigger the
+                            ruleset rule action. Uses the Firewall Rules expression
+                            language based on Wireshark display filters. Refer to
+                            the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                            documentation for all available fields, operators, and
+                            functions.
+                          type: string
+                        logging:
+                          description: List parameters to configure how the rule generates
+                            logs. Only valid for skip action.
+                          items:
+                            type: object
+                          type: array
+                        ratelimit:
+                          description: List of parameters that configure HTTP rate
+                            limiting behaviour.
+                          items:
+                            properties:
+                              characteristics:
+                                description: List of parameters that define how Cloudflare
+                                  tracks the request rate for this rule.
+                                items:
+                                  type: string
+                                type: array
+                              countingExpression:
+                                description: Criteria for counting HTTP requests to
+                                  trigger the Rate Limiting action. Uses the Firewall
+                                  Rules expression language based on Wireshark display
+                                  filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                  documentation for all available fields, operators,
+                                  and functions.
+                                type: string
+                              mitigationTimeout:
+                                description: Once the request rate is reached, the
+                                  Rate Limiting rule blocks further requests for the
+                                  period of time defined in this field.
+                                type: number
+                              period:
+                                description: The period of time to consider (in seconds)
+                                  when evaluating the request rate.
+                                type: number
+                              requestsPerPeriod:
+                                description: The number of requests over the period
+                                  of time that will trigger the Rate Limiting rule.
+                                type: number
+                              requestsToOrigin:
+                                description: Whether to include requests to origin
+                                  within the Rate Limiting count.
+                                type: boolean
+                              scorePerPeriod:
+                                description: The maximum aggregate score over the
+                                  period of time that will trigger Rate Limiting rule.
+                                type: number
+                              scoreResponseHeaderName:
+                                description: Name of HTTP header in the response,
+                                  set by the origin server, with the score for the
+                                  current request.
+                                type: string
+                            type: object
+                          type: array
+                        ref:
+                          description: Rule reference.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -1185,31 +1954,479 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: kind is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.kind)
+                || has(self.initProvider.kind)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: phase is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.phase)
+                || has(self.initProvider.phase)'
           status:
             description: RulesetStatus defines the observed state of Ruleset.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  description:
+                    description: Brief summary of the ruleset and its intended use.
+                    type: string
                   id:
+                    type: string
+                  kind:
+                    description: 'Type of Ruleset to create. Available values: `custom`,
+                      `managed`, `root`, `zone`.'
+                    type: string
+                  name:
+                    description: Name of the ruleset.
+                    type: string
+                  phase:
+                    description: 'Point in the request/response lifecycle where the
+                      ruleset will be created. Available values: `ddos_l4`, `ddos_l7`,
+                      `http_config_settings`, `http_custom_errors`, `http_log_custom_fields`,
+                      `http_ratelimit`, `http_request_cache_settings`, `http_request_dynamic_redirect`,
+                      `http_request_firewall_custom`, `http_request_firewall_managed`,
+                      `http_request_late_transform`, `http_request_origin`, `http_request_redirect`,
+                      `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`,
+                      `http_response_compression`, `http_response_firewall_managed`,
+                      `http_response_headers_transform`, `magic_transit`.'
                     type: string
                   rules:
                     description: List of rules to apply to the ruleset.
                     items:
                       properties:
+                        action:
+                          description: 'Action to perform in the ruleset rule. Available
+                            values: `block`, `challenge`, `compress_response`, `ddos_dynamic`,
+                            `ddos_mitigation`, `execute`, `force_connection_close`,
+                            `js_challenge`, `log`, `log_custom_field`, `managed_challenge`,
+                            `redirect`, `rewrite`, `route`, `score`, `serve_error`,
+                            `set_cache_settings`, `set_config`, `skip`.'
+                          type: string
                         actionParameters:
                           description: List of parameters that configure the behavior
                             of the ruleset rule action.
                           items:
                             properties:
+                              additionalCacheablePorts:
+                                description: Specifies uncommon ports to allow cacheable
+                                  assets to be served from.
+                                items:
+                                  type: number
+                                type: array
+                              algorithms:
+                                description: Compression algorithms to use in order
+                                  of preference.
+                                items:
+                                  properties:
+                                    name:
+                                      description: 'Name of the compression algorithm
+                                        to use. Available values: `gzip`, `brotli`,
+                                        `auto`, `default`, `none`'
+                                      type: string
+                                  type: object
+                                type: array
+                              automaticHttpsRewrites:
+                                description: Turn on or off Cloudflare Automatic HTTPS
+                                  rewrites.
+                                type: boolean
+                              autominify:
+                                description: Indicate which file extensions to minify
+                                  automatically.
+                                items:
+                                  properties:
+                                    css:
+                                      description: CSS minification.
+                                      type: boolean
+                                    html:
+                                      description: HTML minification.
+                                      type: boolean
+                                    js:
+                                      description: JS minification.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              bic:
+                                description: Inspect the visitor's browser for headers
+                                  commonly associated with spammers and certain bots.
+                                type: boolean
+                              browserTtl:
+                                description: List of browser TTL parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    default:
+                                      description: Default browser TTL. This value
+                                        is required when override_origin is set
+                                      type: number
+                                    mode:
+                                      description: 'Mode of the browser TTL. Available
+                                        values: `override_origin`, `respect_origin`,
+                                        `bypass`'
+                                      type: string
+                                  type: object
+                                type: array
+                              cache:
+                                description: Whether to cache if expression matches.
+                                type: boolean
+                              cacheKey:
+                                description: List of cache key parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    cacheByDeviceType:
+                                      description: Cache by device type.
+                                      type: boolean
+                                    cacheDeceptionArmor:
+                                      description: Cache deception armor.
+                                      type: boolean
+                                    customKey:
+                                      description: Custom key parameters for the request.
+                                      items:
+                                        properties:
+                                          cookie:
+                                            description: Cookie parameters for the
+                                              custom key.
+                                            items:
+                                              properties:
+                                                checkPresence:
+                                                  description: List of cookies to
+                                                    check for presence in the custom
+                                                    key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                                include:
+                                                  description: List of cookies to
+                                                    include in the custom key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                              type: object
+                                            type: array
+                                          header:
+                                            description: Header parameters for the
+                                              custom key.
+                                            items:
+                                              properties:
+                                                checkPresence:
+                                                  description: List of headers to
+                                                    check for presence in the custom
+                                                    key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                                excludeOrigin:
+                                                  description: Exclude the origin
+                                                    header from the custom key.
+                                                  type: boolean
+                                                include:
+                                                  description: List of headers to
+                                                    include in the custom key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                              type: object
+                                            type: array
+                                          host:
+                                            description: Host parameters for the custom
+                                              key.
+                                            items:
+                                              properties:
+                                                resolved:
+                                                  description: Resolve hostname to
+                                                    IP address.
+                                                  type: boolean
+                                              type: object
+                                            type: array
+                                          queryString:
+                                            description: Query string parameters for
+                                              the custom key.
+                                            items:
+                                              properties:
+                                                exclude:
+                                                  description: List of query string
+                                                    parameters to exclude from the
+                                                    custom key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                                include:
+                                                  description: List of query string
+                                                    parameters to include in the custom
+                                                    key.
+                                                  items:
+                                                    type: string
+                                                  type: array
+                                              type: object
+                                            type: array
+                                          user:
+                                            description: User parameters for the custom
+                                              key.
+                                            items:
+                                              properties:
+                                                deviceType:
+                                                  description: Add device type to
+                                                    the custom key.
+                                                  type: boolean
+                                                geo:
+                                                  description: Add geo data to the
+                                                    custom key.
+                                                  type: boolean
+                                                lang:
+                                                  description: Add language data to
+                                                    the custom key.
+                                                  type: boolean
+                                              type: object
+                                            type: array
+                                        type: object
+                                      type: array
+                                    ignoreQueryStringsOrder:
+                                      description: Ignore query strings order.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              content:
+                                description: Content of the custom error response.
+                                type: string
+                              contentType:
+                                description: Content-Type of the custom error response.
+                                type: string
+                              cookieFields:
+                                description: List of cookie values to include as part
+                                  of custom fields logging.
+                                items:
+                                  type: string
+                                type: array
+                              disableApps:
+                                description: Turn off all active Cloudflare Apps.
+                                type: boolean
+                              disableRailgun:
+                                description: Turn off railgun feature of the Cloudflare
+                                  Speed app.
+                                type: boolean
+                              disableZaraz:
+                                description: Turn off zaraz feature.
+                                type: boolean
+                              edgeTtl:
+                                description: List of edge TTL parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    default:
+                                      description: Default edge TTL.
+                                      type: number
+                                    mode:
+                                      description: 'Mode of the edge TTL. Available
+                                        values: `override_origin`, `respect_origin`,
+                                        `bypass_by_default`'
+                                      type: string
+                                    statusCodeTtl:
+                                      description: Edge TTL for the status codes.
+                                      items:
+                                        properties:
+                                          statusCode:
+                                            description: Status code for which the
+                                              edge TTL is applied.
+                                            type: number
+                                          statusCodeRange:
+                                            description: Status code range for which
+                                              the edge TTL is applied.
+                                            items:
+                                              properties:
+                                                from:
+                                                  description: From status code.
+                                                  type: number
+                                                to:
+                                                  description: To status code.
+                                                  type: number
+                                              type: object
+                                            type: array
+                                          value:
+                                            description: Status code edge TTL value.
+                                            type: number
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              emailObfuscation:
+                                description: Turn on or off the Cloudflare Email Obfuscation
+                                  feature of the Cloudflare Scrape Shield app.
+                                type: boolean
+                              fromList:
+                                description: Use a list to lookup information for
+                                  the action.
+                                items:
+                                  properties:
+                                    key:
+                                      description: Expression to use for the list
+                                        lookup.
+                                      type: string
+                                    name:
+                                      description: Name of the list.
+                                      type: string
+                                  type: object
+                                type: array
+                              fromValue:
+                                description: Use a value to lookup information for
+                                  the action.
+                                items:
+                                  properties:
+                                    preserveQueryString:
+                                      description: Preserve query string for redirect
+                                        URL.
+                                      type: boolean
+                                    statusCode:
+                                      description: Status code for redirect.
+                                      type: number
+                                    targetUrl:
+                                      description: Target URL for redirect.
+                                      items:
+                                        properties:
+                                          expression:
+                                            description: Use a value dynamically determined
+                                              by the Firewall Rules expression language
+                                              based on Wireshark display filters.
+                                              Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                              documentation for all available fields,
+                                              operators, and functions.
+                                            type: string
+                                          value:
+                                            description: Static value to provide as
+                                              the HTTP request header value.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              headers:
+                                description: 'List of HTTP header modifications to
+                                  perform in the ruleset rule. Note: Headers are order
+                                  dependent and must be provided sorted alphabetically
+                                  ascending based on the `name` value.'
+                                items:
+                                  properties:
+                                    expression:
+                                      description: Use a value dynamically determined
+                                        by the Firewall Rules expression language
+                                        based on Wireshark display filters. Refer
+                                        to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                        documentation for all available fields, operators,
+                                        and functions.
+                                      type: string
+                                    name:
+                                      description: Name of the HTTP request header
+                                        to target.
+                                      type: string
+                                    operation:
+                                      description: 'Action to perform on the HTTP
+                                        request header. Available values: `remove`,
+                                        `set`, `add`.'
+                                      type: string
+                                    value:
+                                      description: Static value to provide as the
+                                        HTTP request header value.
+                                      type: string
+                                  type: object
+                                type: array
+                              hostHeader:
+                                description: Host Header that request origin receives.
+                                type: string
+                              hotlinkProtection:
+                                description: Turn on or off the hotlink protection
+                                  feature.
+                                type: boolean
+                              id:
+                                description: Identifier of the action parameter to
+                                  modify.
+                                type: string
+                              increment:
+                                type: number
+                              matchedData:
+                                description: List of properties to configure WAF payload
+                                  logging.
+                                items:
+                                  properties:
+                                    publicKey:
+                                      description: Public key to use within WAF Ruleset
+                                        payload logging to view the HTTP request parameters.
+                                        You can generate a public key [using the `matched-data-cli`
+                                        command-line tool](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/command-line/generate-key-pair)
+                                        or [in the Cloudflare dashboard](https://developers.cloudflare.com/waf/managed-rulesets/payload-logging/configure).
+                                      type: string
+                                  type: object
+                                type: array
+                              mirage:
+                                description: Turn on or off Cloudflare Mirage of the
+                                  Cloudflare Speed app.
+                                type: boolean
+                              opportunisticEncryption:
+                                description: Turn on or off the Cloudflare Opportunistic
+                                  Encryption feature of the Edge Certificates tab
+                                  in the Cloudflare SSL/TLS app.
+                                type: boolean
+                              origin:
+                                description: List of properties to change request
+                                  origin.
+                                items:
+                                  properties:
+                                    host:
+                                      description: Origin Hostname where request is
+                                        sent.
+                                      type: string
+                                    port:
+                                      description: Origin Port where request is sent.
+                                      type: number
+                                  type: object
+                                type: array
+                              originCacheControl:
+                                description: Enable or disable the use of a more compliant
+                                  Cache Control parsing mechanism, enabled by default
+                                  for most zones.
+                                type: boolean
+                              originErrorPagePassthru:
+                                description: Pass-through error page for origin.
+                                type: boolean
                               overrides:
                                 description: List of override configurations to apply
                                   to the ruleset.
                                 items:
                                   properties:
+                                    action:
+                                      description: 'Action to perform in the rule-level
+                                        override. Available values: `block`, `challenge`,
+                                        `compress_response`, `ddos_dynamic`, `ddos_mitigation`,
+                                        `execute`, `force_connection_close`, `js_challenge`,
+                                        `log`, `log_custom_field`, `managed_challenge`,
+                                        `redirect`, `rewrite`, `route`, `score`, `serve_error`,
+                                        `set_cache_settings`, `set_config`, `skip`.'
+                                      type: string
                                     categories:
                                       description: List of tag-based overrides.
                                       items:
                                         properties:
+                                          action:
+                                            description: 'Action to perform in the
+                                              tag-level override. Available values:
+                                              `block`, `challenge`, `compress_response`,
+                                              `ddos_dynamic`, `ddos_mitigation`, `execute`,
+                                              `force_connection_close`, `js_challenge`,
+                                              `log`, `log_custom_field`, `managed_challenge`,
+                                              `redirect`, `rewrite`, `route`, `score`,
+                                              `serve_error`, `set_cache_settings`,
+                                              `set_config`, `skip`.'
+                                            type: string
+                                          category:
+                                            description: Tag name to apply the ruleset
+                                              rule override to.
+                                            type: string
                                           enabled:
                                             description: Defines if the current tag-level
                                               override enables or disables the ruleset
@@ -1225,28 +2442,320 @@ spec:
                                       description: List of rule-based overrides.
                                       items:
                                         properties:
+                                          action:
+                                            description: 'Action to perform in the
+                                              rule-level override. Available values:
+                                              `block`, `challenge`, `compress_response`,
+                                              `ddos_dynamic`, `ddos_mitigation`, `execute`,
+                                              `force_connection_close`, `js_challenge`,
+                                              `log`, `log_custom_field`, `managed_challenge`,
+                                              `redirect`, `rewrite`, `route`, `score`,
+                                              `serve_error`, `set_cache_settings`,
+                                              `set_config`, `skip`.'
+                                            type: string
                                           enabled:
                                             description: Defines if the current rule-level
                                               override enables or disables the rule.
                                             type: boolean
+                                          id:
+                                            description: Rule ID to apply the override
+                                              to.
+                                            type: string
+                                          scoreThreshold:
+                                            description: Anomaly score threshold to
+                                              apply in the ruleset rule override.
+                                              Only applicable to modsecurity-based
+                                              rulesets.
+                                            type: number
+                                          sensitivityLevel:
+                                            description: Sensitivity level for a ruleset
+                                              rule override.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    sensitivityLevel:
+                                      description: 'Sensitivity level to override
+                                        for all ruleset rules. Available values: `default`,
+                                        `medium`, `low`, `eoff`.'
+                                      type: string
+                                  type: object
+                                type: array
+                              phases:
+                                description: 'Point in the request/response lifecycle
+                                  where the ruleset will be created. Available values:
+                                  `ddos_l4`, `ddos_l7`, `http_config_settings`, `http_custom_errors`,
+                                  `http_log_custom_fields`, `http_ratelimit`, `http_request_cache_settings`,
+                                  `http_request_dynamic_redirect`, `http_request_firewall_custom`,
+                                  `http_request_firewall_managed`, `http_request_late_transform`,
+                                  `http_request_origin`, `http_request_redirect`,
+                                  `http_request_sanitize`, `http_request_sbfm`, `http_request_transform`,
+                                  `http_response_compression`, `http_response_firewall_managed`,
+                                  `http_response_headers_transform`, `magic_transit`.'
+                                items:
+                                  type: string
+                                type: array
+                              polish:
+                                description: Apply options from the Polish feature
+                                  of the Cloudflare Speed app.
+                                type: string
+                              products:
+                                description: 'Products to target with the actions.
+                                  Available values: `bic`, `hot`, `ratelimit`, `securityLevel`,
+                                  `uablock`, `waf`, `zonelockdown`.'
+                                items:
+                                  type: string
+                                type: array
+                              readTimeout:
+                                description: Specifies a maximum timeout for reading
+                                  content from an origin server.
+                                type: number
+                              requestFields:
+                                description: List of request headers to include as
+                                  part of custom fields logging, in lowercase.
+                                items:
+                                  type: string
+                                type: array
+                              respectStrongEtags:
+                                description: Respect strong ETags.
+                                type: boolean
+                              response:
+                                description: List of parameters that configure the
+                                  response given to end users.
+                                items:
+                                  properties:
+                                    content:
+                                      description: Body content to include in the
+                                        response.
+                                      type: string
+                                    contentType:
+                                      description: HTTP content type to send in the
+                                        response.
+                                      type: string
+                                    statusCode:
+                                      description: HTTP status code to send in the
+                                        response.
+                                      type: number
+                                  type: object
+                                type: array
+                              responseFields:
+                                description: List of response headers to include as
+                                  part of custom fields logging, in lowercase.
+                                items:
+                                  type: string
+                                type: array
+                              rocketLoader:
+                                description: Turn on or off Cloudflare Rocket Loader
+                                  in the Cloudflare Speed app.
+                                type: boolean
+                              rules:
+                                additionalProperties:
+                                  type: string
+                                description: 'Map of managed WAF rule ID to comma-delimited
+                                  string of ruleset rule IDs. Example: `rules = {
+                                  "efb7b8c949ac4650a09736fc376e9aee" = "5de7edfa648c4d6891dc3e7f84534ffa,e3a567afc347477d9702d9047e97d760"
+                                  }`.'
+                                type: object
+                              ruleset:
+                                description: Which ruleset ID to target.
+                                type: string
+                              rulesets:
+                                description: List of managed WAF rule IDs to target.
+                                  Only valid when the `"action"` is set to skip.
+                                items:
+                                  type: string
+                                type: array
+                              securityLevel:
+                                description: Control options for the Security Level
+                                  feature from the Security app.
+                                type: string
+                              serveStale:
+                                description: List of serve stale parameters to apply
+                                  to the request.
+                                items:
+                                  properties:
+                                    disableStaleWhileUpdating:
+                                      description: Disable stale while updating.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              serverSideExcludes:
+                                description: Turn on or off the Server Side Excludes
+                                  feature of the Cloudflare Scrape Shield app.
+                                type: boolean
+                              sni:
+                                description: List of properties to manange Server
+                                  Name Indication.
+                                items:
+                                  properties:
+                                    value:
+                                      description: Value to define for SNI.
+                                      type: string
+                                  type: object
+                                type: array
+                              ssl:
+                                description: Control options for the SSL feature of
+                                  the Edge Certificates tab in the Cloudflare SSL/TLS
+                                  app.
+                                type: string
+                              statusCode:
+                                description: HTTP status code of the custom error
+                                  response.
+                                type: number
+                              sxg:
+                                description: Turn on or off the SXG feature.
+                                type: boolean
+                              uri:
+                                description: List of URI properties to configure for
+                                  the ruleset rule when performing URL rewrite transformations.
+                                items:
+                                  properties:
+                                    origin:
+                                      type: boolean
+                                    path:
+                                      description: URI path configuration when performing
+                                        a URL rewrite.
+                                      items:
+                                        properties:
+                                          expression:
+                                            description: Expression that defines the
+                                              updated (dynamic) value of the URI path
+                                              or query string component. Uses the
+                                              Firewall Rules expression language based
+                                              on Wireshark display filters. Refer
+                                              to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                              documentation for all available fields,
+                                              operators, and functions.
+                                            type: string
+                                          value:
+                                            description: Static string value of the
+                                              updated URI path or query string component.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    query:
+                                      description: Query string configuration when
+                                        performing a URL rewrite.
+                                      items:
+                                        properties:
+                                          expression:
+                                            description: Expression that defines the
+                                              updated (dynamic) value of the URI path
+                                              or query string component. Uses the
+                                              Firewall Rules expression language based
+                                              on Wireshark display filters. Refer
+                                              to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                              documentation for all available fields,
+                                              operators, and functions.
+                                            type: string
+                                          value:
+                                            description: Static string value of the
+                                              updated URI path or query string component.
+                                            type: string
                                         type: object
                                       type: array
                                   type: object
                                 type: array
+                              version:
+                                description: Version of the ruleset to deploy.
+                                type: string
                             type: object
                           type: array
+                        description:
+                          description: Brief summary of the ruleset rule and its intended
+                            use.
+                          type: string
+                        enabled:
+                          description: Whether the rule is active.
+                          type: boolean
+                        exposedCredentialCheck:
+                          description: List of parameters that configure exposed credential
+                            checks.
+                          items:
+                            properties:
+                              passwordExpression:
+                                description: Firewall Rules expression language based
+                                  on Wireshark display filters for where to check
+                                  for the "password" value. Refer to the [Firewall
+                                  Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+                                type: string
+                              usernameExpression:
+                                description: Firewall Rules expression language based
+                                  on Wireshark display filters for where to check
+                                  for the "username" value. Refer to the [Firewall
+                                  Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language).
+                                type: string
+                            type: object
+                          type: array
+                        expression:
+                          description: Criteria for an HTTP request to trigger the
+                            ruleset rule action. Uses the Firewall Rules expression
+                            language based on Wireshark display filters. Refer to
+                            the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                            documentation for all available fields, operators, and
+                            functions.
+                          type: string
                         id:
                           description: Unique rule identifier.
                           type: string
+                        lastUpdated:
+                          description: The most recent update to this rule.
+                          type: string
                         logging:
                           description: List parameters to configure how the rule generates
-                            logs.
+                            logs. Only valid for skip action.
                           items:
                             properties:
                               enabled:
                                 description: Override the default logging behavior
                                   when a rule is matched.
                                 type: boolean
+                            type: object
+                          type: array
+                        ratelimit:
+                          description: List of parameters that configure HTTP rate
+                            limiting behaviour.
+                          items:
+                            properties:
+                              characteristics:
+                                description: List of parameters that define how Cloudflare
+                                  tracks the request rate for this rule.
+                                items:
+                                  type: string
+                                type: array
+                              countingExpression:
+                                description: Criteria for counting HTTP requests to
+                                  trigger the Rate Limiting action. Uses the Firewall
+                                  Rules expression language based on Wireshark display
+                                  filters. Refer to the [Firewall Rules language](https://developers.cloudflare.com/firewall/cf-firewall-language)
+                                  documentation for all available fields, operators,
+                                  and functions.
+                                type: string
+                              mitigationTimeout:
+                                description: Once the request rate is reached, the
+                                  Rate Limiting rule blocks further requests for the
+                                  period of time defined in this field.
+                                type: number
+                              period:
+                                description: The period of time to consider (in seconds)
+                                  when evaluating the request rate.
+                                type: number
+                              requestsPerPeriod:
+                                description: The number of requests over the period
+                                  of time that will trigger the Rate Limiting rule.
+                                type: number
+                              requestsToOrigin:
+                                description: Whether to include requests to origin
+                                  within the Rate Limiting count.
+                                type: boolean
+                              scorePerPeriod:
+                                description: The maximum aggregate score over the
+                                  period of time that will trigger Rate Limiting rule.
+                                type: number
+                              scoreResponseHeaderName:
+                                description: Name of HTTP header in the response,
+                                  set by the origin server, with the score for the
+                                  current request.
+                                type: string
                             type: object
                           type: array
                         ref:
@@ -1257,6 +2766,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  zoneId:
+                    description: The zone identifier to target for the resource.
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

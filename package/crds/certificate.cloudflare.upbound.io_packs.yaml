@@ -209,12 +209,86 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - certificateAuthority
-                - hosts
-                - type
-                - validationMethod
-                - validityDays
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  certificateAuthority:
+                    description: 'Which certificate authority to issue the certificate
+                      pack. Available values: `digicert`, `lets_encrypt`, `google`.
+                      **Modifying this attribute will force creation of a new resource.**'
+                    type: string
+                  cloudflareBranding:
+                    description: Whether or not to include Cloudflare branding. This
+                      will add `sni.cloudflaressl.com` as the Common Name if set to
+                      `true`. **Modifying this attribute will force creation of a
+                      new resource.**
+                    type: boolean
+                  hosts:
+                    description: 'List of hostnames to provision the certificate pack
+                      for. The zone name must be included as a host. Note: If using
+                      Let''s Encrypt, you cannot use individual subdomains and only
+                      a wildcard for subdomain is available. **Modifying this attribute
+                      will force creation of a new resource.**'
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: 'Certificate pack configuration type. Available values:
+                      `advanced`. **Modifying this attribute will force creation of
+                      a new resource.**'
+                    type: string
+                  validationErrors:
+                    items:
+                      type: object
+                    type: array
+                  validationMethod:
+                    description: 'Which validation method to use in order to prove
+                      domain ownership. Available values: `txt`, `http`, `email`.
+                      **Modifying this attribute will force creation of a new resource.**'
+                    type: string
+                  validationRecords:
+                    items:
+                      properties:
+                        cnameName:
+                          type: string
+                        cnameTarget:
+                          type: string
+                        emails:
+                          items:
+                            type: string
+                          type: array
+                        httpBody:
+                          type: string
+                        httpUrl:
+                          type: string
+                        txtName:
+                          type: string
+                        txtValue:
+                          type: string
+                      type: object
+                    type: array
+                  validityDays:
+                    description: 'How long the certificate is valid for. Note: If
+                      using Let''s Encrypt, this value can only be 90 days. Available
+                      values: `14`, `30`, `90`, `365`. **Modifying this attribute
+                      will force creation of a new resource.**'
+                    type: number
+                  waitForActiveStatus:
+                    description: Whether or not to wait for a certificate pack to
+                      reach status `active` during creation. Defaults to `false`.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -413,12 +487,58 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: certificateAuthority is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.certificateAuthority)
+                || has(self.initProvider.certificateAuthority)'
+            - message: hosts is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.hosts)
+                || has(self.initProvider.hosts)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
+            - message: validationMethod is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.validationMethod)
+                || has(self.initProvider.validationMethod)'
+            - message: validityDays is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.validityDays)
+                || has(self.initProvider.validityDays)'
           status:
             description: PackStatus defines the observed state of Pack.
             properties:
               atProvider:
                 properties:
+                  certificateAuthority:
+                    description: 'Which certificate authority to issue the certificate
+                      pack. Available values: `digicert`, `lets_encrypt`, `google`.
+                      **Modifying this attribute will force creation of a new resource.**'
+                    type: string
+                  cloudflareBranding:
+                    description: Whether or not to include Cloudflare branding. This
+                      will add `sni.cloudflaressl.com` as the Common Name if set to
+                      `true`. **Modifying this attribute will force creation of a
+                      new resource.**
+                    type: boolean
+                  hosts:
+                    description: 'List of hostnames to provision the certificate pack
+                      for. The zone name must be included as a host. Note: If using
+                      Let''s Encrypt, you cannot use individual subdomains and only
+                      a wildcard for subdomain is available. **Modifying this attribute
+                      will force creation of a new resource.**'
+                    items:
+                      type: string
+                    type: array
                   id:
+                    type: string
+                  type:
+                    description: 'Certificate pack configuration type. Available values:
+                      `advanced`. **Modifying this attribute will force creation of
+                      a new resource.**'
                     type: string
                   validationErrors:
                     items:
@@ -427,6 +547,47 @@ spec:
                           type: string
                       type: object
                     type: array
+                  validationMethod:
+                    description: 'Which validation method to use in order to prove
+                      domain ownership. Available values: `txt`, `http`, `email`.
+                      **Modifying this attribute will force creation of a new resource.**'
+                    type: string
+                  validationRecords:
+                    items:
+                      properties:
+                        cnameName:
+                          type: string
+                        cnameTarget:
+                          type: string
+                        emails:
+                          items:
+                            type: string
+                          type: array
+                        httpBody:
+                          type: string
+                        httpUrl:
+                          type: string
+                        txtName:
+                          type: string
+                        txtValue:
+                          type: string
+                      type: object
+                    type: array
+                  validityDays:
+                    description: 'How long the certificate is valid for. Note: If
+                      using Let''s Encrypt, this value can only be 90 days. Available
+                      values: `14`, `30`, `90`, `365`. **Modifying this attribute
+                      will force creation of a new resource.**'
+                    type: number
+                  waitForActiveStatus:
+                    description: Whether or not to wait for a certificate pack to
+                      reach status `active` during creation. Defaults to `false`.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: boolean
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

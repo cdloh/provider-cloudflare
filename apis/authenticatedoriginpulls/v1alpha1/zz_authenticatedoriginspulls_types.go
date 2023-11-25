@@ -13,12 +13,42 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AuthenticatedOriginsPullsInitParameters struct {
+
+	// Whether or not to enable Authenticated Origin Pulls on the given zone or hostname.
+	// Whether to enable Authenticated Origin Pulls on the given zone or hostname.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Specify a hostname to enable Per-Hostname Authenticated Origin Pulls on, using the provided certificate.
+	// Specify a hostname to enable Per-Hostname Authenticated Origin Pulls on, using the provided certificate.
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+}
+
 type AuthenticatedOriginsPullsObservation struct {
+
+	// The id of an uploaded Authenticated Origin Pulls certificate. If no hostname is provided, this certificate will be used zone wide as Per-Zone Authenticated Origin Pulls.
+	// The ID of an uploaded Authenticated Origin Pulls certificate. If no hostname is provided, this certificate will be used zone wide as Per-Zone Authenticated Origin Pulls.
+	AuthenticatedOriginPullsCertificate *string `json:"authenticatedOriginPullsCertificate,omitempty" tf:"authenticated_origin_pulls_certificate,omitempty"`
+
+	// Whether or not to enable Authenticated Origin Pulls on the given zone or hostname.
+	// Whether to enable Authenticated Origin Pulls on the given zone or hostname.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Specify a hostname to enable Per-Hostname Authenticated Origin Pulls on, using the provided certificate.
+	// Specify a hostname to enable Per-Hostname Authenticated Origin Pulls on, using the provided certificate.
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The zone ID to upload the certificate to.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type AuthenticatedOriginsPullsParameters struct {
 
+	// The id of an uploaded Authenticated Origin Pulls certificate. If no hostname is provided, this certificate will be used zone wide as Per-Zone Authenticated Origin Pulls.
+	// The ID of an uploaded Authenticated Origin Pulls certificate. If no hostname is provided, this certificate will be used zone wide as Per-Zone Authenticated Origin Pulls.
 	// +crossplane:generate:reference:type=Certificate
 	// +kubebuilder:validation:Optional
 	AuthenticatedOriginPullsCertificate *string `json:"authenticatedOriginPullsCertificate,omitempty" tf:"authenticated_origin_pulls_certificate,omitempty"`
@@ -31,14 +61,19 @@ type AuthenticatedOriginsPullsParameters struct {
 	// +kubebuilder:validation:Optional
 	AuthenticatedOriginPullsCertificateSelector *v1.Selector `json:"authenticatedOriginPullsCertificateSelector,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Required
-	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+	// Whether or not to enable Authenticated Origin Pulls on the given zone or hostname.
+	// Whether to enable Authenticated Origin Pulls on the given zone or hostname.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// Specify a hostname to enable Per-Hostname Authenticated Origin Pulls on, using the provided certificate.
+	// Specify a hostname to enable Per-Hostname Authenticated Origin Pulls on, using the provided certificate.
 	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
+	// The zone ID to upload the certificate to.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -55,6 +90,18 @@ type AuthenticatedOriginsPullsParameters struct {
 type AuthenticatedOriginsPullsSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AuthenticatedOriginsPullsParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AuthenticatedOriginsPullsInitParameters `json:"initProvider,omitempty"`
 }
 
 // AuthenticatedOriginsPullsStatus defines the observed state of AuthenticatedOriginsPulls.
@@ -65,7 +112,7 @@ type AuthenticatedOriginsPullsStatus struct {
 
 // +kubebuilder:object:root=true
 
-// AuthenticatedOriginsPulls is the Schema for the AuthenticatedOriginsPullss API. <no value>
+// AuthenticatedOriginsPulls is the Schema for the AuthenticatedOriginsPullss API. Provides a Cloudflare Authenticated Origin Pulls resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -75,8 +122,9 @@ type AuthenticatedOriginsPullsStatus struct {
 type AuthenticatedOriginsPulls struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              AuthenticatedOriginsPullsSpec   `json:"spec"`
-	Status            AuthenticatedOriginsPullsStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.enabled) || has(self.initProvider.enabled)",message="enabled is a required parameter"
+	Spec   AuthenticatedOriginsPullsSpec   `json:"spec"`
+	Status AuthenticatedOriginsPullsStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

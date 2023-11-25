@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Rule is the Schema for the Rules API. <no value>
+        description: Rule is the Schema for the Rules API. Provides a Cloudflare page
+          rule resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,206 +68,304 @@ spec:
               forProvider:
                 properties:
                   actions:
+                    description: The actions taken by the page rule, options given
+                      below.
                     items:
                       properties:
                         alwaysUseHttps:
-                          description: Defaults to `false`.
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
                           type: boolean
                         automaticHttpsRewrites:
+                          description: Whether this action is "on" or "off".
                           type: string
                         browserCacheTtl:
+                          description: The Time To Live for the browser cache. 0 means
+                            'Respect Existing Headers'
                           type: string
                         browserCheck:
+                          description: Whether this action is "on" or "off".
                           type: string
                         bypassCacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            bypass cache the page.
                           type: string
                         cacheByDeviceType:
+                          description: Whether this action is "on" or "off".
                           type: string
                         cacheDeceptionArmor:
+                          description: Whether this action is "on" or "off".
                           type: string
                         cacheKeyFields:
+                          description: Controls how Cloudflare creates Cache Keys
+                            used to identify files in cache. See below for full description.
                           items:
                             properties:
                               cookie:
+                                description: 'Controls what cookies go into Cache
+                                  Key:'
                                 items:
                                   properties:
                                     checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
                                       items:
                                         type: string
                                       type: array
                                     include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
                                       items:
                                         type: string
                                       type: array
                                   type: object
                                 type: array
                               header:
+                                description: 'Controls what HTTP headers go into Cache
+                                  Key:'
                                 items:
                                   properties:
                                     checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
                                       items:
                                         type: string
                                       type: array
                                     exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
                                       items:
                                         type: string
                                       type: array
                                     include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
                                       items:
                                         type: string
                                       type: array
                                   type: object
                                 type: array
                               host:
+                                description: 'Controls which Host header goes into
+                                  Cache Key:'
                                 items:
                                   properties:
                                     resolved:
-                                      description: Defaults to `false`.
+                                      description: false (default) - includes the
+                                        Host header in the HTTP request sent to the
+                                        origin; true - includes the Host header that
+                                        was resolved to get the origin IP for the
+                                        request (e.g. changed with Resolve Override
+                                        Page Rule). Defaults to `false`.
                                       type: boolean
                                   type: object
                                 type: array
                               queryString:
+                                description: Controls which URL query string parameters
+                                  go into the Cache Key.
                                 items:
                                   properties:
                                     exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
                                       items:
                                         type: string
                                       type: array
                                     ignore:
+                                      description: false (default) - all query string
+                                        parameters are used for Cache Key, unless
+                                        explicitly excluded; true - all query string
+                                        parameters are ignored; value should be false
+                                        if any of exclude or include is non-empty.
                                       type: boolean
                                     include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
                                       items:
                                         type: string
                                       type: array
                                   type: object
                                 type: array
                               user:
+                                description: Controls which end user-related features
+                                  go into the Cache Key.
                                 items:
                                   properties:
                                     deviceType:
+                                      description: true - classifies a request as
+                                        “mobile”, “desktop”, or “tablet” based on
+                                        the User Agent; defaults to false.
                                       type: boolean
                                     geo:
+                                      description: true - includes the client’s country,
+                                        derived from the IP address; defaults to false.
                                       type: boolean
                                     lang:
+                                      description: true - includes the first language
+                                        code contained in the Accept-Language header
+                                        sent by the client; defaults to false.
                                       type: boolean
                                   type: object
                                 type: array
-                            required:
-                            - cookie
-                            - header
-                            - host
-                            - queryString
-                            - user
                             type: object
                           type: array
                         cacheLevel:
+                          description: Whether to set the cache level to "bypass",
+                            "basic", "simplified", "aggressive", or "cache_everything".
                           type: string
                         cacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            cache the page.
                           type: string
                         cacheTtlByStatus:
+                          description: Set cache TTL based on the response status
+                            from the origin web server. Can be specified multiple
+                            times. See below for full description.
                           items:
                             properties:
                               codes:
+                                description: A HTTP code (e.g. 404) or range of codes
+                                  (e.g. 400-499)
                                 type: string
                               ttl:
+                                description: Duration a resource lives in the Cloudflare
+                                  cache.
                                 type: number
-                            required:
-                            - codes
-                            - ttl
                             type: object
                           type: array
                         disableApps:
-                          description: Defaults to `false`.
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
                           type: boolean
                         disablePerformance:
-                          description: Defaults to `false`.
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
                           type: boolean
                         disableRailgun:
-                          description: Defaults to `false`.
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
                           type: boolean
                         disableSecurity:
-                          description: Defaults to `false`.
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
                           type: boolean
                         disableZaraz:
-                          description: Defaults to `false`.
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
                           type: boolean
                         edgeCacheTtl:
+                          description: The Time To Live for the edge cache.
                           type: number
                         emailObfuscation:
+                          description: Whether this action is "on" or "off".
                           type: string
                         explicitCacheControl:
+                          description: Whether origin Cache-Control action is "on"
+                            or "off".
                           type: string
                         forwardingUrl:
+                          description: The URL to forward to, and with what status.
+                            See below.
                           items:
                             properties:
                               statusCode:
+                                description: The status code to use for the redirection.
                                 type: number
                               url:
+                                description: The URL to which the page rule should
+                                  forward.
                                 type: string
-                            required:
-                            - statusCode
-                            - url
                             type: object
                           type: array
                         hostHeaderOverride:
+                          description: Value of the Host header to send.
                           type: string
                         ipGeolocation:
+                          description: Whether this action is "on" or "off".
                           type: string
                         minify:
+                          description: The configuration for HTML, CSS and JS minification.
+                            See below for full list of options.
                           items:
                             properties:
                               css:
+                                description: Whether CSS should be minified. Valid
+                                  values are "on" or "off".
                                 type: string
                               html:
+                                description: Whether HTML should be minified. Valid
+                                  values are "on" or "off".
                                 type: string
                               js:
+                                description: Whether Javascript should be minified.
+                                  Valid values are "on" or "off".
                                 type: string
-                            required:
-                            - css
-                            - html
-                            - js
                             type: object
                           type: array
                         mirage:
+                          description: Whether this action is "on" or "off".
                           type: string
                         opportunisticEncryption:
+                          description: Whether this action is "on" or "off".
                           type: string
                         originErrorPagePassThru:
+                          description: Whether this action is "on" or "off".
                           type: string
                         polish:
+                          description: Whether this action is "off", "lossless" or
+                            "lossy".
                           type: string
                         resolveOverride:
+                          description: Overridden origin server name.
                           type: string
                         respectStrongEtag:
+                          description: Whether this action is "on" or "off".
                           type: string
                         responseBuffering:
+                          description: Whether this action is "on" or "off".
                           type: string
                         rocketLoader:
+                          description: Whether to set the rocket loader to "on", "off".
                           type: string
                         securityLevel:
+                          description: Whether to set the security level to "off",
+                            "essentially_off", "low", "medium", "high", or "under_attack".
                           type: string
                         serverSideExclude:
+                          description: Whether this action is "on" or "off".
                           type: string
                         sortQueryStringForCache:
+                          description: Whether this action is "on" or "off".
                           type: string
                         ssl:
+                          description: Whether to set the SSL mode to "off", "flexible",
+                            "full", "strict", or "origin_pull".
                           type: string
                         trueClientIpHeader:
+                          description: Whether this action is "on" or "off".
                           type: string
                         waf:
+                          description: Whether this action is "on" or "off".
                           type: string
                       type: object
                     type: array
                   priority:
-                    description: Defaults to `1`.
+                    description: The priority of the page rule among others for this
+                      target, the higher the number the higher the priority as per
+                      API documentation. Defaults to `1`.
                     type: number
                   status:
-                    description: Defaults to `active`.
+                    description: Whether the page rule is active or disabled. Defaults
+                      to `active`.
                     type: string
                   target:
+                    description: The URL pattern to target with the page rule.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
+                    description: The DNS zone ID to which the page rule should be
+                      added. The zone identifier to target for the resource. **Modifying
                       this attribute will force creation of a new resource.**
                     type: string
                   zoneIdRef:
@@ -342,9 +441,316 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - actions
-                - target
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  actions:
+                    description: The actions taken by the page rule, options given
+                      below.
+                    items:
+                      properties:
+                        alwaysUseHttps:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        automaticHttpsRewrites:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        browserCacheTtl:
+                          description: The Time To Live for the browser cache. 0 means
+                            'Respect Existing Headers'
+                          type: string
+                        browserCheck:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        bypassCacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            bypass cache the page.
+                          type: string
+                        cacheByDeviceType:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheDeceptionArmor:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheKeyFields:
+                          description: Controls how Cloudflare creates Cache Keys
+                            used to identify files in cache. See below for full description.
+                          items:
+                            properties:
+                              cookie:
+                                description: 'Controls what cookies go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              header:
+                                description: 'Controls what HTTP headers go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              host:
+                                description: 'Controls which Host header goes into
+                                  Cache Key:'
+                                items:
+                                  properties:
+                                    resolved:
+                                      description: false (default) - includes the
+                                        Host header in the HTTP request sent to the
+                                        origin; true - includes the Host header that
+                                        was resolved to get the origin IP for the
+                                        request (e.g. changed with Resolve Override
+                                        Page Rule). Defaults to `false`.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              queryString:
+                                description: Controls which URL query string parameters
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                    ignore:
+                                      description: false (default) - all query string
+                                        parameters are used for Cache Key, unless
+                                        explicitly excluded; true - all query string
+                                        parameters are ignored; value should be false
+                                        if any of exclude or include is non-empty.
+                                      type: boolean
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              user:
+                                description: Controls which end user-related features
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    deviceType:
+                                      description: true - classifies a request as
+                                        “mobile”, “desktop”, or “tablet” based on
+                                        the User Agent; defaults to false.
+                                      type: boolean
+                                    geo:
+                                      description: true - includes the client’s country,
+                                        derived from the IP address; defaults to false.
+                                      type: boolean
+                                    lang:
+                                      description: true - includes the first language
+                                        code contained in the Accept-Language header
+                                        sent by the client; defaults to false.
+                                      type: boolean
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        cacheLevel:
+                          description: Whether to set the cache level to "bypass",
+                            "basic", "simplified", "aggressive", or "cache_everything".
+                          type: string
+                        cacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            cache the page.
+                          type: string
+                        cacheTtlByStatus:
+                          description: Set cache TTL based on the response status
+                            from the origin web server. Can be specified multiple
+                            times. See below for full description.
+                          items:
+                            properties:
+                              codes:
+                                description: A HTTP code (e.g. 404) or range of codes
+                                  (e.g. 400-499)
+                                type: string
+                              ttl:
+                                description: Duration a resource lives in the Cloudflare
+                                  cache.
+                                type: number
+                            type: object
+                          type: array
+                        disableApps:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disablePerformance:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disableRailgun:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disableSecurity:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disableZaraz:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        edgeCacheTtl:
+                          description: The Time To Live for the edge cache.
+                          type: number
+                        emailObfuscation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        explicitCacheControl:
+                          description: Whether origin Cache-Control action is "on"
+                            or "off".
+                          type: string
+                        forwardingUrl:
+                          description: The URL to forward to, and with what status.
+                            See below.
+                          items:
+                            properties:
+                              statusCode:
+                                description: The status code to use for the redirection.
+                                type: number
+                              url:
+                                description: The URL to which the page rule should
+                                  forward.
+                                type: string
+                            type: object
+                          type: array
+                        hostHeaderOverride:
+                          description: Value of the Host header to send.
+                          type: string
+                        ipGeolocation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        minify:
+                          description: The configuration for HTML, CSS and JS minification.
+                            See below for full list of options.
+                          items:
+                            properties:
+                              css:
+                                description: Whether CSS should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              html:
+                                description: Whether HTML should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              js:
+                                description: Whether Javascript should be minified.
+                                  Valid values are "on" or "off".
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        opportunisticEncryption:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        originErrorPagePassThru:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        polish:
+                          description: Whether this action is "off", "lossless" or
+                            "lossy".
+                          type: string
+                        resolveOverride:
+                          description: Overridden origin server name.
+                          type: string
+                        respectStrongEtag:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        responseBuffering:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        rocketLoader:
+                          description: Whether to set the rocket loader to "on", "off".
+                          type: string
+                        securityLevel:
+                          description: Whether to set the security level to "off",
+                            "essentially_off", "low", "medium", "high", or "under_attack".
+                          type: string
+                        serverSideExclude:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        sortQueryStringForCache:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        ssl:
+                          description: Whether to set the SSL mode to "off", "flexible",
+                            "full", "strict", or "origin_pull".
+                          type: string
+                        trueClientIpHeader:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        waf:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                      type: object
+                    type: array
+                  priority:
+                    description: The priority of the page rule among others for this
+                      target, the higher the number the higher the priority as per
+                      API documentation. Defaults to `1`.
+                    type: number
+                  status:
+                    description: Whether the page rule is active or disabled. Defaults
+                      to `active`.
+                    type: string
+                  target:
+                    description: The URL pattern to target with the page rule.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -543,12 +949,323 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: actions is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.actions)
+                || has(self.initProvider.actions)'
+            - message: target is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.target)
+                || has(self.initProvider.target)'
           status:
             description: RuleStatus defines the observed state of Rule.
             properties:
               atProvider:
                 properties:
+                  actions:
+                    description: The actions taken by the page rule, options given
+                      below.
+                    items:
+                      properties:
+                        alwaysUseHttps:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        automaticHttpsRewrites:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        browserCacheTtl:
+                          description: The Time To Live for the browser cache. 0 means
+                            'Respect Existing Headers'
+                          type: string
+                        browserCheck:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        bypassCacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            bypass cache the page.
+                          type: string
+                        cacheByDeviceType:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheDeceptionArmor:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheKeyFields:
+                          description: Controls how Cloudflare creates Cache Keys
+                            used to identify files in cache. See below for full description.
+                          items:
+                            properties:
+                              cookie:
+                                description: 'Controls what cookies go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              header:
+                                description: 'Controls what HTTP headers go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              host:
+                                description: 'Controls which Host header goes into
+                                  Cache Key:'
+                                items:
+                                  properties:
+                                    resolved:
+                                      description: false (default) - includes the
+                                        Host header in the HTTP request sent to the
+                                        origin; true - includes the Host header that
+                                        was resolved to get the origin IP for the
+                                        request (e.g. changed with Resolve Override
+                                        Page Rule). Defaults to `false`.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              queryString:
+                                description: Controls which URL query string parameters
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                    ignore:
+                                      description: false (default) - all query string
+                                        parameters are used for Cache Key, unless
+                                        explicitly excluded; true - all query string
+                                        parameters are ignored; value should be false
+                                        if any of exclude or include is non-empty.
+                                      type: boolean
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
+                              user:
+                                description: Controls which end user-related features
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    deviceType:
+                                      description: true - classifies a request as
+                                        “mobile”, “desktop”, or “tablet” based on
+                                        the User Agent; defaults to false.
+                                      type: boolean
+                                    geo:
+                                      description: true - includes the client’s country,
+                                        derived from the IP address; defaults to false.
+                                      type: boolean
+                                    lang:
+                                      description: true - includes the first language
+                                        code contained in the Accept-Language header
+                                        sent by the client; defaults to false.
+                                      type: boolean
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        cacheLevel:
+                          description: Whether to set the cache level to "bypass",
+                            "basic", "simplified", "aggressive", or "cache_everything".
+                          type: string
+                        cacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            cache the page.
+                          type: string
+                        cacheTtlByStatus:
+                          description: Set cache TTL based on the response status
+                            from the origin web server. Can be specified multiple
+                            times. See below for full description.
+                          items:
+                            properties:
+                              codes:
+                                description: A HTTP code (e.g. 404) or range of codes
+                                  (e.g. 400-499)
+                                type: string
+                              ttl:
+                                description: Duration a resource lives in the Cloudflare
+                                  cache.
+                                type: number
+                            type: object
+                          type: array
+                        disableApps:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disablePerformance:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disableRailgun:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disableSecurity:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        disableZaraz:
+                          description: 'Boolean of whether this action is enabled.
+                            Default: false. Defaults to `false`.'
+                          type: boolean
+                        edgeCacheTtl:
+                          description: The Time To Live for the edge cache.
+                          type: number
+                        emailObfuscation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        explicitCacheControl:
+                          description: Whether origin Cache-Control action is "on"
+                            or "off".
+                          type: string
+                        forwardingUrl:
+                          description: The URL to forward to, and with what status.
+                            See below.
+                          items:
+                            properties:
+                              statusCode:
+                                description: The status code to use for the redirection.
+                                type: number
+                              url:
+                                description: The URL to which the page rule should
+                                  forward.
+                                type: string
+                            type: object
+                          type: array
+                        hostHeaderOverride:
+                          description: Value of the Host header to send.
+                          type: string
+                        ipGeolocation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        minify:
+                          description: The configuration for HTML, CSS and JS minification.
+                            See below for full list of options.
+                          items:
+                            properties:
+                              css:
+                                description: Whether CSS should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              html:
+                                description: Whether HTML should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              js:
+                                description: Whether Javascript should be minified.
+                                  Valid values are "on" or "off".
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        opportunisticEncryption:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        originErrorPagePassThru:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        polish:
+                          description: Whether this action is "off", "lossless" or
+                            "lossy".
+                          type: string
+                        resolveOverride:
+                          description: Overridden origin server name.
+                          type: string
+                        respectStrongEtag:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        responseBuffering:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        rocketLoader:
+                          description: Whether to set the rocket loader to "on", "off".
+                          type: string
+                        securityLevel:
+                          description: Whether to set the security level to "off",
+                            "essentially_off", "low", "medium", "high", or "under_attack".
+                          type: string
+                        serverSideExclude:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        sortQueryStringForCache:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        ssl:
+                          description: Whether to set the SSL mode to "off", "flexible",
+                            "full", "strict", or "origin_pull".
+                          type: string
+                        trueClientIpHeader:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        waf:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                      type: object
+                    type: array
                   id:
+                    description: The page rule ID.
+                    type: string
+                  priority:
+                    description: The priority of the page rule among others for this
+                      target, the higher the number the higher the priority as per
+                      API documentation. Defaults to `1`.
+                    type: number
+                  status:
+                    description: Whether the page rule is active or disabled. Defaults
+                      to `active`.
+                    type: string
+                  target:
+                    description: The URL pattern to target with the page rule.
+                    type: string
+                  zoneId:
+                    description: The DNS zone ID to which the page rule should be
+                      added. The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

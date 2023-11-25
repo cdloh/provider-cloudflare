@@ -223,8 +223,25 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - schedules
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  schedules:
+                    description: Cron expressions to execute the Worker script.
+                    items:
+                      type: string
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -423,12 +440,28 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: schedules is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.schedules)
+                || has(self.initProvider.schedules)'
           status:
             description: CronTriggerStatus defines the observed state of CronTrigger.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
                   id:
+                    type: string
+                  schedules:
+                    description: Cron expressions to execute the Worker script.
+                    items:
+                      type: string
+                    type: array
+                  scriptName:
+                    description: Worker script to target for the schedules.
                     type: string
                 type: object
               conditions:

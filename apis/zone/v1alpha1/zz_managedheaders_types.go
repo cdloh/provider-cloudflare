@@ -13,8 +13,26 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ManagedHeadersInitParameters struct {
+
+	// The list of managed request headers.
+	ManagedRequestHeaders []ManagedRequestHeadersInitParameters `json:"managedRequestHeaders,omitempty" tf:"managed_request_headers,omitempty"`
+
+	// The list of managed response headers.
+	ManagedResponseHeaders []ManagedResponseHeadersInitParameters `json:"managedResponseHeaders,omitempty" tf:"managed_response_headers,omitempty"`
+}
+
 type ManagedHeadersObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The list of managed request headers.
+	ManagedRequestHeaders []ManagedRequestHeadersObservation `json:"managedRequestHeaders,omitempty" tf:"managed_request_headers,omitempty"`
+
+	// The list of managed response headers.
+	ManagedResponseHeaders []ManagedResponseHeadersObservation `json:"managedResponseHeaders,omitempty" tf:"managed_response_headers,omitempty"`
+
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type ManagedHeadersParameters struct {
@@ -41,38 +59,80 @@ type ManagedHeadersParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type ManagedRequestHeadersInitParameters struct {
+
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
 type ManagedRequestHeadersObservation struct {
+
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ManagedRequestHeadersParameters struct {
 
 	// Whether the headers rule is active.
-	// +kubebuilder:validation:Required
-	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Unique headers rule identifier.
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
+type ManagedResponseHeadersInitParameters struct {
+
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ManagedResponseHeadersObservation struct {
+
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ManagedResponseHeadersParameters struct {
 
 	// Whether the headers rule is active.
-	// +kubebuilder:validation:Required
-	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Unique headers rule identifier.
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 // ManagedHeadersSpec defines the desired state of ManagedHeaders
 type ManagedHeadersSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ManagedHeadersParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ManagedHeadersInitParameters `json:"initProvider,omitempty"`
 }
 
 // ManagedHeadersStatus defines the observed state of ManagedHeaders.

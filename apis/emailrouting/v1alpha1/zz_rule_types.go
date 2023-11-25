@@ -13,21 +13,75 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RuleActionInitParameters struct {
+
+	// Type of supported action.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// An array with items in the following form.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type RuleActionObservation struct {
+
+	// Type of supported action.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// An array with items in the following form.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type RuleActionParameters struct {
 
 	// Type of supported action.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// An array with items in the following form.
-	// +kubebuilder:validation:Required
-	Value []*string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type RuleInitParameters struct {
+
+	// List actions patterns.
+	Action []RuleActionInitParameters `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Routing rule status.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Matching patterns to forward to your actions.
+	Matcher []RuleMatcherInitParameters `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// Routing rule name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Priority of the routing rule.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+}
+
+type RuleMatcherInitParameters struct {
+
+	// Field for type matcher.
+	Field *string `json:"field,omitempty" tf:"field,omitempty"`
+
+	// Type of matcher.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Value for matcher.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type RuleMatcherObservation struct {
+
+	// Field for type matcher.
+	Field *string `json:"field,omitempty" tf:"field,omitempty"`
+
+	// Type of matcher.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Value for matcher.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type RuleMatcherParameters struct {
@@ -37,8 +91,8 @@ type RuleMatcherParameters struct {
 	Field *string `json:"field,omitempty" tf:"field,omitempty"`
 
 	// Type of matcher.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Value for matcher.
 	// +kubebuilder:validation:Optional
@@ -46,36 +100,55 @@ type RuleMatcherParameters struct {
 }
 
 type RuleObservation struct {
+
+	// List actions patterns.
+	Action []RuleActionObservation `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Routing rule status.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Matching patterns to forward to your actions.
+	Matcher []RuleMatcherObservation `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// Routing rule name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Priority of the routing rule.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
 	// Routing rule identifier.
 	Tag *string `json:"tag,omitempty" tf:"tag,omitempty"`
+
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RuleParameters struct {
 
 	// List actions patterns.
-	// +kubebuilder:validation:Required
-	Action []RuleActionParameters `json:"action" tf:"action,omitempty"`
+	// +kubebuilder:validation:Optional
+	Action []RuleActionParameters `json:"action,omitempty" tf:"action,omitempty"`
 
 	// Routing rule status.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Matching patterns to forward to your actions.
-	// +kubebuilder:validation:Required
-	Matcher []RuleMatcherParameters `json:"matcher" tf:"matcher,omitempty"`
+	// +kubebuilder:validation:Optional
+	Matcher []RuleMatcherParameters `json:"matcher,omitempty" tf:"matcher,omitempty"`
 
 	// Routing rule name.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Priority of the routing rule.
 	// +kubebuilder:validation:Optional
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
 	// The zone identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -92,6 +165,18 @@ type RuleParameters struct {
 type RuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RuleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // RuleStatus defines the observed state of Rule.
@@ -112,8 +197,11 @@ type RuleStatus struct {
 type Rule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RuleSpec   `json:"spec"`
-	Status            RuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.action) || has(self.initProvider.action)",message="action is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.matcher) || has(self.initProvider.matcher)",message="matcher is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   RuleSpec   `json:"spec"`
+	Status RuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

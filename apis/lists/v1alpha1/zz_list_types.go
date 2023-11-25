@@ -13,27 +13,88 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ListItemObservation struct {
+type HostnameInitParameters struct {
+
+	// The FQDN to match on. Wildcard sub-domain matching is allowed. Eg. *.abc.com.
+	URLHostname *string `json:"urlHostname,omitempty" tf:"url_hostname,omitempty"`
 }
 
-type ListItemParameters struct {
+type HostnameObservation struct {
+
+	// The FQDN to match on. Wildcard sub-domain matching is allowed. Eg. *.abc.com.
+	URLHostname *string `json:"urlHostname,omitempty" tf:"url_hostname,omitempty"`
+}
+
+type HostnameParameters struct {
+
+	// The FQDN to match on. Wildcard sub-domain matching is allowed. Eg. *.abc.com.
+	// +kubebuilder:validation:Optional
+	URLHostname *string `json:"urlHostname,omitempty" tf:"url_hostname,omitempty"`
+}
+
+type ItemInitParameters struct {
+
+	// An optional comment for the item.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	Value []ValueInitParameters `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ItemObservation struct {
+
+	// An optional comment for the item.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	Value []ValueObservation `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ItemParameters struct {
 
 	// An optional comment for the item.
 	// +kubebuilder:validation:Optional
 	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Value []ValueParameters `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value []ValueParameters `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ListInitParameters struct {
+
+	// An optional description of the list.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	Item []ItemInitParameters `json:"item,omitempty" tf:"item,omitempty"`
+
+	// The type of items the list will contain. Available values: `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// The name of the list. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type ListObservation struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// An optional description of the list.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Item []ItemObservation `json:"item,omitempty" tf:"item,omitempty"`
+
+	// The type of items the list will contain. Available values: `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
+
+	// The name of the list. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type ListParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -50,18 +111,63 @@ type ListParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	Item []ListItemParameters `json:"item,omitempty" tf:"item,omitempty"`
+	Item []ItemParameters `json:"item,omitempty" tf:"item,omitempty"`
 
-	// The type of items the list will contain.
-	// +kubebuilder:validation:Required
-	Kind *string `json:"kind" tf:"kind,omitempty"`
+	// The type of items the list will contain. Available values: `ip`, `redirect`, `hostname`, `asn`. **Modifying this attribute will force creation of a new resource.**
+	// +kubebuilder:validation:Optional
+	Kind *string `json:"kind,omitempty" tf:"kind,omitempty"`
 
 	// The name of the list. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type RedirectInitParameters struct {
+
+	// Whether the redirect also matches subdomains of the source url. Available values: `disabled`, `enabled`.
+	IncludeSubdomains *string `json:"includeSubdomains,omitempty" tf:"include_subdomains,omitempty"`
+
+	// Whether to preserve the path suffix when doing subpath matching. Available values: `disabled`, `enabled`.
+	PreservePathSuffix *string `json:"preservePathSuffix,omitempty" tf:"preserve_path_suffix,omitempty"`
+
+	// Whether the redirect target url should keep the query string of the request's url. Available values: `disabled`, `enabled`.
+	PreserveQueryString *string `json:"preserveQueryString,omitempty" tf:"preserve_query_string,omitempty"`
+
+	// The source url of the redirect.
+	SourceURL *string `json:"sourceUrl,omitempty" tf:"source_url,omitempty"`
+
+	// The status code to be used when redirecting a request.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Whether the redirect also matches subpaths of the source url. Available values: `disabled`, `enabled`.
+	SubpathMatching *string `json:"subpathMatching,omitempty" tf:"subpath_matching,omitempty"`
+
+	// The target url of the redirect.
+	TargetURL *string `json:"targetUrl,omitempty" tf:"target_url,omitempty"`
 }
 
 type RedirectObservation struct {
+
+	// Whether the redirect also matches subdomains of the source url. Available values: `disabled`, `enabled`.
+	IncludeSubdomains *string `json:"includeSubdomains,omitempty" tf:"include_subdomains,omitempty"`
+
+	// Whether to preserve the path suffix when doing subpath matching. Available values: `disabled`, `enabled`.
+	PreservePathSuffix *string `json:"preservePathSuffix,omitempty" tf:"preserve_path_suffix,omitempty"`
+
+	// Whether the redirect target url should keep the query string of the request's url. Available values: `disabled`, `enabled`.
+	PreserveQueryString *string `json:"preserveQueryString,omitempty" tf:"preserve_query_string,omitempty"`
+
+	// The source url of the redirect.
+	SourceURL *string `json:"sourceUrl,omitempty" tf:"source_url,omitempty"`
+
+	// The status code to be used when redirecting a request.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+
+	// Whether the redirect also matches subpaths of the source url. Available values: `disabled`, `enabled`.
+	SubpathMatching *string `json:"subpathMatching,omitempty" tf:"subpath_matching,omitempty"`
+
+	// The target url of the redirect.
+	TargetURL *string `json:"targetUrl,omitempty" tf:"target_url,omitempty"`
 }
 
 type RedirectParameters struct {
@@ -79,8 +185,8 @@ type RedirectParameters struct {
 	PreserveQueryString *string `json:"preserveQueryString,omitempty" tf:"preserve_query_string,omitempty"`
 
 	// The source url of the redirect.
-	// +kubebuilder:validation:Required
-	SourceURL *string `json:"sourceUrl" tf:"source_url,omitempty"`
+	// +kubebuilder:validation:Optional
+	SourceURL *string `json:"sourceUrl,omitempty" tf:"source_url,omitempty"`
 
 	// The status code to be used when redirecting a request.
 	// +kubebuilder:validation:Optional
@@ -91,14 +197,37 @@ type RedirectParameters struct {
 	SubpathMatching *string `json:"subpathMatching,omitempty" tf:"subpath_matching,omitempty"`
 
 	// The target url of the redirect.
-	// +kubebuilder:validation:Required
-	TargetURL *string `json:"targetUrl" tf:"target_url,omitempty"`
+	// +kubebuilder:validation:Optional
+	TargetURL *string `json:"targetUrl,omitempty" tf:"target_url,omitempty"`
+}
+
+type ValueInitParameters struct {
+	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
+
+	Hostname []HostnameInitParameters `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	Redirect []RedirectInitParameters `json:"redirect,omitempty" tf:"redirect,omitempty"`
 }
 
 type ValueObservation struct {
+	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
+
+	Hostname []HostnameObservation `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	Redirect []RedirectObservation `json:"redirect,omitempty" tf:"redirect,omitempty"`
 }
 
 type ValueParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Asn *float64 `json:"asn,omitempty" tf:"asn,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Hostname []HostnameParameters `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
@@ -111,6 +240,18 @@ type ValueParameters struct {
 type ListSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ListParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ListInitParameters `json:"initProvider,omitempty"`
 }
 
 // ListStatus defines the observed state of List.
@@ -131,8 +272,10 @@ type ListStatus struct {
 type List struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ListSpec   `json:"spec"`
-	Status            ListStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.kind) || has(self.initProvider.kind)",message="kind is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   ListSpec   `json:"spec"`
+	Status ListStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

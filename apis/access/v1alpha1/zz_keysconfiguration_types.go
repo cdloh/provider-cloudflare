@@ -13,14 +13,27 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type KeysConfigurationInitParameters struct {
+
+	// Number of days to trigger a rotation of the keys.
+	KeyRotationIntervalDays *float64 `json:"keyRotationIntervalDays,omitempty" tf:"key_rotation_interval_days,omitempty"`
+}
+
 type KeysConfigurationObservation struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Number of days to trigger a rotation of the keys.
+	KeyRotationIntervalDays *float64 `json:"keyRotationIntervalDays,omitempty" tf:"key_rotation_interval_days,omitempty"`
 }
 
 type KeysConfigurationParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -41,6 +54,18 @@ type KeysConfigurationParameters struct {
 type KeysConfigurationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     KeysConfigurationParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider KeysConfigurationInitParameters `json:"initProvider,omitempty"`
 }
 
 // KeysConfigurationStatus defines the observed state of KeysConfiguration.

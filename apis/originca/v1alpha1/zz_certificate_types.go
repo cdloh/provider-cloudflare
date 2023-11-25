@@ -13,15 +13,46 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CertificateInitParameters struct {
+
+	// The Certificate Signing Request. Must be newline-encoded. **Modifying this attribute will force creation of a new resource.**
+	Csr *string `json:"csr,omitempty" tf:"csr,omitempty"`
+
+	// A list of hostnames or wildcard names bound to the certificate. **Modifying this attribute will force creation of a new resource.**
+	Hostnames []*string `json:"hostnames,omitempty" tf:"hostnames,omitempty"`
+
+	MinDaysForRenewal *float64 `json:"minDaysForRenewal,omitempty" tf:"min_days_for_renewal,omitempty"`
+
+	// The signature type desired on the certificate. Available values: `origin-rsa`, `origin-ecc`, `keyless-certificate`. **Modifying this attribute will force creation of a new resource.**
+	RequestType *string `json:"requestType,omitempty" tf:"request_type,omitempty"`
+
+	// The number of days for which the certificate should be valid. Available values: `7`, `30`, `90`, `365`, `730`, `1095`, `5475`. **Modifying this attribute will force creation of a new resource.**
+	RequestedValidity *float64 `json:"requestedValidity,omitempty" tf:"requested_validity,omitempty"`
+}
+
 type CertificateObservation struct {
 
 	// The Origin CA certificate.
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
+	// The Certificate Signing Request. Must be newline-encoded. **Modifying this attribute will force creation of a new resource.**
+	Csr *string `json:"csr,omitempty" tf:"csr,omitempty"`
+
 	// The datetime when the certificate will expire.
 	ExpiresOn *string `json:"expiresOn,omitempty" tf:"expires_on,omitempty"`
 
+	// A list of hostnames or wildcard names bound to the certificate. **Modifying this attribute will force creation of a new resource.**
+	Hostnames []*string `json:"hostnames,omitempty" tf:"hostnames,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	MinDaysForRenewal *float64 `json:"minDaysForRenewal,omitempty" tf:"min_days_for_renewal,omitempty"`
+
+	// The signature type desired on the certificate. Available values: `origin-rsa`, `origin-ecc`, `keyless-certificate`. **Modifying this attribute will force creation of a new resource.**
+	RequestType *string `json:"requestType,omitempty" tf:"request_type,omitempty"`
+
+	// The number of days for which the certificate should be valid. Available values: `7`, `30`, `90`, `365`, `730`, `1095`, `5475`. **Modifying this attribute will force creation of a new resource.**
+	RequestedValidity *float64 `json:"requestedValidity,omitempty" tf:"requested_validity,omitempty"`
 }
 
 type CertificateParameters struct {
@@ -31,15 +62,15 @@ type CertificateParameters struct {
 	Csr *string `json:"csr,omitempty" tf:"csr,omitempty"`
 
 	// A list of hostnames or wildcard names bound to the certificate. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Hostnames []*string `json:"hostnames" tf:"hostnames,omitempty"`
+	// +kubebuilder:validation:Optional
+	Hostnames []*string `json:"hostnames,omitempty" tf:"hostnames,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	MinDaysForRenewal *float64 `json:"minDaysForRenewal,omitempty" tf:"min_days_for_renewal,omitempty"`
 
 	// The signature type desired on the certificate. Available values: `origin-rsa`, `origin-ecc`, `keyless-certificate`. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	RequestType *string `json:"requestType" tf:"request_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	RequestType *string `json:"requestType,omitempty" tf:"request_type,omitempty"`
 
 	// The number of days for which the certificate should be valid. Available values: `7`, `30`, `90`, `365`, `730`, `1095`, `5475`. **Modifying this attribute will force creation of a new resource.**
 	// +kubebuilder:validation:Optional
@@ -50,6 +81,18 @@ type CertificateParameters struct {
 type CertificateSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     CertificateParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider CertificateInitParameters `json:"initProvider,omitempty"`
 }
 
 // CertificateStatus defines the observed state of Certificate.
@@ -70,8 +113,11 @@ type CertificateStatus struct {
 type Certificate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              CertificateSpec   `json:"spec"`
-	Status            CertificateStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.csr) || has(self.initProvider.csr)",message="csr is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.hostnames) || has(self.initProvider.hostnames)",message="hostnames is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.requestType) || has(self.initProvider.requestType)",message="requestType is a required parameter"
+	Spec   CertificateSpec   `json:"spec"`
+	Status CertificateStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

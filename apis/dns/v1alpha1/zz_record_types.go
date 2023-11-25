@@ -13,7 +13,176 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DataInitParameters struct {
+	Algorithm *float64 `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
+
+	Altitude *float64 `json:"altitude,omitempty" tf:"altitude,omitempty"`
+
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
+	Digest *string `json:"digest,omitempty" tf:"digest,omitempty"`
+
+	// The type of the record
+	DigestType *float64 `json:"digestType,omitempty" tf:"digest_type,omitempty"`
+
+	Fingerprint *string `json:"fingerprint,omitempty" tf:"fingerprint,omitempty"`
+
+	Flags *string `json:"flags,omitempty" tf:"flags,omitempty"`
+
+	KeyTag *float64 `json:"keyTag,omitempty" tf:"key_tag,omitempty"`
+
+	LatDegrees *float64 `json:"latDegrees,omitempty" tf:"lat_degrees,omitempty"`
+
+	LatDirection *string `json:"latDirection,omitempty" tf:"lat_direction,omitempty"`
+
+	LatMinutes *float64 `json:"latMinutes,omitempty" tf:"lat_minutes,omitempty"`
+
+	LatSeconds *float64 `json:"latSeconds,omitempty" tf:"lat_seconds,omitempty"`
+
+	LongDegrees *float64 `json:"longDegrees,omitempty" tf:"long_degrees,omitempty"`
+
+	LongDirection *string `json:"longDirection,omitempty" tf:"long_direction,omitempty"`
+
+	LongMinutes *float64 `json:"longMinutes,omitempty" tf:"long_minutes,omitempty"`
+
+	LongSeconds *float64 `json:"longSeconds,omitempty" tf:"long_seconds,omitempty"`
+
+	// The type of the record
+	MatchingType *float64 `json:"matchingType,omitempty" tf:"matching_type,omitempty"`
+
+	// The name of the record
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Order *float64 `json:"order,omitempty" tf:"order,omitempty"`
+
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	PrecisionHorz *float64 `json:"precisionHorz,omitempty" tf:"precision_horz,omitempty"`
+
+	PrecisionVert *float64 `json:"precisionVert,omitempty" tf:"precision_vert,omitempty"`
+
+	Preference *float64 `json:"preference,omitempty" tf:"preference,omitempty"`
+
+	// The priority of the record
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	Proto *string `json:"proto,omitempty" tf:"proto,omitempty"`
+
+	Protocol *float64 `json:"protocol,omitempty" tf:"protocol,omitempty"`
+
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	Replacement *string `json:"replacement,omitempty" tf:"replacement,omitempty"`
+
+	Selector *float64 `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	Size *float64 `json:"size,omitempty" tf:"size,omitempty"`
+
+	Tag *string `json:"tag,omitempty" tf:"tag,omitempty"`
+
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The type of the record
+	Type *float64 `json:"type,omitempty" tf:"type,omitempty"`
+
+	Usage *float64 `json:"usage,omitempty" tf:"usage,omitempty"`
+
+	// The (string) value of the record. Either this or data must be specified
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+
+	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
+}
+
 type DataObservation struct {
+	Algorithm *float64 `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
+
+	Altitude *float64 `json:"altitude,omitempty" tf:"altitude,omitempty"`
+
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
+	Digest *string `json:"digest,omitempty" tf:"digest,omitempty"`
+
+	// The type of the record
+	DigestType *float64 `json:"digestType,omitempty" tf:"digest_type,omitempty"`
+
+	Fingerprint *string `json:"fingerprint,omitempty" tf:"fingerprint,omitempty"`
+
+	Flags *string `json:"flags,omitempty" tf:"flags,omitempty"`
+
+	KeyTag *float64 `json:"keyTag,omitempty" tf:"key_tag,omitempty"`
+
+	LatDegrees *float64 `json:"latDegrees,omitempty" tf:"lat_degrees,omitempty"`
+
+	LatDirection *string `json:"latDirection,omitempty" tf:"lat_direction,omitempty"`
+
+	LatMinutes *float64 `json:"latMinutes,omitempty" tf:"lat_minutes,omitempty"`
+
+	LatSeconds *float64 `json:"latSeconds,omitempty" tf:"lat_seconds,omitempty"`
+
+	LongDegrees *float64 `json:"longDegrees,omitempty" tf:"long_degrees,omitempty"`
+
+	LongDirection *string `json:"longDirection,omitempty" tf:"long_direction,omitempty"`
+
+	LongMinutes *float64 `json:"longMinutes,omitempty" tf:"long_minutes,omitempty"`
+
+	LongSeconds *float64 `json:"longSeconds,omitempty" tf:"long_seconds,omitempty"`
+
+	// The type of the record
+	MatchingType *float64 `json:"matchingType,omitempty" tf:"matching_type,omitempty"`
+
+	// The name of the record
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Order *float64 `json:"order,omitempty" tf:"order,omitempty"`
+
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+
+	PrecisionHorz *float64 `json:"precisionHorz,omitempty" tf:"precision_horz,omitempty"`
+
+	PrecisionVert *float64 `json:"precisionVert,omitempty" tf:"precision_vert,omitempty"`
+
+	Preference *float64 `json:"preference,omitempty" tf:"preference,omitempty"`
+
+	// The priority of the record
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	Proto *string `json:"proto,omitempty" tf:"proto,omitempty"`
+
+	Protocol *float64 `json:"protocol,omitempty" tf:"protocol,omitempty"`
+
+	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
+
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	Replacement *string `json:"replacement,omitempty" tf:"replacement,omitempty"`
+
+	Selector *float64 `json:"selector,omitempty" tf:"selector,omitempty"`
+
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	Size *float64 `json:"size,omitempty" tf:"size,omitempty"`
+
+	Tag *string `json:"tag,omitempty" tf:"tag,omitempty"`
+
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The type of the record
+	Type *float64 `json:"type,omitempty" tf:"type,omitempty"`
+
+	Usage *float64 `json:"usage,omitempty" tf:"usage,omitempty"`
+
+	// The (string) value of the record. Either this or data must be specified
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+
+	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
 type DataParameters struct {
@@ -33,6 +202,7 @@ type DataParameters struct {
 	// +kubebuilder:validation:Optional
 	Digest *string `json:"digest,omitempty" tf:"digest,omitempty"`
 
+	// The type of the record
 	// +kubebuilder:validation:Optional
 	DigestType *float64 `json:"digestType,omitempty" tf:"digest_type,omitempty"`
 
@@ -69,9 +239,11 @@ type DataParameters struct {
 	// +kubebuilder:validation:Optional
 	LongSeconds *float64 `json:"longSeconds,omitempty" tf:"long_seconds,omitempty"`
 
+	// The type of the record
 	// +kubebuilder:validation:Optional
 	MatchingType *float64 `json:"matchingType,omitempty" tf:"matching_type,omitempty"`
 
+	// The name of the record
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -90,6 +262,7 @@ type DataParameters struct {
 	// +kubebuilder:validation:Optional
 	Preference *float64 `json:"preference,omitempty" tf:"preference,omitempty"`
 
+	// The priority of the record
 	// +kubebuilder:validation:Optional
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
@@ -123,12 +296,14 @@ type DataParameters struct {
 	// +kubebuilder:validation:Optional
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
+	// The type of the record
 	// +kubebuilder:validation:Optional
 	Type *float64 `json:"type,omitempty" tf:"type,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Usage *float64 `json:"usage,omitempty" tf:"usage,omitempty"`
 
+	// The (string) value of the record. Either this or data must be specified
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
@@ -136,53 +311,165 @@ type DataParameters struct {
 	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
+type RecordInitParameters struct {
+
+	// false by default. This configuration is not recommended for most environments. **This configuration is not recommended for most environments**. Defaults to `false`.
+	AllowOverwrite *bool `json:"allowOverwrite,omitempty" tf:"allow_overwrite,omitempty"`
+
+	// Comments or notes about the DNS record. This field has no effect on DNS responses.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	// Map of attributes that constitute the record value. Primarily used for LOC and SRV record types. Either this or value must be specified
+	// Map of attributes that constitute the record value. Conflicts with `value`.
+	Data []DataInitParameters `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The name of the record
+	// The name of the record. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The priority of the record
+	// The priority of the record.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// Whether the record gets Cloudflare's origin protection; defaults to false.
+	// Whether the record gets Cloudflare's origin protection.
+	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
+
+	// The TTL of the record (automatic: '1')
+	// The TTL of the record.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// Custom tags for the DNS record.
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of the record
+	// The type of the record. Available values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`, `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`, `TLSA`, `URI`, `PTR`, `HTTPS`, `SVCB`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The (string) value of the record. Either this or data must be specified
+	// The value of the record. Conflicts with `data`.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type RecordObservation struct {
+
+	// false by default. This configuration is not recommended for most environments. **This configuration is not recommended for most environments**. Defaults to `false`.
+	AllowOverwrite *bool `json:"allowOverwrite,omitempty" tf:"allow_overwrite,omitempty"`
+
+	// Comments or notes about the DNS record. This field has no effect on DNS responses.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	// The RFC3339 timestamp of when the record was created
+	// The RFC3339 timestamp of when the record was created.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
 
+	// Map of attributes that constitute the record value. Primarily used for LOC and SRV record types. Either this or value must be specified
+	// Map of attributes that constitute the record value. Conflicts with `value`.
+	Data []DataObservation `json:"data,omitempty" tf:"data,omitempty"`
+
+	// The FQDN of the record
+	// The FQDN of the record.
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
+	// The record ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// A key-value map of string metadata Cloudflare associates with the record
+	// A key-value map of string metadata Cloudflare associates with the record.
 	Metadata map[string]*string `json:"metadata,omitempty" tf:"metadata,omitempty"`
 
+	// The RFC3339 timestamp of when the record was last modified
+	// The RFC3339 timestamp of when the record was last modified.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
 
+	// The name of the record
+	// The name of the record. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The priority of the record
+	// The priority of the record.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// Shows whether this record can be proxied, must be true if setting proxied=true
+	// Shows whether this record can be proxied.
 	Proxiable *bool `json:"proxiable,omitempty" tf:"proxiable,omitempty"`
+
+	// Whether the record gets Cloudflare's origin protection; defaults to false.
+	// Whether the record gets Cloudflare's origin protection.
+	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
+
+	// The TTL of the record (automatic: '1')
+	// The TTL of the record.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// Custom tags for the DNS record.
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
+
+	// The type of the record
+	// The type of the record. Available values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`, `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`, `TLSA`, `URI`, `PTR`, `HTTPS`, `SVCB`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The (string) value of the record. Either this or data must be specified
+	// The value of the record. Conflicts with `data`.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+
+	// The DNS zone ID to add the record to
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RecordParameters struct {
 
-	// Defaults to `false`.
+	// false by default. This configuration is not recommended for most environments. **This configuration is not recommended for most environments**. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	AllowOverwrite *bool `json:"allowOverwrite,omitempty" tf:"allow_overwrite,omitempty"`
 
-	// Conflicts with `value`.
+	// Comments or notes about the DNS record. This field has no effect on DNS responses.
+	// +kubebuilder:validation:Optional
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	// Map of attributes that constitute the record value. Primarily used for LOC and SRV record types. Either this or value must be specified
+	// Map of attributes that constitute the record value. Conflicts with `value`.
 	// +kubebuilder:validation:Optional
 	Data []DataParameters `json:"data,omitempty" tf:"data,omitempty"`
 
-	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// The name of the record
+	// The name of the record. **Modifying this attribute will force creation of a new resource.**
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The priority of the record
+	// The priority of the record.
 	// +kubebuilder:validation:Optional
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
+	// Whether the record gets Cloudflare's origin protection; defaults to false.
+	// Whether the record gets Cloudflare's origin protection.
 	// +kubebuilder:validation:Optional
 	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
 
+	// The TTL of the record (automatic: '1')
+	// The TTL of the record.
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// Custom tags for the DNS record.
+	// +kubebuilder:validation:Optional
+	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// Conflicts with `data`.
+	// The type of the record
+	// The type of the record. Available values: `A`, `AAAA`, `CAA`, `CNAME`, `TXT`, `SRV`, `LOC`, `MX`, `NS`, `SPF`, `CERT`, `DNSKEY`, `DS`, `NAPTR`, `SMIMEA`, `SSHFP`, `TLSA`, `URI`, `PTR`, `HTTPS`, `SVCB`. **Modifying this attribute will force creation of a new resource.**
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The (string) value of the record. Either this or data must be specified
+	// The value of the record. Conflicts with `data`.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
+	// The DNS zone ID to add the record to
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -199,6 +486,18 @@ type RecordParameters struct {
 type RecordSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RecordParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RecordInitParameters `json:"initProvider,omitempty"`
 }
 
 // RecordStatus defines the observed state of Record.
@@ -209,7 +508,7 @@ type RecordStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Record is the Schema for the Records API. <no value>
+// Record is the Schema for the Records API. Provides a Cloudflare record resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -219,8 +518,10 @@ type RecordStatus struct {
 type Record struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RecordSpec   `json:"spec"`
-	Status            RecordStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	Spec   RecordSpec   `json:"spec"`
+	Status RecordStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

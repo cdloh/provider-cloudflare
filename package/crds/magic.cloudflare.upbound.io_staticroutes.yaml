@@ -34,7 +34,9 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: StaticRoute is the Schema for the StaticRoutes API. <no value>
+        description: StaticRoute is the Schema for the StaticRoutes API. Provides
+          a resource which manages Cloudflare static routes for Magic Transit or Magic
+          WAN.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,7 +69,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The ID of the account where the static route is being
+                      created. The account identifier to target for the resource.
                       **Modifying this attribute will force creation of a new resource.**
                     type: string
                   accountIdRef:
@@ -144,29 +147,89 @@ spec:
                         type: object
                     type: object
                   coloNames:
+                    description: Optional list of Cloudflare colocation names for
+                      this static route. List of Cloudflare colocation regions for
+                      this static route.
                     items:
                       type: string
                     type: array
                   coloRegions:
+                    description: Optional list of Cloudflare colocation regions for
+                      this static route. List of Cloudflare colocation names for this
+                      static route.
                     items:
                       type: string
                     type: array
                   description:
+                    description: Description of the static route. Description of the
+                      static route.
                     type: string
                   nexthop:
+                    description: The nexthop IP address where traffic will be routed
+                      to. The nexthop IP address where traffic will be routed to.
                     type: string
                   prefix:
+                    description: Your network prefix using CIDR notation. Your network
+                      prefix using CIDR notation.
                     type: string
                   priority:
+                    description: The priority for the static route. The priority for
+                      the static route.
                     type: number
                   weight:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: The optional weight for ECMP routes. The optional
+                      weight for ECMP routes. **Modifying this attribute will force
+                      creation of a new resource.**
                     type: number
-                required:
-                - nexthop
-                - prefix
-                - priority
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  coloNames:
+                    description: Optional list of Cloudflare colocation names for
+                      this static route. List of Cloudflare colocation regions for
+                      this static route.
+                    items:
+                      type: string
+                    type: array
+                  coloRegions:
+                    description: Optional list of Cloudflare colocation regions for
+                      this static route. List of Cloudflare colocation names for this
+                      static route.
+                    items:
+                      type: string
+                    type: array
+                  description:
+                    description: Description of the static route. Description of the
+                      static route.
+                    type: string
+                  nexthop:
+                    description: The nexthop IP address where traffic will be routed
+                      to. The nexthop IP address where traffic will be routed to.
+                    type: string
+                  prefix:
+                    description: Your network prefix using CIDR notation. Your network
+                      prefix using CIDR notation.
+                    type: string
+                  priority:
+                    description: The priority for the static route. The priority for
+                      the static route.
+                    type: number
+                  weight:
+                    description: The optional weight for ECMP routes. The optional
+                      weight for ECMP routes. **Modifying this attribute will force
+                      creation of a new resource.**
+                    type: number
                 type: object
               managementPolicies:
                 default:
@@ -365,13 +428,66 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: nexthop is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.nexthop)
+                || has(self.initProvider.nexthop)'
+            - message: prefix is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.prefix)
+                || has(self.initProvider.prefix)'
+            - message: priority is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.priority)
+                || has(self.initProvider.priority)'
           status:
             description: StaticRouteStatus defines the observed state of StaticRoute.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The ID of the account where the static route is being
+                      created. The account identifier to target for the resource.
+                      **Modifying this attribute will force creation of a new resource.**
+                    type: string
+                  coloNames:
+                    description: Optional list of Cloudflare colocation names for
+                      this static route. List of Cloudflare colocation regions for
+                      this static route.
+                    items:
+                      type: string
+                    type: array
+                  coloRegions:
+                    description: Optional list of Cloudflare colocation regions for
+                      this static route. List of Cloudflare colocation names for this
+                      static route.
+                    items:
+                      type: string
+                    type: array
+                  description:
+                    description: Description of the static route. Description of the
+                      static route.
+                    type: string
                   id:
                     type: string
+                  nexthop:
+                    description: The nexthop IP address where traffic will be routed
+                      to. The nexthop IP address where traffic will be routed to.
+                    type: string
+                  prefix:
+                    description: Your network prefix using CIDR notation. Your network
+                      prefix using CIDR notation.
+                    type: string
+                  priority:
+                    description: The priority for the static route. The priority for
+                      the static route.
+                    type: number
+                  weight:
+                    description: The optional weight for ECMP routes. The optional
+                      weight for ECMP routes. **Modifying this attribute will force
+                      creation of a new resource.**
+                    type: number
                 type: object
               conditions:
                 description: Conditions of the resource.

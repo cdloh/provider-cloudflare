@@ -1,0 +1,21 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: Lockdown
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/lockdown
+  labels:
+    testing.upbound.io/example-name: endpoint_lockdown
+  name: endpoint-lockdown
+spec:
+  forProvider:
+    configurations:
+    - target: ip_range
+      value: 198.51.100.0/16
+    description: Restrict access to these endpoints to requests from a known IP address
+      range
+    paused: "false"
+    urls:
+    - api.mysite.com/some/endpoint*
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

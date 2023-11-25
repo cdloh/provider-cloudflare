@@ -69,6 +69,16 @@ func (tr *LoadBalancer) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this LoadBalancer
+func (tr *LoadBalancer) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this LoadBalancer using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *LoadBalancer) LateInitialize(attrs []byte) (bool, error) {
@@ -143,6 +153,16 @@ func (tr *Monitor) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Monitor
+func (tr *Monitor) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Monitor using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Monitor) LateInitialize(attrs []byte) (bool, error) {
@@ -215,6 +235,16 @@ func (tr *Pool) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this Pool
+func (tr *Pool) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this Pool using its observed tfState.

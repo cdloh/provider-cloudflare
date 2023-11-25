@@ -13,14 +13,33 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ApprovalGroupInitParameters struct {
+
+	// Number of approvals needed.
+	ApprovalsNeeded *float64 `json:"approvalsNeeded,omitempty" tf:"approvals_needed,omitempty"`
+
+	// List of emails to request approval from.
+	EmailAddresses []*string `json:"emailAddresses,omitempty" tf:"email_addresses,omitempty"`
+
+	EmailListUUID *string `json:"emailListUuid,omitempty" tf:"email_list_uuid,omitempty"`
+}
+
 type ApprovalGroupObservation struct {
+
+	// Number of approvals needed.
+	ApprovalsNeeded *float64 `json:"approvalsNeeded,omitempty" tf:"approvals_needed,omitempty"`
+
+	// List of emails to request approval from.
+	EmailAddresses []*string `json:"emailAddresses,omitempty" tf:"email_addresses,omitempty"`
+
+	EmailListUUID *string `json:"emailListUuid,omitempty" tf:"email_list_uuid,omitempty"`
 }
 
 type ApprovalGroupParameters struct {
 
 	// Number of approvals needed.
-	// +kubebuilder:validation:Required
-	ApprovalsNeeded *float64 `json:"approvalsNeeded" tf:"approvals_needed,omitempty"`
+	// +kubebuilder:validation:Optional
+	ApprovalsNeeded *float64 `json:"approvalsNeeded,omitempty" tf:"approvals_needed,omitempty"`
 
 	// List of emails to request approval from.
 	// +kubebuilder:validation:Optional
@@ -30,19 +49,84 @@ type ApprovalGroupParameters struct {
 	EmailListUUID *string `json:"emailListUuid,omitempty" tf:"email_list_uuid,omitempty"`
 }
 
-type ExcludeAzureObservation struct {
+type ExcludeAuthContextInitParameters struct {
+
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
-type ExcludeAzureParameters struct {
+type ExcludeAuthContextObservation struct {
 
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type ExcludeAuthContextParameters struct {
+
+	// The ACID of the Authentication Context.
 	// +kubebuilder:validation:Optional
-	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
 
+	// The ID of the Authentication Context.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type ExcludeAzureInitParameters struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type ExcludeAzureObservation struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type ExcludeAzureParameters struct {
+
+	// The ID of the Azure group or user.
+	// +kubebuilder:validation:Optional
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	// +kubebuilder:validation:Optional
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type ExcludeExternalEvaluationInitParameters struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type ExcludeExternalEvaluationObservation struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type ExcludeExternalEvaluationParameters struct {
@@ -54,7 +138,20 @@ type ExcludeExternalEvaluationParameters struct {
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type ExcludeGithubInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type ExcludeGithubObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type ExcludeGithubParameters struct {
@@ -69,7 +166,16 @@ type ExcludeGithubParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type ExcludeGsuiteInitParameters struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type ExcludeGsuiteObservation struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type ExcludeGsuiteParameters struct {
@@ -81,7 +187,16 @@ type ExcludeGsuiteParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type ExcludeOktaInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type ExcludeOktaObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type ExcludeOktaParameters struct {
@@ -93,7 +208,20 @@ type ExcludeOktaParameters struct {
 	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
+type ExcludeSAMLInitParameters struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type ExcludeSAMLObservation struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type ExcludeSAMLParameters struct {
@@ -108,13 +236,105 @@ type ExcludeSAMLParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyExcludeInitParameters struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []ExcludeAuthContextInitParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []ExcludeAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []ExcludeExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []ExcludeGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []ExcludeGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []ExcludeOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []ExcludeSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type PolicyExcludeObservation struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []ExcludeAuthContextObservation `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []ExcludeAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []ExcludeExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []ExcludeGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []ExcludeGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []ExcludeOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []ExcludeSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type PolicyExcludeParameters struct {
 
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	AuthContext []ExcludeAuthContextParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
@@ -155,8 +375,13 @@ type PolicyExcludeParameters struct {
 	// +kubebuilder:validation:Optional
 	Gsuite []ExcludeGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// An IPv4 or IPv6 CIDR block.
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	// +kubebuilder:validation:Optional
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
@@ -171,19 +396,84 @@ type PolicyExcludeParameters struct {
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
-type PolicyIncludeAzureObservation struct {
+type PolicyIncludeAuthContextInitParameters struct {
+
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
-type PolicyIncludeAzureParameters struct {
+type PolicyIncludeAuthContextObservation struct {
 
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyIncludeAuthContextParameters struct {
+
+	// The ACID of the Authentication Context.
 	// +kubebuilder:validation:Optional
-	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
 
+	// The ID of the Authentication Context.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyIncludeAzureInitParameters struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyIncludeAzureObservation struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyIncludeAzureParameters struct {
+
+	// The ID of the Azure group or user.
+	// +kubebuilder:validation:Optional
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	// +kubebuilder:validation:Optional
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyIncludeExternalEvaluationInitParameters struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type PolicyIncludeExternalEvaluationObservation struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type PolicyIncludeExternalEvaluationParameters struct {
@@ -195,7 +485,20 @@ type PolicyIncludeExternalEvaluationParameters struct {
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type PolicyIncludeGithubInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type PolicyIncludeGithubObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type PolicyIncludeGithubParameters struct {
@@ -210,7 +513,16 @@ type PolicyIncludeGithubParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type PolicyIncludeGsuiteInitParameters struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyIncludeGsuiteObservation struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyIncludeGsuiteParameters struct {
@@ -222,10 +534,108 @@ type PolicyIncludeGsuiteParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyIncludeInitParameters struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []PolicyIncludeAuthContextInitParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []PolicyIncludeAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []PolicyIncludeExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []PolicyIncludeGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []PolicyIncludeGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []PolicyIncludeOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []PolicyIncludeSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type PolicyIncludeObservation struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []PolicyIncludeAuthContextObservation `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []PolicyIncludeAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []PolicyIncludeExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []PolicyIncludeGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []PolicyIncludeGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []PolicyIncludeOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []PolicyIncludeSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
+type PolicyIncludeOktaInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyIncludeOktaObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyIncludeOktaParameters struct {
@@ -241,6 +651,9 @@ type PolicyIncludeParameters struct {
 
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	AuthContext []PolicyIncludeAuthContextParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
@@ -281,8 +694,13 @@ type PolicyIncludeParameters struct {
 	// +kubebuilder:validation:Optional
 	Gsuite []PolicyIncludeGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// An IPv4 or IPv6 CIDR block.
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	// +kubebuilder:validation:Optional
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
@@ -297,7 +715,20 @@ type PolicyIncludeParameters struct {
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type PolicyIncludeSAMLInitParameters struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyIncludeSAMLObservation struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyIncludeSAMLParameters struct {
@@ -312,14 +743,94 @@ type PolicyIncludeSAMLParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyInitParameters struct {
+	ApprovalGroup []ApprovalGroupInitParameters `json:"approvalGroup,omitempty" tf:"approval_group,omitempty"`
+
+	ApprovalRequired *bool `json:"approvalRequired,omitempty" tf:"approval_required,omitempty"`
+
+	// Defines the action Access will take if the policy matches the user. Available values: `allow`, `deny`, `non_identity`, `bypass`.
+	Decision *string `json:"decision,omitempty" tf:"decision,omitempty"`
+
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Exclude []PolicyExcludeInitParameters `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Include []PolicyIncludeInitParameters `json:"include,omitempty" tf:"include,omitempty"`
+
+	// Require this application to be served in an isolated browser for users matching this policy.
+	IsolationRequired *bool `json:"isolationRequired,omitempty" tf:"isolation_required,omitempty"`
+
+	// Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The unique precedence for policies on a single application.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// The prompt to display to the user for a justification for accessing the resource. Required when using `purpose_justification_required`.
+	PurposeJustificationPrompt *string `json:"purposeJustificationPrompt,omitempty" tf:"purpose_justification_prompt,omitempty"`
+
+	// Whether to prompt the user for a justification for accessing the resource.
+	PurposeJustificationRequired *bool `json:"purposeJustificationRequired,omitempty" tf:"purpose_justification_required,omitempty"`
+
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Require []PolicyRequireInitParameters `json:"require,omitempty" tf:"require,omitempty"`
+
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+}
+
 type PolicyObservation struct {
+
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The ID of the application the policy is associated with.
+	ApplicationID *string `json:"applicationId,omitempty" tf:"application_id,omitempty"`
+
+	ApprovalGroup []ApprovalGroupObservation `json:"approvalGroup,omitempty" tf:"approval_group,omitempty"`
+
+	ApprovalRequired *bool `json:"approvalRequired,omitempty" tf:"approval_required,omitempty"`
+
+	// Defines the action Access will take if the policy matches the user. Available values: `allow`, `deny`, `non_identity`, `bypass`.
+	Decision *string `json:"decision,omitempty" tf:"decision,omitempty"`
+
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Exclude []PolicyExcludeObservation `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Include []PolicyIncludeObservation `json:"include,omitempty" tf:"include,omitempty"`
+
+	// Require this application to be served in an isolated browser for users matching this policy.
+	IsolationRequired *bool `json:"isolationRequired,omitempty" tf:"isolation_required,omitempty"`
+
+	// Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The unique precedence for policies on a single application.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// The prompt to display to the user for a justification for accessing the resource. Required when using `purpose_justification_required`.
+	PurposeJustificationPrompt *string `json:"purposeJustificationPrompt,omitempty" tf:"purpose_justification_prompt,omitempty"`
+
+	// Whether to prompt the user for a justification for accessing the resource.
+	PurposeJustificationRequired *bool `json:"purposeJustificationRequired,omitempty" tf:"purpose_justification_required,omitempty"`
+
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Require []PolicyRequireObservation `json:"require,omitempty" tf:"require,omitempty"`
+
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type PolicyParameters struct {
 
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -351,24 +862,28 @@ type PolicyParameters struct {
 	ApprovalRequired *bool `json:"approvalRequired,omitempty" tf:"approval_required,omitempty"`
 
 	// Defines the action Access will take if the policy matches the user. Available values: `allow`, `deny`, `non_identity`, `bypass`.
-	// +kubebuilder:validation:Required
-	Decision *string `json:"decision" tf:"decision,omitempty"`
+	// +kubebuilder:validation:Optional
+	Decision *string `json:"decision,omitempty" tf:"decision,omitempty"`
 
 	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
 	// +kubebuilder:validation:Optional
 	Exclude []PolicyExcludeParameters `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
 	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
-	// +kubebuilder:validation:Required
-	Include []PolicyIncludeParameters `json:"include" tf:"include,omitempty"`
+	// +kubebuilder:validation:Optional
+	Include []PolicyIncludeParameters `json:"include,omitempty" tf:"include,omitempty"`
+
+	// Require this application to be served in an isolated browser for users matching this policy.
+	// +kubebuilder:validation:Optional
+	IsolationRequired *bool `json:"isolationRequired,omitempty" tf:"isolation_required,omitempty"`
 
 	// Friendly name of the Access Policy.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The unique precedence for policies on a single application.
-	// +kubebuilder:validation:Required
-	Precedence *float64 `json:"precedence" tf:"precedence,omitempty"`
+	// +kubebuilder:validation:Optional
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
 
 	// The prompt to display to the user for a justification for accessing the resource. Required when using `purpose_justification_required`.
 	// +kubebuilder:validation:Optional
@@ -382,8 +897,12 @@ type PolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	Require []PolicyRequireParameters `json:"require,omitempty" tf:"require,omitempty"`
 
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	// +kubebuilder:validation:Optional
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -396,19 +915,84 @@ type PolicyParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
-type PolicyRequireAzureObservation struct {
+type PolicyRequireAuthContextInitParameters struct {
+
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
-type PolicyRequireAzureParameters struct {
+type PolicyRequireAuthContextObservation struct {
 
+	// The ACID of the Authentication Context.
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
+
+	// The ID of the Authentication Context.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyRequireAuthContextParameters struct {
+
+	// The ACID of the Authentication Context.
 	// +kubebuilder:validation:Optional
-	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+	AcID *string `json:"acId,omitempty" tf:"ac_id,omitempty"`
 
+	// The ID of the Authentication Context.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyRequireAzureInitParameters struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyRequireAzureObservation struct {
+
+	// The ID of the Azure group or user.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyRequireAzureParameters struct {
+
+	// The ID of the Azure group or user.
+	// +kubebuilder:validation:Optional
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the Azure Identity provider.
+	// +kubebuilder:validation:Optional
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
+type PolicyRequireExternalEvaluationInitParameters struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type PolicyRequireExternalEvaluationObservation struct {
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type PolicyRequireExternalEvaluationParameters struct {
@@ -420,7 +1004,20 @@ type PolicyRequireExternalEvaluationParameters struct {
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type PolicyRequireGithubInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type PolicyRequireGithubObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type PolicyRequireGithubParameters struct {
@@ -435,7 +1032,16 @@ type PolicyRequireGithubParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type PolicyRequireGsuiteInitParameters struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyRequireGsuiteObservation struct {
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyRequireGsuiteParameters struct {
@@ -447,10 +1053,108 @@ type PolicyRequireGsuiteParameters struct {
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyRequireInitParameters struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []PolicyRequireAuthContextInitParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []PolicyRequireAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []PolicyRequireExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []PolicyRequireGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []PolicyRequireGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []PolicyRequireOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []PolicyRequireSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type PolicyRequireObservation struct {
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	AuthContext []PolicyRequireAuthContextObservation `json:"authContext,omitempty" tf:"auth_context,omitempty"`
+
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	Azure []PolicyRequireAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	ExternalEvaluation []PolicyRequireExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	Github []PolicyRequireGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	Gsuite []PolicyRequireGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// An IPv4 or IPv6 CIDR block.
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
+
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	Okta []PolicyRequireOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	SAML []PolicyRequireSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
+type PolicyRequireOktaInitParameters struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyRequireOktaObservation struct {
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyRequireOktaParameters struct {
@@ -466,6 +1170,9 @@ type PolicyRequireParameters struct {
 
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	AuthContext []PolicyRequireAuthContextParameters `json:"authContext,omitempty" tf:"auth_context,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
@@ -506,8 +1213,13 @@ type PolicyRequireParameters struct {
 	// +kubebuilder:validation:Optional
 	Gsuite []PolicyRequireGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// An IPv4 or IPv6 CIDR block.
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// The ID of an existing IP list to reference.
+	// +kubebuilder:validation:Optional
+	IPList []*string `json:"ipList,omitempty" tf:"ip_list,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
@@ -522,7 +1234,20 @@ type PolicyRequireParameters struct {
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type PolicyRequireSAMLInitParameters struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyRequireSAMLObservation struct {
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyRequireSAMLParameters struct {
@@ -541,6 +1266,18 @@ type PolicyRequireSAMLParameters struct {
 type PolicySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PolicyParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PolicyInitParameters `json:"initProvider,omitempty"`
 }
 
 // PolicyStatus defines the observed state of Policy.
@@ -561,8 +1298,12 @@ type PolicyStatus struct {
 type Policy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PolicySpec   `json:"spec"`
-	Status            PolicyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.decision) || has(self.initProvider.decision)",message="decision is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.include) || has(self.initProvider.include)",message="include is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.precedence) || has(self.initProvider.precedence)",message="precedence is a required parameter"
+	Spec   PolicySpec   `json:"spec"`
+	Status PolicyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

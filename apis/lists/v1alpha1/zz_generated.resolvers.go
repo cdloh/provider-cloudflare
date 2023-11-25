@@ -7,14 +7,14 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1"
+	v1alpha1 "github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ResolveReferences of this IPList.
-func (mg *IPList) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this Item.
+func (mg *Item) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -35,6 +35,22 @@ func (mg *IPList) ResolveReferences(ctx context.Context, c client.Reader) error 
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ListID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ListIDRef,
+		Selector:     mg.Spec.ForProvider.ListIDSelector,
+		To: reference.To{
+			List:    &ListList{},
+			Managed: &List{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ListID")
+	}
+	mg.Spec.ForProvider.ListID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ListIDRef = rsp.ResolvedReference
 
 	return nil
 }

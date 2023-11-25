@@ -13,47 +13,93 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionInitParameters struct {
+
+	// Type of supported action. Available values: `drop`, `forward`, `worker`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// A list with items in the following form.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type ActionObservation struct {
+
+	// Type of supported action. Available values: `drop`, `forward`, `worker`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// A list with items in the following form.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type ActionParameters struct {
 
 	// Type of supported action. Available values: `drop`, `forward`, `worker`.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// A list with items in the following form.
-	// +kubebuilder:validation:Required
-	Value []*string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type CatchAllInitParameters struct {
+
+	// List actions patterns.
+	Action []ActionInitParameters `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Routing rule status.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Matching patterns to forward to your actions.
+	Matcher []MatcherInitParameters `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// Routing rule name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type CatchAllObservation struct {
+
+	// List actions patterns.
+	Action []ActionObservation `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Routing rule status.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Matching patterns to forward to your actions.
+	Matcher []MatcherObservation `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// Routing rule name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Routing rule identifier.
 	Tag *string `json:"tag,omitempty" tf:"tag,omitempty"`
+
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type CatchAllParameters struct {
 
 	// List actions patterns.
-	// +kubebuilder:validation:Required
-	Action []ActionParameters `json:"action" tf:"action,omitempty"`
+	// +kubebuilder:validation:Optional
+	Action []ActionParameters `json:"action,omitempty" tf:"action,omitempty"`
 
 	// Routing rule status.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Matching patterns to forward to your actions.
-	// +kubebuilder:validation:Required
-	Matcher []MatcherParameters `json:"matcher" tf:"matcher,omitempty"`
+	// +kubebuilder:validation:Optional
+	Matcher []MatcherParameters `json:"matcher,omitempty" tf:"matcher,omitempty"`
 
 	// Routing rule name.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The zone identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -66,20 +112,41 @@ type CatchAllParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type MatcherInitParameters struct {
+
+	// Type of matcher. Available values: `all`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type MatcherObservation struct {
+
+	// Type of matcher. Available values: `all`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type MatcherParameters struct {
 
 	// Type of matcher. Available values: `all`.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // CatchAllSpec defines the desired state of CatchAll
 type CatchAllSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     CatchAllParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider CatchAllInitParameters `json:"initProvider,omitempty"`
 }
 
 // CatchAllStatus defines the observed state of CatchAll.
@@ -100,8 +167,11 @@ type CatchAllStatus struct {
 type CatchAll struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              CatchAllSpec   `json:"spec"`
-	Status            CatchAllStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.action) || has(self.initProvider.action)",message="action is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.matcher) || has(self.initProvider.matcher)",message="matcher is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   CatchAllSpec   `json:"spec"`
+	Status CatchAllStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

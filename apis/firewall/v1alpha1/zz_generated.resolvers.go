@@ -7,8 +7,8 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/filters/v1alpha1"
-	v1alpha11 "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1"
+	v1alpha1 "github.com/clementblaise/provider-cloudflare/apis/filters/v1alpha1"
+	v1alpha11 "github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"

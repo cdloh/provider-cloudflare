@@ -80,10 +80,15 @@ spec:
                           description: The global variable for the binding in your
                             Worker code.
                           type: string
-                      required:
-                      - dataset
-                      - name
                       type: object
+                    type: array
+                  compatibilityDate:
+                    description: The date to use for the compatibility flag.
+                    type: string
+                  compatibilityFlags:
+                    description: Compatibility flags used for Worker Scripts.
+                    items:
+                      type: string
                     type: array
                   content:
                     description: The script content.
@@ -174,10 +179,12 @@ spec:
                                   type: string
                               type: object
                           type: object
-                      required:
-                      - name
                       type: object
                     type: array
+                  logpush:
+                    description: Enabling allows Worker events to be sent to a defined
+                      Logpush destination.
+                    type: boolean
                   module:
                     description: Whether to upload Worker as a module.
                     type: boolean
@@ -185,6 +192,15 @@ spec:
                     description: The name for the script. **Modifying this attribute
                       will force creation of a new resource.**
                     type: string
+                  placement:
+                    items:
+                      properties:
+                        mode:
+                          description: 'The placement mode for the Worker. Available
+                            values: `smart`.'
+                          type: string
+                      type: object
+                    type: array
                   plainTextBinding:
                     items:
                       properties:
@@ -195,9 +211,18 @@ spec:
                         text:
                           description: The plain text you want to store.
                           type: string
-                      required:
-                      - name
-                      - text
+                      type: object
+                    type: array
+                  queueBinding:
+                    items:
+                      properties:
+                        binding:
+                          description: The name of the global variable for the binding
+                            in your Worker code.
+                          type: string
+                        queue:
+                          description: Name of the queue you want to use.
+                          type: string
                       type: object
                     type: array
                   r2BucketBinding:
@@ -210,9 +235,6 @@ spec:
                           description: The global variable for the binding in your
                             Worker code.
                           type: string
-                      required:
-                      - bucketName
-                      - name
                       type: object
                     type: array
                   secretTextBinding:
@@ -240,7 +262,6 @@ spec:
                           - namespace
                           type: object
                       required:
-                      - name
                       - textSecretRef
                       type: object
                     type: array
@@ -258,9 +279,6 @@ spec:
                         service:
                           description: The name of the Worker to bind to.
                           type: string
-                      required:
-                      - name
-                      - service
                       type: object
                     type: array
                   webassemblyBinding:
@@ -274,14 +292,152 @@ spec:
                           description: The global variable for the binding in your
                             Worker code.
                           type: string
-                      required:
-                      - module
-                      - name
                       type: object
                     type: array
-                required:
-                - content
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  analyticsEngineBinding:
+                    items:
+                      properties:
+                        dataset:
+                          description: The name of the Analytics Engine dataset to
+                            write to.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
+                  compatibilityDate:
+                    description: The date to use for the compatibility flag.
+                    type: string
+                  compatibilityFlags:
+                    description: Compatibility flags used for Worker Scripts.
+                    items:
+                      type: string
+                    type: array
+                  content:
+                    description: The script content.
+                    type: string
+                  kvNamespaceBinding:
+                    items:
+                      properties:
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
+                  logpush:
+                    description: Enabling allows Worker events to be sent to a defined
+                      Logpush destination.
+                    type: boolean
+                  module:
+                    description: Whether to upload Worker as a module.
+                    type: boolean
+                  name:
+                    description: The name for the script. **Modifying this attribute
+                      will force creation of a new resource.**
+                    type: string
+                  placement:
+                    items:
+                      properties:
+                        mode:
+                          description: 'The placement mode for the Worker. Available
+                            values: `smart`.'
+                          type: string
+                      type: object
+                    type: array
+                  plainTextBinding:
+                    items:
+                      properties:
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                        text:
+                          description: The plain text you want to store.
+                          type: string
+                      type: object
+                    type: array
+                  queueBinding:
+                    items:
+                      properties:
+                        binding:
+                          description: The name of the global variable for the binding
+                            in your Worker code.
+                          type: string
+                        queue:
+                          description: Name of the queue you want to use.
+                          type: string
+                      type: object
+                    type: array
+                  r2BucketBinding:
+                    items:
+                      properties:
+                        bucketName:
+                          description: The name of the Bucket to bind to.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
+                  secretTextBinding:
+                    items:
+                      properties:
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
+                  serviceBinding:
+                    items:
+                      properties:
+                        environment:
+                          description: The name of the Worker environment to bind
+                            to.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                        service:
+                          description: The name of the Worker to bind to.
+                          type: string
+                      type: object
+                    type: array
+                  webassemblyBinding:
+                    items:
+                      properties:
+                        module:
+                          description: The base64 encoded wasm module you want to
+                            store.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -480,13 +636,159 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: accountId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.accountId)
+                || has(self.initProvider.accountId)'
+            - message: content is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.content)
+                || has(self.initProvider.content)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: ScriptStatus defines the observed state of Script.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  analyticsEngineBinding:
+                    items:
+                      properties:
+                        dataset:
+                          description: The name of the Analytics Engine dataset to
+                            write to.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
+                  compatibilityDate:
+                    description: The date to use for the compatibility flag.
+                    type: string
+                  compatibilityFlags:
+                    description: Compatibility flags used for Worker Scripts.
+                    items:
+                      type: string
+                    type: array
+                  content:
+                    description: The script content.
+                    type: string
                   id:
                     type: string
+                  kvNamespaceBinding:
+                    items:
+                      properties:
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                        namespaceId:
+                          description: ID of the KV namespace you want to use.
+                          type: string
+                      type: object
+                    type: array
+                  logpush:
+                    description: Enabling allows Worker events to be sent to a defined
+                      Logpush destination.
+                    type: boolean
+                  module:
+                    description: Whether to upload Worker as a module.
+                    type: boolean
+                  name:
+                    description: The name for the script. **Modifying this attribute
+                      will force creation of a new resource.**
+                    type: string
+                  placement:
+                    items:
+                      properties:
+                        mode:
+                          description: 'The placement mode for the Worker. Available
+                            values: `smart`.'
+                          type: string
+                      type: object
+                    type: array
+                  plainTextBinding:
+                    items:
+                      properties:
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                        text:
+                          description: The plain text you want to store.
+                          type: string
+                      type: object
+                    type: array
+                  queueBinding:
+                    items:
+                      properties:
+                        binding:
+                          description: The name of the global variable for the binding
+                            in your Worker code.
+                          type: string
+                        queue:
+                          description: Name of the queue you want to use.
+                          type: string
+                      type: object
+                    type: array
+                  r2BucketBinding:
+                    items:
+                      properties:
+                        bucketName:
+                          description: The name of the Bucket to bind to.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
+                  secretTextBinding:
+                    items:
+                      properties:
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
+                  serviceBinding:
+                    items:
+                      properties:
+                        environment:
+                          description: The name of the Worker environment to bind
+                            to.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                        service:
+                          description: The name of the Worker to bind to.
+                          type: string
+                      type: object
+                    type: array
+                  webassemblyBinding:
+                    items:
+                      properties:
+                        module:
+                          description: The base64 encoded wasm module you want to
+                            store.
+                          type: string
+                        name:
+                          description: The global variable for the binding in your
+                            Worker code.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

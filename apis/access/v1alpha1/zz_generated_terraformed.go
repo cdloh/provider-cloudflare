@@ -69,6 +69,16 @@ func (tr *Application) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Application
+func (tr *Application) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Application using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Application) LateInitialize(attrs []byte) (bool, error) {
@@ -86,82 +96,6 @@ func (tr *Application) LateInitialize(attrs []byte) (bool, error) {
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *Application) GetTerraformSchemaVersion() int {
-	return 0
-}
-
-// GetTerraformResourceType returns Terraform resource type for this Bookmark
-func (mg *Bookmark) GetTerraformResourceType() string {
-	return "cloudflare_access_bookmark"
-}
-
-// GetConnectionDetailsMapping for this Bookmark
-func (tr *Bookmark) GetConnectionDetailsMapping() map[string]string {
-	return nil
-}
-
-// GetObservation of this Bookmark
-func (tr *Bookmark) GetObservation() (map[string]any, error) {
-	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
-	if err != nil {
-		return nil, err
-	}
-	base := map[string]any{}
-	return base, json.TFParser.Unmarshal(o, &base)
-}
-
-// SetObservation for this Bookmark
-func (tr *Bookmark) SetObservation(obs map[string]any) error {
-	p, err := json.TFParser.Marshal(obs)
-	if err != nil {
-		return err
-	}
-	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
-}
-
-// GetID returns ID of underlying Terraform resource of this Bookmark
-func (tr *Bookmark) GetID() string {
-	if tr.Status.AtProvider.ID == nil {
-		return ""
-	}
-	return *tr.Status.AtProvider.ID
-}
-
-// GetParameters of this Bookmark
-func (tr *Bookmark) GetParameters() (map[string]any, error) {
-	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
-	if err != nil {
-		return nil, err
-	}
-	base := map[string]any{}
-	return base, json.TFParser.Unmarshal(p, &base)
-}
-
-// SetParameters for this Bookmark
-func (tr *Bookmark) SetParameters(params map[string]any) error {
-	p, err := json.TFParser.Marshal(params)
-	if err != nil {
-		return err
-	}
-	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
-}
-
-// LateInitialize this Bookmark using its observed tfState.
-// returns True if there are any spec changes for the resource.
-func (tr *Bookmark) LateInitialize(attrs []byte) (bool, error) {
-	params := &BookmarkParameters{}
-	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
-		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
-	}
-	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
-	opts = append(opts, resource.WithNameFilter("AccountID"))
-	opts = append(opts, resource.WithNameFilter("ZoneID"))
-
-	li := resource.NewGenericLateInitializer(opts...)
-	return li.LateInitialize(&tr.Spec.ForProvider, params)
-}
-
-// GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *Bookmark) GetTerraformSchemaVersion() int {
 	return 0
 }
 
@@ -219,6 +153,16 @@ func (tr *CACertificate) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this CACertificate
+func (tr *CACertificate) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this CACertificate using its observed tfState.
@@ -297,6 +241,16 @@ func (tr *Group) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Group
+func (tr *Group) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Group using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Group) LateInitialize(attrs []byte) (bool, error) {
@@ -324,7 +278,7 @@ func (mg *IdentityProvider) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this IdentityProvider
 func (tr *IdentityProvider) GetConnectionDetailsMapping() map[string]string {
-	return nil
+	return map[string]string{"scim_config[*].secret": "spec.forProvider.scimConfig[*].secretSecretRef"}
 }
 
 // GetObservation of this IdentityProvider
@@ -371,6 +325,16 @@ func (tr *IdentityProvider) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this IdentityProvider
+func (tr *IdentityProvider) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this IdentityProvider using its observed tfState.
@@ -449,6 +413,16 @@ func (tr *KeysConfiguration) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this KeysConfiguration
+func (tr *KeysConfiguration) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this KeysConfiguration using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *KeysConfiguration) LateInitialize(attrs []byte) (bool, error) {
@@ -521,6 +495,16 @@ func (tr *MutualTLSCertificate) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this MutualTLSCertificate
+func (tr *MutualTLSCertificate) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this MutualTLSCertificate using its observed tfState.
@@ -599,6 +583,16 @@ func (tr *Organization) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Organization
+func (tr *Organization) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Organization using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Organization) LateInitialize(attrs []byte) (bool, error) {
@@ -673,6 +667,16 @@ func (tr *Policy) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this Policy
+func (tr *Policy) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this Policy using its observed tfState.
@@ -751,6 +755,16 @@ func (tr *Rule) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Rule
+func (tr *Rule) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Rule using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Rule) LateInitialize(attrs []byte) (bool, error) {
@@ -827,6 +841,16 @@ func (tr *ServiceToken) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this ServiceToken
+func (tr *ServiceToken) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this ServiceToken using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *ServiceToken) LateInitialize(attrs []byte) (bool, error) {
@@ -844,5 +868,89 @@ func (tr *ServiceToken) LateInitialize(attrs []byte) (bool, error) {
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *ServiceToken) GetTerraformSchemaVersion() int {
+	return 0
+}
+
+// GetTerraformResourceType returns Terraform resource type for this Tag
+func (mg *Tag) GetTerraformResourceType() string {
+	return "cloudflare_access_tag"
+}
+
+// GetConnectionDetailsMapping for this Tag
+func (tr *Tag) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this Tag
+func (tr *Tag) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this Tag
+func (tr *Tag) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this Tag
+func (tr *Tag) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this Tag
+func (tr *Tag) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this Tag
+func (tr *Tag) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this Tag
+func (tr *Tag) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// LateInitialize this Tag using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *Tag) LateInitialize(attrs []byte) (bool, error) {
+	params := &TagParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *Tag) GetTerraformSchemaVersion() int {
 	return 0
 }

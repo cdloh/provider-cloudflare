@@ -13,28 +13,65 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ZoneInitParameters struct {
+
+	// Whether to scan for DNS records on creation. Ignored after zone is created.
+	JumpStart *bool `json:"jumpStart,omitempty" tf:"jump_start,omitempty"`
+
+	// Whether this zone is paused (traffic bypasses Cloudflare). Defaults to `false`.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// The name of the commercial plan to apply to the zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`, `enterprise`, `partners_free`, `partners_pro`, `partners_business`, `partners_enterprise`.
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
+
+	// A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`, `secondary`. Defaults to `full`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The DNS zone name which will be added. **Modifying this attribute will force creation of a new resource.**
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
+}
+
 type ZoneObservation struct {
+
+	// Account ID to manage the zone resource in.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Whether to scan for DNS records on creation. Ignored after zone is created.
+	JumpStart *bool `json:"jumpStart,omitempty" tf:"jump_start,omitempty"`
 
 	Meta map[string]*bool `json:"meta,omitempty" tf:"meta,omitempty"`
 
 	// Cloudflare-assigned name servers. This is only populated for zones that use Cloudflare DNS.
 	NameServers []*string `json:"nameServers,omitempty" tf:"name_servers,omitempty"`
 
+	// Whether this zone is paused (traffic bypasses Cloudflare). Defaults to `false`.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// The name of the commercial plan to apply to the zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`, `enterprise`, `partners_free`, `partners_pro`, `partners_business`, `partners_enterprise`.
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
+
 	// Status of the zone. Available values: `active`, `pending`, `initializing`, `moved`, `deleted`, `deactivated`.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`, `secondary`. Defaults to `full`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// List of Vanity Nameservers (if set).
 	VanityNameServers []*string `json:"vanityNameServers,omitempty" tf:"vanity_name_servers,omitempty"`
 
 	// Contains the TXT record value to validate domain ownership. This is only populated for zones of type `partial`.
 	VerificationKey *string `json:"verificationKey,omitempty" tf:"verification_key,omitempty"`
+
+	// The DNS zone name which will be added. **Modifying this attribute will force creation of a new resource.**
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 type ZoneParameters struct {
 
 	// Account ID to manage the zone resource in.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -58,19 +95,31 @@ type ZoneParameters struct {
 	// +kubebuilder:validation:Optional
 	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
 
-	// A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`. Defaults to `full`.
+	// A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`, `secondary`. Defaults to `full`.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The DNS zone name which will be added. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	// +kubebuilder:validation:Optional
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 // ZoneSpec defines the desired state of Zone
 type ZoneSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ZoneParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ZoneInitParameters `json:"initProvider,omitempty"`
 }
 
 // ZoneStatus defines the observed state of Zone.
@@ -91,8 +140,9 @@ type ZoneStatus struct {
 type Zone struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ZoneSpec   `json:"spec"`
-	Status            ZoneStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.zone) || has(self.initProvider.zone)",message="zone is a required parameter"
+	Spec   ZoneSpec   `json:"spec"`
+	Status ZoneStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

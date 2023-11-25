@@ -205,11 +205,21 @@ spec:
                     type: string
                   customDenyUrl:
                     description: Option that redirects to a custom URL when a user
-                      is denied access to the application.
+                      is denied access to the application via identity based rules.
                     type: string
+                  customNonIdentityDenyUrl:
+                    description: Option that redirects to a custom URL when a user
+                      is denied access to the application via non identity rules.
+                    type: string
+                  customPages:
+                    description: The custom pages selected for the application.
+                    items:
+                      type: string
+                    type: array
                   domain:
-                    description: The complete URL of the asset you wish to put Cloudflare
-                      Access in front of. Can include subdomains or paths. Or both.
+                    description: The primary hostname and path that Access will secure.
+                      If the app is visible in the App Launcher dashboard, this is
+                      the domain that will be displayed.
                     type: string
                   enableBindingCookie:
                     description: Option to provide increased security against compromised
@@ -235,6 +245,37 @@ spec:
                           description: The service provider's endpoint that is responsible
                             for receiving and parsing a SAML assertion.
                           type: string
+                        customAttribute:
+                          description: Custom attribute mapped from IDPs.
+                          items:
+                            properties:
+                              friendlyName:
+                                description: A friendly name for the attribute as
+                                  provided to the SaaS app.
+                                type: string
+                              name:
+                                description: The name of the attribute as provided
+                                  to the SaaS app.
+                                type: string
+                              nameFormat:
+                                description: A globally unique name for an identity
+                                  or service provider.
+                                type: string
+                              required:
+                                description: True if the attribute must be always
+                                  present.
+                                type: boolean
+                              source:
+                                items:
+                                  properties:
+                                    name:
+                                      description: The name of the attribute as provided
+                                        by the IDP.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         nameIdFormat:
                           description: The format of the name identifier sent to the
                             SaaS application. Defaults to `email`.
@@ -243,15 +284,19 @@ spec:
                           description: A globally unique name for an identity or service
                             provider.
                           type: string
-                      required:
-                      - consumerServiceUrl
-                      - spEntityId
                       type: object
                     type: array
                   sameSiteCookieAttribute:
                     description: 'Defines the same-site cookie setting for access
                       tokens. Available values: `none`, `lax`, `strict`.'
                     type: string
+                  selfHostedDomains:
+                    description: List of domains that access will secure. Only present
+                      for self_hosted, vnc, and ssh applications. Always includes
+                      the value set as `domain`.
+                    items:
+                      type: string
+                    type: array
                   serviceAuth401Redirect:
                     description: Option to return a 401 status code in service authentication
                       rules on failed requests. Defaults to `false`.
@@ -264,6 +309,11 @@ spec:
                     description: Option to skip the authorization interstitial when
                       using the CLI. Defaults to `false`.
                     type: boolean
+                  tags:
+                    description: The itags associated with the application.
+                    items:
+                      type: string
+                    type: array
                   type:
                     description: 'The application type. Available values: `app_launcher`,
                       `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`,
@@ -346,8 +396,196 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  allowedIdps:
+                    description: The identity providers selected for the application.
+                    items:
+                      type: string
+                    type: array
+                  appLauncherVisible:
+                    description: Option to show/hide applications in App Launcher.
+                      Defaults to `true`.
+                    type: boolean
+                  autoRedirectToIdentity:
+                    description: Option to skip identity provider selection if only
+                      one is configured in `allowed_idps`. Defaults to `false`.
+                    type: boolean
+                  corsHeaders:
+                    description: CORS configuration for the Access Application. See
+                      below for reference structure.
+                    items:
+                      properties:
+                        allowAllHeaders:
+                          description: Value to determine whether all HTTP headers
+                            are exposed.
+                          type: boolean
+                        allowAllMethods:
+                          description: Value to determine whether all methods are
+                            exposed.
+                          type: boolean
+                        allowAllOrigins:
+                          description: Value to determine whether all origins are
+                            permitted to make CORS requests.
+                          type: boolean
+                        allowCredentials:
+                          description: Value to determine if credentials (cookies,
+                            authorization headers, or TLS client certificates) are
+                            included with requests.
+                          type: boolean
+                        allowedHeaders:
+                          description: List of HTTP headers to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                        allowedMethods:
+                          description: List of methods to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                        allowedOrigins:
+                          description: List of origins permitted to make CORS requests.
+                          items:
+                            type: string
+                          type: array
+                        maxAge:
+                          description: The maximum time a preflight request will be
+                            cached.
+                          type: number
+                      type: object
+                    type: array
+                  customDenyMessage:
+                    description: Option that returns a custom error message when a
+                      user is denied access to the application.
+                    type: string
+                  customDenyUrl:
+                    description: Option that redirects to a custom URL when a user
+                      is denied access to the application via identity based rules.
+                    type: string
+                  customNonIdentityDenyUrl:
+                    description: Option that redirects to a custom URL when a user
+                      is denied access to the application via non identity rules.
+                    type: string
+                  customPages:
+                    description: The custom pages selected for the application.
+                    items:
+                      type: string
+                    type: array
+                  domain:
+                    description: The primary hostname and path that Access will secure.
+                      If the app is visible in the App Launcher dashboard, this is
+                      the domain that will be displayed.
+                    type: string
+                  enableBindingCookie:
+                    description: Option to provide increased security against compromised
+                      authorization tokens and CSRF attacks by requiring an additional
+                      "binding" cookie on requests. Defaults to `false`.
+                    type: boolean
+                  httpOnlyCookieAttribute:
+                    description: Option to add the `HttpOnly` cookie flag to access
+                      tokens.
+                    type: boolean
+                  logoUrl:
+                    description: Image URL for the logo shown in the app launcher
+                      dashboard.
+                    type: string
+                  name:
+                    description: Friendly name of the Access Application.
+                    type: string
+                  saasApp:
+                    description: SaaS configuration for the Access Application.
+                    items:
+                      properties:
+                        consumerServiceUrl:
+                          description: The service provider's endpoint that is responsible
+                            for receiving and parsing a SAML assertion.
+                          type: string
+                        customAttribute:
+                          description: Custom attribute mapped from IDPs.
+                          items:
+                            properties:
+                              friendlyName:
+                                description: A friendly name for the attribute as
+                                  provided to the SaaS app.
+                                type: string
+                              name:
+                                description: The name of the attribute as provided
+                                  to the SaaS app.
+                                type: string
+                              nameFormat:
+                                description: A globally unique name for an identity
+                                  or service provider.
+                                type: string
+                              required:
+                                description: True if the attribute must be always
+                                  present.
+                                type: boolean
+                              source:
+                                items:
+                                  properties:
+                                    name:
+                                      description: The name of the attribute as provided
+                                        by the IDP.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        nameIdFormat:
+                          description: The format of the name identifier sent to the
+                            SaaS application. Defaults to `email`.
+                          type: string
+                        spEntityId:
+                          description: A globally unique name for an identity or service
+                            provider.
+                          type: string
+                      type: object
+                    type: array
+                  sameSiteCookieAttribute:
+                    description: 'Defines the same-site cookie setting for access
+                      tokens. Available values: `none`, `lax`, `strict`.'
+                    type: string
+                  selfHostedDomains:
+                    description: List of domains that access will secure. Only present
+                      for self_hosted, vnc, and ssh applications. Always includes
+                      the value set as `domain`.
+                    items:
+                      type: string
+                    type: array
+                  serviceAuth401Redirect:
+                    description: Option to return a 401 status code in service authentication
+                      rules on failed requests. Defaults to `false`.
+                    type: boolean
+                  sessionDuration:
+                    description: How often a user will be forced to re-authorise.
+                      Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    type: string
+                  skipInterstitial:
+                    description: Option to skip the authorization interstitial when
+                      using the CLI. Defaults to `false`.
+                    type: boolean
+                  tags:
+                    description: The itags associated with the application.
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: 'The application type. Available values: `app_launcher`,
+                      `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`,
+                      `vnc`, `warp`. Defaults to `self_hosted`.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -546,15 +784,215 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: ApplicationStatus defines the observed state of Application.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      Conflicts with `zone_id`.
+                    type: string
+                  allowedIdps:
+                    description: The identity providers selected for the application.
+                    items:
+                      type: string
+                    type: array
+                  appLauncherVisible:
+                    description: Option to show/hide applications in App Launcher.
+                      Defaults to `true`.
+                    type: boolean
                   aud:
                     description: Application Audience (AUD) Tag of the application.
                     type: string
+                  autoRedirectToIdentity:
+                    description: Option to skip identity provider selection if only
+                      one is configured in `allowed_idps`. Defaults to `false`.
+                    type: boolean
+                  corsHeaders:
+                    description: CORS configuration for the Access Application. See
+                      below for reference structure.
+                    items:
+                      properties:
+                        allowAllHeaders:
+                          description: Value to determine whether all HTTP headers
+                            are exposed.
+                          type: boolean
+                        allowAllMethods:
+                          description: Value to determine whether all methods are
+                            exposed.
+                          type: boolean
+                        allowAllOrigins:
+                          description: Value to determine whether all origins are
+                            permitted to make CORS requests.
+                          type: boolean
+                        allowCredentials:
+                          description: Value to determine if credentials (cookies,
+                            authorization headers, or TLS client certificates) are
+                            included with requests.
+                          type: boolean
+                        allowedHeaders:
+                          description: List of HTTP headers to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                        allowedMethods:
+                          description: List of methods to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                        allowedOrigins:
+                          description: List of origins permitted to make CORS requests.
+                          items:
+                            type: string
+                          type: array
+                        maxAge:
+                          description: The maximum time a preflight request will be
+                            cached.
+                          type: number
+                      type: object
+                    type: array
+                  customDenyMessage:
+                    description: Option that returns a custom error message when a
+                      user is denied access to the application.
+                    type: string
+                  customDenyUrl:
+                    description: Option that redirects to a custom URL when a user
+                      is denied access to the application via identity based rules.
+                    type: string
+                  customNonIdentityDenyUrl:
+                    description: Option that redirects to a custom URL when a user
+                      is denied access to the application via non identity rules.
+                    type: string
+                  customPages:
+                    description: The custom pages selected for the application.
+                    items:
+                      type: string
+                    type: array
+                  domain:
+                    description: The primary hostname and path that Access will secure.
+                      If the app is visible in the App Launcher dashboard, this is
+                      the domain that will be displayed.
+                    type: string
+                  enableBindingCookie:
+                    description: Option to provide increased security against compromised
+                      authorization tokens and CSRF attacks by requiring an additional
+                      "binding" cookie on requests. Defaults to `false`.
+                    type: boolean
+                  httpOnlyCookieAttribute:
+                    description: Option to add the `HttpOnly` cookie flag to access
+                      tokens.
+                    type: boolean
                   id:
+                    type: string
+                  logoUrl:
+                    description: Image URL for the logo shown in the app launcher
+                      dashboard.
+                    type: string
+                  name:
+                    description: Friendly name of the Access Application.
+                    type: string
+                  saasApp:
+                    description: SaaS configuration for the Access Application.
+                    items:
+                      properties:
+                        consumerServiceUrl:
+                          description: The service provider's endpoint that is responsible
+                            for receiving and parsing a SAML assertion.
+                          type: string
+                        customAttribute:
+                          description: Custom attribute mapped from IDPs.
+                          items:
+                            properties:
+                              friendlyName:
+                                description: A friendly name for the attribute as
+                                  provided to the SaaS app.
+                                type: string
+                              name:
+                                description: The name of the attribute as provided
+                                  to the SaaS app.
+                                type: string
+                              nameFormat:
+                                description: A globally unique name for an identity
+                                  or service provider.
+                                type: string
+                              required:
+                                description: True if the attribute must be always
+                                  present.
+                                type: boolean
+                              source:
+                                items:
+                                  properties:
+                                    name:
+                                      description: The name of the attribute as provided
+                                        by the IDP.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        idpEntityId:
+                          description: The unique identifier for the SaaS application.
+                          type: string
+                        nameIdFormat:
+                          description: The format of the name identifier sent to the
+                            SaaS application. Defaults to `email`.
+                          type: string
+                        publicKey:
+                          description: The public certificate that will be used to
+                            verify identities.
+                          type: string
+                        spEntityId:
+                          description: A globally unique name for an identity or service
+                            provider.
+                          type: string
+                        ssoEndpoint:
+                          description: The endpoint where the SaaS application will
+                            send login requests.
+                          type: string
+                      type: object
+                    type: array
+                  sameSiteCookieAttribute:
+                    description: 'Defines the same-site cookie setting for access
+                      tokens. Available values: `none`, `lax`, `strict`.'
+                    type: string
+                  selfHostedDomains:
+                    description: List of domains that access will secure. Only present
+                      for self_hosted, vnc, and ssh applications. Always includes
+                      the value set as `domain`.
+                    items:
+                      type: string
+                    type: array
+                  serviceAuth401Redirect:
+                    description: Option to return a 401 status code in service authentication
+                      rules on failed requests. Defaults to `false`.
+                    type: boolean
+                  sessionDuration:
+                    description: How often a user will be forced to re-authorise.
+                      Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    type: string
+                  skipInterstitial:
+                    description: Option to skip the authorization interstitial when
+                      using the CLI. Defaults to `false`.
+                    type: boolean
+                  tags:
+                    description: The itags associated with the application.
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: 'The application type. Available values: `app_launcher`,
+                      `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`,
+                      `vnc`, `warp`. Defaults to `self_hosted`.'
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. Conflicts
+                      with `account_id`.
                     type: string
                 type: object
               conditions:

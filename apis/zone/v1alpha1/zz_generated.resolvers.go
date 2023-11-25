@@ -7,11 +7,37 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1"
+	v1alpha1 "github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+// ResolveReferences of this CacheServer.
+func (mg *CacheServer) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
 
 // ResolveReferences of this DNSSEC.
 func (mg *DNSSEC) ResolveReferences(ctx context.Context, c client.Reader) error {
@@ -41,6 +67,84 @@ func (mg *DNSSEC) ResolveReferences(ctx context.Context, c client.Reader) error 
 
 // ResolveReferences of this Healthcheck.
 func (mg *Healthcheck) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Hold.
+func (mg *Hold) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this KeylessCertificate.
+func (mg *KeylessCertificate) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Lockdown.
+func (mg *Lockdown) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -117,6 +221,32 @@ func (mg *ManagedHeaders) ResolveReferences(ctx context.Context, c client.Reader
 	return nil
 }
 
+// ResolveReferences of this ObservatoryScheduledTest.
+func (mg *ObservatoryScheduledTest) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this RateLimit.
 func (mg *RateLimit) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -143,8 +273,86 @@ func (mg *RateLimit) ResolveReferences(ctx context.Context, c client.Reader) err
 	return nil
 }
 
+// ResolveReferences of this RegionalTieredCache.
+func (mg *RegionalTieredCache) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this SettingsOverride.
 func (mg *SettingsOverride) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TLSSetting.
+func (mg *TLSSetting) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TLSSettingCiphers.
+func (mg *TLSSettingCiphers) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -295,6 +503,32 @@ func (mg *Zone) ResolveReferences(ctx context.Context, c client.Reader) error {
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this ZoneCacheVariants.
+func (mg *ZoneCacheVariants) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ZoneIDRef,
+		Selector:     mg.Spec.ForProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &ZoneList{},
+			Managed: &Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ZoneID")
+	}
+	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
 
 	return nil
 }

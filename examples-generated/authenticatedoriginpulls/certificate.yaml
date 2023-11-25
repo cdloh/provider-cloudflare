@@ -1,0 +1,19 @@
+apiVersion: authenticatedoriginpulls.cloudflare.upbound.io/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: authenticatedoriginpulls/v1alpha1/certificate
+  labels:
+    testing.upbound.io/example-name: my_per_zone_aop_cert
+  name: my-per-zone-aop-cert
+spec:
+  forProvider:
+    certificate: '-----INSERT CERTIFICATE-----'
+    privateKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    type: per-zone
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

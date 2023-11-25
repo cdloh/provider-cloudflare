@@ -156,8 +156,33 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - expression
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  description:
+                    description: A note that you can use to describe the purpose of
+                      the filter.
+                    type: string
+                  expression:
+                    description: The filter expression to be used.
+                    type: string
+                  paused:
+                    description: Whether this filter is currently paused.
+                    type: boolean
+                  ref:
+                    description: Short reference tag to quickly select related rules.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -356,12 +381,34 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: expression is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.expression)
+                || has(self.initProvider.expression)'
           status:
             description: FilterStatus defines the observed state of Filter.
             properties:
               atProvider:
                 properties:
+                  description:
+                    description: A note that you can use to describe the purpose of
+                      the filter.
+                    type: string
+                  expression:
+                    description: The filter expression to be used.
+                    type: string
                   id:
+                    type: string
+                  paused:
+                    description: Whether this filter is currently paused.
+                    type: boolean
+                  ref:
+                    description: Short reference tag to quickly select related rules.
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

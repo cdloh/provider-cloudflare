@@ -155,9 +155,33 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - name
-                - target
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  description:
+                    description: An optional description of the hostname.
+                    type: string
+                  dnslink:
+                    description: DNSLink value used if the target is ipfs.
+                    type: string
+                  name:
+                    description: The hostname that will point to the target gateway
+                      via CNAME.
+                    type: string
+                  target:
+                    description: Target gateway of the hostname.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -356,6 +380,15 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: target is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.target)
+                || has(self.initProvider.target)'
           status:
             description: HostnameStatus defines the observed state of Hostname.
             properties:
@@ -364,13 +397,29 @@ spec:
                   createdOn:
                     description: Creation time.
                     type: string
+                  description:
+                    description: An optional description of the hostname.
+                    type: string
+                  dnslink:
+                    description: DNSLink value used if the target is ipfs.
+                    type: string
                   id:
                     type: string
                   modifiedOn:
                     description: Last modification time.
                     type: string
+                  name:
+                    description: The hostname that will point to the target gateway
+                      via CNAME.
+                    type: string
                   status:
                     description: Status of the hostname's activation.
+                    type: string
+                  target:
+                    description: Target gateway of the hostname.
+                    type: string
+                  zoneId:
+                    description: The zone identifier to target for the resource.
                     type: string
                 type: object
               conditions:

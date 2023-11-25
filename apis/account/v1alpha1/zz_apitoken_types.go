@@ -13,7 +13,32 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type APITokenInitParameters struct {
+
+	// Conditions under which the token should be considered valid.
+	Condition []ConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// The expiration time on or after which the token MUST NOT be accepted for processing.
+	ExpiresOn *string `json:"expiresOn,omitempty" tf:"expires_on,omitempty"`
+
+	// Name of the API Token.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The time before which the token MUST NOT be accepted for processing.
+	NotBefore *string `json:"notBefore,omitempty" tf:"not_before,omitempty"`
+
+	// Permissions policy. Multiple policy blocks can be defined.
+	Policy []PolicyInitParameters `json:"policy,omitempty" tf:"policy,omitempty"`
+}
+
 type APITokenObservation struct {
+
+	// Conditions under which the token should be considered valid.
+	Condition []ConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// The expiration time on or after which the token MUST NOT be accepted for processing.
+	ExpiresOn *string `json:"expiresOn,omitempty" tf:"expires_on,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Timestamp of when the token was issued.
@@ -21,6 +46,15 @@ type APITokenObservation struct {
 
 	// Timestamp of when the token was last modified.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+
+	// Name of the API Token.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The time before which the token MUST NOT be accepted for processing.
+	NotBefore *string `json:"notBefore,omitempty" tf:"not_before,omitempty"`
+
+	// Permissions policy. Multiple policy blocks can be defined.
+	Policy []PolicyObservation `json:"policy,omitempty" tf:"policy,omitempty"`
 
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
@@ -36,19 +70,28 @@ type APITokenParameters struct {
 	ExpiresOn *string `json:"expiresOn,omitempty" tf:"expires_on,omitempty"`
 
 	// Name of the API Token.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The time before which the token MUST NOT be accepted for processing.
 	// +kubebuilder:validation:Optional
 	NotBefore *string `json:"notBefore,omitempty" tf:"not_before,omitempty"`
 
 	// Permissions policy. Multiple policy blocks can be defined.
-	// +kubebuilder:validation:Required
-	Policy []PolicyParameters `json:"policy" tf:"policy,omitempty"`
+	// +kubebuilder:validation:Optional
+	Policy []PolicyParameters `json:"policy,omitempty" tf:"policy,omitempty"`
+}
+
+type ConditionInitParameters struct {
+
+	// Request IP related conditions.
+	RequestIP []RequestIPInitParameters `json:"requestIp,omitempty" tf:"request_ip,omitempty"`
 }
 
 type ConditionObservation struct {
+
+	// Request IP related conditions.
+	RequestIP []RequestIPObservation `json:"requestIp,omitempty" tf:"request_ip,omitempty"`
 }
 
 type ConditionParameters struct {
@@ -58,7 +101,28 @@ type ConditionParameters struct {
 	RequestIP []RequestIPParameters `json:"requestIp,omitempty" tf:"request_ip,omitempty"`
 }
 
+type PolicyInitParameters struct {
+
+	// Effect of the policy. Available values: `allow`, `deny`. Defaults to `allow`.
+	Effect *string `json:"effect,omitempty" tf:"effect,omitempty"`
+
+	// List of permissions groups IDs. See [documentation](https://developers.cloudflare.com/api/tokens/create/permissions) for more information.
+	PermissionGroups []*string `json:"permissionGroups,omitempty" tf:"permission_groups,omitempty"`
+
+	// Describes what operations against which resources are allowed or denied.
+	Resources map[string]*string `json:"resources,omitempty" tf:"resources,omitempty"`
+}
+
 type PolicyObservation struct {
+
+	// Effect of the policy. Available values: `allow`, `deny`. Defaults to `allow`.
+	Effect *string `json:"effect,omitempty" tf:"effect,omitempty"`
+
+	// List of permissions groups IDs. See [documentation](https://developers.cloudflare.com/api/tokens/create/permissions) for more information.
+	PermissionGroups []*string `json:"permissionGroups,omitempty" tf:"permission_groups,omitempty"`
+
+	// Describes what operations against which resources are allowed or denied.
+	Resources map[string]*string `json:"resources,omitempty" tf:"resources,omitempty"`
 }
 
 type PolicyParameters struct {
@@ -68,15 +132,30 @@ type PolicyParameters struct {
 	Effect *string `json:"effect,omitempty" tf:"effect,omitempty"`
 
 	// List of permissions groups IDs. See [documentation](https://developers.cloudflare.com/api/tokens/create/permissions) for more information.
-	// +kubebuilder:validation:Required
-	PermissionGroups []*string `json:"permissionGroups" tf:"permission_groups,omitempty"`
+	// +kubebuilder:validation:Optional
+	PermissionGroups []*string `json:"permissionGroups,omitempty" tf:"permission_groups,omitempty"`
 
 	// Describes what operations against which resources are allowed or denied.
-	// +kubebuilder:validation:Required
-	Resources map[string]*string `json:"resources" tf:"resources,omitempty"`
+	// +kubebuilder:validation:Optional
+	Resources map[string]*string `json:"resources,omitempty" tf:"resources,omitempty"`
+}
+
+type RequestIPInitParameters struct {
+
+	// List of IP addresses or CIDR notation where the token may be used from. If not specified, the token will be valid for all IP addresses.
+	In []*string `json:"in,omitempty" tf:"in,omitempty"`
+
+	// List of IP addresses or CIDR notation where the token should not be used from.
+	NotIn []*string `json:"notIn,omitempty" tf:"not_in,omitempty"`
 }
 
 type RequestIPObservation struct {
+
+	// List of IP addresses or CIDR notation where the token may be used from. If not specified, the token will be valid for all IP addresses.
+	In []*string `json:"in,omitempty" tf:"in,omitempty"`
+
+	// List of IP addresses or CIDR notation where the token should not be used from.
+	NotIn []*string `json:"notIn,omitempty" tf:"not_in,omitempty"`
 }
 
 type RequestIPParameters struct {
@@ -94,6 +173,18 @@ type RequestIPParameters struct {
 type APITokenSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     APITokenParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider APITokenInitParameters `json:"initProvider,omitempty"`
 }
 
 // APITokenStatus defines the observed state of APIToken.
@@ -114,8 +205,10 @@ type APITokenStatus struct {
 type APIToken struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              APITokenSpec   `json:"spec"`
-	Status            APITokenStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.policy) || has(self.initProvider.policy)",message="policy is a required parameter"
+	Spec   APITokenSpec   `json:"spec"`
+	Status APITokenStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

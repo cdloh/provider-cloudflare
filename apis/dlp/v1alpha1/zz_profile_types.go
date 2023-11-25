@@ -13,7 +13,32 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type EntryInitParameters struct {
+
+	// Whether the entry is active. Defaults to `false`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Unique entry identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Name of the entry to deploy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Pattern []PatternInitParameters `json:"pattern,omitempty" tf:"pattern,omitempty"`
+}
+
 type EntryObservation struct {
+
+	// Whether the entry is active. Defaults to `false`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Unique entry identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Name of the entry to deploy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Pattern []PatternObservation `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type EntryParameters struct {
@@ -27,35 +52,87 @@ type EntryParameters struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Name of the entry to deploy.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Pattern []PatternParameters `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
+type PatternInitParameters struct {
+
+	// The regex that defines the pattern.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The validation algorithm to apply with this pattern.
+	Validation *string `json:"validation,omitempty" tf:"validation,omitempty"`
+}
+
 type PatternObservation struct {
+
+	// The regex that defines the pattern.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The validation algorithm to apply with this pattern.
+	Validation *string `json:"validation,omitempty" tf:"validation,omitempty"`
 }
 
 type PatternParameters struct {
 
 	// The regex that defines the pattern.
-	// +kubebuilder:validation:Required
-	Regex *string `json:"regex" tf:"regex,omitempty"`
+	// +kubebuilder:validation:Optional
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
 
 	// The validation algorithm to apply with this pattern.
 	// +kubebuilder:validation:Optional
 	Validation *string `json:"validation,omitempty" tf:"validation,omitempty"`
 }
 
+type ProfileInitParameters struct {
+
+	// Related DLP policies will trigger when the match count exceeds the number set.
+	AllowedMatchCount *float64 `json:"allowedMatchCount,omitempty" tf:"allowed_match_count,omitempty"`
+
+	// Brief summary of the profile and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// List of entries to apply to the profile.
+	Entry []EntryInitParameters `json:"entry,omitempty" tf:"entry,omitempty"`
+
+	// Name of the profile. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of the profile. Available values: `custom`, `predefined`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type ProfileObservation struct {
+
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Related DLP policies will trigger when the match count exceeds the number set.
+	AllowedMatchCount *float64 `json:"allowedMatchCount,omitempty" tf:"allowed_match_count,omitempty"`
+
+	// Brief summary of the profile and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// List of entries to apply to the profile.
+	Entry []EntryObservation `json:"entry,omitempty" tf:"entry,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Name of the profile. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of the profile. Available values: `custom`, `predefined`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ProfileParameters struct {
 
 	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -67,27 +144,43 @@ type ProfileParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Related DLP policies will trigger when the match count exceeds the number set.
+	// +kubebuilder:validation:Optional
+	AllowedMatchCount *float64 `json:"allowedMatchCount,omitempty" tf:"allowed_match_count,omitempty"`
+
 	// Brief summary of the profile and its intended use.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// List of entries to apply to the profile.
-	// +kubebuilder:validation:Required
-	Entry []EntryParameters `json:"entry" tf:"entry,omitempty"`
+	// +kubebuilder:validation:Optional
+	Entry []EntryParameters `json:"entry,omitempty" tf:"entry,omitempty"`
 
 	// Name of the profile. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The type of the profile. Available values: `custom`, `predefined`. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // ProfileSpec defines the desired state of Profile
 type ProfileSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ProfileParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ProfileInitParameters `json:"initProvider,omitempty"`
 }
 
 // ProfileStatus defines the observed state of Profile.
@@ -108,8 +201,12 @@ type ProfileStatus struct {
 type Profile struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ProfileSpec   `json:"spec"`
-	Status            ProfileStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.allowedMatchCount) || has(self.initProvider.allowedMatchCount)",message="allowedMatchCount is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.entry) || has(self.initProvider.entry)",message="entry is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	Spec   ProfileSpec   `json:"spec"`
+	Status ProfileStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

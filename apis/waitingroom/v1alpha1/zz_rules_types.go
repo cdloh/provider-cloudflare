@@ -13,12 +13,23 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RulesInitParameters struct {
+
+	// List of rules to apply to the ruleset.
+	Rules []RulesRulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
+}
+
 type RulesObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// List of rules to apply to the ruleset.
-	// +kubebuilder:validation:Optional
 	Rules []RulesRulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// The Waiting Room ID the rules should apply to. **Modifying this attribute will force creation of a new resource.**
+	WaitingRoomID *string `json:"waitingRoomId,omitempty" tf:"waiting_room_id,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RulesParameters struct {
@@ -41,7 +52,7 @@ type RulesParameters struct {
 	WaitingRoomIDSelector *v1.Selector `json:"waitingRoomIdSelector,omitempty" tf:"-"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -54,10 +65,37 @@ type RulesParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type RulesRulesInitParameters struct {
+
+	// Action to perform in the ruleset rule. Available values: `bypass_waiting_room`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Brief summary of the waiting room rule and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// Whether the rule is enabled or disabled. Available values: `enabled`, `disabled`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+}
+
 type RulesRulesObservation struct {
+
+	// Action to perform in the ruleset rule. Available values: `bypass_waiting_room`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// Brief summary of the waiting room rule and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
 	// Unique rule identifier.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Whether the rule is enabled or disabled. Available values: `enabled`, `disabled`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	// Version of the waiting room rule.
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
@@ -66,16 +104,16 @@ type RulesRulesObservation struct {
 type RulesRulesParameters struct {
 
 	// Action to perform in the ruleset rule. Available values: `bypass_waiting_room`.
-	// +kubebuilder:validation:Required
-	Action *string `json:"action" tf:"action,omitempty"`
+	// +kubebuilder:validation:Optional
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// Brief summary of the waiting room rule and its intended use.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
-	// +kubebuilder:validation:Required
-	Expression *string `json:"expression" tf:"expression,omitempty"`
+	// +kubebuilder:validation:Optional
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 
 	// Whether the rule is enabled or disabled. Available values: `enabled`, `disabled`.
 	// +kubebuilder:validation:Optional
@@ -86,6 +124,18 @@ type RulesRulesParameters struct {
 type RulesSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RulesParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RulesInitParameters `json:"initProvider,omitempty"`
 }
 
 // RulesStatus defines the observed state of Rules.

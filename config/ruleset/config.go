@@ -8,10 +8,10 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "Ruleset"
 		r.Kind = "Ruleset"
 		r.References["account_id"] = config.Reference{
-			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+			Type: "github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account",
 		}
 		r.References["zone_id"] = config.Reference{
-			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
+			Type: "github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 		config.MoveToStatus(r.TerraformResource,
 			"rules.action_parameters.overrides.enabled",

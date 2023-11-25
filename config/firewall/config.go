@@ -8,10 +8,10 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "Firewall"
 		r.Kind = "Rule"
 		r.References["zone_id"] = config.Reference{
-			Type: "github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone",
+			Type: "github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone",
 		}
 		r.References["filter_id"] = config.Reference{
-			Type: "github.com/cdloh/provider-cloudflare/apis/filters/v1alpha1.Filter",
+			Type: "github.com/clementblaise/provider-cloudflare/apis/filters/v1alpha1.Filter",
 		}
 	})
 }

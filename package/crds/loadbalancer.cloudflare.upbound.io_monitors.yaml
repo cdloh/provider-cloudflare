@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Monitor is the Schema for the Monitors API. <no value>
+        description: Monitor is the Schema for the Monitors API. Provides a Cloudflare
+          Load Balancer Monitor resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,6 +69,7 @@ spec:
                 properties:
                   accountId:
                     description: The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -143,48 +145,242 @@ spec:
                         type: object
                     type: object
                   allowInsecure:
+                    description: Do not validate the certificate when monitor use
+                      HTTPS. Only valid if type is "http" or "https". Do not validate
+                      the certificate when monitor use HTTPS.  Only valid if `type`
+                      is "http" or "https".
                     type: boolean
+                  consecutiveDown:
+                    description: To be marked unhealthy the monitored origin must
+                      fail this healthcheck N consecutive times. Defaults to `0`.
+                    type: number
+                  consecutiveUp:
+                    description: To be marked healthy the monitored origin must pass
+                      this healthcheck N consecutive times. Defaults to `0`.
+                    type: number
                   description:
+                    description: Free text description. Free text description.
                     type: string
                   expectedBody:
+                    description: 'A case-insensitive sub-string to look for in the
+                      response body. If this string is not found, the origin will
+                      be marked as unhealthy. Only valid if type is "http" or "https".
+                      Default: "". A case-insensitive sub-string to look for in the
+                      response body. If this string is not found, the origin will
+                      be marked as unhealthy. Only valid if `type` is "http" or "https".'
                     type: string
                   expectedCodes:
+                    description: The expected HTTP response code or code range of
+                      the health check. Eg 2xx. Only valid and required if type is
+                      "http" or "https". The expected HTTP response code or code range
+                      of the health check. Eg `2xx`. Only valid and required if `type`
+                      is "http" or "https".
                     type: string
                   followRedirects:
+                    description: Follow redirects if returned by the origin. Only
+                      valid if type is "http" or "https". Follow redirects if returned
+                      by the origin. Only valid if `type` is "http" or "https".
                     type: boolean
                   header:
+                    description: The HTTP request headers to send in the health check.
+                      It is recommended you set a Host header by default. The User-Agent
+                      header cannot be overridden. Fields documented below. Only valid
+                      if type is "http" or "https". The HTTP request headers to send
+                      in the health check. It is recommended you set a Host header
+                      by default. The User-Agent header cannot be overridden.
                     items:
                       properties:
                         header:
+                          description: The HTTP request headers to send in the health
+                            check. It is recommended you set a Host header by default.
+                            The User-Agent header cannot be overridden. Fields documented
+                            below. Only valid if type is "http" or "https". The header
+                            name.
                           type: string
                         values:
+                          description: A list of string values for the header. A list
+                            of values for the header.
                           items:
                             type: string
                           type: array
-                      required:
-                      - header
-                      - values
                       type: object
                     type: array
                   interval:
-                    description: Defaults to `60`.
+                    description: 'The interval between each health check. Shorter
+                      intervals may improve failover time, but will increase load
+                      on the origins as we check from multiple locations. Default:
+                      60. The interval between each health check. Shorter intervals
+                      may improve failover time, but will increase load on the origins
+                      as we check from multiple locations. Defaults to `60`.'
                     type: number
                   method:
+                    description: 'The method to use for the health check. Valid values
+                      are any valid HTTP verb if type is "http" or "https", or connection_established
+                      if type is "tcp". Default: "GET" if type is "http" or "https",
+                      "connection_established" if type is "tcp", and empty otherwise.
+                      The method to use for the health check.'
                     type: string
                   path:
+                    description: 'The endpoint path to health check against. Default:
+                      "/". Only valid if type is "http" or "https". The endpoint path
+                      to health check against.'
                     type: string
                   port:
+                    description: The port number to use for the healthcheck, required
+                      when creating a TCP monitor. Valid values are in the range 0-65535.
+                      The port number to use for the healthcheck, required when creating
+                      a TCP monitor.
                     type: number
                   probeZone:
+                    description: Assign this monitor to emulate the specified zone
+                      while probing. Only valid if type is "http" or "https". Assign
+                      this monitor to emulate the specified zone while probing. Only
+                      valid if `type` is "http" or "https".
                     type: string
                   retries:
-                    description: Defaults to `2`.
+                    description: 'The number of retries to attempt in case of a timeout
+                      before marking the origin as unhealthy. Retries are attempted
+                      immediately. Default: 2. The number of retries to attempt in
+                      case of a timeout before marking the origin as unhealthy. Retries
+                      are attempted immediately. Defaults to `2`.'
                     type: number
                   timeout:
-                    description: Defaults to `5`.
+                    description: 'The timeout (in seconds) before marking the health
+                      check as failed. Default: 5. The timeout (in seconds) before
+                      marking the health check as failed. Defaults to `5`.'
                     type: number
                   type:
-                    description: Defaults to `http`.
+                    description: 'The protocol to use for the healthcheck. Currently
+                      supported protocols are ''HTTP'', ''HTTPS'', ''TCP'', ''UDP-ICMP'',
+                      ''ICMP-PING'', and ''SMTP''. Default: "http". The protocol to
+                      use for the healthcheck. Available values: `http`, `https`,
+                      `tcp`, `udp_icmp`, `icmp_ping`, `smtp`. Defaults to `http`.'
+                    type: string
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  allowInsecure:
+                    description: Do not validate the certificate when monitor use
+                      HTTPS. Only valid if type is "http" or "https". Do not validate
+                      the certificate when monitor use HTTPS.  Only valid if `type`
+                      is "http" or "https".
+                    type: boolean
+                  consecutiveDown:
+                    description: To be marked unhealthy the monitored origin must
+                      fail this healthcheck N consecutive times. Defaults to `0`.
+                    type: number
+                  consecutiveUp:
+                    description: To be marked healthy the monitored origin must pass
+                      this healthcheck N consecutive times. Defaults to `0`.
+                    type: number
+                  description:
+                    description: Free text description. Free text description.
+                    type: string
+                  expectedBody:
+                    description: 'A case-insensitive sub-string to look for in the
+                      response body. If this string is not found, the origin will
+                      be marked as unhealthy. Only valid if type is "http" or "https".
+                      Default: "". A case-insensitive sub-string to look for in the
+                      response body. If this string is not found, the origin will
+                      be marked as unhealthy. Only valid if `type` is "http" or "https".'
+                    type: string
+                  expectedCodes:
+                    description: The expected HTTP response code or code range of
+                      the health check. Eg 2xx. Only valid and required if type is
+                      "http" or "https". The expected HTTP response code or code range
+                      of the health check. Eg `2xx`. Only valid and required if `type`
+                      is "http" or "https".
+                    type: string
+                  followRedirects:
+                    description: Follow redirects if returned by the origin. Only
+                      valid if type is "http" or "https". Follow redirects if returned
+                      by the origin. Only valid if `type` is "http" or "https".
+                    type: boolean
+                  header:
+                    description: The HTTP request headers to send in the health check.
+                      It is recommended you set a Host header by default. The User-Agent
+                      header cannot be overridden. Fields documented below. Only valid
+                      if type is "http" or "https". The HTTP request headers to send
+                      in the health check. It is recommended you set a Host header
+                      by default. The User-Agent header cannot be overridden.
+                    items:
+                      properties:
+                        header:
+                          description: The HTTP request headers to send in the health
+                            check. It is recommended you set a Host header by default.
+                            The User-Agent header cannot be overridden. Fields documented
+                            below. Only valid if type is "http" or "https". The header
+                            name.
+                          type: string
+                        values:
+                          description: A list of string values for the header. A list
+                            of values for the header.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  interval:
+                    description: 'The interval between each health check. Shorter
+                      intervals may improve failover time, but will increase load
+                      on the origins as we check from multiple locations. Default:
+                      60. The interval between each health check. Shorter intervals
+                      may improve failover time, but will increase load on the origins
+                      as we check from multiple locations. Defaults to `60`.'
+                    type: number
+                  method:
+                    description: 'The method to use for the health check. Valid values
+                      are any valid HTTP verb if type is "http" or "https", or connection_established
+                      if type is "tcp". Default: "GET" if type is "http" or "https",
+                      "connection_established" if type is "tcp", and empty otherwise.
+                      The method to use for the health check.'
+                    type: string
+                  path:
+                    description: 'The endpoint path to health check against. Default:
+                      "/". Only valid if type is "http" or "https". The endpoint path
+                      to health check against.'
+                    type: string
+                  port:
+                    description: The port number to use for the healthcheck, required
+                      when creating a TCP monitor. Valid values are in the range 0-65535.
+                      The port number to use for the healthcheck, required when creating
+                      a TCP monitor.
+                    type: number
+                  probeZone:
+                    description: Assign this monitor to emulate the specified zone
+                      while probing. Only valid if type is "http" or "https". Assign
+                      this monitor to emulate the specified zone while probing. Only
+                      valid if `type` is "http" or "https".
+                    type: string
+                  retries:
+                    description: 'The number of retries to attempt in case of a timeout
+                      before marking the origin as unhealthy. Retries are attempted
+                      immediately. Default: 2. The number of retries to attempt in
+                      case of a timeout before marking the origin as unhealthy. Retries
+                      are attempted immediately. Defaults to `2`.'
+                    type: number
+                  timeout:
+                    description: 'The timeout (in seconds) before marking the health
+                      check as failed. Default: 5. The timeout (in seconds) before
+                      marking the health check as failed. Defaults to `5`.'
+                    type: number
+                  type:
+                    description: 'The protocol to use for the healthcheck. Currently
+                      supported protocols are ''HTTP'', ''HTTPS'', ''TCP'', ''UDP-ICMP'',
+                      ''ICMP-PING'', and ''SMTP''. Default: "http". The protocol to
+                      use for the healthcheck. Available values: `http`, `https`,
+                      `tcp`, `udp_icmp`, `icmp_ping`, `smtp`. Defaults to `http`.'
                     type: string
                 type: object
               managementPolicies:
@@ -389,11 +585,134 @@ spec:
             properties:
               atProvider:
                 properties:
-                  createdOn:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
+                  allowInsecure:
+                    description: Do not validate the certificate when monitor use
+                      HTTPS. Only valid if type is "http" or "https". Do not validate
+                      the certificate when monitor use HTTPS.  Only valid if `type`
+                      is "http" or "https".
+                    type: boolean
+                  consecutiveDown:
+                    description: To be marked unhealthy the monitored origin must
+                      fail this healthcheck N consecutive times. Defaults to `0`.
+                    type: number
+                  consecutiveUp:
+                    description: To be marked healthy the monitored origin must pass
+                      this healthcheck N consecutive times. Defaults to `0`.
+                    type: number
+                  createdOn:
+                    description: The RFC3339 timestamp of when the load balancer monitor
+                      was created. The RFC3339 timestamp of when the load balancer
+                      monitor was created.
+                    type: string
+                  description:
+                    description: Free text description. Free text description.
+                    type: string
+                  expectedBody:
+                    description: 'A case-insensitive sub-string to look for in the
+                      response body. If this string is not found, the origin will
+                      be marked as unhealthy. Only valid if type is "http" or "https".
+                      Default: "". A case-insensitive sub-string to look for in the
+                      response body. If this string is not found, the origin will
+                      be marked as unhealthy. Only valid if `type` is "http" or "https".'
+                    type: string
+                  expectedCodes:
+                    description: The expected HTTP response code or code range of
+                      the health check. Eg 2xx. Only valid and required if type is
+                      "http" or "https". The expected HTTP response code or code range
+                      of the health check. Eg `2xx`. Only valid and required if `type`
+                      is "http" or "https".
+                    type: string
+                  followRedirects:
+                    description: Follow redirects if returned by the origin. Only
+                      valid if type is "http" or "https". Follow redirects if returned
+                      by the origin. Only valid if `type` is "http" or "https".
+                    type: boolean
+                  header:
+                    description: The HTTP request headers to send in the health check.
+                      It is recommended you set a Host header by default. The User-Agent
+                      header cannot be overridden. Fields documented below. Only valid
+                      if type is "http" or "https". The HTTP request headers to send
+                      in the health check. It is recommended you set a Host header
+                      by default. The User-Agent header cannot be overridden.
+                    items:
+                      properties:
+                        header:
+                          description: The HTTP request headers to send in the health
+                            check. It is recommended you set a Host header by default.
+                            The User-Agent header cannot be overridden. Fields documented
+                            below. Only valid if type is "http" or "https". The header
+                            name.
+                          type: string
+                        values:
+                          description: A list of string values for the header. A list
+                            of values for the header.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   id:
+                    description: Load balancer monitor ID.
+                    type: string
+                  interval:
+                    description: 'The interval between each health check. Shorter
+                      intervals may improve failover time, but will increase load
+                      on the origins as we check from multiple locations. Default:
+                      60. The interval between each health check. Shorter intervals
+                      may improve failover time, but will increase load on the origins
+                      as we check from multiple locations. Defaults to `60`.'
+                    type: number
+                  method:
+                    description: 'The method to use for the health check. Valid values
+                      are any valid HTTP verb if type is "http" or "https", or connection_established
+                      if type is "tcp". Default: "GET" if type is "http" or "https",
+                      "connection_established" if type is "tcp", and empty otherwise.
+                      The method to use for the health check.'
                     type: string
                   modifiedOn:
+                    description: The RFC3339 timestamp of when the load balancer monitor
+                      was last modified. The RFC3339 timestamp of when the load balancer
+                      monitor was last modified.
+                    type: string
+                  path:
+                    description: 'The endpoint path to health check against. Default:
+                      "/". Only valid if type is "http" or "https". The endpoint path
+                      to health check against.'
+                    type: string
+                  port:
+                    description: The port number to use for the healthcheck, required
+                      when creating a TCP monitor. Valid values are in the range 0-65535.
+                      The port number to use for the healthcheck, required when creating
+                      a TCP monitor.
+                    type: number
+                  probeZone:
+                    description: Assign this monitor to emulate the specified zone
+                      while probing. Only valid if type is "http" or "https". Assign
+                      this monitor to emulate the specified zone while probing. Only
+                      valid if `type` is "http" or "https".
+                    type: string
+                  retries:
+                    description: 'The number of retries to attempt in case of a timeout
+                      before marking the origin as unhealthy. Retries are attempted
+                      immediately. Default: 2. The number of retries to attempt in
+                      case of a timeout before marking the origin as unhealthy. Retries
+                      are attempted immediately. Defaults to `2`.'
+                    type: number
+                  timeout:
+                    description: 'The timeout (in seconds) before marking the health
+                      check as failed. Default: 5. The timeout (in seconds) before
+                      marking the health check as failed. Defaults to `5`.'
+                    type: number
+                  type:
+                    description: 'The protocol to use for the healthcheck. Currently
+                      supported protocols are ''HTTP'', ''HTTPS'', ''TCP'', ''UDP-ICMP'',
+                      ''ICMP-PING'', and ''SMTP''. Default: "http". The protocol to
+                      use for the healthcheck. Available values: `http`, `https`,
+                      `tcp`, `udp_icmp`, `icmp_ping`, `smtp`. Defaults to `http`.'
                     type: string
                 type: object
               conditions:

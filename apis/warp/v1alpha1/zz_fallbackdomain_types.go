@@ -13,7 +13,28 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DomainsInitParameters struct {
+
+	// A list of IP addresses to handle domain resolution.
+	DNSServer []*string `json:"dnsServer,omitempty" tf:"dns_server,omitempty"`
+
+	// A description of the fallback domain, displayed in the client UI.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The domain suffix to match when resolving locally.
+	Suffix *string `json:"suffix,omitempty" tf:"suffix,omitempty"`
+}
+
 type DomainsObservation struct {
+
+	// A list of IP addresses to handle domain resolution.
+	DNSServer []*string `json:"dnsServer,omitempty" tf:"dns_server,omitempty"`
+
+	// A description of the fallback domain, displayed in the client UI.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The domain suffix to match when resolving locally.
+	Suffix *string `json:"suffix,omitempty" tf:"suffix,omitempty"`
 }
 
 type DomainsParameters struct {
@@ -31,14 +52,27 @@ type DomainsParameters struct {
 	Suffix *string `json:"suffix,omitempty" tf:"suffix,omitempty"`
 }
 
+type FallbackDomainInitParameters struct {
+	Domains []DomainsInitParameters `json:"domains,omitempty" tf:"domains,omitempty"`
+}
+
 type FallbackDomainObservation struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	Domains []DomainsObservation `json:"domains,omitempty" tf:"domains,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The settings policy for which to configure this fallback domain policy.
+	PolicyID *string `json:"policyId,omitempty" tf:"policy_id,omitempty"`
 }
 
 type FallbackDomainParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -50,8 +84,8 @@ type FallbackDomainParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Required
-	Domains []DomainsParameters `json:"domains" tf:"domains,omitempty"`
+	// +kubebuilder:validation:Optional
+	Domains []DomainsParameters `json:"domains,omitempty" tf:"domains,omitempty"`
 
 	// The settings policy for which to configure this fallback domain policy.
 	// +crossplane:generate:reference:type=DeviceSettingsPolicy
@@ -71,6 +105,18 @@ type FallbackDomainParameters struct {
 type FallbackDomainSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     FallbackDomainParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider FallbackDomainInitParameters `json:"initProvider,omitempty"`
 }
 
 // FallbackDomainStatus defines the observed state of FallbackDomain.
@@ -91,8 +137,9 @@ type FallbackDomainStatus struct {
 type FallbackDomain struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              FallbackDomainSpec   `json:"spec"`
-	Status            FallbackDomainStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.domains) || has(self.initProvider.domains)",message="domains is a required parameter"
+	Spec   FallbackDomainSpec   `json:"spec"`
+	Status FallbackDomainStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

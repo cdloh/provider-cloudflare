@@ -143,7 +143,8 @@ spec:
                         type: object
                     type: object
                   buildConfig:
-                    description: Configuration for the project build process.
+                    description: Configuration for the project build process. Read
+                      more about the build configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/build-configuration).
                     items:
                       properties:
                         buildCommand:
@@ -153,7 +154,9 @@ spec:
                           description: Output directory of the build.
                           type: string
                         rootDir:
-                          description: Directory to run the command.
+                          description: Your project's root directory, where Cloudflare
+                            runs the build command. If your site is not in a subdirectory,
+                            leave this path value empty.
                           type: string
                         webAnalyticsTag:
                           description: The classifying tag for analytics.
@@ -171,6 +174,10 @@ spec:
                           description: Configuration for preview deploys.
                           items:
                             properties:
+                              alwaysUseLatestCompatibilityDate:
+                                description: Use latest compatibility date for Pages
+                                  Functions. Defaults to `false`.
+                                type: boolean
                               compatibilityDate:
                                 description: Compatibility date used for Pages Functions.
                                 type: string
@@ -183,34 +190,92 @@ spec:
                                 additionalProperties:
                                   type: string
                                 description: D1 Databases used for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
                               durableObjectNamespaces:
                                 additionalProperties:
                                   type: string
                                 description: Durable Object namespaces used for Pages
-                                  Functions.
+                                  Functions. Defaults to `map[]`.
                                 type: object
                               environmentVariables:
                                 additionalProperties:
                                   type: string
                                 description: Environment variables for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
+                              failOpen:
+                                description: Fail open used for Pages Functions. Defaults
+                                  to `false`.
+                                type: boolean
                               kvNamespaces:
                                 additionalProperties:
                                   type: string
                                 description: KV namespaces used for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
+                              placement:
+                                description: Configuration for placement in the Cloudflare
+                                  Pages project.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: Placement Mode for the Pages Function.
+                                      type: string
+                                  type: object
+                                type: array
                               r2Buckets:
                                 additionalProperties:
                                   type: string
                                 description: R2 Buckets used for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
+                              secretsSecretRef:
+                                description: Encrypted environment variables for Pages
+                                  Functions. Defaults to `map[]`.
+                                properties:
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - name
+                                - namespace
+                                type: object
+                              serviceBinding:
+                                description: Services used for Pages Functions.
+                                items:
+                                  properties:
+                                    environment:
+                                      description: The name of the Worker environment
+                                        to bind to.
+                                      type: string
+                                    name:
+                                      description: The global variable for the binding
+                                        in your Worker code.
+                                      type: string
+                                    service:
+                                      description: The name of the Worker to bind
+                                        to.
+                                      type: string
+                                  type: object
+                                type: array
+                              usageModel:
+                                description: Usage model used for Pages Functions.
+                                  Defaults to `bundled`.
+                                type: string
                             type: object
                           type: array
                         production:
                           description: Configuration for production deploys.
                           items:
                             properties:
+                              alwaysUseLatestCompatibilityDate:
+                                description: Use latest compatibility date for Pages
+                                  Functions. Defaults to `false`.
+                                type: boolean
                               compatibilityDate:
                                 description: Compatibility date used for Pages Functions.
                                 type: string
@@ -223,28 +288,82 @@ spec:
                                 additionalProperties:
                                   type: string
                                 description: D1 Databases used for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
                               durableObjectNamespaces:
                                 additionalProperties:
                                   type: string
                                 description: Durable Object namespaces used for Pages
-                                  Functions.
+                                  Functions. Defaults to `map[]`.
                                 type: object
                               environmentVariables:
                                 additionalProperties:
                                   type: string
                                 description: Environment variables for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
+                              failOpen:
+                                description: Fail open used for Pages Functions. Defaults
+                                  to `false`.
+                                type: boolean
                               kvNamespaces:
                                 additionalProperties:
                                   type: string
                                 description: KV namespaces used for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
+                              placement:
+                                description: Configuration for placement in the Cloudflare
+                                  Pages project.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: Placement Mode for the Pages Function.
+                                      type: string
+                                  type: object
+                                type: array
                               r2Buckets:
                                 additionalProperties:
                                   type: string
                                 description: R2 Buckets used for Pages Functions.
+                                  Defaults to `map[]`.
                                 type: object
+                              secretsSecretRef:
+                                description: Encrypted environment variables for Pages
+                                  Functions. Defaults to `map[]`.
+                                properties:
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - name
+                                - namespace
+                                type: object
+                              serviceBinding:
+                                description: Services used for Pages Functions.
+                                items:
+                                  properties:
+                                    environment:
+                                      description: The name of the Worker environment
+                                        to bind to.
+                                      type: string
+                                    name:
+                                      description: The global variable for the binding
+                                        in your Worker code.
+                                      type: string
+                                    service:
+                                      description: The name of the Worker to bind
+                                        to.
+                                      type: string
+                                  type: object
+                                type: array
+                              usageModel:
+                                description: Usage model used for Pages Functions.
+                                  Defaults to `bundled`.
+                                type: string
                             type: object
                           type: array
                       type: object
@@ -257,7 +376,8 @@ spec:
                       environment.
                     type: string
                   source:
-                    description: Configuration for the project source.
+                    description: Configuration for the project source. Read more about
+                      the source configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/branch-build-controls/).
                     items:
                       properties:
                         config:
@@ -270,7 +390,8 @@ spec:
                                   to `true`.
                                 type: boolean
                               owner:
-                                description: Project owner username.
+                                description: Project owner username. **Modifying this
+                                  attribute will force creation of a new resource.**
                                 type: string
                               prCommentsEnabled:
                                 description: Enable Pages to comment on Pull Requests.
@@ -300,10 +421,9 @@ spec:
                                   to `true`.
                                 type: boolean
                               repoName:
-                                description: Project repository name.
+                                description: Project repository name. **Modifying
+                                  this attribute will force creation of a new resource.**
                                 type: string
-                            required:
-                            - productionBranch
                             type: object
                           type: array
                         type:
@@ -311,9 +431,281 @@ spec:
                           type: string
                       type: object
                     type: array
-                required:
-                - name
-                - productionBranch
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  buildConfig:
+                    description: Configuration for the project build process. Read
+                      more about the build configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/build-configuration).
+                    items:
+                      properties:
+                        buildCommand:
+                          description: Command used to build project.
+                          type: string
+                        destinationDir:
+                          description: Output directory of the build.
+                          type: string
+                        rootDir:
+                          description: Your project's root directory, where Cloudflare
+                            runs the build command. If your site is not in a subdirectory,
+                            leave this path value empty.
+                          type: string
+                        webAnalyticsTag:
+                          description: The classifying tag for analytics.
+                          type: string
+                        webAnalyticsToken:
+                          description: The auth token for analytics.
+                          type: string
+                      type: object
+                    type: array
+                  deploymentConfigs:
+                    description: Configuration for deployments in a project.
+                    items:
+                      properties:
+                        preview:
+                          description: Configuration for preview deploys.
+                          items:
+                            properties:
+                              alwaysUseLatestCompatibilityDate:
+                                description: Use latest compatibility date for Pages
+                                  Functions. Defaults to `false`.
+                                type: boolean
+                              compatibilityDate:
+                                description: Compatibility date used for Pages Functions.
+                                type: string
+                              compatibilityFlags:
+                                description: Compatibility flags used for Pages Functions.
+                                items:
+                                  type: string
+                                type: array
+                              d1Databases:
+                                additionalProperties:
+                                  type: string
+                                description: D1 Databases used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              durableObjectNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: Durable Object namespaces used for Pages
+                                  Functions. Defaults to `map[]`.
+                                type: object
+                              environmentVariables:
+                                additionalProperties:
+                                  type: string
+                                description: Environment variables for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              failOpen:
+                                description: Fail open used for Pages Functions. Defaults
+                                  to `false`.
+                                type: boolean
+                              kvNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: KV namespaces used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              placement:
+                                description: Configuration for placement in the Cloudflare
+                                  Pages project.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: Placement Mode for the Pages Function.
+                                      type: string
+                                  type: object
+                                type: array
+                              r2Buckets:
+                                additionalProperties:
+                                  type: string
+                                description: R2 Buckets used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              serviceBinding:
+                                description: Services used for Pages Functions.
+                                items:
+                                  properties:
+                                    environment:
+                                      description: The name of the Worker environment
+                                        to bind to.
+                                      type: string
+                                    name:
+                                      description: The global variable for the binding
+                                        in your Worker code.
+                                      type: string
+                                    service:
+                                      description: The name of the Worker to bind
+                                        to.
+                                      type: string
+                                  type: object
+                                type: array
+                              usageModel:
+                                description: Usage model used for Pages Functions.
+                                  Defaults to `bundled`.
+                                type: string
+                            type: object
+                          type: array
+                        production:
+                          description: Configuration for production deploys.
+                          items:
+                            properties:
+                              alwaysUseLatestCompatibilityDate:
+                                description: Use latest compatibility date for Pages
+                                  Functions. Defaults to `false`.
+                                type: boolean
+                              compatibilityDate:
+                                description: Compatibility date used for Pages Functions.
+                                type: string
+                              compatibilityFlags:
+                                description: Compatibility flags used for Pages Functions.
+                                items:
+                                  type: string
+                                type: array
+                              d1Databases:
+                                additionalProperties:
+                                  type: string
+                                description: D1 Databases used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              durableObjectNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: Durable Object namespaces used for Pages
+                                  Functions. Defaults to `map[]`.
+                                type: object
+                              environmentVariables:
+                                additionalProperties:
+                                  type: string
+                                description: Environment variables for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              failOpen:
+                                description: Fail open used for Pages Functions. Defaults
+                                  to `false`.
+                                type: boolean
+                              kvNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: KV namespaces used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              placement:
+                                description: Configuration for placement in the Cloudflare
+                                  Pages project.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: Placement Mode for the Pages Function.
+                                      type: string
+                                  type: object
+                                type: array
+                              r2Buckets:
+                                additionalProperties:
+                                  type: string
+                                description: R2 Buckets used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              serviceBinding:
+                                description: Services used for Pages Functions.
+                                items:
+                                  properties:
+                                    environment:
+                                      description: The name of the Worker environment
+                                        to bind to.
+                                      type: string
+                                    name:
+                                      description: The global variable for the binding
+                                        in your Worker code.
+                                      type: string
+                                    service:
+                                      description: The name of the Worker to bind
+                                        to.
+                                      type: string
+                                  type: object
+                                type: array
+                              usageModel:
+                                description: Usage model used for Pages Functions.
+                                  Defaults to `bundled`.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the project.
+                    type: string
+                  productionBranch:
+                    description: The name of the branch that is used for the production
+                      environment.
+                    type: string
+                  source:
+                    description: Configuration for the project source. Read more about
+                      the source configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/branch-build-controls/).
+                    items:
+                      properties:
+                        config:
+                          description: Configuration for the source of the Cloudflare
+                            Pages project.
+                          items:
+                            properties:
+                              deploymentsEnabled:
+                                description: Toggle deployments on this repo. Defaults
+                                  to `true`.
+                                type: boolean
+                              owner:
+                                description: Project owner username. **Modifying this
+                                  attribute will force creation of a new resource.**
+                                type: string
+                              prCommentsEnabled:
+                                description: Enable Pages to comment on Pull Requests.
+                                  Defaults to `true`.
+                                type: boolean
+                              previewBranchExcludes:
+                                description: Branches will be excluded from automatic
+                                  deployment.
+                                items:
+                                  type: string
+                                type: array
+                              previewBranchIncludes:
+                                description: Branches will be included for automatic
+                                  deployment.
+                                items:
+                                  type: string
+                                type: array
+                              previewDeploymentSetting:
+                                description: Preview Deployment Setting. Defaults
+                                  to `all`.
+                                type: string
+                              productionBranch:
+                                description: Project production branch name.
+                                type: string
+                              productionDeploymentEnabled:
+                                description: Enable production deployments. Defaults
+                                  to `true`.
+                                type: boolean
+                              repoName:
+                                description: Project repository name. **Modifying
+                                  this attribute will force creation of a new resource.**
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Project host type.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -512,14 +904,224 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: productionBranch is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.productionBranch)
+                || has(self.initProvider.productionBranch)'
           status:
             description: ProjectStatus defines the observed state of Project.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  buildConfig:
+                    description: Configuration for the project build process. Read
+                      more about the build configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/build-configuration).
+                    items:
+                      properties:
+                        buildCommand:
+                          description: Command used to build project.
+                          type: string
+                        destinationDir:
+                          description: Output directory of the build.
+                          type: string
+                        rootDir:
+                          description: Your project's root directory, where Cloudflare
+                            runs the build command. If your site is not in a subdirectory,
+                            leave this path value empty.
+                          type: string
+                        webAnalyticsTag:
+                          description: The classifying tag for analytics.
+                          type: string
+                        webAnalyticsToken:
+                          description: The auth token for analytics.
+                          type: string
+                      type: object
+                    type: array
                   createdOn:
                     description: When the project was created.
                     type: string
+                  deploymentConfigs:
+                    description: Configuration for deployments in a project.
+                    items:
+                      properties:
+                        preview:
+                          description: Configuration for preview deploys.
+                          items:
+                            properties:
+                              alwaysUseLatestCompatibilityDate:
+                                description: Use latest compatibility date for Pages
+                                  Functions. Defaults to `false`.
+                                type: boolean
+                              compatibilityDate:
+                                description: Compatibility date used for Pages Functions.
+                                type: string
+                              compatibilityFlags:
+                                description: Compatibility flags used for Pages Functions.
+                                items:
+                                  type: string
+                                type: array
+                              d1Databases:
+                                additionalProperties:
+                                  type: string
+                                description: D1 Databases used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              durableObjectNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: Durable Object namespaces used for Pages
+                                  Functions. Defaults to `map[]`.
+                                type: object
+                              environmentVariables:
+                                additionalProperties:
+                                  type: string
+                                description: Environment variables for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              failOpen:
+                                description: Fail open used for Pages Functions. Defaults
+                                  to `false`.
+                                type: boolean
+                              kvNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: KV namespaces used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              placement:
+                                description: Configuration for placement in the Cloudflare
+                                  Pages project.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: Placement Mode for the Pages Function.
+                                      type: string
+                                  type: object
+                                type: array
+                              r2Buckets:
+                                additionalProperties:
+                                  type: string
+                                description: R2 Buckets used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              serviceBinding:
+                                description: Services used for Pages Functions.
+                                items:
+                                  properties:
+                                    environment:
+                                      description: The name of the Worker environment
+                                        to bind to.
+                                      type: string
+                                    name:
+                                      description: The global variable for the binding
+                                        in your Worker code.
+                                      type: string
+                                    service:
+                                      description: The name of the Worker to bind
+                                        to.
+                                      type: string
+                                  type: object
+                                type: array
+                              usageModel:
+                                description: Usage model used for Pages Functions.
+                                  Defaults to `bundled`.
+                                type: string
+                            type: object
+                          type: array
+                        production:
+                          description: Configuration for production deploys.
+                          items:
+                            properties:
+                              alwaysUseLatestCompatibilityDate:
+                                description: Use latest compatibility date for Pages
+                                  Functions. Defaults to `false`.
+                                type: boolean
+                              compatibilityDate:
+                                description: Compatibility date used for Pages Functions.
+                                type: string
+                              compatibilityFlags:
+                                description: Compatibility flags used for Pages Functions.
+                                items:
+                                  type: string
+                                type: array
+                              d1Databases:
+                                additionalProperties:
+                                  type: string
+                                description: D1 Databases used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              durableObjectNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: Durable Object namespaces used for Pages
+                                  Functions. Defaults to `map[]`.
+                                type: object
+                              environmentVariables:
+                                additionalProperties:
+                                  type: string
+                                description: Environment variables for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              failOpen:
+                                description: Fail open used for Pages Functions. Defaults
+                                  to `false`.
+                                type: boolean
+                              kvNamespaces:
+                                additionalProperties:
+                                  type: string
+                                description: KV namespaces used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              placement:
+                                description: Configuration for placement in the Cloudflare
+                                  Pages project.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: Placement Mode for the Pages Function.
+                                      type: string
+                                  type: object
+                                type: array
+                              r2Buckets:
+                                additionalProperties:
+                                  type: string
+                                description: R2 Buckets used for Pages Functions.
+                                  Defaults to `map[]`.
+                                type: object
+                              serviceBinding:
+                                description: Services used for Pages Functions.
+                                items:
+                                  properties:
+                                    environment:
+                                      description: The name of the Worker environment
+                                        to bind to.
+                                      type: string
+                                    name:
+                                      description: The global variable for the binding
+                                        in your Worker code.
+                                      type: string
+                                    service:
+                                      description: The name of the Worker to bind
+                                        to.
+                                      type: string
+                                  type: object
+                                type: array
+                              usageModel:
+                                description: Usage model used for Pages Functions.
+                                  Defaults to `bundled`.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                   domains:
                     description: A list of associated custom domains for the project.
                     items:
@@ -527,6 +1129,69 @@ spec:
                     type: array
                   id:
                     type: string
+                  name:
+                    description: Name of the project.
+                    type: string
+                  productionBranch:
+                    description: The name of the branch that is used for the production
+                      environment.
+                    type: string
+                  source:
+                    description: Configuration for the project source. Read more about
+                      the source configuration in the [developer documentation](https://developers.cloudflare.com/pages/platform/branch-build-controls/).
+                    items:
+                      properties:
+                        config:
+                          description: Configuration for the source of the Cloudflare
+                            Pages project.
+                          items:
+                            properties:
+                              deploymentsEnabled:
+                                description: Toggle deployments on this repo. Defaults
+                                  to `true`.
+                                type: boolean
+                              owner:
+                                description: Project owner username. **Modifying this
+                                  attribute will force creation of a new resource.**
+                                type: string
+                              prCommentsEnabled:
+                                description: Enable Pages to comment on Pull Requests.
+                                  Defaults to `true`.
+                                type: boolean
+                              previewBranchExcludes:
+                                description: Branches will be excluded from automatic
+                                  deployment.
+                                items:
+                                  type: string
+                                type: array
+                              previewBranchIncludes:
+                                description: Branches will be included for automatic
+                                  deployment.
+                                items:
+                                  type: string
+                                type: array
+                              previewDeploymentSetting:
+                                description: Preview Deployment Setting. Defaults
+                                  to `all`.
+                                type: string
+                              productionBranch:
+                                description: Project production branch name.
+                                type: string
+                              productionDeploymentEnabled:
+                                description: Enable production deployments. Defaults
+                                  to `true`.
+                                type: boolean
+                              repoName:
+                                description: Project repository name. **Modifying
+                                  this attribute will force creation of a new resource.**
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Project host type.
+                          type: string
+                      type: object
+                    type: array
                   subdomain:
                     description: The Cloudflare subdomain associated with the project.
                     type: string

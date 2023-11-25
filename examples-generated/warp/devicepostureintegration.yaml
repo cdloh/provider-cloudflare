@@ -1,0 +1,24 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: DevicePostureIntegration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: warp/v1alpha1/devicepostureintegration
+  labels:
+    testing.upbound.io/example-name: third_party_devices_posture_integration
+  name: third-party-devices-posture-integration
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    config:
+    - apiUrl: https://example.com/api
+      authUrl: https://example.com/connect/token
+      clientId: client-id
+      clientSecretSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+    interval: 24h
+    name: Device posture integration
+    type: workspace_one

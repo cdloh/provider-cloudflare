@@ -11,7 +11,7 @@ import (
 	"github.com/upbound/upjet/pkg/controller"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/cdloh/provider-cloudflare/apis/v1beta1"
+	"github.com/clementblaise/provider-cloudflare/apis/v1beta1"
 )
 
 // Setup adds a controller that reconciles ProviderConfigs by accounting for

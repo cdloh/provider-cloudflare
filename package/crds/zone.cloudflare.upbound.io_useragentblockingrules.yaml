@@ -80,9 +80,6 @@ spec:
                             value will be compared to the received User-Agent HTTP
                             header value.
                           type: string
-                      required:
-                      - target
-                      - value
                       type: object
                     type: array
                   description:
@@ -172,11 +169,45 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - configuration
-                - description
-                - mode
-                - paused
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  configuration:
+                    description: The configuration object for the current rule.
+                    items:
+                      properties:
+                        target:
+                          description: The configuration target for this rule. You
+                            must set the target to ua for User Agent Blocking rules.
+                          type: string
+                        value:
+                          description: The exact user agent string to match. This
+                            value will be compared to the received User-Agent HTTP
+                            header value.
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: An informative summary of the rule.
+                    type: string
+                  mode:
+                    description: 'The action to apply to a matched request. Available
+                      values: `block`, `challenge`, `js_challenge`, `managed_challenge`.'
+                    type: string
+                  paused:
+                    description: When true, indicates that the rule is currently paused.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -375,13 +406,59 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: configuration is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.configuration)
+                || has(self.initProvider.configuration)'
+            - message: description is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.description)
+                || has(self.initProvider.description)'
+            - message: mode is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.mode)
+                || has(self.initProvider.mode)'
+            - message: paused is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.paused)
+                || has(self.initProvider.paused)'
           status:
             description: UserAgentBlockingRuleStatus defines the observed state of
               UserAgentBlockingRule.
             properties:
               atProvider:
                 properties:
+                  configuration:
+                    description: The configuration object for the current rule.
+                    items:
+                      properties:
+                        target:
+                          description: The configuration target for this rule. You
+                            must set the target to ua for User Agent Blocking rules.
+                          type: string
+                        value:
+                          description: The exact user agent string to match. This
+                            value will be compared to the received User-Agent HTTP
+                            header value.
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: An informative summary of the rule.
+                    type: string
                   id:
+                    type: string
+                  mode:
+                    description: 'The action to apply to a matched request. Available
+                      values: `block`, `challenge`, `js_challenge`, `managed_challenge`.'
+                    type: string
+                  paused:
+                    description: When true, indicates that the rule is currently paused.
+                    type: boolean
+                  zoneId:
+                    description: The zone identifier to target for the resource. **Modifying
+                      this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

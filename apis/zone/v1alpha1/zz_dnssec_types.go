@@ -13,6 +13,12 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DNSSECInitParameters struct {
+
+	// Zone DNSSEC updated time.
+	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+}
+
 type DNSSECObservation struct {
 
 	// Zone DNSSEC algorithm.
@@ -41,11 +47,17 @@ type DNSSECObservation struct {
 	// Key type used for Zone DNSSEC.
 	KeyType *string `json:"keyType,omitempty" tf:"key_type,omitempty"`
 
+	// Zone DNSSEC updated time.
+	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+
 	// Public Key for the Zone DNSSEC.
 	PublicKey *string `json:"publicKey,omitempty" tf:"public_key,omitempty"`
 
 	// The status of the Zone DNSSEC.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type DNSSECParameters struct {
@@ -72,6 +84,18 @@ type DNSSECParameters struct {
 type DNSSECSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DNSSECParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DNSSECInitParameters `json:"initProvider,omitempty"`
 }
 
 // DNSSECStatus defines the observed state of DNSSEC.

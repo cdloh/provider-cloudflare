@@ -13,7 +13,22 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CertificateInitParameters struct {
+
+	// The public client certificate.
+	// The public client certificate. **Modifying this attribute will force creation of a new resource.**
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// The form of Authenticated Origin Pulls to upload the certificate to.
+	// The form of Authenticated Origin Pulls to upload the certificate to. Available values: `per-zone`, `per-hostname`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type CertificateObservation struct {
+
+	// The public client certificate.
+	// The public client certificate. **Modifying this attribute will force creation of a new resource.**
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
 	// **Modifying this attribute will force creation of a new resource.**
 	ExpiresOn *string `json:"expiresOn,omitempty" tf:"expires_on,omitempty"`
@@ -32,26 +47,38 @@ type CertificateObservation struct {
 	// **Modifying this attribute will force creation of a new resource.**
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
+	// The form of Authenticated Origin Pulls to upload the certificate to.
+	// The form of Authenticated Origin Pulls to upload the certificate to. Available values: `per-zone`, `per-hostname`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
 	// **Modifying this attribute will force creation of a new resource.**
 	UploadedOn *string `json:"uploadedOn,omitempty" tf:"uploaded_on,omitempty"`
+
+	// The zone ID to upload the certificate to.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type CertificateParameters struct {
 
-	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Certificate *string `json:"certificate" tf:"certificate,omitempty"`
+	// The public client certificate.
+	// The public client certificate. **Modifying this attribute will force creation of a new resource.**
+	// +kubebuilder:validation:Optional
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
-	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
+	// The private key of the client certificate.
+	// The private key of the client certificate. **Modifying this attribute will force creation of a new resource.**
+	// +kubebuilder:validation:Optional
 	PrivateKeySecretRef v1.SecretKeySelector `json:"privateKeySecretRef" tf:"-"`
 
-	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// The form of Authenticated Origin Pulls to upload the certificate to.
+	// The form of Authenticated Origin Pulls to upload the certificate to. Available values: `per-zone`, `per-hostname`. **Modifying this attribute will force creation of a new resource.**
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// The zone ID to upload the certificate to.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -68,6 +95,18 @@ type CertificateParameters struct {
 type CertificateSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     CertificateParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider CertificateInitParameters `json:"initProvider,omitempty"`
 }
 
 // CertificateStatus defines the observed state of Certificate.
@@ -78,7 +117,7 @@ type CertificateStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Certificate is the Schema for the Certificates API. <no value>
+// Certificate is the Schema for the Certificates API. Provides a Cloudflare Authenticated Origin Pulls certificate resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -88,8 +127,11 @@ type CertificateStatus struct {
 type Certificate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              CertificateSpec   `json:"spec"`
-	Status            CertificateStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.certificate) || has(self.initProvider.certificate)",message="certificate is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.privateKeySecretRef)",message="privateKeySecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	Spec   CertificateSpec   `json:"spec"`
+	Status CertificateStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

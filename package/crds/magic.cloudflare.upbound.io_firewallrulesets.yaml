@@ -34,8 +34,9 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: FirewallRuleset is the Schema for the FirewallRulesets API. <no
-          value>
+        description: FirewallRuleset is the Schema for the FirewallRulesets API. Provides
+          the ability to manage a Magic Firewall Ruleset and it's firewall rules which
+          are used with Magic Transit.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,7 +69,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The ID of the account where the ruleset is being
+                      created. The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -144,10 +146,11 @@ spec:
                         type: object
                     type: object
                   description:
+                    description: A note that can be used to annotate the ruleset.
                     type: string
                   name:
-                    description: '**Modifying this attribute will force creation of
-                      a new resource.**'
+                    description: The name of the ruleset. **Modifying this attribute
+                      will force creation of a new resource.**
                     type: string
                   rules:
                     items:
@@ -155,8 +158,33 @@ spec:
                         type: string
                       type: object
                     type: array
-                required:
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  description:
+                    description: A note that can be used to annotate the ruleset.
+                    type: string
+                  name:
+                    description: The name of the ruleset. **Modifying this attribute
+                      will force creation of a new resource.**
+                    type: string
+                  rules:
+                    items:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -355,13 +383,35 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: FirewallRulesetStatus defines the observed state of FirewallRuleset.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The ID of the account where the ruleset is being
+                      created. The account identifier to target for the resource.
+                    type: string
+                  description:
+                    description: A note that can be used to annotate the ruleset.
+                    type: string
                   id:
                     type: string
+                  name:
+                    description: The name of the ruleset. **Modifying this attribute
+                      will force creation of a new resource.**
+                    type: string
+                  rules:
+                    items:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

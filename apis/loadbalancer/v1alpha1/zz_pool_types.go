@@ -13,90 +13,316 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type LoadSheddingInitParameters struct {
+
+	// Percent of traffic to shed 0 - 100.
+	// Percent of traffic to shed 0 - 100. Defaults to `0`.
+	DefaultPercent *float64 `json:"defaultPercent,omitempty" tf:"default_percent,omitempty"`
+
+	// Method of shedding traffic "", "hash" or "random".
+	// Method of shedding traffic. Available values: `""`, `hash`, `random`. Defaults to `""`.
+	DefaultPolicy *string `json:"defaultPolicy,omitempty" tf:"default_policy,omitempty"`
+
+	// Percent of session traffic to shed 0 - 100.
+	// Percent of session traffic to shed 0 - 100. Defaults to `0`.
+	SessionPercent *float64 `json:"sessionPercent,omitempty" tf:"session_percent,omitempty"`
+
+	// Method of shedding session traffic "" or "hash".
+	// Method of shedding traffic. Available values: `""`, `hash`. Defaults to `""`.
+	SessionPolicy *string `json:"sessionPolicy,omitempty" tf:"session_policy,omitempty"`
+}
+
 type LoadSheddingObservation struct {
+
+	// Percent of traffic to shed 0 - 100.
+	// Percent of traffic to shed 0 - 100. Defaults to `0`.
+	DefaultPercent *float64 `json:"defaultPercent,omitempty" tf:"default_percent,omitempty"`
+
+	// Method of shedding traffic "", "hash" or "random".
+	// Method of shedding traffic. Available values: `""`, `hash`, `random`. Defaults to `""`.
+	DefaultPolicy *string `json:"defaultPolicy,omitempty" tf:"default_policy,omitempty"`
+
+	// Percent of session traffic to shed 0 - 100.
+	// Percent of session traffic to shed 0 - 100. Defaults to `0`.
+	SessionPercent *float64 `json:"sessionPercent,omitempty" tf:"session_percent,omitempty"`
+
+	// Method of shedding session traffic "" or "hash".
+	// Method of shedding traffic. Available values: `""`, `hash`. Defaults to `""`.
+	SessionPolicy *string `json:"sessionPolicy,omitempty" tf:"session_policy,omitempty"`
 }
 
 type LoadSheddingParameters struct {
 
+	// Percent of traffic to shed 0 - 100.
 	// Percent of traffic to shed 0 - 100. Defaults to `0`.
 	// +kubebuilder:validation:Optional
 	DefaultPercent *float64 `json:"defaultPercent,omitempty" tf:"default_percent,omitempty"`
 
-	// Method of shedding traffic. Available values: “, `hash`, `random`. Defaults to `""`.
+	// Method of shedding traffic "", "hash" or "random".
+	// Method of shedding traffic. Available values: `""`, `hash`, `random`. Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	DefaultPolicy *string `json:"defaultPolicy,omitempty" tf:"default_policy,omitempty"`
 
+	// Percent of session traffic to shed 0 - 100.
 	// Percent of session traffic to shed 0 - 100. Defaults to `0`.
 	// +kubebuilder:validation:Optional
 	SessionPercent *float64 `json:"sessionPercent,omitempty" tf:"session_percent,omitempty"`
 
-	// Method of shedding traffic. Available values: “, `hash`. Defaults to `""`.
+	// Method of shedding session traffic "" or "hash".
+	// Method of shedding traffic. Available values: `""`, `hash`. Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	SessionPolicy *string `json:"sessionPolicy,omitempty" tf:"session_policy,omitempty"`
 }
 
+type OriginSteeringInitParameters struct {
+
+	// Either "random" (default) or "hash".
+	// Origin steering policy to be used. Value `random` selects an origin randomly. Value `hash` selects an origin by computing a hash over the CF-Connecting-IP address. Value `least_outstanding_requests` selects an origin by taking into consideration origin weights, as well as each origin's number of outstanding requests. Origins with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects an origin by taking into consideration origin weights, as well as each origin's number of open connections. Origins with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Available values: `""`, `hash`, `random`, `least_outstanding_requests`, `least_connections`. Defaults to `random`.
+	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
+}
+
 type OriginSteeringObservation struct {
+
+	// Either "random" (default) or "hash".
+	// Origin steering policy to be used. Value `random` selects an origin randomly. Value `hash` selects an origin by computing a hash over the CF-Connecting-IP address. Value `least_outstanding_requests` selects an origin by taking into consideration origin weights, as well as each origin's number of outstanding requests. Origins with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects an origin by taking into consideration origin weights, as well as each origin's number of open connections. Origins with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Available values: `""`, `hash`, `random`, `least_outstanding_requests`, `least_connections`. Defaults to `random`.
+	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
 }
 
 type OriginSteeringParameters struct {
 
-	// Origin steering policy to be used. Available values: “, `hash`, `random`. Defaults to `random`.
+	// Either "random" (default) or "hash".
+	// Origin steering policy to be used. Value `random` selects an origin randomly. Value `hash` selects an origin by computing a hash over the CF-Connecting-IP address. Value `least_outstanding_requests` selects an origin by taking into consideration origin weights, as well as each origin's number of outstanding requests. Origins with more pending requests are weighted proportionately less relative to others. Value `least_connections` selects an origin by taking into consideration origin weights, as well as each origin's number of open connections. Origins with more open connections are weighted proportionately less relative to others. Supported for HTTP/1 and HTTP/2 connections. Available values: `""`, `hash`, `random`, `least_outstanding_requests`, `least_connections`. Defaults to `random`.
 	// +kubebuilder:validation:Optional
 	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
 }
 
+type OriginsHeaderInitParameters struct {
+
+	// The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+	// HTTP Header name.
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A list of string values for the header.
+	// Values for the HTTP headers.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
 type OriginsHeaderObservation struct {
+
+	// The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+	// HTTP Header name.
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A list of string values for the header.
+	// Values for the HTTP headers.
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
 }
 
 type OriginsHeaderParameters struct {
 
+	// The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
 	// HTTP Header name.
-	// +kubebuilder:validation:Required
-	Header *string `json:"header" tf:"header,omitempty"`
+	// +kubebuilder:validation:Optional
+	Header *string `json:"header,omitempty" tf:"header,omitempty"`
 
+	// A list of string values for the header.
 	// Values for the HTTP headers.
-	// +kubebuilder:validation:Required
-	Values []*string `json:"values" tf:"values,omitempty"`
+	// +kubebuilder:validation:Optional
+	Values []*string `json:"values,omitempty" tf:"values,omitempty"`
+}
+
+type OriginsInitParameters struct {
+
+	// The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname. Hostnames entered here should resolve directly to the origin, and not be a hostname proxied by Cloudflare.
+	// The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+	// Whether this origin is enabled. Disabled origins will not receive traffic and are excluded from health checks. Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+	// HTTP request headers.
+	Header []OriginsHeaderInitParameters `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+	// A human-identifiable name for the origin.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Default: 1.
+	// The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. When [`origin_steering.policy="least_outstanding_requests"`](#policy), weight is used to scale the origin's outstanding requests. When [`origin_steering.policy="least_connections"`](#policy), weight is used to scale the origin's open connections. Defaults to `1`.
+	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
 type OriginsObservation struct {
+
+	// The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname. Hostnames entered here should resolve directly to the origin, and not be a hostname proxied by Cloudflare.
+	// The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+	// Whether this origin is enabled. Disabled origins will not receive traffic and are excluded from health checks. Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+	// HTTP request headers.
+	Header []OriginsHeaderObservation `json:"header,omitempty" tf:"header,omitempty"`
+
+	// A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+	// A human-identifiable name for the origin.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Default: 1.
+	// The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. When [`origin_steering.policy="least_outstanding_requests"`](#policy), weight is used to scale the origin's outstanding requests. When [`origin_steering.policy="least_connections"`](#policy), weight is used to scale the origin's open connections. Defaults to `1`.
+	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
 type OriginsParameters struct {
 
+	// The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname. Hostnames entered here should resolve directly to the origin, and not be a hostname proxied by Cloudflare.
 	// The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname.
-	// +kubebuilder:validation:Required
-	Address *string `json:"address" tf:"address,omitempty"`
+	// +kubebuilder:validation:Optional
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
 	// Whether this origin is enabled. Disabled origins will not receive traffic and are excluded from health checks. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
 	// HTTP request headers.
 	// +kubebuilder:validation:Optional
 	Header []OriginsHeaderParameters `json:"header,omitempty" tf:"header,omitempty"`
 
+	// A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
 	// A human-identifiable name for the origin.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Defaults to `1`.
+	// The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Default: 1.
+	// The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. When [`origin_steering.policy="least_outstanding_requests"`](#policy), weight is used to scale the origin's outstanding requests. When [`origin_steering.policy="least_connections"`](#policy), weight is used to scale the origin's open connections. Defaults to `1`.
 	// +kubebuilder:validation:Optional
 	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
+type PoolInitParameters struct {
+
+	// A list of regions (specified by region code) from which to run health checks. Empty means every Cloudflare data center (the default), but requires an Enterprise plan. Region codes can be found here.
+	// A list of regions (specified by region code) from which to run health checks. Empty means every Cloudflare data center (the default), but requires an Enterprise plan. Region codes can be found [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api).
+	CheckRegions []*string `json:"checkRegions,omitempty" tf:"check_regions,omitempty"`
+
+	// Free text description.
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any). Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// The latitude this pool is physically located at; used for proximity steering. Values should be between -90 and 90.
+	// The latitude this pool is physically located at; used for proximity steering.
+	Latitude *float64 `json:"latitude,omitempty" tf:"latitude,omitempty"`
+
+	// Setting for controlling load shedding for this pool.
+	// Setting for controlling load shedding for this pool.
+	LoadShedding []LoadSheddingInitParameters `json:"loadShedding,omitempty" tf:"load_shedding,omitempty"`
+
+	// The longitude this pool is physically located at; used for proximity steering. Values should be between -180 and 180.
+	// The longitude this pool is physically located at; used for proximity steering.
+	Longitude *float64 `json:"longitude,omitempty" tf:"longitude,omitempty"`
+
+	// The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Default: 1.
+	// The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Defaults to `1`.
+	MinimumOrigins *float64 `json:"minimumOrigins,omitempty" tf:"minimum_origins,omitempty"`
+
+	// A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+	// A short name (tag) for the pool.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The email address to send health status notifications to. This can be an individual mailbox or a mailing list. Multiple emails can be supplied as a comma delimited list.
+	// The email address to send health status notifications to. This can be an individual mailbox or a mailing list. Multiple emails can be supplied as a comma delimited list.
+	NotificationEmail *string `json:"notificationEmail,omitempty" tf:"notification_email,omitempty"`
+
+	// Set an origin steering policy to control origin selection within a pool.
+	// Set an origin steering policy to control origin selection within a pool.
+	OriginSteering []OriginSteeringInitParameters `json:"originSteering,omitempty" tf:"origin_steering,omitempty"`
+
+	// The list of origins within this pool. Traffic directed at this pool is balanced across all currently healthy origins, provided the pool itself is healthy. It's a complex value. See description below.
+	// The list of origins within this pool. Traffic directed at this pool is balanced across all currently healthy origins, provided the pool itself is healthy.
+	Origins []OriginsInitParameters `json:"origins,omitempty" tf:"origins,omitempty"`
+}
+
 type PoolObservation struct {
+
+	// The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// A list of regions (specified by region code) from which to run health checks. Empty means every Cloudflare data center (the default), but requires an Enterprise plan. Region codes can be found here.
+	// A list of regions (specified by region code) from which to run health checks. Empty means every Cloudflare data center (the default), but requires an Enterprise plan. Region codes can be found [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api).
+	CheckRegions []*string `json:"checkRegions,omitempty" tf:"check_regions,omitempty"`
+
+	// The RFC3339 timestamp of when the load balancer was created.
+	// The RFC3339 timestamp of when the load balancer was created.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
 
+	// Free text description.
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any). Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// ID for this load balancer pool.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The latitude this pool is physically located at; used for proximity steering. Values should be between -90 and 90.
+	// The latitude this pool is physically located at; used for proximity steering.
+	Latitude *float64 `json:"latitude,omitempty" tf:"latitude,omitempty"`
+
+	// Setting for controlling load shedding for this pool.
+	// Setting for controlling load shedding for this pool.
+	LoadShedding []LoadSheddingObservation `json:"loadShedding,omitempty" tf:"load_shedding,omitempty"`
+
+	// The longitude this pool is physically located at; used for proximity steering. Values should be between -180 and 180.
+	// The longitude this pool is physically located at; used for proximity steering.
+	Longitude *float64 `json:"longitude,omitempty" tf:"longitude,omitempty"`
+
+	// The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Default: 1.
+	// The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Defaults to `1`.
+	MinimumOrigins *float64 `json:"minimumOrigins,omitempty" tf:"minimum_origins,omitempty"`
+
+	// The RFC3339 timestamp of when the load balancer was last modified.
+	// The RFC3339 timestamp of when the load balancer was last modified.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+
+	// The ID of the Monitor to use for health checking origins within this pool.
+	// The ID of the Monitor to use for health checking origins within this pool.
+	Monitor *string `json:"monitor,omitempty" tf:"monitor,omitempty"`
+
+	// A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+	// A short name (tag) for the pool.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The email address to send health status notifications to. This can be an individual mailbox or a mailing list. Multiple emails can be supplied as a comma delimited list.
+	// The email address to send health status notifications to. This can be an individual mailbox or a mailing list. Multiple emails can be supplied as a comma delimited list.
+	NotificationEmail *string `json:"notificationEmail,omitempty" tf:"notification_email,omitempty"`
+
+	// Set an origin steering policy to control origin selection within a pool.
+	// Set an origin steering policy to control origin selection within a pool.
+	OriginSteering []OriginSteeringObservation `json:"originSteering,omitempty" tf:"origin_steering,omitempty"`
+
+	// The list of origins within this pool. Traffic directed at this pool is balanced across all currently healthy origins, provided the pool itself is healthy. It's a complex value. See description below.
+	// The list of origins within this pool. Traffic directed at this pool is balanced across all currently healthy origins, provided the pool itself is healthy.
+	Origins []OriginsObservation `json:"origins,omitempty" tf:"origins,omitempty"`
 }
 
 type PoolParameters struct {
 
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -108,29 +334,43 @@ type PoolParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// A list of regions (specified by region code) from which to run health checks. Empty means every Cloudflare data center (the default), but requires an Enterprise plan. Region codes can be found here.
+	// A list of regions (specified by region code) from which to run health checks. Empty means every Cloudflare data center (the default), but requires an Enterprise plan. Region codes can be found [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api).
 	// +kubebuilder:validation:Optional
 	CheckRegions []*string `json:"checkRegions,omitempty" tf:"check_regions,omitempty"`
 
+	// Free text description.
+	// Free text description.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Defaults to `true`.
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+	// Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any). Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// The latitude this pool is physically located at; used for proximity steering. Values should be between -90 and 90.
+	// The latitude this pool is physically located at; used for proximity steering.
 	// +kubebuilder:validation:Optional
 	Latitude *float64 `json:"latitude,omitempty" tf:"latitude,omitempty"`
 
+	// Setting for controlling load shedding for this pool.
+	// Setting for controlling load shedding for this pool.
 	// +kubebuilder:validation:Optional
 	LoadShedding []LoadSheddingParameters `json:"loadShedding,omitempty" tf:"load_shedding,omitempty"`
 
+	// The longitude this pool is physically located at; used for proximity steering. Values should be between -180 and 180.
+	// The longitude this pool is physically located at; used for proximity steering.
 	// +kubebuilder:validation:Optional
 	Longitude *float64 `json:"longitude,omitempty" tf:"longitude,omitempty"`
 
-	// Defaults to `1`.
+	// The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Default: 1.
+	// The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Defaults to `1`.
 	// +kubebuilder:validation:Optional
 	MinimumOrigins *float64 `json:"minimumOrigins,omitempty" tf:"minimum_origins,omitempty"`
 
+	// The ID of the Monitor to use for health checking origins within this pool.
+	// The ID of the Monitor to use for health checking origins within this pool.
 	// +crossplane:generate:reference:type=Monitor
 	// +kubebuilder:validation:Optional
 	Monitor *string `json:"monitor,omitempty" tf:"monitor,omitempty"`
@@ -143,23 +383,43 @@ type PoolParameters struct {
 	// +kubebuilder:validation:Optional
 	MonitorSelector *v1.Selector `json:"monitorSelector,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+	// A short name (tag) for the pool.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The email address to send health status notifications to. This can be an individual mailbox or a mailing list. Multiple emails can be supplied as a comma delimited list.
+	// The email address to send health status notifications to. This can be an individual mailbox or a mailing list. Multiple emails can be supplied as a comma delimited list.
 	// +kubebuilder:validation:Optional
 	NotificationEmail *string `json:"notificationEmail,omitempty" tf:"notification_email,omitempty"`
 
+	// Set an origin steering policy to control origin selection within a pool.
+	// Set an origin steering policy to control origin selection within a pool.
 	// +kubebuilder:validation:Optional
 	OriginSteering []OriginSteeringParameters `json:"originSteering,omitempty" tf:"origin_steering,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Origins []OriginsParameters `json:"origins" tf:"origins,omitempty"`
+	// The list of origins within this pool. Traffic directed at this pool is balanced across all currently healthy origins, provided the pool itself is healthy. It's a complex value. See description below.
+	// The list of origins within this pool. Traffic directed at this pool is balanced across all currently healthy origins, provided the pool itself is healthy.
+	// +kubebuilder:validation:Optional
+	Origins []OriginsParameters `json:"origins,omitempty" tf:"origins,omitempty"`
 }
 
 // PoolSpec defines the desired state of Pool
 type PoolSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PoolParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PoolInitParameters `json:"initProvider,omitempty"`
 }
 
 // PoolStatus defines the observed state of Pool.
@@ -170,7 +430,7 @@ type PoolStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Pool is the Schema for the Pools API. <no value>
+// Pool is the Schema for the Pools API. Provides a Cloudflare Load Balancer Pool resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -180,8 +440,10 @@ type PoolStatus struct {
 type Pool struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PoolSpec   `json:"spec"`
-	Status            PoolStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.origins) || has(self.initProvider.origins)",message="origins is a required parameter"
+	Spec   PoolSpec   `json:"spec"`
+	Status PoolStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

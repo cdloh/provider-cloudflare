@@ -13,28 +13,55 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AnalyticsEngineBindingInitParameters struct {
+
+	// The name of the Analytics Engine dataset to write to.
+	Dataset *string `json:"dataset,omitempty" tf:"dataset,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type AnalyticsEngineBindingObservation struct {
+
+	// The name of the Analytics Engine dataset to write to.
+	Dataset *string `json:"dataset,omitempty" tf:"dataset,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type AnalyticsEngineBindingParameters struct {
 
 	// The name of the Analytics Engine dataset to write to.
-	// +kubebuilder:validation:Required
-	Dataset *string `json:"dataset" tf:"dataset,omitempty"`
+	// +kubebuilder:validation:Optional
+	Dataset *string `json:"dataset,omitempty" tf:"dataset,omitempty"`
 
 	// The global variable for the binding in your Worker code.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type KvNamespaceBindingInitParameters struct {
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type KvNamespaceBindingObservation struct {
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// ID of the KV namespace you want to use.
+	NamespaceID *string `json:"namespaceId,omitempty" tf:"namespace_id,omitempty"`
 }
 
 type KvNamespaceBindingParameters struct {
 
 	// The global variable for the binding in your Worker code.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// ID of the KV namespace you want to use.
 	// +crossplane:generate:reference:type=KVNamespace
@@ -50,36 +77,196 @@ type KvNamespaceBindingParameters struct {
 	NamespaceIDSelector *v1.Selector `json:"namespaceIdSelector,omitempty" tf:"-"`
 }
 
+type PlacementInitParameters struct {
+
+	// The placement mode for the Worker. Available values: `smart`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type PlacementObservation struct {
+
+	// The placement mode for the Worker. Available values: `smart`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type PlacementParameters struct {
+
+	// The placement mode for the Worker. Available values: `smart`.
+	// +kubebuilder:validation:Optional
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+}
+
+type PlainTextBindingInitParameters struct {
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The plain text you want to store.
+	Text *string `json:"text,omitempty" tf:"text,omitempty"`
+}
+
 type PlainTextBindingObservation struct {
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The plain text you want to store.
+	Text *string `json:"text,omitempty" tf:"text,omitempty"`
 }
 
 type PlainTextBindingParameters struct {
 
 	// The global variable for the binding in your Worker code.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The plain text you want to store.
-	// +kubebuilder:validation:Required
-	Text *string `json:"text" tf:"text,omitempty"`
+	// +kubebuilder:validation:Optional
+	Text *string `json:"text,omitempty" tf:"text,omitempty"`
+}
+
+type QueueBindingInitParameters struct {
+
+	// The name of the global variable for the binding in your Worker code.
+	Binding *string `json:"binding,omitempty" tf:"binding,omitempty"`
+
+	// Name of the queue you want to use.
+	Queue *string `json:"queue,omitempty" tf:"queue,omitempty"`
+}
+
+type QueueBindingObservation struct {
+
+	// The name of the global variable for the binding in your Worker code.
+	Binding *string `json:"binding,omitempty" tf:"binding,omitempty"`
+
+	// Name of the queue you want to use.
+	Queue *string `json:"queue,omitempty" tf:"queue,omitempty"`
+}
+
+type QueueBindingParameters struct {
+
+	// The name of the global variable for the binding in your Worker code.
+	// +kubebuilder:validation:Optional
+	Binding *string `json:"binding,omitempty" tf:"binding,omitempty"`
+
+	// Name of the queue you want to use.
+	// +kubebuilder:validation:Optional
+	Queue *string `json:"queue,omitempty" tf:"queue,omitempty"`
+}
+
+type R2BucketBindingInitParameters struct {
+
+	// The name of the Bucket to bind to.
+	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type R2BucketBindingObservation struct {
+
+	// The name of the Bucket to bind to.
+	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type R2BucketBindingParameters struct {
 
 	// The name of the Bucket to bind to.
-	// +kubebuilder:validation:Required
-	BucketName *string `json:"bucketName" tf:"bucket_name,omitempty"`
+	// +kubebuilder:validation:Optional
+	BucketName *string `json:"bucketName,omitempty" tf:"bucket_name,omitempty"`
 
 	// The global variable for the binding in your Worker code.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type ScriptInitParameters struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	AnalyticsEngineBinding []AnalyticsEngineBindingInitParameters `json:"analyticsEngineBinding,omitempty" tf:"analytics_engine_binding,omitempty"`
+
+	// The date to use for the compatibility flag.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// Compatibility flags used for Worker Scripts.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// The script content.
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
+	KvNamespaceBinding []KvNamespaceBindingInitParameters `json:"kvNamespaceBinding,omitempty" tf:"kv_namespace_binding,omitempty"`
+
+	// Enabling allows Worker events to be sent to a defined Logpush destination.
+	Logpush *bool `json:"logpush,omitempty" tf:"logpush,omitempty"`
+
+	// Whether to upload Worker as a module.
+	Module *bool `json:"module,omitempty" tf:"module,omitempty"`
+
+	// The name for the script. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Placement []PlacementInitParameters `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	PlainTextBinding []PlainTextBindingInitParameters `json:"plainTextBinding,omitempty" tf:"plain_text_binding,omitempty"`
+
+	QueueBinding []QueueBindingInitParameters `json:"queueBinding,omitempty" tf:"queue_binding,omitempty"`
+
+	R2BucketBinding []R2BucketBindingInitParameters `json:"r2BucketBinding,omitempty" tf:"r2_bucket_binding,omitempty"`
+
+	SecretTextBinding []SecretTextBindingInitParameters `json:"secretTextBinding,omitempty" tf:"secret_text_binding,omitempty"`
+
+	ServiceBinding []ServiceBindingInitParameters `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	WebassemblyBinding []WebassemblyBindingInitParameters `json:"webassemblyBinding,omitempty" tf:"webassembly_binding,omitempty"`
 }
 
 type ScriptObservation struct {
+
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	AnalyticsEngineBinding []AnalyticsEngineBindingObservation `json:"analyticsEngineBinding,omitempty" tf:"analytics_engine_binding,omitempty"`
+
+	// The date to use for the compatibility flag.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// Compatibility flags used for Worker Scripts.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// The script content.
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	KvNamespaceBinding []KvNamespaceBindingObservation `json:"kvNamespaceBinding,omitempty" tf:"kv_namespace_binding,omitempty"`
+
+	// Enabling allows Worker events to be sent to a defined Logpush destination.
+	Logpush *bool `json:"logpush,omitempty" tf:"logpush,omitempty"`
+
+	// Whether to upload Worker as a module.
+	Module *bool `json:"module,omitempty" tf:"module,omitempty"`
+
+	// The name for the script. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Placement []PlacementObservation `json:"placement,omitempty" tf:"placement,omitempty"`
+
+	PlainTextBinding []PlainTextBindingObservation `json:"plainTextBinding,omitempty" tf:"plain_text_binding,omitempty"`
+
+	QueueBinding []QueueBindingObservation `json:"queueBinding,omitempty" tf:"queue_binding,omitempty"`
+
+	R2BucketBinding []R2BucketBindingObservation `json:"r2BucketBinding,omitempty" tf:"r2_bucket_binding,omitempty"`
+
+	SecretTextBinding []SecretTextBindingObservation `json:"secretTextBinding,omitempty" tf:"secret_text_binding,omitempty"`
+
+	ServiceBinding []ServiceBindingObservation `json:"serviceBinding,omitempty" tf:"service_binding,omitempty"`
+
+	WebassemblyBinding []WebassemblyBindingObservation `json:"webassemblyBinding,omitempty" tf:"webassembly_binding,omitempty"`
 }
 
 type ScriptParameters struct {
@@ -91,23 +278,41 @@ type ScriptParameters struct {
 	// +kubebuilder:validation:Optional
 	AnalyticsEngineBinding []AnalyticsEngineBindingParameters `json:"analyticsEngineBinding,omitempty" tf:"analytics_engine_binding,omitempty"`
 
+	// The date to use for the compatibility flag.
+	// +kubebuilder:validation:Optional
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// Compatibility flags used for Worker Scripts.
+	// +kubebuilder:validation:Optional
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
 	// The script content.
-	// +kubebuilder:validation:Required
-	Content *string `json:"content" tf:"content,omitempty"`
+	// +kubebuilder:validation:Optional
+	Content *string `json:"content,omitempty" tf:"content,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	KvNamespaceBinding []KvNamespaceBindingParameters `json:"kvNamespaceBinding,omitempty" tf:"kv_namespace_binding,omitempty"`
+
+	// Enabling allows Worker events to be sent to a defined Logpush destination.
+	// +kubebuilder:validation:Optional
+	Logpush *bool `json:"logpush,omitempty" tf:"logpush,omitempty"`
 
 	// Whether to upload Worker as a module.
 	// +kubebuilder:validation:Optional
 	Module *bool `json:"module,omitempty" tf:"module,omitempty"`
 
 	// The name for the script. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	Placement []PlacementParameters `json:"placement,omitempty" tf:"placement,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	PlainTextBinding []PlainTextBindingParameters `json:"plainTextBinding,omitempty" tf:"plain_text_binding,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	QueueBinding []QueueBindingParameters `json:"queueBinding,omitempty" tf:"queue_binding,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	R2BucketBinding []R2BucketBindingParameters `json:"r2BucketBinding,omitempty" tf:"r2_bucket_binding,omitempty"`
@@ -122,21 +327,51 @@ type ScriptParameters struct {
 	WebassemblyBinding []WebassemblyBindingParameters `json:"webassemblyBinding,omitempty" tf:"webassembly_binding,omitempty"`
 }
 
+type SecretTextBindingInitParameters struct {
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type SecretTextBindingObservation struct {
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type SecretTextBindingParameters struct {
 
 	// The global variable for the binding in your Worker code.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The secret text you want to store.
 	// +kubebuilder:validation:Required
 	TextSecretRef v1.SecretKeySelector `json:"textSecretRef" tf:"-"`
 }
 
+type ServiceBindingInitParameters struct {
+
+	// The name of the Worker environment to bind to.
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
 type ServiceBindingObservation struct {
+
+	// The name of the Worker environment to bind to.
+	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The name of the Worker to bind to.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 }
 
 type ServiceBindingParameters struct {
@@ -146,32 +381,59 @@ type ServiceBindingParameters struct {
 	Environment *string `json:"environment,omitempty" tf:"environment,omitempty"`
 
 	// The global variable for the binding in your Worker code.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The name of the Worker to bind to.
-	// +kubebuilder:validation:Required
-	Service *string `json:"service" tf:"service,omitempty"`
+	// +kubebuilder:validation:Optional
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
+type WebassemblyBindingInitParameters struct {
+
+	// The base64 encoded wasm module you want to store.
+	Module *string `json:"module,omitempty" tf:"module,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type WebassemblyBindingObservation struct {
+
+	// The base64 encoded wasm module you want to store.
+	Module *string `json:"module,omitempty" tf:"module,omitempty"`
+
+	// The global variable for the binding in your Worker code.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type WebassemblyBindingParameters struct {
 
 	// The base64 encoded wasm module you want to store.
-	// +kubebuilder:validation:Required
-	Module *string `json:"module" tf:"module,omitempty"`
+	// +kubebuilder:validation:Optional
+	Module *string `json:"module,omitempty" tf:"module,omitempty"`
 
 	// The global variable for the binding in your Worker code.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 // ScriptSpec defines the desired state of Script
 type ScriptSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ScriptParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ScriptInitParameters `json:"initProvider,omitempty"`
 }
 
 // ScriptStatus defines the observed state of Script.
@@ -192,8 +454,11 @@ type ScriptStatus struct {
 type Script struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ScriptSpec   `json:"spec"`
-	Status            ScriptStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.accountId) || has(self.initProvider.accountId)",message="accountId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.content) || has(self.initProvider.content)",message="content is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   ScriptSpec   `json:"spec"`
+	Status ScriptStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

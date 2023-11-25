@@ -8,7 +8,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "BYOIP"
 		r.Kind = "IPPrefix"
 		r.References["account_id"] = config.Reference{
-			Type: "github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account",
+			Type: "github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account",
 		}
 	})
 }

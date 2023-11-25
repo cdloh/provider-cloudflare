@@ -1,0 +1,23 @@
+apiVersion: magic.cloudflare.upbound.io/v1alpha1
+kind: GRETunnel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: magic/v1alpha1/gretunnel
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    cloudflareGreEndpoint: 203.0.113.1
+    customerGreEndpoint: 203.0.113.1
+    description: Tunnel for ISP X
+    healthCheckEnabled: true
+    healthCheckTarget: 203.0.113.1
+    healthCheckType: reply
+    interfaceAddress: 192.0.2.0/31
+    mtu: 1476
+    name: GRE_1
+    ttl: 64

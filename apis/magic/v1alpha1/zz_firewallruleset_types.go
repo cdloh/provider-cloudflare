@@ -13,14 +13,41 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type FirewallRulesetInitParameters struct {
+
+	// A note that can be used to annotate the ruleset.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The name of the ruleset.
+	// **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Rules []map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
+}
+
 type FirewallRulesetObservation struct {
+
+	// The ID of the account where the ruleset is being created.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// A note that can be used to annotate the ruleset.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The name of the ruleset.
+	// **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	Rules []map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
 }
 
 type FirewallRulesetParameters struct {
 
+	// The ID of the account where the ruleset is being created.
 	// The account identifier to target for the resource.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -32,12 +59,14 @@ type FirewallRulesetParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// A note that can be used to annotate the ruleset.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// The name of the ruleset.
 	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Rules []map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
@@ -47,6 +76,18 @@ type FirewallRulesetParameters struct {
 type FirewallRulesetSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     FirewallRulesetParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider FirewallRulesetInitParameters `json:"initProvider,omitempty"`
 }
 
 // FirewallRulesetStatus defines the observed state of FirewallRuleset.
@@ -57,7 +98,7 @@ type FirewallRulesetStatus struct {
 
 // +kubebuilder:object:root=true
 
-// FirewallRuleset is the Schema for the FirewallRulesets API. <no value>
+// FirewallRuleset is the Schema for the FirewallRulesets API. Provides the ability to manage a Magic Firewall Ruleset and it's firewall rules which are used with Magic Transit.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -67,8 +108,9 @@ type FirewallRulesetStatus struct {
 type FirewallRuleset struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              FirewallRulesetSpec   `json:"spec"`
-	Status            FirewallRulesetStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   FirewallRulesetSpec   `json:"spec"`
+	Status FirewallRulesetStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

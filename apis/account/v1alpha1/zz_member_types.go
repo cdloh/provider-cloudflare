@@ -13,8 +13,33 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type MemberInitParameters struct {
+
+	// The email address of the user who you wish to manage. Following creation, this field becomes read only via the API and cannot be updated.
+	EmailAddress *string `json:"emailAddress,omitempty" tf:"email_address,omitempty"`
+
+	// List of account role IDs that you want to assign to a member.
+	RoleIds []*string `json:"roleIds,omitempty" tf:"role_ids,omitempty"`
+
+	// A member's status in the account. Available values: `accepted`, `pending`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+}
+
 type MemberObservation struct {
+
+	// Account ID to create the account member in.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The email address of the user who you wish to manage. Following creation, this field becomes read only via the API and cannot be updated.
+	EmailAddress *string `json:"emailAddress,omitempty" tf:"email_address,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// List of account role IDs that you want to assign to a member.
+	RoleIds []*string `json:"roleIds,omitempty" tf:"role_ids,omitempty"`
+
+	// A member's status in the account. Available values: `accepted`, `pending`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type MemberParameters struct {
@@ -33,12 +58,12 @@ type MemberParameters struct {
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
 	// The email address of the user who you wish to manage. Following creation, this field becomes read only via the API and cannot be updated.
-	// +kubebuilder:validation:Required
-	EmailAddress *string `json:"emailAddress" tf:"email_address,omitempty"`
+	// +kubebuilder:validation:Optional
+	EmailAddress *string `json:"emailAddress,omitempty" tf:"email_address,omitempty"`
 
 	// List of account role IDs that you want to assign to a member.
-	// +kubebuilder:validation:Required
-	RoleIds []*string `json:"roleIds" tf:"role_ids,omitempty"`
+	// +kubebuilder:validation:Optional
+	RoleIds []*string `json:"roleIds,omitempty" tf:"role_ids,omitempty"`
 
 	// A member's status in the account. Available values: `accepted`, `pending`.
 	// +kubebuilder:validation:Optional
@@ -49,6 +74,18 @@ type MemberParameters struct {
 type MemberSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MemberParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider MemberInitParameters `json:"initProvider,omitempty"`
 }
 
 // MemberStatus defines the observed state of Member.
@@ -69,8 +106,10 @@ type MemberStatus struct {
 type Member struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              MemberSpec   `json:"spec"`
-	Status            MemberStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.emailAddress) || has(self.initProvider.emailAddress)",message="emailAddress is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleIds) || has(self.initProvider.roleIds)",message="roleIds is a required parameter"
+	Spec   MemberSpec   `json:"spec"`
+	Status MemberStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

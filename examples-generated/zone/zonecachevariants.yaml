@@ -1,0 +1,46 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: ZoneCacheVariants
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/zonecachevariants
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    avif:
+    - image/avif
+    - image/webp
+    bmp:
+    - image/bmp
+    - image/webp
+    gif:
+    - image/gif
+    - image/webp
+    jp2:
+    - image/jp2
+    - image/webp
+    jpeg:
+    - image/jpeg
+    - image/webp
+    jpg:
+    - image/jpg
+    - image/webp
+    jpg2:
+    - image/jpg2
+    - image/webp
+    png:
+    - image/png
+    - image/webp
+    tif:
+    - image/tif
+    - image/webp
+    tiff:
+    - image/tiff
+    - image/webp
+    webp:
+    - image/jpeg
+    - image/webp
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

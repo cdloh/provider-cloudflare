@@ -13,8 +13,21 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type APIShieldInitParameters struct {
+
+	// Characteristics define properties across which auth-ids can be computed in a privacy-preserving manner.
+	AuthIDCharacteristics []AuthIDCharacteristicsInitParameters `json:"authIdCharacteristics,omitempty" tf:"auth_id_characteristics,omitempty"`
+}
+
 type APIShieldObservation struct {
+
+	// Characteristics define properties across which auth-ids can be computed in a privacy-preserving manner.
+	AuthIDCharacteristics []AuthIDCharacteristicsObservation `json:"authIdCharacteristics,omitempty" tf:"auth_id_characteristics,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type APIShieldParameters struct {
@@ -24,7 +37,7 @@ type APIShieldParameters struct {
 	AuthIDCharacteristics []AuthIDCharacteristicsParameters `json:"authIdCharacteristics,omitempty" tf:"auth_id_characteristics,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -37,7 +50,22 @@ type APIShieldParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type AuthIDCharacteristicsInitParameters struct {
+
+	// The name of the characteristic.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of characteristic. Available values: `header`, `cookie`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type AuthIDCharacteristicsObservation struct {
+
+	// The name of the characteristic.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of characteristic. Available values: `header`, `cookie`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type AuthIDCharacteristicsParameters struct {
@@ -55,6 +83,18 @@ type AuthIDCharacteristicsParameters struct {
 type APIShieldSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     APIShieldParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider APIShieldInitParameters `json:"initProvider,omitempty"`
 }
 
 // APIShieldStatus defines the observed state of APIShield.

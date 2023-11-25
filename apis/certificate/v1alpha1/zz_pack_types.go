@@ -13,51 +13,105 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type PackInitParameters struct {
+
+	// Which certificate authority to issue the certificate pack. Available values: `digicert`, `lets_encrypt`, `google`. **Modifying this attribute will force creation of a new resource.**
+	CertificateAuthority *string `json:"certificateAuthority,omitempty" tf:"certificate_authority,omitempty"`
+
+	// Whether or not to include Cloudflare branding. This will add `sni.cloudflaressl.com` as the Common Name if set to `true`. **Modifying this attribute will force creation of a new resource.**
+	CloudflareBranding *bool `json:"cloudflareBranding,omitempty" tf:"cloudflare_branding,omitempty"`
+
+	// List of hostnames to provision the certificate pack for. The zone name must be included as a host. Note: If using Let's Encrypt, you cannot use individual subdomains and only a wildcard for subdomain is available. **Modifying this attribute will force creation of a new resource.**
+	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
+
+	// Certificate pack configuration type. Available values: `advanced`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	ValidationErrors []ValidationErrorsInitParameters `json:"validationErrors,omitempty" tf:"validation_errors,omitempty"`
+
+	// Which validation method to use in order to prove domain ownership. Available values: `txt`, `http`, `email`. **Modifying this attribute will force creation of a new resource.**
+	ValidationMethod *string `json:"validationMethod,omitempty" tf:"validation_method,omitempty"`
+
+	ValidationRecords []ValidationRecordsInitParameters `json:"validationRecords,omitempty" tf:"validation_records,omitempty"`
+
+	// How long the certificate is valid for. Note: If using Let's Encrypt, this value can only be 90 days. Available values: `14`, `30`, `90`, `365`. **Modifying this attribute will force creation of a new resource.**
+	ValidityDays *float64 `json:"validityDays,omitempty" tf:"validity_days,omitempty"`
+
+	// Whether or not to wait for a certificate pack to reach status `active` during creation. Defaults to `false`. **Modifying this attribute will force creation of a new resource.**
+	WaitForActiveStatus *bool `json:"waitForActiveStatus,omitempty" tf:"wait_for_active_status,omitempty"`
+}
+
 type PackObservation struct {
+
+	// Which certificate authority to issue the certificate pack. Available values: `digicert`, `lets_encrypt`, `google`. **Modifying this attribute will force creation of a new resource.**
+	CertificateAuthority *string `json:"certificateAuthority,omitempty" tf:"certificate_authority,omitempty"`
+
+	// Whether or not to include Cloudflare branding. This will add `sni.cloudflaressl.com` as the Common Name if set to `true`. **Modifying this attribute will force creation of a new resource.**
+	CloudflareBranding *bool `json:"cloudflareBranding,omitempty" tf:"cloudflare_branding,omitempty"`
+
+	// List of hostnames to provision the certificate pack for. The zone name must be included as a host. Note: If using Let's Encrypt, you cannot use individual subdomains and only a wildcard for subdomain is available. **Modifying this attribute will force creation of a new resource.**
+	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// +kubebuilder:validation:Optional
+	// Certificate pack configuration type. Available values: `advanced`. **Modifying this attribute will force creation of a new resource.**
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
 	ValidationErrors []ValidationErrorsObservation `json:"validationErrors,omitempty" tf:"validation_errors,omitempty"`
+
+	// Which validation method to use in order to prove domain ownership. Available values: `txt`, `http`, `email`. **Modifying this attribute will force creation of a new resource.**
+	ValidationMethod *string `json:"validationMethod,omitempty" tf:"validation_method,omitempty"`
+
+	ValidationRecords []ValidationRecordsObservation `json:"validationRecords,omitempty" tf:"validation_records,omitempty"`
+
+	// How long the certificate is valid for. Note: If using Let's Encrypt, this value can only be 90 days. Available values: `14`, `30`, `90`, `365`. **Modifying this attribute will force creation of a new resource.**
+	ValidityDays *float64 `json:"validityDays,omitempty" tf:"validity_days,omitempty"`
+
+	// Whether or not to wait for a certificate pack to reach status `active` during creation. Defaults to `false`. **Modifying this attribute will force creation of a new resource.**
+	WaitForActiveStatus *bool `json:"waitForActiveStatus,omitempty" tf:"wait_for_active_status,omitempty"`
+
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type PackParameters struct {
 
 	// Which certificate authority to issue the certificate pack. Available values: `digicert`, `lets_encrypt`, `google`. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	CertificateAuthority *string `json:"certificateAuthority" tf:"certificate_authority,omitempty"`
+	// +kubebuilder:validation:Optional
+	CertificateAuthority *string `json:"certificateAuthority,omitempty" tf:"certificate_authority,omitempty"`
 
 	// Whether or not to include Cloudflare branding. This will add `sni.cloudflaressl.com` as the Common Name if set to `true`. **Modifying this attribute will force creation of a new resource.**
 	// +kubebuilder:validation:Optional
 	CloudflareBranding *bool `json:"cloudflareBranding,omitempty" tf:"cloudflare_branding,omitempty"`
 
 	// List of hostnames to provision the certificate pack for. The zone name must be included as a host. Note: If using Let's Encrypt, you cannot use individual subdomains and only a wildcard for subdomain is available. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Hosts []*string `json:"hosts" tf:"hosts,omitempty"`
+	// +kubebuilder:validation:Optional
+	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
 
 	// Certificate pack configuration type. Available values: `advanced`. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	ValidationErrors []ValidationErrorsParameters `json:"validationErrors,omitempty" tf:"validation_errors,omitempty"`
 
 	// Which validation method to use in order to prove domain ownership. Available values: `txt`, `http`, `email`. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	ValidationMethod *string `json:"validationMethod" tf:"validation_method,omitempty"`
+	// +kubebuilder:validation:Optional
+	ValidationMethod *string `json:"validationMethod,omitempty" tf:"validation_method,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	ValidationRecords []ValidationRecordsParameters `json:"validationRecords,omitempty" tf:"validation_records,omitempty"`
 
 	// How long the certificate is valid for. Note: If using Let's Encrypt, this value can only be 90 days. Available values: `14`, `30`, `90`, `365`. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	ValidityDays *float64 `json:"validityDays" tf:"validity_days,omitempty"`
+	// +kubebuilder:validation:Optional
+	ValidityDays *float64 `json:"validityDays,omitempty" tf:"validity_days,omitempty"`
 
 	// Whether or not to wait for a certificate pack to reach status `active` during creation. Defaults to `false`. **Modifying this attribute will force creation of a new resource.**
 	// +kubebuilder:validation:Optional
 	WaitForActiveStatus *bool `json:"waitForActiveStatus,omitempty" tf:"wait_for_active_status,omitempty"`
 
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -70,6 +124,9 @@ type PackParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type ValidationErrorsInitParameters struct {
+}
+
 type ValidationErrorsObservation struct {
 	Message *string `json:"message,omitempty" tf:"message,omitempty"`
 }
@@ -77,7 +134,36 @@ type ValidationErrorsObservation struct {
 type ValidationErrorsParameters struct {
 }
 
+type ValidationRecordsInitParameters struct {
+	CnameName *string `json:"cnameName,omitempty" tf:"cname_name,omitempty"`
+
+	CnameTarget *string `json:"cnameTarget,omitempty" tf:"cname_target,omitempty"`
+
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	HTTPBody *string `json:"httpBody,omitempty" tf:"http_body,omitempty"`
+
+	HTTPURL *string `json:"httpUrl,omitempty" tf:"http_url,omitempty"`
+
+	TxtName *string `json:"txtName,omitempty" tf:"txt_name,omitempty"`
+
+	TxtValue *string `json:"txtValue,omitempty" tf:"txt_value,omitempty"`
+}
+
 type ValidationRecordsObservation struct {
+	CnameName *string `json:"cnameName,omitempty" tf:"cname_name,omitempty"`
+
+	CnameTarget *string `json:"cnameTarget,omitempty" tf:"cname_target,omitempty"`
+
+	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
+
+	HTTPBody *string `json:"httpBody,omitempty" tf:"http_body,omitempty"`
+
+	HTTPURL *string `json:"httpUrl,omitempty" tf:"http_url,omitempty"`
+
+	TxtName *string `json:"txtName,omitempty" tf:"txt_name,omitempty"`
+
+	TxtValue *string `json:"txtValue,omitempty" tf:"txt_value,omitempty"`
 }
 
 type ValidationRecordsParameters struct {
@@ -108,6 +194,18 @@ type ValidationRecordsParameters struct {
 type PackSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PackParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PackInitParameters `json:"initProvider,omitempty"`
 }
 
 // PackStatus defines the observed state of Pack.
@@ -128,8 +226,13 @@ type PackStatus struct {
 type Pack struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PackSpec   `json:"spec"`
-	Status            PackStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.certificateAuthority) || has(self.initProvider.certificateAuthority)",message="certificateAuthority is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.hosts) || has(self.initProvider.hosts)",message="hosts is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.validationMethod) || has(self.initProvider.validationMethod)",message="validationMethod is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.validityDays) || has(self.initProvider.validityDays)",message="validityDays is a required parameter"
+	Spec   PackSpec   `json:"spec"`
+	Status PackStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

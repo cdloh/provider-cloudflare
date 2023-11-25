@@ -165,12 +165,18 @@ spec:
                     description: Whether the policy refers to the default account
                       policy.
                     type: boolean
+                  description:
+                    description: Description of Policy.
+                    type: string
                   disableAutoFallback:
                     description: Whether to disable auto fallback for this policy.
                     type: boolean
                   enabled:
                     description: Whether the policy is enabled (cannot be set for
                       default policies). Defaults to `true`.
+                    type: boolean
+                  excludeOfficeIps:
+                    description: Whether to add Microsoft IPs to split tunnel exclusions.
                     type: boolean
                   match:
                     description: Wirefilter expression to match a device against when
@@ -184,7 +190,8 @@ spec:
                       higher precedence.
                     type: number
                   serviceModeV2Mode:
-                    description: The service mode. Defaults to `warp`.
+                    description: 'The service mode. Available values: `1dot1`, `warp`,
+                      `proxy`, `posture_only`, `warp_tunnel_only`. Defaults to `warp`.'
                     type: string
                   serviceModeV2Port:
                     description: The port to use for the proxy service mode. Required
@@ -197,8 +204,81 @@ spec:
                   switchLocked:
                     description: Enablement of the ZT client switch lock.
                     type: boolean
-                required:
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  allowModeSwitch:
+                    description: Whether to allow mode switch for this policy.
+                    type: boolean
+                  allowUpdates:
+                    description: Whether to allow updates under this policy.
+                    type: boolean
+                  allowedToLeave:
+                    description: Whether to allow devices to leave the organization.
+                      Defaults to `true`.
+                    type: boolean
+                  autoConnect:
+                    description: The amount of time in minutes to reconnect after
+                      having been disabled.
+                    type: number
+                  captivePortal:
+                    description: The captive portal value for this policy. Defaults
+                      to `180`.
+                    type: number
+                  default:
+                    description: Whether the policy refers to the default account
+                      policy.
+                    type: boolean
+                  description:
+                    description: Description of Policy.
+                    type: string
+                  disableAutoFallback:
+                    description: Whether to disable auto fallback for this policy.
+                    type: boolean
+                  enabled:
+                    description: Whether the policy is enabled (cannot be set for
+                      default policies). Defaults to `true`.
+                    type: boolean
+                  excludeOfficeIps:
+                    description: Whether to add Microsoft IPs to split tunnel exclusions.
+                    type: boolean
+                  match:
+                    description: Wirefilter expression to match a device against when
+                      evaluating whether this policy should take effect for that device.
+                    type: string
+                  name:
+                    description: Name of the policy.
+                    type: string
+                  precedence:
+                    description: The precedence of the policy. Lower values indicate
+                      higher precedence.
+                    type: number
+                  serviceModeV2Mode:
+                    description: 'The service mode. Available values: `1dot1`, `warp`,
+                      `proxy`, `posture_only`, `warp_tunnel_only`. Defaults to `warp`.'
+                    type: string
+                  serviceModeV2Port:
+                    description: The port to use for the proxy service mode. Required
+                      when using `service_mode_v2_mode`.
+                    type: number
+                  supportUrl:
+                    description: The support URL that will be opened when sending
+                      feedback.
+                    type: string
+                  switchLocked:
+                    description: Enablement of the ZT client switch lock.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -397,14 +477,87 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: description is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.description)
+                || has(self.initProvider.description)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: DeviceSettingsPolicyStatus defines the observed state of
               DeviceSettingsPolicy.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  allowModeSwitch:
+                    description: Whether to allow mode switch for this policy.
+                    type: boolean
+                  allowUpdates:
+                    description: Whether to allow updates under this policy.
+                    type: boolean
+                  allowedToLeave:
+                    description: Whether to allow devices to leave the organization.
+                      Defaults to `true`.
+                    type: boolean
+                  autoConnect:
+                    description: The amount of time in minutes to reconnect after
+                      having been disabled.
+                    type: number
+                  captivePortal:
+                    description: The captive portal value for this policy. Defaults
+                      to `180`.
+                    type: number
+                  default:
+                    description: Whether the policy refers to the default account
+                      policy.
+                    type: boolean
+                  description:
+                    description: Description of Policy.
+                    type: string
+                  disableAutoFallback:
+                    description: Whether to disable auto fallback for this policy.
+                    type: boolean
+                  enabled:
+                    description: Whether the policy is enabled (cannot be set for
+                      default policies). Defaults to `true`.
+                    type: boolean
+                  excludeOfficeIps:
+                    description: Whether to add Microsoft IPs to split tunnel exclusions.
+                    type: boolean
                   id:
                     type: string
+                  match:
+                    description: Wirefilter expression to match a device against when
+                      evaluating whether this policy should take effect for that device.
+                    type: string
+                  name:
+                    description: Name of the policy.
+                    type: string
+                  precedence:
+                    description: The precedence of the policy. Lower values indicate
+                      higher precedence.
+                    type: number
+                  serviceModeV2Mode:
+                    description: 'The service mode. Available values: `1dot1`, `warp`,
+                      `proxy`, `posture_only`, `warp_tunnel_only`. Defaults to `warp`.'
+                    type: string
+                  serviceModeV2Port:
+                    description: The port to use for the proxy service mode. Required
+                      when using `service_mode_v2_mode`.
+                    type: number
+                  supportUrl:
+                    description: The support URL that will be opened when sending
+                      feedback.
+                    type: string
+                  switchLocked:
+                    description: Enablement of the ZT client switch lock.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

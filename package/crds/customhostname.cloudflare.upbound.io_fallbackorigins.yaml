@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: FallbackOrigin is the Schema for the FallbackOrigins API. <no
-          value>
+        description: FallbackOrigin is the Schema for the FallbackOrigins API. Provides
+          a Cloudflare custom hostname fallback origin resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,10 +68,15 @@ spec:
               forProvider:
                 properties:
                   origin:
+                    description: Hostname you intend to fallback requests to. Origin
+                      must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+                      Hostname you intend to fallback requests to. Origin must be
+                      a proxied A/AAAA/CNAME DNS record within Clouldflare.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: The DNS zone ID where the custom hostname should
+                      be assigned. The zone identifier to target for the resource.
+                      **Modifying this attribute will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -146,8 +151,26 @@ spec:
                             type: string
                         type: object
                     type: object
-                required:
-                - origin
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  origin:
+                    description: Hostname you intend to fallback requests to. Origin
+                      must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+                      Hostname you intend to fallback requests to. Origin must be
+                      a proxied A/AAAA/CNAME DNS record within Clouldflare.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -346,6 +369,11 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: origin is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.origin)
+                || has(self.initProvider.origin)'
           status:
             description: FallbackOriginStatus defines the observed state of FallbackOrigin.
             properties:
@@ -353,7 +381,20 @@ spec:
                 properties:
                   id:
                     type: string
+                  origin:
+                    description: Hostname you intend to fallback requests to. Origin
+                      must be a proxied A/AAAA/CNAME DNS record within Clouldflare.
+                      Hostname you intend to fallback requests to. Origin must be
+                      a proxied A/AAAA/CNAME DNS record within Clouldflare.
+                    type: string
                   status:
+                    description: Status of the fallback origin's activation. Status
+                      of the fallback origin's activation.
+                    type: string
+                  zoneId:
+                    description: The DNS zone ID where the custom hostname should
+                      be assigned. The zone identifier to target for the resource.
+                      **Modifying this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:

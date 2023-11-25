@@ -146,26 +146,27 @@ spec:
                     description: 'The event type that will trigger the dispatch of
                       a notification. See the developer documentation for descriptions
                       of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/).
-                      Available values: `billing_usage_alert`, `health_check_status_notification`,
-                      `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`,
-                      `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`,
-                      `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`,
-                      `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`,
-                      `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`,
-                      `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`,
-                      `secondary_dns_zone_successfully_updated`, `dos_attack_l7`,
-                      `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`,
-                      `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`,
-                      `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`,
+                      Available values: `advanced_http_alert_error`, `access_custom_certificate_expiration_type`,
+                      `advanced_ddos_attack_l4_alert`, `advanced_ddos_attack_l7_alert`,
+                      `bgp_hijack_notification`, `billing_usage_alert`, `block_notification_block_removed`,
+                      `block_notification_new_block`, `block_notification_review_rejected`,
                       `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`,
-                      `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`,
-                      `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`,
-                      `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`,
-                      `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`,
-                      `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`,
-                      `stream_live_notifications`, `block_notification_new_block`,
-                      `block_notification_review_rejected`, `block_notification_review_accepted`,
-                      `web_analytics_metrics_update`, `workers_uptime`.'
+                      `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`,
+                      `dos_attack_l4`, `dos_attack_l7`, `expiring_service_token_alert`,
+                      `failing_logpush_job_disabled_alert`, `fbm_auto_advertisement`,
+                      `fbm_dosd_attack`, `fbm_volumetric_attack`, `health_check_status_notification`,
+                      `hostname_aop_custom_certificate_expiration_type`, `http_alert_edge_error`,
+                      `http_alert_origin_error`, `incident_alert`, `load_balancing_health_alert`,
+                      `load_balancing_pool_enablement_alert`, `pages_event_alert`,
+                      `real_origin_monitoring`, `scriptmonitor_alert_new_code_change_detections`,
+                      `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_malicious_hosts`,
+                      `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`,
+                      `scriptmonitor_alert_new_max_length_resource_url`, `scriptmonitor_alert_new_resources`,
+                      `secondary_dns_all_primaries_failing`, `secondary_dns_primaries_failing`,
+                      `secondary_dns_zone_successfully_updated`, `secondary_dns_zone_validation_warning`,
+                      `sentinel_alert`, `stream_live_notifications`, `tunnel_health_event`,
+                      `tunnel_update_event`, `universal_ssl_event_type`, `web_analytics_metrics_update`,
+                      `weekly_account_overview`, `workers_alert`, `zone_aop_custom_certificate_expiration_type`.'
                     type: string
                   description:
                     description: Description of the notification policy.
@@ -180,8 +181,6 @@ spec:
                           type: string
                         name:
                           type: string
-                      required:
-                      - id
                       type: object
                     type: array
                   enabled:
@@ -194,8 +193,30 @@ spec:
                       the alert type block for available fields).
                     items:
                       properties:
+                        actions:
+                          description: Targeted actions for alert.
+                          items:
+                            type: string
+                          type: array
+                        alertTriggerPreferences:
+                          description: 'Alert trigger preferences. Example: `slo`.'
+                          items:
+                            type: string
+                          type: array
                         enabled:
                           description: State of the pool to alert on.
+                          items:
+                            type: string
+                          type: array
+                        environment:
+                          description: 'Environment of pages. Available values: `ENVIRONMENT_PREVIEW`,
+                            `ENVIRONMENT_PRODUCTION`.'
+                          items:
+                            type: string
+                          type: array
+                        event:
+                          description: 'Pages event to alert. Available values: `EVENT_DEPLOYMENT_STARTED`,
+                            `EVENT_DEPLOYMENT_FAILED`, `EVENT_DEPLOYMENT_SUCCESS`.'
                           items:
                             type: string
                           type: array
@@ -210,9 +231,21 @@ spec:
                           items:
                             type: string
                           type: array
+                        groupBy:
+                          description: Alert grouping.
+                          items:
+                            type: string
+                          type: array
                         healthCheckId:
                           description: Identifier health check. Required when using
                             `filters.0.status`.
+                          items:
+                            type: string
+                          type: array
+                        incidentImpact:
+                          description: 'The incident impact level that will trigger
+                            the dispatch of a notification. Available values: `INCIDENT_IMPACT_NONE`,
+                            `INCIDENT_IMPACT_MINOR`, `INCIDENT_IMPACT_MAJOR`, `INCIDENT_IMPACT_CRITICAL`.'
                           items:
                             type: string
                           type: array
@@ -223,6 +256,11 @@ spec:
                           type: array
                         limit:
                           description: 'A numerical limit. Example: `100`.'
+                          items:
+                            type: string
+                          type: array
+                        megabitsPerSecond:
+                          description: Megabits per second threshold for dos alert.
                           items:
                             type: string
                           type: array
@@ -250,6 +288,11 @@ spec:
                           items:
                             type: string
                           type: array
+                        projectId:
+                          description: Identifier of pages project.
+                          items:
+                            type: string
+                          type: array
                         protocol:
                           description: Protocol to alert on for dos.
                           items:
@@ -274,13 +317,18 @@ spec:
                           items:
                             type: string
                           type: array
-                        targetHost:
+                        targetHostname:
                           description: Target host to alert on for dos.
                           items:
                             type: string
                           type: array
                         targetZoneName:
                           description: Target domain to alert on.
+                          items:
+                            type: string
+                          type: array
+                        where:
+                          description: Filter for alert.
                           items:
                             type: string
                           type: array
@@ -304,8 +352,6 @@ spec:
                           type: string
                         name:
                           type: string
-                      required:
-                      - id
                       type: object
                     type: array
                   webhooksIntegration:
@@ -396,10 +442,242 @@ spec:
                           type: string
                       type: object
                     type: array
-                required:
-                - alertType
-                - enabled
-                - name
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  alertType:
+                    description: 'The event type that will trigger the dispatch of
+                      a notification. See the developer documentation for descriptions
+                      of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/).
+                      Available values: `advanced_http_alert_error`, `access_custom_certificate_expiration_type`,
+                      `advanced_ddos_attack_l4_alert`, `advanced_ddos_attack_l7_alert`,
+                      `bgp_hijack_notification`, `billing_usage_alert`, `block_notification_block_removed`,
+                      `block_notification_new_block`, `block_notification_review_rejected`,
+                      `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`,
+                      `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`,
+                      `dos_attack_l4`, `dos_attack_l7`, `expiring_service_token_alert`,
+                      `failing_logpush_job_disabled_alert`, `fbm_auto_advertisement`,
+                      `fbm_dosd_attack`, `fbm_volumetric_attack`, `health_check_status_notification`,
+                      `hostname_aop_custom_certificate_expiration_type`, `http_alert_edge_error`,
+                      `http_alert_origin_error`, `incident_alert`, `load_balancing_health_alert`,
+                      `load_balancing_pool_enablement_alert`, `pages_event_alert`,
+                      `real_origin_monitoring`, `scriptmonitor_alert_new_code_change_detections`,
+                      `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_malicious_hosts`,
+                      `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`,
+                      `scriptmonitor_alert_new_max_length_resource_url`, `scriptmonitor_alert_new_resources`,
+                      `secondary_dns_all_primaries_failing`, `secondary_dns_primaries_failing`,
+                      `secondary_dns_zone_successfully_updated`, `secondary_dns_zone_validation_warning`,
+                      `sentinel_alert`, `stream_live_notifications`, `tunnel_health_event`,
+                      `tunnel_update_event`, `universal_ssl_event_type`, `web_analytics_metrics_update`,
+                      `weekly_account_overview`, `workers_alert`, `zone_aop_custom_certificate_expiration_type`.'
+                    type: string
+                  description:
+                    description: Description of the notification policy.
+                    type: string
+                  emailIntegration:
+                    description: The email id to which the notification should be
+                      dispatched. One of email, webhooks, or PagerDuty mechanisms
+                      is required.
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      type: object
+                    type: array
+                  enabled:
+                    description: The status of the notification policy.
+                    type: boolean
+                  filters:
+                    description: An optional nested block of filters that applies
+                      to the selected `alert_type`. A key-value map that specifies
+                      the type of filter and the values to match against (refer to
+                      the alert type block for available fields).
+                    items:
+                      properties:
+                        actions:
+                          description: Targeted actions for alert.
+                          items:
+                            type: string
+                          type: array
+                        alertTriggerPreferences:
+                          description: 'Alert trigger preferences. Example: `slo`.'
+                          items:
+                            type: string
+                          type: array
+                        enabled:
+                          description: State of the pool to alert on.
+                          items:
+                            type: string
+                          type: array
+                        environment:
+                          description: 'Environment of pages. Available values: `ENVIRONMENT_PREVIEW`,
+                            `ENVIRONMENT_PRODUCTION`.'
+                          items:
+                            type: string
+                          type: array
+                        event:
+                          description: 'Pages event to alert. Available values: `EVENT_DEPLOYMENT_STARTED`,
+                            `EVENT_DEPLOYMENT_FAILED`, `EVENT_DEPLOYMENT_SUCCESS`.'
+                          items:
+                            type: string
+                          type: array
+                        eventSource:
+                          description: Source configuration to alert on for pool or
+                            origin.
+                          items:
+                            type: string
+                          type: array
+                        eventType:
+                          description: Stream event type to alert on.
+                          items:
+                            type: string
+                          type: array
+                        groupBy:
+                          description: Alert grouping.
+                          items:
+                            type: string
+                          type: array
+                        healthCheckId:
+                          description: Identifier health check. Required when using
+                            `filters.0.status`.
+                          items:
+                            type: string
+                          type: array
+                        incidentImpact:
+                          description: 'The incident impact level that will trigger
+                            the dispatch of a notification. Available values: `INCIDENT_IMPACT_NONE`,
+                            `INCIDENT_IMPACT_MINOR`, `INCIDENT_IMPACT_MAJOR`, `INCIDENT_IMPACT_CRITICAL`.'
+                          items:
+                            type: string
+                          type: array
+                        inputId:
+                          description: Stream input id to alert on.
+                          items:
+                            type: string
+                          type: array
+                        limit:
+                          description: 'A numerical limit. Example: `100`.'
+                          items:
+                            type: string
+                          type: array
+                        megabitsPerSecond:
+                          description: Megabits per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                        newHealth:
+                          description: Health status to alert on for pool or origin.
+                          items:
+                            type: string
+                          type: array
+                        packetsPerSecond:
+                          description: Packets per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                        poolId:
+                          description: Load balancer pool identifier.
+                          items:
+                            type: string
+                          type: array
+                        product:
+                          description: 'Product name. Available values: `worker_requests`,
+                            `worker_durable_objects_requests`, `worker_durable_objects_duration`,
+                            `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`,
+                            `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`,
+                            `worker_durable_objects_storage_reads`.'
+                          items:
+                            type: string
+                          type: array
+                        projectId:
+                          description: Identifier of pages project.
+                          items:
+                            type: string
+                          type: array
+                        protocol:
+                          description: Protocol to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                        requestsPerSecond:
+                          description: Requests per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                        services:
+                          items:
+                            type: string
+                          type: array
+                        slo:
+                          description: 'A numerical limit. Example: `99.9`.'
+                          items:
+                            type: string
+                          type: array
+                        status:
+                          description: Status to alert on.
+                          items:
+                            type: string
+                          type: array
+                        targetHostname:
+                          description: Target host to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                        targetZoneName:
+                          description: Target domain to alert on.
+                          items:
+                            type: string
+                          type: array
+                        where:
+                          description: Filter for alert.
+                          items:
+                            type: string
+                          type: array
+                        zones:
+                          description: A list of zone identifiers.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  name:
+                    description: The name of the notification policy.
+                    type: string
+                  pagerdutyIntegration:
+                    description: The unique id of a configured pagerduty endpoint
+                      to which the notification should be dispatched. One of email,
+                      webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      type: object
+                    type: array
+                  webhooksIntegration:
+                    description: The unique id of a configured webhooks endpoint to
+                      which the notification should be dispatched. One of email, webhooks,
+                      or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        name:
+                          type: string
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -598,19 +876,259 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: alertType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.alertType)
+                || has(self.initProvider.alertType)'
+            - message: enabled is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.enabled)
+                || has(self.initProvider.enabled)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: PolicyStatus defines the observed state of Policy.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account identifier to target for the resource.
+                    type: string
+                  alertType:
+                    description: 'The event type that will trigger the dispatch of
+                      a notification. See the developer documentation for descriptions
+                      of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/).
+                      Available values: `advanced_http_alert_error`, `access_custom_certificate_expiration_type`,
+                      `advanced_ddos_attack_l4_alert`, `advanced_ddos_attack_l7_alert`,
+                      `bgp_hijack_notification`, `billing_usage_alert`, `block_notification_block_removed`,
+                      `block_notification_new_block`, `block_notification_review_rejected`,
+                      `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`,
+                      `custom_ssl_certificate_event_type`, `dedicated_ssl_certificate_event_type`,
+                      `dos_attack_l4`, `dos_attack_l7`, `expiring_service_token_alert`,
+                      `failing_logpush_job_disabled_alert`, `fbm_auto_advertisement`,
+                      `fbm_dosd_attack`, `fbm_volumetric_attack`, `health_check_status_notification`,
+                      `hostname_aop_custom_certificate_expiration_type`, `http_alert_edge_error`,
+                      `http_alert_origin_error`, `incident_alert`, `load_balancing_health_alert`,
+                      `load_balancing_pool_enablement_alert`, `pages_event_alert`,
+                      `real_origin_monitoring`, `scriptmonitor_alert_new_code_change_detections`,
+                      `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_malicious_hosts`,
+                      `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`,
+                      `scriptmonitor_alert_new_max_length_resource_url`, `scriptmonitor_alert_new_resources`,
+                      `secondary_dns_all_primaries_failing`, `secondary_dns_primaries_failing`,
+                      `secondary_dns_zone_successfully_updated`, `secondary_dns_zone_validation_warning`,
+                      `sentinel_alert`, `stream_live_notifications`, `tunnel_health_event`,
+                      `tunnel_update_event`, `universal_ssl_event_type`, `web_analytics_metrics_update`,
+                      `weekly_account_overview`, `workers_alert`, `zone_aop_custom_certificate_expiration_type`.'
+                    type: string
                   created:
                     description: When the notification policy was created.
                     type: string
+                  description:
+                    description: Description of the notification policy.
+                    type: string
+                  emailIntegration:
+                    description: The email id to which the notification should be
+                      dispatched. One of email, webhooks, or PagerDuty mechanisms
+                      is required.
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      type: object
+                    type: array
+                  enabled:
+                    description: The status of the notification policy.
+                    type: boolean
+                  filters:
+                    description: An optional nested block of filters that applies
+                      to the selected `alert_type`. A key-value map that specifies
+                      the type of filter and the values to match against (refer to
+                      the alert type block for available fields).
+                    items:
+                      properties:
+                        actions:
+                          description: Targeted actions for alert.
+                          items:
+                            type: string
+                          type: array
+                        alertTriggerPreferences:
+                          description: 'Alert trigger preferences. Example: `slo`.'
+                          items:
+                            type: string
+                          type: array
+                        enabled:
+                          description: State of the pool to alert on.
+                          items:
+                            type: string
+                          type: array
+                        environment:
+                          description: 'Environment of pages. Available values: `ENVIRONMENT_PREVIEW`,
+                            `ENVIRONMENT_PRODUCTION`.'
+                          items:
+                            type: string
+                          type: array
+                        event:
+                          description: 'Pages event to alert. Available values: `EVENT_DEPLOYMENT_STARTED`,
+                            `EVENT_DEPLOYMENT_FAILED`, `EVENT_DEPLOYMENT_SUCCESS`.'
+                          items:
+                            type: string
+                          type: array
+                        eventSource:
+                          description: Source configuration to alert on for pool or
+                            origin.
+                          items:
+                            type: string
+                          type: array
+                        eventType:
+                          description: Stream event type to alert on.
+                          items:
+                            type: string
+                          type: array
+                        groupBy:
+                          description: Alert grouping.
+                          items:
+                            type: string
+                          type: array
+                        healthCheckId:
+                          description: Identifier health check. Required when using
+                            `filters.0.status`.
+                          items:
+                            type: string
+                          type: array
+                        incidentImpact:
+                          description: 'The incident impact level that will trigger
+                            the dispatch of a notification. Available values: `INCIDENT_IMPACT_NONE`,
+                            `INCIDENT_IMPACT_MINOR`, `INCIDENT_IMPACT_MAJOR`, `INCIDENT_IMPACT_CRITICAL`.'
+                          items:
+                            type: string
+                          type: array
+                        inputId:
+                          description: Stream input id to alert on.
+                          items:
+                            type: string
+                          type: array
+                        limit:
+                          description: 'A numerical limit. Example: `100`.'
+                          items:
+                            type: string
+                          type: array
+                        megabitsPerSecond:
+                          description: Megabits per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                        newHealth:
+                          description: Health status to alert on for pool or origin.
+                          items:
+                            type: string
+                          type: array
+                        packetsPerSecond:
+                          description: Packets per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                        poolId:
+                          description: Load balancer pool identifier.
+                          items:
+                            type: string
+                          type: array
+                        product:
+                          description: 'Product name. Available values: `worker_requests`,
+                            `worker_durable_objects_requests`, `worker_durable_objects_duration`,
+                            `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`,
+                            `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`,
+                            `worker_durable_objects_storage_reads`.'
+                          items:
+                            type: string
+                          type: array
+                        projectId:
+                          description: Identifier of pages project.
+                          items:
+                            type: string
+                          type: array
+                        protocol:
+                          description: Protocol to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                        requestsPerSecond:
+                          description: Requests per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                        services:
+                          items:
+                            type: string
+                          type: array
+                        slo:
+                          description: 'A numerical limit. Example: `99.9`.'
+                          items:
+                            type: string
+                          type: array
+                        status:
+                          description: Status to alert on.
+                          items:
+                            type: string
+                          type: array
+                        targetHostname:
+                          description: Target host to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                        targetZoneName:
+                          description: Target domain to alert on.
+                          items:
+                            type: string
+                          type: array
+                        where:
+                          description: Filter for alert.
+                          items:
+                            type: string
+                          type: array
+                        zones:
+                          description: A list of zone identifiers.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
                   id:
                     type: string
                   modified:
                     description: When the notification policy was last modified.
                     type: string
+                  name:
+                    description: The name of the notification policy.
+                    type: string
+                  pagerdutyIntegration:
+                    description: The unique id of a configured pagerduty endpoint
+                      to which the notification should be dispatched. One of email,
+                      webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      type: object
+                    type: array
+                  webhooksIntegration:
+                    description: The unique id of a configured webhooks endpoint to
+                      which the notification should be dispatched. One of email, webhooks,
+                      or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

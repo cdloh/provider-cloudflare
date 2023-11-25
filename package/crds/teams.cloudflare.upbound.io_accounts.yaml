@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Account is the Schema for the Accounts API. <no value>
+        description: Account is the Schema for the Accounts API. Provides a Cloudflare
+          Teams Account resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,7 +68,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The account to which the teams location should be
+                      added. The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -143,43 +145,79 @@ spec:
                         type: object
                     type: object
                   activityLogEnabled:
+                    description: Indicator of enablement. Whether to enable the activity
+                      log.
                     type: boolean
                   antivirus:
+                    description: Configuration block for antivirus traffic scanning.
+                      Configuration block for antivirus traffic scanning.
                     items:
                       properties:
                         enabledDownloadPhase:
+                          description: Scan on file download. Scan on file download.
                           type: boolean
                         enabledUploadPhase:
+                          description: Scan on file upload. Scan on file upload.
                           type: boolean
                         failClosed:
+                          description: Block requests for files that cannot be scanned.
+                            Block requests for files that cannot be scanned.
                           type: boolean
-                      required:
-                      - enabledDownloadPhase
-                      - enabledUploadPhase
-                      - failClosed
                       type: object
                     type: array
                   blockPage:
+                    description: Configuration for a custom block page. Configuration
+                      for a custom block page.
                     items:
                       properties:
                         backgroundColor:
+                          description: Hex code of block page background color. Hex
+                            code of block page background color.
                           type: string
                         enabled:
+                          description: Indicator of enablement. Indicator of enablement.
                           type: boolean
                         footerText:
+                          description: Block page header text. Block page footer text.
                           type: string
                         headerText:
+                          description: Block page footer text. Block page header text.
                           type: string
                         logoPath:
+                          description: URL of block page logo. URL of block page logo.
+                          type: string
+                        mailtoAddress:
+                          description: Admin email for users to contact.
+                          type: string
+                        mailtoSubject:
+                          description: Subject line for emails created from block
+                            page.
                           type: string
                         name:
+                          description: Name of block page configuration. Name of block
+                            page configuration.
+                          type: string
+                      type: object
+                    type: array
+                  bodyScanning:
+                    description: Configuration for body scanning.
+                    items:
+                      properties:
+                        inspectionMode:
+                          description: 'Body scanning inspection mode. Available values:
+                            `deep`, `shallow`.'
                           type: string
                       type: object
                     type: array
                   fips:
+                    description: Configure compliance with Federal Information Processing
+                      Standards. Configure compliance with Federal Information Processing
+                      Standards.
                     items:
                       properties:
                         tls:
+                          description: Only allow FIPS-compliant TLS configuration.
+                            Only allow FIPS-compliant TLS configuration.
                           type: boolean
                       type: object
                     type: array
@@ -187,72 +225,318 @@ spec:
                     items:
                       properties:
                         redactPii:
+                          description: 'Redact personally identifiable information
+                            from activity logging (PII fields are: source IP, user
+                            email, user ID, device ID, URL, referrer, user agent).
+                            Redact personally identifiable information from activity
+                            logging (PII fields are: source IP, user email, user ID,
+                            device ID, URL, referrer, user agent).'
                           type: boolean
                         settingsByRuleType:
+                          description: Represents whether all requests are logged
+                            or only the blocked requests are logged in DNS, HTTP and
+                            L4 filters. Represents whether all requests are logged
+                            or only the blocked requests are slogged in DNS, HTTP
+                            and L4 filters.
                           items:
                             properties:
                               dns:
+                                description: Logging configuration for DNS requests.
                                 items:
                                   properties:
                                     logAll:
+                                      description: Whether to log all activity.
                                       type: boolean
                                     logBlocks:
                                       type: boolean
-                                  required:
-                                  - logAll
-                                  - logBlocks
                                   type: object
                                 type: array
                               http:
+                                description: Logging configuration for HTTP requests.
                                 items:
                                   properties:
                                     logAll:
+                                      description: Whether to log all activity.
                                       type: boolean
                                     logBlocks:
                                       type: boolean
-                                  required:
-                                  - logAll
-                                  - logBlocks
                                   type: object
                                 type: array
                               l4:
+                                description: Logging configuration for layer 4 requests.
                                 items:
                                   properties:
                                     logAll:
+                                      description: Whether to log all activity.
                                       type: boolean
                                     logBlocks:
                                       type: boolean
-                                  required:
-                                  - logAll
-                                  - logBlocks
                                   type: object
                                 type: array
-                            required:
-                            - dns
-                            - http
-                            - l4
                             type: object
                           type: array
-                      required:
-                      - redactPii
-                      - settingsByRuleType
                       type: object
                     type: array
-                  proxy:
+                  nonIdentityBrowserIsolationEnabled:
+                    description: Indicator of enablement. Enable non-identity onramp
+                      for Browser Isolation. Defaults to `false`.
+                    type: boolean
+                  payloadLog:
+                    description: Configuration for DLP Payload Logging.
                     items:
                       properties:
+                        publicKey:
+                          description: Public key used to encrypt matched payloads.
+                          type: string
+                      type: object
+                    type: array
+                  protocolDetectionEnabled:
+                    description: Indicator of enablement. Indicator that protocol
+                      detection is enabled.
+                    type: boolean
+                  proxy:
+                    description: Configuration block for specifying which protocols
+                      are proxied. Configuration block for specifying which protocols
+                      are proxied.
+                    items:
+                      properties:
+                        rootCa:
+                          description: Whether root ca is enabled account wide for
+                            ZT clients.
+                          type: boolean
                         tcp:
+                          description: Whether gateway proxy is enabled on gateway
+                            devices for tcp traffic. Whether gateway proxy is enabled
+                            on gateway devices for TCP traffic.
                           type: boolean
                         udp:
+                          description: Whether gateway proxy is enabled on gateway
+                            devices for udp traffic. Whether gateway proxy is enabled
+                            on gateway devices for UDP traffic.
                           type: boolean
-                      required:
-                      - tcp
-                      - udp
+                      type: object
+                    type: array
+                  sshSessionLog:
+                    description: Configuration for SSH Session Logging.
+                    items:
+                      properties:
+                        publicKey:
+                          description: Public key used to encrypt ssh session.
+                          type: string
                       type: object
                     type: array
                   tlsDecryptEnabled:
+                    description: Indicator that decryption of TLS traffic is enabled.
+                      Indicator that decryption of TLS traffic is enabled.
                     type: boolean
                   urlBrowserIsolationEnabled:
+                    description: Safely browse websites in Browser Isolation through
+                      a URL. Safely browse websites in Browser Isolation through a
+                      URL. Defaults to `false`.
+                    type: boolean
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  activityLogEnabled:
+                    description: Indicator of enablement. Whether to enable the activity
+                      log.
+                    type: boolean
+                  antivirus:
+                    description: Configuration block for antivirus traffic scanning.
+                      Configuration block for antivirus traffic scanning.
+                    items:
+                      properties:
+                        enabledDownloadPhase:
+                          description: Scan on file download. Scan on file download.
+                          type: boolean
+                        enabledUploadPhase:
+                          description: Scan on file upload. Scan on file upload.
+                          type: boolean
+                        failClosed:
+                          description: Block requests for files that cannot be scanned.
+                            Block requests for files that cannot be scanned.
+                          type: boolean
+                      type: object
+                    type: array
+                  blockPage:
+                    description: Configuration for a custom block page. Configuration
+                      for a custom block page.
+                    items:
+                      properties:
+                        backgroundColor:
+                          description: Hex code of block page background color. Hex
+                            code of block page background color.
+                          type: string
+                        enabled:
+                          description: Indicator of enablement. Indicator of enablement.
+                          type: boolean
+                        footerText:
+                          description: Block page header text. Block page footer text.
+                          type: string
+                        headerText:
+                          description: Block page footer text. Block page header text.
+                          type: string
+                        logoPath:
+                          description: URL of block page logo. URL of block page logo.
+                          type: string
+                        mailtoAddress:
+                          description: Admin email for users to contact.
+                          type: string
+                        mailtoSubject:
+                          description: Subject line for emails created from block
+                            page.
+                          type: string
+                        name:
+                          description: Name of block page configuration. Name of block
+                            page configuration.
+                          type: string
+                      type: object
+                    type: array
+                  bodyScanning:
+                    description: Configuration for body scanning.
+                    items:
+                      properties:
+                        inspectionMode:
+                          description: 'Body scanning inspection mode. Available values:
+                            `deep`, `shallow`.'
+                          type: string
+                      type: object
+                    type: array
+                  fips:
+                    description: Configure compliance with Federal Information Processing
+                      Standards. Configure compliance with Federal Information Processing
+                      Standards.
+                    items:
+                      properties:
+                        tls:
+                          description: Only allow FIPS-compliant TLS configuration.
+                            Only allow FIPS-compliant TLS configuration.
+                          type: boolean
+                      type: object
+                    type: array
+                  logging:
+                    items:
+                      properties:
+                        redactPii:
+                          description: 'Redact personally identifiable information
+                            from activity logging (PII fields are: source IP, user
+                            email, user ID, device ID, URL, referrer, user agent).
+                            Redact personally identifiable information from activity
+                            logging (PII fields are: source IP, user email, user ID,
+                            device ID, URL, referrer, user agent).'
+                          type: boolean
+                        settingsByRuleType:
+                          description: Represents whether all requests are logged
+                            or only the blocked requests are logged in DNS, HTTP and
+                            L4 filters. Represents whether all requests are logged
+                            or only the blocked requests are slogged in DNS, HTTP
+                            and L4 filters.
+                          items:
+                            properties:
+                              dns:
+                                description: Logging configuration for DNS requests.
+                                items:
+                                  properties:
+                                    logAll:
+                                      description: Whether to log all activity.
+                                      type: boolean
+                                    logBlocks:
+                                      type: boolean
+                                  type: object
+                                type: array
+                              http:
+                                description: Logging configuration for HTTP requests.
+                                items:
+                                  properties:
+                                    logAll:
+                                      description: Whether to log all activity.
+                                      type: boolean
+                                    logBlocks:
+                                      type: boolean
+                                  type: object
+                                type: array
+                              l4:
+                                description: Logging configuration for layer 4 requests.
+                                items:
+                                  properties:
+                                    logAll:
+                                      description: Whether to log all activity.
+                                      type: boolean
+                                    logBlocks:
+                                      type: boolean
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  nonIdentityBrowserIsolationEnabled:
+                    description: Indicator of enablement. Enable non-identity onramp
+                      for Browser Isolation. Defaults to `false`.
+                    type: boolean
+                  payloadLog:
+                    description: Configuration for DLP Payload Logging.
+                    items:
+                      properties:
+                        publicKey:
+                          description: Public key used to encrypt matched payloads.
+                          type: string
+                      type: object
+                    type: array
+                  protocolDetectionEnabled:
+                    description: Indicator of enablement. Indicator that protocol
+                      detection is enabled.
+                    type: boolean
+                  proxy:
+                    description: Configuration block for specifying which protocols
+                      are proxied. Configuration block for specifying which protocols
+                      are proxied.
+                    items:
+                      properties:
+                        rootCa:
+                          description: Whether root ca is enabled account wide for
+                            ZT clients.
+                          type: boolean
+                        tcp:
+                          description: Whether gateway proxy is enabled on gateway
+                            devices for tcp traffic. Whether gateway proxy is enabled
+                            on gateway devices for TCP traffic.
+                          type: boolean
+                        udp:
+                          description: Whether gateway proxy is enabled on gateway
+                            devices for udp traffic. Whether gateway proxy is enabled
+                            on gateway devices for UDP traffic.
+                          type: boolean
+                      type: object
+                    type: array
+                  sshSessionLog:
+                    description: Configuration for SSH Session Logging.
+                    items:
+                      properties:
+                        publicKey:
+                          description: Public key used to encrypt ssh session.
+                          type: string
+                      type: object
+                    type: array
+                  tlsDecryptEnabled:
+                    description: Indicator that decryption of TLS traffic is enabled.
+                      Indicator that decryption of TLS traffic is enabled.
+                    type: boolean
+                  urlBrowserIsolationEnabled:
+                    description: Safely browse websites in Browser Isolation through
+                      a URL. Safely browse websites in Browser Isolation through a
+                      URL. Defaults to `false`.
                     type: boolean
                 type: object
               managementPolicies:
@@ -457,8 +741,202 @@ spec:
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account to which the teams location should be
+                      added. The account identifier to target for the resource.
+                    type: string
+                  activityLogEnabled:
+                    description: Indicator of enablement. Whether to enable the activity
+                      log.
+                    type: boolean
+                  antivirus:
+                    description: Configuration block for antivirus traffic scanning.
+                      Configuration block for antivirus traffic scanning.
+                    items:
+                      properties:
+                        enabledDownloadPhase:
+                          description: Scan on file download. Scan on file download.
+                          type: boolean
+                        enabledUploadPhase:
+                          description: Scan on file upload. Scan on file upload.
+                          type: boolean
+                        failClosed:
+                          description: Block requests for files that cannot be scanned.
+                            Block requests for files that cannot be scanned.
+                          type: boolean
+                      type: object
+                    type: array
+                  blockPage:
+                    description: Configuration for a custom block page. Configuration
+                      for a custom block page.
+                    items:
+                      properties:
+                        backgroundColor:
+                          description: Hex code of block page background color. Hex
+                            code of block page background color.
+                          type: string
+                        enabled:
+                          description: Indicator of enablement. Indicator of enablement.
+                          type: boolean
+                        footerText:
+                          description: Block page header text. Block page footer text.
+                          type: string
+                        headerText:
+                          description: Block page footer text. Block page header text.
+                          type: string
+                        logoPath:
+                          description: URL of block page logo. URL of block page logo.
+                          type: string
+                        mailtoAddress:
+                          description: Admin email for users to contact.
+                          type: string
+                        mailtoSubject:
+                          description: Subject line for emails created from block
+                            page.
+                          type: string
+                        name:
+                          description: Name of block page configuration. Name of block
+                            page configuration.
+                          type: string
+                      type: object
+                    type: array
+                  bodyScanning:
+                    description: Configuration for body scanning.
+                    items:
+                      properties:
+                        inspectionMode:
+                          description: 'Body scanning inspection mode. Available values:
+                            `deep`, `shallow`.'
+                          type: string
+                      type: object
+                    type: array
+                  fips:
+                    description: Configure compliance with Federal Information Processing
+                      Standards. Configure compliance with Federal Information Processing
+                      Standards.
+                    items:
+                      properties:
+                        tls:
+                          description: Only allow FIPS-compliant TLS configuration.
+                            Only allow FIPS-compliant TLS configuration.
+                          type: boolean
+                      type: object
+                    type: array
                   id:
                     type: string
+                  logging:
+                    items:
+                      properties:
+                        redactPii:
+                          description: 'Redact personally identifiable information
+                            from activity logging (PII fields are: source IP, user
+                            email, user ID, device ID, URL, referrer, user agent).
+                            Redact personally identifiable information from activity
+                            logging (PII fields are: source IP, user email, user ID,
+                            device ID, URL, referrer, user agent).'
+                          type: boolean
+                        settingsByRuleType:
+                          description: Represents whether all requests are logged
+                            or only the blocked requests are logged in DNS, HTTP and
+                            L4 filters. Represents whether all requests are logged
+                            or only the blocked requests are slogged in DNS, HTTP
+                            and L4 filters.
+                          items:
+                            properties:
+                              dns:
+                                description: Logging configuration for DNS requests.
+                                items:
+                                  properties:
+                                    logAll:
+                                      description: Whether to log all activity.
+                                      type: boolean
+                                    logBlocks:
+                                      type: boolean
+                                  type: object
+                                type: array
+                              http:
+                                description: Logging configuration for HTTP requests.
+                                items:
+                                  properties:
+                                    logAll:
+                                      description: Whether to log all activity.
+                                      type: boolean
+                                    logBlocks:
+                                      type: boolean
+                                  type: object
+                                type: array
+                              l4:
+                                description: Logging configuration for layer 4 requests.
+                                items:
+                                  properties:
+                                    logAll:
+                                      description: Whether to log all activity.
+                                      type: boolean
+                                    logBlocks:
+                                      type: boolean
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  nonIdentityBrowserIsolationEnabled:
+                    description: Indicator of enablement. Enable non-identity onramp
+                      for Browser Isolation. Defaults to `false`.
+                    type: boolean
+                  payloadLog:
+                    description: Configuration for DLP Payload Logging.
+                    items:
+                      properties:
+                        publicKey:
+                          description: Public key used to encrypt matched payloads.
+                          type: string
+                      type: object
+                    type: array
+                  protocolDetectionEnabled:
+                    description: Indicator of enablement. Indicator that protocol
+                      detection is enabled.
+                    type: boolean
+                  proxy:
+                    description: Configuration block for specifying which protocols
+                      are proxied. Configuration block for specifying which protocols
+                      are proxied.
+                    items:
+                      properties:
+                        rootCa:
+                          description: Whether root ca is enabled account wide for
+                            ZT clients.
+                          type: boolean
+                        tcp:
+                          description: Whether gateway proxy is enabled on gateway
+                            devices for tcp traffic. Whether gateway proxy is enabled
+                            on gateway devices for TCP traffic.
+                          type: boolean
+                        udp:
+                          description: Whether gateway proxy is enabled on gateway
+                            devices for udp traffic. Whether gateway proxy is enabled
+                            on gateway devices for UDP traffic.
+                          type: boolean
+                      type: object
+                    type: array
+                  sshSessionLog:
+                    description: Configuration for SSH Session Logging.
+                    items:
+                      properties:
+                        publicKey:
+                          description: Public key used to encrypt ssh session.
+                          type: string
+                      type: object
+                    type: array
+                  tlsDecryptEnabled:
+                    description: Indicator that decryption of TLS traffic is enabled.
+                      Indicator that decryption of TLS traffic is enabled.
+                    type: boolean
+                  urlBrowserIsolationEnabled:
+                    description: Safely browse websites in Browser Isolation through
+                      a URL. Safely browse websites in Browser Isolation through a
+                      URL. Defaults to `false`.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

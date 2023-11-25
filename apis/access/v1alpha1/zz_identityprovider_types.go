@@ -13,7 +13,114 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ConfigInitParameters struct {
+	APIToken *string `json:"apiToken,omitempty" tf:"api_token,omitempty"`
+
+	AppsDomain *string `json:"appsDomain,omitempty" tf:"apps_domain,omitempty"`
+
+	Attributes []*string `json:"attributes,omitempty" tf:"attributes,omitempty"`
+
+	AuthURL *string `json:"authUrl,omitempty" tf:"auth_url,omitempty"`
+
+	AuthorizationServerID *string `json:"authorizationServerId,omitempty" tf:"authorization_server_id,omitempty"`
+
+	CentrifyAccount *string `json:"centrifyAccount,omitempty" tf:"centrify_account,omitempty"`
+
+	CentrifyAppID *string `json:"centrifyAppId,omitempty" tf:"centrify_app_id,omitempty"`
+
+	CertsURL *string `json:"certsUrl,omitempty" tf:"certs_url,omitempty"`
+
+	Claims []*string `json:"claims,omitempty" tf:"claims,omitempty"`
+
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	ClientSecret *string `json:"clientSecret,omitempty" tf:"client_secret,omitempty"`
+
+	ConditionalAccessEnabled *bool `json:"conditionalAccessEnabled,omitempty" tf:"conditional_access_enabled,omitempty"`
+
+	DirectoryID *string `json:"directoryId,omitempty" tf:"directory_id,omitempty"`
+
+	EmailAttributeName *string `json:"emailAttributeName,omitempty" tf:"email_attribute_name,omitempty"`
+
+	EmailClaimName *string `json:"emailClaimName,omitempty" tf:"email_claim_name,omitempty"`
+
+	IdpPublicCert *string `json:"idpPublicCert,omitempty" tf:"idp_public_cert,omitempty"`
+
+	IssuerURL *string `json:"issuerUrl,omitempty" tf:"issuer_url,omitempty"`
+
+	OktaAccount *string `json:"oktaAccount,omitempty" tf:"okta_account,omitempty"`
+
+	OneloginAccount *string `json:"oneloginAccount,omitempty" tf:"onelogin_account,omitempty"`
+
+	PingEnvID *string `json:"pingEnvId,omitempty" tf:"ping_env_id,omitempty"`
+
+	PkceEnabled *bool `json:"pkceEnabled,omitempty" tf:"pkce_enabled,omitempty"`
+
+	Scopes []*string `json:"scopes,omitempty" tf:"scopes,omitempty"`
+
+	SignRequest *bool `json:"signRequest,omitempty" tf:"sign_request,omitempty"`
+
+	SsoTargetURL *string `json:"ssoTargetUrl,omitempty" tf:"sso_target_url,omitempty"`
+
+	SupportGroups *bool `json:"supportGroups,omitempty" tf:"support_groups,omitempty"`
+
+	TokenURL *string `json:"tokenUrl,omitempty" tf:"token_url,omitempty"`
+}
+
 type ConfigObservation struct {
+	APIToken *string `json:"apiToken,omitempty" tf:"api_token,omitempty"`
+
+	AppsDomain *string `json:"appsDomain,omitempty" tf:"apps_domain,omitempty"`
+
+	Attributes []*string `json:"attributes,omitempty" tf:"attributes,omitempty"`
+
+	AuthURL *string `json:"authUrl,omitempty" tf:"auth_url,omitempty"`
+
+	AuthorizationServerID *string `json:"authorizationServerId,omitempty" tf:"authorization_server_id,omitempty"`
+
+	CentrifyAccount *string `json:"centrifyAccount,omitempty" tf:"centrify_account,omitempty"`
+
+	CentrifyAppID *string `json:"centrifyAppId,omitempty" tf:"centrify_app_id,omitempty"`
+
+	CertsURL *string `json:"certsUrl,omitempty" tf:"certs_url,omitempty"`
+
+	Claims []*string `json:"claims,omitempty" tf:"claims,omitempty"`
+
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	ClientSecret *string `json:"clientSecret,omitempty" tf:"client_secret,omitempty"`
+
+	ConditionalAccessEnabled *bool `json:"conditionalAccessEnabled,omitempty" tf:"conditional_access_enabled,omitempty"`
+
+	DirectoryID *string `json:"directoryId,omitempty" tf:"directory_id,omitempty"`
+
+	EmailAttributeName *string `json:"emailAttributeName,omitempty" tf:"email_attribute_name,omitempty"`
+
+	EmailClaimName *string `json:"emailClaimName,omitempty" tf:"email_claim_name,omitempty"`
+
+	IdpPublicCert *string `json:"idpPublicCert,omitempty" tf:"idp_public_cert,omitempty"`
+
+	IssuerURL *string `json:"issuerUrl,omitempty" tf:"issuer_url,omitempty"`
+
+	OktaAccount *string `json:"oktaAccount,omitempty" tf:"okta_account,omitempty"`
+
+	OneloginAccount *string `json:"oneloginAccount,omitempty" tf:"onelogin_account,omitempty"`
+
+	PingEnvID *string `json:"pingEnvId,omitempty" tf:"ping_env_id,omitempty"`
+
+	PkceEnabled *bool `json:"pkceEnabled,omitempty" tf:"pkce_enabled,omitempty"`
+
+	RedirectURL *string `json:"redirectUrl,omitempty" tf:"redirect_url,omitempty"`
+
+	Scopes []*string `json:"scopes,omitempty" tf:"scopes,omitempty"`
+
+	SignRequest *bool `json:"signRequest,omitempty" tf:"sign_request,omitempty"`
+
+	SsoTargetURL *string `json:"ssoTargetUrl,omitempty" tf:"sso_target_url,omitempty"`
+
+	SupportGroups *bool `json:"supportGroups,omitempty" tf:"support_groups,omitempty"`
+
+	TokenURL *string `json:"tokenUrl,omitempty" tf:"token_url,omitempty"`
 }
 
 type ConfigParameters struct {
@@ -31,6 +138,9 @@ type ConfigParameters struct {
 	AuthURL *string `json:"authUrl,omitempty" tf:"auth_url,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	AuthorizationServerID *string `json:"authorizationServerId,omitempty" tf:"authorization_server_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
 	CentrifyAccount *string `json:"centrifyAccount,omitempty" tf:"centrify_account,omitempty"`
 
 	// +kubebuilder:validation:Optional
@@ -40,16 +150,25 @@ type ConfigParameters struct {
 	CertsURL *string `json:"certsUrl,omitempty" tf:"certs_url,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	Claims []*string `json:"claims,omitempty" tf:"claims,omitempty"`
+
+	// +kubebuilder:validation:Optional
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	ClientSecret *string `json:"clientSecret,omitempty" tf:"client_secret,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	ConditionalAccessEnabled *bool `json:"conditionalAccessEnabled,omitempty" tf:"conditional_access_enabled,omitempty"`
+
+	// +kubebuilder:validation:Optional
 	DirectoryID *string `json:"directoryId,omitempty" tf:"directory_id,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	EmailAttributeName *string `json:"emailAttributeName,omitempty" tf:"email_attribute_name,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	EmailClaimName *string `json:"emailClaimName,omitempty" tf:"email_claim_name,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	IdpPublicCert *string `json:"idpPublicCert,omitempty" tf:"idp_public_cert,omitempty"`
@@ -64,10 +183,13 @@ type ConfigParameters struct {
 	OneloginAccount *string `json:"oneloginAccount,omitempty" tf:"onelogin_account,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	PingEnvID *string `json:"pingEnvId,omitempty" tf:"ping_env_id,omitempty"`
+
+	// +kubebuilder:validation:Optional
 	PkceEnabled *bool `json:"pkceEnabled,omitempty" tf:"pkce_enabled,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	RedirectURL *string `json:"redirectUrl,omitempty" tf:"redirect_url,omitempty"`
+	Scopes []*string `json:"scopes,omitempty" tf:"scopes,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	SignRequest *bool `json:"signRequest,omitempty" tf:"sign_request,omitempty"`
@@ -82,14 +204,48 @@ type ConfigParameters struct {
 	TokenURL *string `json:"tokenUrl,omitempty" tf:"token_url,omitempty"`
 }
 
+type IdentityProviderInitParameters struct {
+
+	// Provider configuration from the [developer documentation](https://developers.cloudflare.com/access/configuring-identity-providers/).
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+
+	// Friendly name of the Access Identity Provider configuration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Configuration for SCIM settings for a given IDP.
+	ScimConfig []ScimConfigInitParameters `json:"scimConfig,omitempty" tf:"scim_config,omitempty"`
+
+	// The provider type to use. Available values: `azureAD`, `centrify`, `facebook`, `github`, `google`, `google-apps`, `linkedin`, `oidc`, `okta`, `onelogin`, `onetimepin`, `pingone`, `saml`, `yandex`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type IdentityProviderObservation struct {
+
+	// The account identifier to target for the resource. Conflicts with `zone_id`. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Provider configuration from the [developer documentation](https://developers.cloudflare.com/access/configuring-identity-providers/).
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Friendly name of the Access Identity Provider configuration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Configuration for SCIM settings for a given IDP.
+	ScimConfig []ScimConfigObservation `json:"scimConfig,omitempty" tf:"scim_config,omitempty"`
+
+	// The provider type to use. Available values: `azureAD`, `centrify`, `facebook`, `github`, `google`, `google-apps`, `linkedin`, `oidc`, `okta`, `onelogin`, `onetimepin`, `pingone`, `saml`, `yandex`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The zone identifier to target for the resource. Conflicts with `account_id`. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type IdentityProviderParameters struct {
 
 	// The account identifier to target for the resource. Conflicts with `zone_id`. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -106,15 +262,19 @@ type IdentityProviderParameters struct {
 	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// Friendly name of the Access Identity Provider configuration.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The provider type to use. Available values: `centrify`, `facebook`, `google-apps`, `oidc`, `github`, `google`, `saml`, `linkedin`, `azureAD`, `okta`, `onetimepin`, `onelogin`, `yandex`.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// Configuration for SCIM settings for a given IDP.
+	// +kubebuilder:validation:Optional
+	ScimConfig []ScimConfigParameters `json:"scimConfig,omitempty" tf:"scim_config,omitempty"`
+
+	// The provider type to use. Available values: `azureAD`, `centrify`, `facebook`, `github`, `google`, `google-apps`, `linkedin`, `oidc`, `okta`, `onelogin`, `onetimepin`, `pingone`, `saml`, `yandex`.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The zone identifier to target for the resource. Conflicts with `account_id`. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -127,10 +287,60 @@ type IdentityProviderParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type ScimConfigInitParameters struct {
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	GroupMemberDeprovision *bool `json:"groupMemberDeprovision,omitempty" tf:"group_member_deprovision,omitempty"`
+
+	SeatDeprovision *bool `json:"seatDeprovision,omitempty" tf:"seat_deprovision,omitempty"`
+
+	UserDeprovision *bool `json:"userDeprovision,omitempty" tf:"user_deprovision,omitempty"`
+}
+
+type ScimConfigObservation struct {
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	GroupMemberDeprovision *bool `json:"groupMemberDeprovision,omitempty" tf:"group_member_deprovision,omitempty"`
+
+	SeatDeprovision *bool `json:"seatDeprovision,omitempty" tf:"seat_deprovision,omitempty"`
+
+	UserDeprovision *bool `json:"userDeprovision,omitempty" tf:"user_deprovision,omitempty"`
+}
+
+type ScimConfigParameters struct {
+
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	GroupMemberDeprovision *bool `json:"groupMemberDeprovision,omitempty" tf:"group_member_deprovision,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	SeatDeprovision *bool `json:"seatDeprovision,omitempty" tf:"seat_deprovision,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	SecretSecretRef *v1.SecretKeySelector `json:"secretSecretRef,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	UserDeprovision *bool `json:"userDeprovision,omitempty" tf:"user_deprovision,omitempty"`
+}
+
 // IdentityProviderSpec defines the desired state of IdentityProvider
 type IdentityProviderSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     IdentityProviderParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider IdentityProviderInitParameters `json:"initProvider,omitempty"`
 }
 
 // IdentityProviderStatus defines the observed state of IdentityProvider.
@@ -151,8 +361,10 @@ type IdentityProviderStatus struct {
 type IdentityProvider struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              IdentityProviderSpec   `json:"spec"`
-	Status            IdentityProviderStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
+	Spec   IdentityProviderSpec   `json:"spec"`
+	Status IdentityProviderStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

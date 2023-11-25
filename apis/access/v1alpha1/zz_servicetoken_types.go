@@ -13,21 +13,48 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ServiceTokenInitParameters struct {
+
+	// Length of time the service token is valid for. Available values: `8760h`, `17520h`, `43800h`, `87600h`, `forever`.
+	Duration *string `json:"duration,omitempty" tf:"duration,omitempty"`
+
+	// Defaults to `0`.
+	MinDaysForRenewal *float64 `json:"minDaysForRenewal,omitempty" tf:"min_days_for_renewal,omitempty"`
+
+	// Friendly name of the token's intent.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type ServiceTokenObservation struct {
+
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
 	// UUID client ID associated with the Service Token. **Modifying this attribute will force creation of a new resource.**
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// Length of time the service token is valid for. Available values: `8760h`, `17520h`, `43800h`, `87600h`, `forever`.
+	Duration *string `json:"duration,omitempty" tf:"duration,omitempty"`
 
 	// Date when the token expires.
 	ExpiresAt *string `json:"expiresAt,omitempty" tf:"expires_at,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Defaults to `0`.
+	MinDaysForRenewal *float64 `json:"minDaysForRenewal,omitempty" tf:"min_days_for_renewal,omitempty"`
+
+	// Friendly name of the token's intent.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type ServiceTokenParameters struct {
 
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -39,16 +66,20 @@ type ServiceTokenParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Length of time the service token is valid for. Available values: `8760h`, `17520h`, `43800h`, `87600h`, `forever`.
+	// +kubebuilder:validation:Optional
+	Duration *string `json:"duration,omitempty" tf:"duration,omitempty"`
+
 	// Defaults to `0`.
 	// +kubebuilder:validation:Optional
 	MinDaysForRenewal *float64 `json:"minDaysForRenewal,omitempty" tf:"min_days_for_renewal,omitempty"`
 
 	// Friendly name of the token's intent.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
 	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 
@@ -65,6 +96,18 @@ type ServiceTokenParameters struct {
 type ServiceTokenSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ServiceTokenParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ServiceTokenInitParameters `json:"initProvider,omitempty"`
 }
 
 // ServiceTokenStatus defines the observed state of ServiceToken.
@@ -85,8 +128,9 @@ type ServiceTokenStatus struct {
 type ServiceToken struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ServiceTokenSpec   `json:"spec"`
-	Status            ServiceTokenStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	Spec   ServiceTokenSpec   `json:"spec"`
+	Status ServiceTokenStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

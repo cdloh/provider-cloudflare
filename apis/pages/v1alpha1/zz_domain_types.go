@@ -13,8 +13,24 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DomainInitParameters struct {
+
+	// Custom domain. **Modifying this attribute will force creation of a new resource.**
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+}
+
 type DomainObservation struct {
+
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Custom domain. **Modifying this attribute will force creation of a new resource.**
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Name of the Pages Project. **Modifying this attribute will force creation of a new resource.**
+	ProjectName *string `json:"projectName,omitempty" tf:"project_name,omitempty"`
 
 	// Status of the custom domain.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
@@ -23,7 +39,7 @@ type DomainObservation struct {
 type DomainParameters struct {
 
 	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
-	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	// +crossplane:generate:reference:type=github.com/clementblaise/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
 	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
@@ -36,8 +52,8 @@ type DomainParameters struct {
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
 	// Custom domain. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Domain *string `json:"domain" tf:"domain,omitempty"`
+	// +kubebuilder:validation:Optional
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
 
 	// Name of the Pages Project. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=Project
@@ -57,6 +73,18 @@ type DomainParameters struct {
 type DomainSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DomainParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DomainInitParameters `json:"initProvider,omitempty"`
 }
 
 // DomainStatus defines the observed state of Domain.
@@ -77,8 +105,9 @@ type DomainStatus struct {
 type Domain struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DomainSpec   `json:"spec"`
-	Status            DomainStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.domain) || has(self.initProvider.domain)",message="domain is a required parameter"
+	Spec   DomainSpec   `json:"spec"`
+	Status DomainStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

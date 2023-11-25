@@ -13,210 +13,689 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type InitialSettingsInitParameters struct {
+}
+
 type InitialSettingsObservation struct {
+
+	// (default: on)
 	AlwaysOnline *string `json:"alwaysOnline,omitempty" tf:"always_online,omitempty"`
 
+	// (default: off)
 	AlwaysUseHTTPS *string `json:"alwaysUseHttps,omitempty" tf:"always_use_https,omitempty"`
 
+	// (default value depends on the zone's plan level)
 	AutomaticHTTPSRewrites *string `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
 
+	// (default: off)
 	BinaryAst *string `json:"binaryAst,omitempty" tf:"binary_ast,omitempty"`
 
+	// (default: off)
 	Brotli *string `json:"brotli,omitempty" tf:"brotli,omitempty"`
 
+	// (default: 14400)
 	BrowserCacheTTL *float64 `json:"browserCacheTtl,omitempty" tf:"browser_cache_ttl,omitempty"`
 
+	// (default: on)
 	BrowserCheck *string `json:"browserCheck,omitempty" tf:"browser_check,omitempty"`
 
+	// Allowed values: "aggressive" (default) - delivers a different resource each time the query string changes, "basic" - delivers resources from cache when there is no query string, "simplified" - delivers the same resource to everyone independent of the query string.
 	CacheLevel *string `json:"cacheLevel,omitempty" tf:"cache_level,omitempty"`
 
+	// (default: 1800)
 	ChallengeTTL *float64 `json:"challengeTtl,omitempty" tf:"challenge_ttl,omitempty"`
 
+	// An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.
 	Ciphers []*string `json:"ciphers,omitempty" tf:"ciphers,omitempty"`
 
+	// Allowed values: "flatten_at_root" (default), "flatten_all", "flatten_none".
 	CnameFlattening *string `json:"cnameFlattening,omitempty" tf:"cname_flattening,omitempty"`
 
+	// (default: off)
 	DevelopmentMode *string `json:"developmentMode,omitempty" tf:"development_mode,omitempty"`
 
+	// (default: off)
 	EarlyHints *string `json:"earlyHints,omitempty" tf:"early_hints,omitempty"`
 
+	// (default: on)
 	EmailObfuscation *string `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
 
+	// (default: off)
 	FilterLogsToCloudflare *string `json:"filterLogsToCloudflare,omitempty" tf:"filter_logs_to_cloudflare,omitempty"`
 
+	Fonts *string `json:"fonts,omitempty" tf:"fonts,omitempty"`
+
+	// Allowed values: "on", "off" (default), "custom".
 	H2Prioritization *string `json:"h2Prioritization,omitempty" tf:"h2_prioritization,omitempty"`
 
+	// (default: off)
 	HotlinkProtection *string `json:"hotlinkProtection,omitempty" tf:"hotlink_protection,omitempty"`
 
+	// (default: off)
 	Http2 *string `json:"http2,omitempty" tf:"http2,omitempty"`
 
+	// (default: off)
 	Http3 *string `json:"http3,omitempty" tf:"http3,omitempty"`
 
+	// (default: on)
 	IPGeolocation *string `json:"ipGeolocation,omitempty" tf:"ip_geolocation,omitempty"`
 
+	// (default: off)
 	IPv6 *string `json:"ipv6,omitempty" tf:"ipv6,omitempty"`
 
+	// Allowed values: "on", "off" (default), "open".
 	ImageResizing *string `json:"imageResizing,omitempty" tf:"image_resizing,omitempty"`
 
+	// (default: off)
 	LogToCloudflare *string `json:"logToCloudflare,omitempty" tf:"log_to_cloudflare,omitempty"`
 
+	// (default: 100)
 	MaxUpload *float64 `json:"maxUpload,omitempty" tf:"max_upload,omitempty"`
 
+	// Allowed values: "1.0" (default), "1.1", "1.2", "1.3".
 	MinTLSVersion *string `json:"minTlsVersion,omitempty" tf:"min_tls_version,omitempty"`
 
 	Minify []MinifyObservation `json:"minify,omitempty" tf:"minify,omitempty"`
 
+	// (default: off)
 	Mirage *string `json:"mirage,omitempty" tf:"mirage,omitempty"`
 
 	MobileRedirect []MobileRedirectObservation `json:"mobileRedirect,omitempty" tf:"mobile_redirect,omitempty"`
 
+	// (default value depends on the zone's plan level)
 	OpportunisticEncryption *string `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
 
+	// (default: off)
 	OpportunisticOnion *string `json:"opportunisticOnion,omitempty" tf:"opportunistic_onion,omitempty"`
 
+	// (default: off)
 	OrangeToOrange *string `json:"orangeToOrange,omitempty" tf:"orange_to_orange,omitempty"`
 
+	// (default: off)
 	OriginErrorPagePassThru *string `json:"originErrorPagePassThru,omitempty" tf:"origin_error_page_pass_thru,omitempty"`
 
+	// Allowed values: "1" (default on Enterprise), "2" (default)
 	OriginMaxHTTPVersion *string `json:"originMaxHttpVersion,omitempty" tf:"origin_max_http_version,omitempty"`
 
+	// Allowed values: "off" (default), "lossless", "lossy".
 	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
 
+	// (default: off)
 	PrefetchPreload *string `json:"prefetchPreload,omitempty" tf:"prefetch_preload,omitempty"`
 
+	// (default: on)
 	PrivacyPass *string `json:"privacyPass,omitempty" tf:"privacy_pass,omitempty"`
 
+	// (default: "100")
 	ProxyReadTimeout *string `json:"proxyReadTimeout,omitempty" tf:"proxy_read_timeout,omitempty"`
 
+	// Allowed values: "off" (default), "add_header", "overwrite_header".
 	PseudoIPv4 *string `json:"pseudoIpv4,omitempty" tf:"pseudo_ipv4,omitempty"`
 
+	// (default: off)
 	ResponseBuffering *string `json:"responseBuffering,omitempty" tf:"response_buffering,omitempty"`
 
+	// (default: off)
 	RocketLoader *string `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
 
+	// Allowed values: "off" (default), "flexible", "full", "strict", "origin_pull".
 	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
 
 	SecurityHeader []SecurityHeaderObservation `json:"securityHeader,omitempty" tf:"security_header,omitempty"`
 
+	// Allowed values: "off" (Enterprise only), "essentially_off", "low", "medium" (default), "high", "under_attack".
 	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
 
+	// (default: on)
 	ServerSideExclude *string `json:"serverSideExclude,omitempty" tf:"server_side_exclude,omitempty"`
 
+	// (default: off)
 	SortQueryStringForCache *string `json:"sortQueryStringForCache,omitempty" tf:"sort_query_string_for_cache,omitempty"`
 
 	TLS12Only *string `json:"tls12Only,omitempty" tf:"tls_1_2_only,omitempty"`
 
+	// Allowed values: "off" (default), "on", "zrt".
 	TLS13 *string `json:"tls13,omitempty" tf:"tls_1_3,omitempty"`
 
+	// (default: on)
 	TLSClientAuth *string `json:"tlsClientAuth,omitempty" tf:"tls_client_auth,omitempty"`
 
+	// (default: off)
 	TrueClientIPHeader *string `json:"trueClientIpHeader,omitempty" tf:"true_client_ip_header,omitempty"`
 
+	// (default: on)
 	UniversalSSL *string `json:"universalSsl,omitempty" tf:"universal_ssl,omitempty"`
 
+	// (default: off)
 	VisitorIP *string `json:"visitorIp,omitempty" tf:"visitor_ip,omitempty"`
 
+	// (default: off)
 	Waf *string `json:"waf,omitempty" tf:"waf,omitempty"`
 
+	// (default: off). Note that the value specified will be ignored unless polish is turned on (i.e. is "lossless" or "lossy")
 	Webp *string `json:"webp,omitempty" tf:"webp,omitempty"`
 
+	// (default: off)
 	Websockets *string `json:"websockets,omitempty" tf:"websockets,omitempty"`
 
+	// (default: off)
 	ZeroRtt *string `json:"zeroRtt,omitempty" tf:"zero_rtt,omitempty"`
 }
 
 type InitialSettingsParameters struct {
 }
 
+type MinifyInitParameters struct {
+}
+
 type MinifyObservation struct {
+
+	// "on"/"off"
 	CSS *string `json:"css,omitempty" tf:"css,omitempty"`
 
+	// "on"/"off"
 	HTML *string `json:"html,omitempty" tf:"html,omitempty"`
 
+	// "on"/"off"
 	Js *string `json:"js,omitempty" tf:"js,omitempty"`
 }
 
 type MinifyParameters struct {
 }
 
+type MobileRedirectInitParameters struct {
+}
+
 type MobileRedirectObservation struct {
+
+	// String value
 	MobileSubdomain *string `json:"mobileSubdomain,omitempty" tf:"mobile_subdomain,omitempty"`
 
+	// "on"/"off"
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
+	// true/false
 	StripURI *bool `json:"stripUri,omitempty" tf:"strip_uri,omitempty"`
 }
 
 type MobileRedirectParameters struct {
 }
 
+type SecurityHeaderInitParameters struct {
+}
+
 type SecurityHeaderObservation struct {
+
+	// true/false
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// true/false
 	IncludeSubdomains *bool `json:"includeSubdomains,omitempty" tf:"include_subdomains,omitempty"`
 
+	// Integer
 	MaxAge *float64 `json:"maxAge,omitempty" tf:"max_age,omitempty"`
 
+	// true/false
 	Nosniff *bool `json:"nosniff,omitempty" tf:"nosniff,omitempty"`
 
+	// true/false
 	Preload *bool `json:"preload,omitempty" tf:"preload,omitempty"`
 }
 
 type SecurityHeaderParameters struct {
 }
 
+type SettingsInitParameters struct {
+
+	// (default: on)
+	AlwaysOnline *string `json:"alwaysOnline,omitempty" tf:"always_online,omitempty"`
+
+	// (default: off)
+	AlwaysUseHTTPS *string `json:"alwaysUseHttps,omitempty" tf:"always_use_https,omitempty"`
+
+	// (default value depends on the zone's plan level)
+	AutomaticHTTPSRewrites *string `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
+
+	// (default: off)
+	BinaryAst *string `json:"binaryAst,omitempty" tf:"binary_ast,omitempty"`
+
+	// (default: off)
+	Brotli *string `json:"brotli,omitempty" tf:"brotli,omitempty"`
+
+	// (default: 14400)
+	BrowserCacheTTL *float64 `json:"browserCacheTtl,omitempty" tf:"browser_cache_ttl,omitempty"`
+
+	// (default: on)
+	BrowserCheck *string `json:"browserCheck,omitempty" tf:"browser_check,omitempty"`
+
+	// Allowed values: "aggressive" (default) - delivers a different resource each time the query string changes, "basic" - delivers resources from cache when there is no query string, "simplified" - delivers the same resource to everyone independent of the query string.
+	CacheLevel *string `json:"cacheLevel,omitempty" tf:"cache_level,omitempty"`
+
+	// (default: 1800)
+	ChallengeTTL *float64 `json:"challengeTtl,omitempty" tf:"challenge_ttl,omitempty"`
+
+	// An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.
+	Ciphers []*string `json:"ciphers,omitempty" tf:"ciphers,omitempty"`
+
+	// Allowed values: "flatten_at_root" (default), "flatten_all", "flatten_none".
+	CnameFlattening *string `json:"cnameFlattening,omitempty" tf:"cname_flattening,omitempty"`
+
+	// (default: off)
+	DevelopmentMode *string `json:"developmentMode,omitempty" tf:"development_mode,omitempty"`
+
+	// (default: off)
+	EarlyHints *string `json:"earlyHints,omitempty" tf:"early_hints,omitempty"`
+
+	// (default: on)
+	EmailObfuscation *string `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
+
+	// (default: off)
+	FilterLogsToCloudflare *string `json:"filterLogsToCloudflare,omitempty" tf:"filter_logs_to_cloudflare,omitempty"`
+
+	Fonts *string `json:"fonts,omitempty" tf:"fonts,omitempty"`
+
+	// Allowed values: "on", "off" (default), "custom".
+	H2Prioritization *string `json:"h2Prioritization,omitempty" tf:"h2_prioritization,omitempty"`
+
+	// (default: off)
+	HotlinkProtection *string `json:"hotlinkProtection,omitempty" tf:"hotlink_protection,omitempty"`
+
+	// (default: off)
+	Http2 *string `json:"http2,omitempty" tf:"http2,omitempty"`
+
+	// (default: off)
+	Http3 *string `json:"http3,omitempty" tf:"http3,omitempty"`
+
+	// (default: on)
+	IPGeolocation *string `json:"ipGeolocation,omitempty" tf:"ip_geolocation,omitempty"`
+
+	// (default: off)
+	IPv6 *string `json:"ipv6,omitempty" tf:"ipv6,omitempty"`
+
+	// Allowed values: "on", "off" (default), "open".
+	ImageResizing *string `json:"imageResizing,omitempty" tf:"image_resizing,omitempty"`
+
+	// (default: off)
+	LogToCloudflare *string `json:"logToCloudflare,omitempty" tf:"log_to_cloudflare,omitempty"`
+
+	// (default: 100)
+	MaxUpload *float64 `json:"maxUpload,omitempty" tf:"max_upload,omitempty"`
+
+	// Allowed values: "1.0" (default), "1.1", "1.2", "1.3".
+	MinTLSVersion *string `json:"minTlsVersion,omitempty" tf:"min_tls_version,omitempty"`
+
+	Minify []SettingsMinifyInitParameters `json:"minify,omitempty" tf:"minify,omitempty"`
+
+	// (default: off)
+	Mirage *string `json:"mirage,omitempty" tf:"mirage,omitempty"`
+
+	MobileRedirect []SettingsMobileRedirectInitParameters `json:"mobileRedirect,omitempty" tf:"mobile_redirect,omitempty"`
+
+	// (default value depends on the zone's plan level)
+	OpportunisticEncryption *string `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
+
+	// (default: off)
+	OpportunisticOnion *string `json:"opportunisticOnion,omitempty" tf:"opportunistic_onion,omitempty"`
+
+	// (default: off)
+	OrangeToOrange *string `json:"orangeToOrange,omitempty" tf:"orange_to_orange,omitempty"`
+
+	// (default: off)
+	OriginErrorPagePassThru *string `json:"originErrorPagePassThru,omitempty" tf:"origin_error_page_pass_thru,omitempty"`
+
+	// Allowed values: "1" (default on Enterprise), "2" (default)
+	OriginMaxHTTPVersion *string `json:"originMaxHttpVersion,omitempty" tf:"origin_max_http_version,omitempty"`
+
+	// Allowed values: "off" (default), "lossless", "lossy".
+	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
+
+	// (default: off)
+	PrefetchPreload *string `json:"prefetchPreload,omitempty" tf:"prefetch_preload,omitempty"`
+
+	// (default: on)
+	PrivacyPass *string `json:"privacyPass,omitempty" tf:"privacy_pass,omitempty"`
+
+	// (default: "100")
+	ProxyReadTimeout *string `json:"proxyReadTimeout,omitempty" tf:"proxy_read_timeout,omitempty"`
+
+	// Allowed values: "off" (default), "add_header", "overwrite_header".
+	PseudoIPv4 *string `json:"pseudoIpv4,omitempty" tf:"pseudo_ipv4,omitempty"`
+
+	// (default: off)
+	ResponseBuffering *string `json:"responseBuffering,omitempty" tf:"response_buffering,omitempty"`
+
+	// (default: off)
+	RocketLoader *string `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
+
+	// Allowed values: "off" (default), "flexible", "full", "strict", "origin_pull".
+	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
+
+	SecurityHeader []SettingsSecurityHeaderInitParameters `json:"securityHeader,omitempty" tf:"security_header,omitempty"`
+
+	// Allowed values: "off" (Enterprise only), "essentially_off", "low", "medium" (default), "high", "under_attack".
+	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
+
+	// (default: on)
+	ServerSideExclude *string `json:"serverSideExclude,omitempty" tf:"server_side_exclude,omitempty"`
+
+	// (default: off)
+	SortQueryStringForCache *string `json:"sortQueryStringForCache,omitempty" tf:"sort_query_string_for_cache,omitempty"`
+
+	TLS12Only *string `json:"tls12Only,omitempty" tf:"tls_1_2_only,omitempty"`
+
+	// Allowed values: "off" (default), "on", "zrt".
+	TLS13 *string `json:"tls13,omitempty" tf:"tls_1_3,omitempty"`
+
+	// (default: on)
+	TLSClientAuth *string `json:"tlsClientAuth,omitempty" tf:"tls_client_auth,omitempty"`
+
+	// (default: off)
+	TrueClientIPHeader *string `json:"trueClientIpHeader,omitempty" tf:"true_client_ip_header,omitempty"`
+
+	// (default: on)
+	UniversalSSL *string `json:"universalSsl,omitempty" tf:"universal_ssl,omitempty"`
+
+	// (default: off)
+	VisitorIP *string `json:"visitorIp,omitempty" tf:"visitor_ip,omitempty"`
+
+	// (default: off)
+	Waf *string `json:"waf,omitempty" tf:"waf,omitempty"`
+
+	// (default: off). Note that the value specified will be ignored unless polish is turned on (i.e. is "lossless" or "lossy")
+	Webp *string `json:"webp,omitempty" tf:"webp,omitempty"`
+
+	// (default: off)
+	Websockets *string `json:"websockets,omitempty" tf:"websockets,omitempty"`
+
+	// (default: off)
+	ZeroRtt *string `json:"zeroRtt,omitempty" tf:"zero_rtt,omitempty"`
+}
+
+type SettingsMinifyInitParameters struct {
+
+	// "on"/"off"
+	CSS *string `json:"css,omitempty" tf:"css,omitempty"`
+
+	// "on"/"off"
+	HTML *string `json:"html,omitempty" tf:"html,omitempty"`
+
+	// "on"/"off"
+	Js *string `json:"js,omitempty" tf:"js,omitempty"`
+}
+
 type SettingsMinifyObservation struct {
+
+	// "on"/"off"
+	CSS *string `json:"css,omitempty" tf:"css,omitempty"`
+
+	// "on"/"off"
+	HTML *string `json:"html,omitempty" tf:"html,omitempty"`
+
+	// "on"/"off"
+	Js *string `json:"js,omitempty" tf:"js,omitempty"`
 }
 
 type SettingsMinifyParameters struct {
 
-	// +kubebuilder:validation:Required
-	CSS *string `json:"css" tf:"css,omitempty"`
+	// "on"/"off"
+	// +kubebuilder:validation:Optional
+	CSS *string `json:"css,omitempty" tf:"css,omitempty"`
 
-	// +kubebuilder:validation:Required
-	HTML *string `json:"html" tf:"html,omitempty"`
+	// "on"/"off"
+	// +kubebuilder:validation:Optional
+	HTML *string `json:"html,omitempty" tf:"html,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Js *string `json:"js" tf:"js,omitempty"`
+	// "on"/"off"
+	// +kubebuilder:validation:Optional
+	Js *string `json:"js,omitempty" tf:"js,omitempty"`
+}
+
+type SettingsMobileRedirectInitParameters struct {
+
+	// String value
+	MobileSubdomain *string `json:"mobileSubdomain,omitempty" tf:"mobile_subdomain,omitempty"`
+
+	// "on"/"off"
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// true/false
+	StripURI *bool `json:"stripUri,omitempty" tf:"strip_uri,omitempty"`
 }
 
 type SettingsMobileRedirectObservation struct {
+
+	// String value
+	MobileSubdomain *string `json:"mobileSubdomain,omitempty" tf:"mobile_subdomain,omitempty"`
+
+	// "on"/"off"
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// true/false
+	StripURI *bool `json:"stripUri,omitempty" tf:"strip_uri,omitempty"`
 }
 
 type SettingsMobileRedirectParameters struct {
 
-	// +kubebuilder:validation:Required
-	MobileSubdomain *string `json:"mobileSubdomain" tf:"mobile_subdomain,omitempty"`
+	// String value
+	// +kubebuilder:validation:Optional
+	MobileSubdomain *string `json:"mobileSubdomain,omitempty" tf:"mobile_subdomain,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Status *string `json:"status" tf:"status,omitempty"`
+	// "on"/"off"
+	// +kubebuilder:validation:Optional
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
-	// +kubebuilder:validation:Required
-	StripURI *bool `json:"stripUri" tf:"strip_uri,omitempty"`
+	// true/false
+	// +kubebuilder:validation:Optional
+	StripURI *bool `json:"stripUri,omitempty" tf:"strip_uri,omitempty"`
 }
 
 type SettingsObservation struct {
+
+	// (default: on)
+	AlwaysOnline *string `json:"alwaysOnline,omitempty" tf:"always_online,omitempty"`
+
+	// (default: off)
+	AlwaysUseHTTPS *string `json:"alwaysUseHttps,omitempty" tf:"always_use_https,omitempty"`
+
+	// (default value depends on the zone's plan level)
+	AutomaticHTTPSRewrites *string `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
+
+	// (default: off)
+	BinaryAst *string `json:"binaryAst,omitempty" tf:"binary_ast,omitempty"`
+
+	// (default: off)
+	Brotli *string `json:"brotli,omitempty" tf:"brotli,omitempty"`
+
+	// (default: 14400)
+	BrowserCacheTTL *float64 `json:"browserCacheTtl,omitempty" tf:"browser_cache_ttl,omitempty"`
+
+	// (default: on)
+	BrowserCheck *string `json:"browserCheck,omitempty" tf:"browser_check,omitempty"`
+
+	// Allowed values: "aggressive" (default) - delivers a different resource each time the query string changes, "basic" - delivers resources from cache when there is no query string, "simplified" - delivers the same resource to everyone independent of the query string.
+	CacheLevel *string `json:"cacheLevel,omitempty" tf:"cache_level,omitempty"`
+
+	// (default: 1800)
+	ChallengeTTL *float64 `json:"challengeTtl,omitempty" tf:"challenge_ttl,omitempty"`
+
+	// An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.
+	Ciphers []*string `json:"ciphers,omitempty" tf:"ciphers,omitempty"`
+
+	// Allowed values: "flatten_at_root" (default), "flatten_all", "flatten_none".
+	CnameFlattening *string `json:"cnameFlattening,omitempty" tf:"cname_flattening,omitempty"`
+
+	// (default: off)
+	DevelopmentMode *string `json:"developmentMode,omitempty" tf:"development_mode,omitempty"`
+
+	// (default: off)
+	EarlyHints *string `json:"earlyHints,omitempty" tf:"early_hints,omitempty"`
+
+	// (default: on)
+	EmailObfuscation *string `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
+
+	// (default: off)
+	FilterLogsToCloudflare *string `json:"filterLogsToCloudflare,omitempty" tf:"filter_logs_to_cloudflare,omitempty"`
+
+	Fonts *string `json:"fonts,omitempty" tf:"fonts,omitempty"`
+
+	// Allowed values: "on", "off" (default), "custom".
+	H2Prioritization *string `json:"h2Prioritization,omitempty" tf:"h2_prioritization,omitempty"`
+
+	// (default: off)
+	HotlinkProtection *string `json:"hotlinkProtection,omitempty" tf:"hotlink_protection,omitempty"`
+
+	// (default: off)
+	Http2 *string `json:"http2,omitempty" tf:"http2,omitempty"`
+
+	// (default: off)
+	Http3 *string `json:"http3,omitempty" tf:"http3,omitempty"`
+
+	// (default: on)
+	IPGeolocation *string `json:"ipGeolocation,omitempty" tf:"ip_geolocation,omitempty"`
+
+	// (default: off)
+	IPv6 *string `json:"ipv6,omitempty" tf:"ipv6,omitempty"`
+
+	// Allowed values: "on", "off" (default), "open".
+	ImageResizing *string `json:"imageResizing,omitempty" tf:"image_resizing,omitempty"`
+
+	// (default: off)
+	LogToCloudflare *string `json:"logToCloudflare,omitempty" tf:"log_to_cloudflare,omitempty"`
+
+	// (default: 100)
+	MaxUpload *float64 `json:"maxUpload,omitempty" tf:"max_upload,omitempty"`
+
+	// Allowed values: "1.0" (default), "1.1", "1.2", "1.3".
+	MinTLSVersion *string `json:"minTlsVersion,omitempty" tf:"min_tls_version,omitempty"`
+
+	Minify []SettingsMinifyObservation `json:"minify,omitempty" tf:"minify,omitempty"`
+
+	// (default: off)
+	Mirage *string `json:"mirage,omitempty" tf:"mirage,omitempty"`
+
+	MobileRedirect []SettingsMobileRedirectObservation `json:"mobileRedirect,omitempty" tf:"mobile_redirect,omitempty"`
+
+	// (default value depends on the zone's plan level)
+	OpportunisticEncryption *string `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
+
+	// (default: off)
+	OpportunisticOnion *string `json:"opportunisticOnion,omitempty" tf:"opportunistic_onion,omitempty"`
+
+	// (default: off)
+	OrangeToOrange *string `json:"orangeToOrange,omitempty" tf:"orange_to_orange,omitempty"`
+
+	// (default: off)
+	OriginErrorPagePassThru *string `json:"originErrorPagePassThru,omitempty" tf:"origin_error_page_pass_thru,omitempty"`
+
+	// Allowed values: "1" (default on Enterprise), "2" (default)
+	OriginMaxHTTPVersion *string `json:"originMaxHttpVersion,omitempty" tf:"origin_max_http_version,omitempty"`
+
+	// Allowed values: "off" (default), "lossless", "lossy".
+	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
+
+	// (default: off)
+	PrefetchPreload *string `json:"prefetchPreload,omitempty" tf:"prefetch_preload,omitempty"`
+
+	// (default: on)
+	PrivacyPass *string `json:"privacyPass,omitempty" tf:"privacy_pass,omitempty"`
+
+	// (default: "100")
+	ProxyReadTimeout *string `json:"proxyReadTimeout,omitempty" tf:"proxy_read_timeout,omitempty"`
+
+	// Allowed values: "off" (default), "add_header", "overwrite_header".
+	PseudoIPv4 *string `json:"pseudoIpv4,omitempty" tf:"pseudo_ipv4,omitempty"`
+
+	// (default: off)
+	ResponseBuffering *string `json:"responseBuffering,omitempty" tf:"response_buffering,omitempty"`
+
+	// (default: off)
+	RocketLoader *string `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
+
+	// Allowed values: "off" (default), "flexible", "full", "strict", "origin_pull".
+	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
+
+	SecurityHeader []SettingsSecurityHeaderObservation `json:"securityHeader,omitempty" tf:"security_header,omitempty"`
+
+	// Allowed values: "off" (Enterprise only), "essentially_off", "low", "medium" (default), "high", "under_attack".
+	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
+
+	// (default: on)
+	ServerSideExclude *string `json:"serverSideExclude,omitempty" tf:"server_side_exclude,omitempty"`
+
+	// (default: off)
+	SortQueryStringForCache *string `json:"sortQueryStringForCache,omitempty" tf:"sort_query_string_for_cache,omitempty"`
+
+	TLS12Only *string `json:"tls12Only,omitempty" tf:"tls_1_2_only,omitempty"`
+
+	// Allowed values: "off" (default), "on", "zrt".
+	TLS13 *string `json:"tls13,omitempty" tf:"tls_1_3,omitempty"`
+
+	// (default: on)
+	TLSClientAuth *string `json:"tlsClientAuth,omitempty" tf:"tls_client_auth,omitempty"`
+
+	// (default: off)
+	TrueClientIPHeader *string `json:"trueClientIpHeader,omitempty" tf:"true_client_ip_header,omitempty"`
+
+	// (default: on)
+	UniversalSSL *string `json:"universalSsl,omitempty" tf:"universal_ssl,omitempty"`
+
+	// (default: off)
+	VisitorIP *string `json:"visitorIp,omitempty" tf:"visitor_ip,omitempty"`
+
+	// (default: off)
+	Waf *string `json:"waf,omitempty" tf:"waf,omitempty"`
+
+	// (default: off). Note that the value specified will be ignored unless polish is turned on (i.e. is "lossless" or "lossy")
+	Webp *string `json:"webp,omitempty" tf:"webp,omitempty"`
+
+	// (default: off)
+	Websockets *string `json:"websockets,omitempty" tf:"websockets,omitempty"`
+
+	// (default: off)
+	ZeroRtt *string `json:"zeroRtt,omitempty" tf:"zero_rtt,omitempty"`
+}
+
+type SettingsOverrideInitParameters struct {
+
+	// Settings overrides that will be applied to the zone. If a setting is not specified the existing setting will be used. For a full list of available settings see below.
+	Settings []SettingsInitParameters `json:"settings,omitempty" tf:"settings,omitempty"`
 }
 
 type SettingsOverrideObservation struct {
+
+	// The zone ID.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Settings present in the zone at the time the resource is created. This will be used to restore the original settings when this resource is destroyed. Shares the same schema as the settings attribute (Above).
 	InitialSettings []InitialSettingsObservation `json:"initialSettings,omitempty" tf:"initial_settings,omitempty"`
 
+	// Time when this resource was created and the initial_settings were set.
 	InitialSettingsReadAt *string `json:"initialSettingsReadAt,omitempty" tf:"initial_settings_read_at,omitempty"`
 
+	// Which of the current settings are not able to be set by the user. Which settings these are is determined by plan level and user permissions.
 	ReadonlySettings []*string `json:"readonlySettings,omitempty" tf:"readonly_settings,omitempty"`
 
+	// Settings overrides that will be applied to the zone. If a setting is not specified the existing setting will be used. For a full list of available settings see below.
+	Settings []SettingsObservation `json:"settings,omitempty" tf:"settings,omitempty"`
+
+	// The DNS zone ID to which apply settings.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// hosted zone or a CNAME setup.
 	ZoneStatus *string `json:"zoneStatus,omitempty" tf:"zone_status,omitempty"`
 
+	// . Status of the zone. Valid values: active, pending, initializing, moved, deleted, deactivated.
 	ZoneType *string `json:"zoneType,omitempty" tf:"zone_type,omitempty"`
 }
 
 type SettingsOverrideParameters struct {
 
+	// Settings overrides that will be applied to the zone. If a setting is not specified the existing setting will be used. For a full list of available settings see below.
 	// +kubebuilder:validation:Optional
 	Settings []SettingsParameters `json:"settings,omitempty" tf:"settings,omitempty"`
 
+	// The DNS zone ID to which apply settings.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=Zone
 	// +kubebuilder:validation:Optional
@@ -233,189 +712,281 @@ type SettingsOverrideParameters struct {
 
 type SettingsParameters struct {
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	AlwaysOnline *string `json:"alwaysOnline,omitempty" tf:"always_online,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	AlwaysUseHTTPS *string `json:"alwaysUseHttps,omitempty" tf:"always_use_https,omitempty"`
 
+	// (default value depends on the zone's plan level)
 	// +kubebuilder:validation:Optional
 	AutomaticHTTPSRewrites *string `json:"automaticHttpsRewrites,omitempty" tf:"automatic_https_rewrites,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	BinaryAst *string `json:"binaryAst,omitempty" tf:"binary_ast,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	Brotli *string `json:"brotli,omitempty" tf:"brotli,omitempty"`
 
+	// (default: 14400)
 	// +kubebuilder:validation:Optional
 	BrowserCacheTTL *float64 `json:"browserCacheTtl,omitempty" tf:"browser_cache_ttl,omitempty"`
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	BrowserCheck *string `json:"browserCheck,omitempty" tf:"browser_check,omitempty"`
 
+	// Allowed values: "aggressive" (default) - delivers a different resource each time the query string changes, "basic" - delivers resources from cache when there is no query string, "simplified" - delivers the same resource to everyone independent of the query string.
 	// +kubebuilder:validation:Optional
 	CacheLevel *string `json:"cacheLevel,omitempty" tf:"cache_level,omitempty"`
 
+	// (default: 1800)
 	// +kubebuilder:validation:Optional
 	ChallengeTTL *float64 `json:"challengeTtl,omitempty" tf:"challenge_ttl,omitempty"`
 
+	// An allowlist of ciphers for TLS termination. These ciphers must be in the BoringSSL format.
 	// +kubebuilder:validation:Optional
 	Ciphers []*string `json:"ciphers,omitempty" tf:"ciphers,omitempty"`
 
+	// Allowed values: "flatten_at_root" (default), "flatten_all", "flatten_none".
 	// +kubebuilder:validation:Optional
 	CnameFlattening *string `json:"cnameFlattening,omitempty" tf:"cname_flattening,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	DevelopmentMode *string `json:"developmentMode,omitempty" tf:"development_mode,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	EarlyHints *string `json:"earlyHints,omitempty" tf:"early_hints,omitempty"`
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	EmailObfuscation *string `json:"emailObfuscation,omitempty" tf:"email_obfuscation,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	FilterLogsToCloudflare *string `json:"filterLogsToCloudflare,omitempty" tf:"filter_logs_to_cloudflare,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	Fonts *string `json:"fonts,omitempty" tf:"fonts,omitempty"`
+
+	// Allowed values: "on", "off" (default), "custom".
+	// +kubebuilder:validation:Optional
 	H2Prioritization *string `json:"h2Prioritization,omitempty" tf:"h2_prioritization,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	HotlinkProtection *string `json:"hotlinkProtection,omitempty" tf:"hotlink_protection,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	Http2 *string `json:"http2,omitempty" tf:"http2,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	Http3 *string `json:"http3,omitempty" tf:"http3,omitempty"`
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	IPGeolocation *string `json:"ipGeolocation,omitempty" tf:"ip_geolocation,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	IPv6 *string `json:"ipv6,omitempty" tf:"ipv6,omitempty"`
 
+	// Allowed values: "on", "off" (default), "open".
 	// +kubebuilder:validation:Optional
 	ImageResizing *string `json:"imageResizing,omitempty" tf:"image_resizing,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	LogToCloudflare *string `json:"logToCloudflare,omitempty" tf:"log_to_cloudflare,omitempty"`
 
+	// (default: 100)
 	// +kubebuilder:validation:Optional
 	MaxUpload *float64 `json:"maxUpload,omitempty" tf:"max_upload,omitempty"`
 
+	// Allowed values: "1.0" (default), "1.1", "1.2", "1.3".
 	// +kubebuilder:validation:Optional
 	MinTLSVersion *string `json:"minTlsVersion,omitempty" tf:"min_tls_version,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Minify []SettingsMinifyParameters `json:"minify,omitempty" tf:"minify,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	Mirage *string `json:"mirage,omitempty" tf:"mirage,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	MobileRedirect []SettingsMobileRedirectParameters `json:"mobileRedirect,omitempty" tf:"mobile_redirect,omitempty"`
 
+	// (default value depends on the zone's plan level)
 	// +kubebuilder:validation:Optional
 	OpportunisticEncryption *string `json:"opportunisticEncryption,omitempty" tf:"opportunistic_encryption,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	OpportunisticOnion *string `json:"opportunisticOnion,omitempty" tf:"opportunistic_onion,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	OrangeToOrange *string `json:"orangeToOrange,omitempty" tf:"orange_to_orange,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	OriginErrorPagePassThru *string `json:"originErrorPagePassThru,omitempty" tf:"origin_error_page_pass_thru,omitempty"`
 
+	// Allowed values: "1" (default on Enterprise), "2" (default)
 	// +kubebuilder:validation:Optional
 	OriginMaxHTTPVersion *string `json:"originMaxHttpVersion,omitempty" tf:"origin_max_http_version,omitempty"`
 
+	// Allowed values: "off" (default), "lossless", "lossy".
 	// +kubebuilder:validation:Optional
 	Polish *string `json:"polish,omitempty" tf:"polish,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	PrefetchPreload *string `json:"prefetchPreload,omitempty" tf:"prefetch_preload,omitempty"`
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	PrivacyPass *string `json:"privacyPass,omitempty" tf:"privacy_pass,omitempty"`
 
+	// (default: "100")
 	// +kubebuilder:validation:Optional
 	ProxyReadTimeout *string `json:"proxyReadTimeout,omitempty" tf:"proxy_read_timeout,omitempty"`
 
+	// Allowed values: "off" (default), "add_header", "overwrite_header".
 	// +kubebuilder:validation:Optional
 	PseudoIPv4 *string `json:"pseudoIpv4,omitempty" tf:"pseudo_ipv4,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	ResponseBuffering *string `json:"responseBuffering,omitempty" tf:"response_buffering,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	RocketLoader *string `json:"rocketLoader,omitempty" tf:"rocket_loader,omitempty"`
 
+	// Allowed values: "off" (default), "flexible", "full", "strict", "origin_pull".
 	// +kubebuilder:validation:Optional
 	SSL *string `json:"ssl,omitempty" tf:"ssl,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	SecurityHeader []SettingsSecurityHeaderParameters `json:"securityHeader,omitempty" tf:"security_header,omitempty"`
 
+	// Allowed values: "off" (Enterprise only), "essentially_off", "low", "medium" (default), "high", "under_attack".
 	// +kubebuilder:validation:Optional
 	SecurityLevel *string `json:"securityLevel,omitempty" tf:"security_level,omitempty"`
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	ServerSideExclude *string `json:"serverSideExclude,omitempty" tf:"server_side_exclude,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	SortQueryStringForCache *string `json:"sortQueryStringForCache,omitempty" tf:"sort_query_string_for_cache,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	TLS12Only *string `json:"tls12Only,omitempty" tf:"tls_1_2_only,omitempty"`
 
+	// Allowed values: "off" (default), "on", "zrt".
 	// +kubebuilder:validation:Optional
 	TLS13 *string `json:"tls13,omitempty" tf:"tls_1_3,omitempty"`
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	TLSClientAuth *string `json:"tlsClientAuth,omitempty" tf:"tls_client_auth,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	TrueClientIPHeader *string `json:"trueClientIpHeader,omitempty" tf:"true_client_ip_header,omitempty"`
 
+	// (default: on)
 	// +kubebuilder:validation:Optional
 	UniversalSSL *string `json:"universalSsl,omitempty" tf:"universal_ssl,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	VisitorIP *string `json:"visitorIp,omitempty" tf:"visitor_ip,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	Waf *string `json:"waf,omitempty" tf:"waf,omitempty"`
 
+	// (default: off). Note that the value specified will be ignored unless polish is turned on (i.e. is "lossless" or "lossy")
 	// +kubebuilder:validation:Optional
 	Webp *string `json:"webp,omitempty" tf:"webp,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	Websockets *string `json:"websockets,omitempty" tf:"websockets,omitempty"`
 
+	// (default: off)
 	// +kubebuilder:validation:Optional
 	ZeroRtt *string `json:"zeroRtt,omitempty" tf:"zero_rtt,omitempty"`
 }
 
+type SettingsSecurityHeaderInitParameters struct {
+
+	// true/false
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// true/false
+	IncludeSubdomains *bool `json:"includeSubdomains,omitempty" tf:"include_subdomains,omitempty"`
+
+	// Integer
+	MaxAge *float64 `json:"maxAge,omitempty" tf:"max_age,omitempty"`
+
+	// true/false
+	Nosniff *bool `json:"nosniff,omitempty" tf:"nosniff,omitempty"`
+
+	// true/false
+	Preload *bool `json:"preload,omitempty" tf:"preload,omitempty"`
+}
+
 type SettingsSecurityHeaderObservation struct {
+
+	// true/false
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// true/false
+	IncludeSubdomains *bool `json:"includeSubdomains,omitempty" tf:"include_subdomains,omitempty"`
+
+	// Integer
+	MaxAge *float64 `json:"maxAge,omitempty" tf:"max_age,omitempty"`
+
+	// true/false
+	Nosniff *bool `json:"nosniff,omitempty" tf:"nosniff,omitempty"`
+
+	// true/false
+	Preload *bool `json:"preload,omitempty" tf:"preload,omitempty"`
 }
 
 type SettingsSecurityHeaderParameters struct {
 
+	// true/false
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// true/false
 	// +kubebuilder:validation:Optional
 	IncludeSubdomains *bool `json:"includeSubdomains,omitempty" tf:"include_subdomains,omitempty"`
 
+	// Integer
 	// +kubebuilder:validation:Optional
 	MaxAge *float64 `json:"maxAge,omitempty" tf:"max_age,omitempty"`
 
+	// true/false
 	// +kubebuilder:validation:Optional
 	Nosniff *bool `json:"nosniff,omitempty" tf:"nosniff,omitempty"`
 
+	// true/false
 	// +kubebuilder:validation:Optional
 	Preload *bool `json:"preload,omitempty" tf:"preload,omitempty"`
 }
@@ -424,6 +995,18 @@ type SettingsSecurityHeaderParameters struct {
 type SettingsOverrideSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SettingsOverrideParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SettingsOverrideInitParameters `json:"initProvider,omitempty"`
 }
 
 // SettingsOverrideStatus defines the observed state of SettingsOverride.
@@ -434,7 +1017,7 @@ type SettingsOverrideStatus struct {
 
 // +kubebuilder:object:root=true
 
-// SettingsOverride is the Schema for the SettingsOverrides API. <no value>
+// SettingsOverride is the Schema for the SettingsOverrides API. Provides a resource which customizes Cloudflare zone settings.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

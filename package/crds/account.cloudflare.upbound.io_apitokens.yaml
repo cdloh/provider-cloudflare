@@ -124,14 +124,82 @@ spec:
                           description: Describes what operations against which resources
                             are allowed or denied.
                           type: object
-                      required:
-                      - permissionGroups
-                      - resources
                       type: object
                     type: array
-                required:
-                - name
-                - policy
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  condition:
+                    description: Conditions under which the token should be considered
+                      valid.
+                    items:
+                      properties:
+                        requestIp:
+                          description: Request IP related conditions.
+                          items:
+                            properties:
+                              in:
+                                description: List of IP addresses or CIDR notation
+                                  where the token may be used from. If not specified,
+                                  the token will be valid for all IP addresses.
+                                items:
+                                  type: string
+                                type: array
+                              notIn:
+                                description: List of IP addresses or CIDR notation
+                                  where the token should not be used from.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  expiresOn:
+                    description: The expiration time on or after which the token MUST
+                      NOT be accepted for processing.
+                    type: string
+                  name:
+                    description: Name of the API Token.
+                    type: string
+                  notBefore:
+                    description: The time before which the token MUST NOT be accepted
+                      for processing.
+                    type: string
+                  policy:
+                    description: Permissions policy. Multiple policy blocks can be
+                      defined.
+                    items:
+                      properties:
+                        effect:
+                          description: 'Effect of the policy. Available values: `allow`,
+                            `deny`. Defaults to `allow`.'
+                          type: string
+                        permissionGroups:
+                          description: List of permissions groups IDs. See [documentation](https://developers.cloudflare.com/api/tokens/create/permissions)
+                            for more information.
+                          items:
+                            type: string
+                          type: array
+                        resources:
+                          additionalProperties:
+                            type: string
+                          description: Describes what operations against which resources
+                            are allowed or denied.
+                          type: object
+                      type: object
+                    type: array
                 type: object
               managementPolicies:
                 default:
@@ -330,11 +398,50 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: policy is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.policy)
+                || has(self.initProvider.policy)'
           status:
             description: APITokenStatus defines the observed state of APIToken.
             properties:
               atProvider:
                 properties:
+                  condition:
+                    description: Conditions under which the token should be considered
+                      valid.
+                    items:
+                      properties:
+                        requestIp:
+                          description: Request IP related conditions.
+                          items:
+                            properties:
+                              in:
+                                description: List of IP addresses or CIDR notation
+                                  where the token may be used from. If not specified,
+                                  the token will be valid for all IP addresses.
+                                items:
+                                  type: string
+                                type: array
+                              notIn:
+                                description: List of IP addresses or CIDR notation
+                                  where the token should not be used from.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  expiresOn:
+                    description: The expiration time on or after which the token MUST
+                      NOT be accepted for processing.
+                    type: string
                   id:
                     type: string
                   issuedOn:
@@ -343,6 +450,36 @@ spec:
                   modifiedOn:
                     description: Timestamp of when the token was last modified.
                     type: string
+                  name:
+                    description: Name of the API Token.
+                    type: string
+                  notBefore:
+                    description: The time before which the token MUST NOT be accepted
+                      for processing.
+                    type: string
+                  policy:
+                    description: Permissions policy. Multiple policy blocks can be
+                      defined.
+                    items:
+                      properties:
+                        effect:
+                          description: 'Effect of the policy. Available values: `allow`,
+                            `deny`. Defaults to `allow`.'
+                          type: string
+                        permissionGroups:
+                          description: List of permissions groups IDs. See [documentation](https://developers.cloudflare.com/api/tokens/create/permissions)
+                            for more information.
+                          items:
+                            type: string
+                          type: array
+                        resources:
+                          additionalProperties:
+                            type: string
+                          description: Describes what operations against which resources
+                            are allowed or denied.
+                          type: object
+                      type: object
+                    type: array
                   status:
                     type: string
                 type: object

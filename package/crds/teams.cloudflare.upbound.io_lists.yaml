@@ -34,7 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: List is the Schema for the Lists API. <no value>
+        description: List is the Schema for the Lists API. Provides a Cloudflare Teams
+          List resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -67,7 +68,8 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: The account to which the teams list should be added.
+                      The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -143,18 +145,55 @@ spec:
                         type: object
                     type: object
                   description:
+                    description: The description of the teams list. The description
+                      of the teams list.
                     type: string
                   items:
+                    description: The items of the teams list. The items of the teams
+                      list.
                     items:
                       type: string
                     type: array
                   name:
+                    description: Name of the teams list. Name of the teams list.
                     type: string
                   type:
+                    description: 'The teams list type. Valid values are IP, SERIAL,
+                      URL, DOMAIN, and EMAIL. The teams list type. Available values:
+                      `IP`, `SERIAL`, `URL`, `DOMAIN`, `EMAIL`.'
                     type: string
-                required:
-                - name
-                - type
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  description:
+                    description: The description of the teams list. The description
+                      of the teams list.
+                    type: string
+                  items:
+                    description: The items of the teams list. The items of the teams
+                      list.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: Name of the teams list. Name of the teams list.
+                    type: string
+                  type:
+                    description: 'The teams list type. Valid values are IP, SERIAL,
+                      URL, DOMAIN, and EMAIL. The teams list type. Available values:
+                      `IP`, `SERIAL`, `URL`, `DOMAIN`, `EMAIL`.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -353,12 +392,44 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
           status:
             description: ListStatus defines the observed state of List.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: The account to which the teams list should be added.
+                      The account identifier to target for the resource.
+                    type: string
+                  description:
+                    description: The description of the teams list. The description
+                      of the teams list.
+                    type: string
                   id:
+                    description: ID of the teams list.
+                    type: string
+                  items:
+                    description: The items of the teams list. The items of the teams
+                      list.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: Name of the teams list. Name of the teams list.
+                    type: string
+                  type:
+                    description: 'The teams list type. Valid values are IP, SERIAL,
+                      URL, DOMAIN, and EMAIL. The teams list type. Available values:
+                      `IP`, `SERIAL`, `URL`, `DOMAIN`, `EMAIL`.'
                     type: string
                 type: object
               conditions:
