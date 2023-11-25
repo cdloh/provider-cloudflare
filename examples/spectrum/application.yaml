@@ -12,6 +12,6 @@ spec:
     trafficType: direct
     dns:
       - type: CNAME
-        name: ssh.cloudflare-test.crossplane.io
+        name: ssh.kidp.io
     originDirect:
       - tcp://109.151.40.129:22

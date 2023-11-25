@@ -33,13 +33,13 @@ spec:
     item:
       - value:
         - redirect:
-          - targetUrl: "https://blog.cloudflare-test.crossplane.io"
-            sourceUrl: "cloudflare-test.crossplane.io/blog"
+          - targetUrl: "https://blog.kidp.io"
+            sourceUrl: "kidp.io/blog"
         comment: one
       - value:
         - redirect:
-          - targetUrl: "https://foo.cloudflare-test.crossplane.io"
-            sourceUrl: "cloudflare-test.crossplane.io/foo"
+          - targetUrl: "https://foo.kidp.io"
+            sourceUrl: "kidp.io/foo"
             includeSubdomains: "enabled"
             subpathMatching: "enabled"
             statusCode: 301

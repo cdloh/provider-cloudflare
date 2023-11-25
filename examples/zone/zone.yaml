@@ -9,4 +9,4 @@ metadata:
     uptest.upbound.io/pre-delete-hook: ../../cluster/test/cleanup-children.sh zone
 spec:
   forProvider:
-    zone: cloudflare-test.crossplane.io
+    zone: kidp.io

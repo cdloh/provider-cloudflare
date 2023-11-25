@@ -5,6 +5,6 @@ metadata:
 spec:
   forProvider:
     hostnames:
-      - cloudflare-test.crossplane.io
+      - kidp.io
     requestType: origin-rsa
     requestedValidity: 7

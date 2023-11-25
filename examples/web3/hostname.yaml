@@ -6,5 +6,5 @@ spec:
   forProvider:
     zoneIdRef:
       name: example
-    name: web3.cloudflare-test.crossplane.io
+    name: web3.kidp.io
     target: ipfs

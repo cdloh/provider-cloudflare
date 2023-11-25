@@ -10,8 +10,8 @@ spec:
       name: example
     type: advanced
     hosts:
-      - cloudflare-test.crossplane.io
-      - sub.cloudflare-test.crossplane.io
+      - kidp.io
+      - sub.kidp.io
     validationMethod: http
     validityDays: 90
     certificateAuthority: lets_encrypt

@@ -8,7 +8,7 @@ spec:
   forProvider:
     zoneIdRef:
       name: example
-    name: example-load-balancer.cloudflare-test.crossplane.io
+    name: example-load-balancer.kidp.io
     fallbackPoolIdRef:
       name: example-pool
     defaultPoolIdsRefs:
@@ -35,4 +35,4 @@ spec:
           - messageBody: hello
             statusCode: 200
             contentType: html
-            location: "cloudflare-test.crossplane.io"
+            location: "kidp.io"

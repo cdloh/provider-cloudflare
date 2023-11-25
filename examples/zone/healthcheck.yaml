@@ -10,7 +10,7 @@ spec:
       name: example
     name: "http-health-check"
     description: "example http health check"
-    address: "cloudflare-test.crossplane.io"
+    address: "kidp.io"
     suspended: false
     checkRegions:
       - WEU
@@ -28,7 +28,7 @@ spec:
     header:
       - header: "Host"
         values:
-          - "cloudflare-test.crossplane.io"
+          - "kidp.io"
     timeout: 10
     retries: 2
     interval: 60
@@ -48,7 +48,7 @@ spec:
       name: example
     name: "tcp-health-check"
     description: "example tcp health check"
-    address: "cloudflare-test.crossplane.io"
+    address: "kidp.io"
     suspended: false
     checkRegions:
       - "WEU"

@@ -12,7 +12,7 @@ spec:
     period: 2
     match:
       - request:
-        - urlPattern: "cloudflare-test.crossplane.io/*"
+        - urlPattern: "kidp.io/*"
           schemes:
             - HTTP
             - HTTPS
@@ -42,5 +42,5 @@ spec:
     disabled: false
     description: example rate limit for a zone
     bypassUrlPatterns:
-      - cloudflare-test.crossplane.io/bypass1
-      - cloudflare-test.crossplane.io/bypass2
+      - kidp.io/bypass1
+      - kidp.io/bypass2

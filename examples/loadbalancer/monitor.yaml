@@ -18,7 +18,7 @@ spec:
     header:
       - header: Host
         values:
-          - cloudflare-test.crossplane.io
+          - kidp.io
     allowInsecure: false
     followRedirects: true
 
