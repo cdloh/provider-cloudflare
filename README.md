@@ -133,6 +133,11 @@ If you're able to confirm one works please open a PR or issue to update the tabl
 
 ## Developing
 
+Initialize build dependencies:
+```console
+make submodules
+```
+
 Run code-generation pipeline:
 ```console
 make generate
