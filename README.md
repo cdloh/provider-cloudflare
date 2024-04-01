@@ -21,7 +21,7 @@ kind: Provider
 metadata:
   name: provider-cloudflare
 spec:
-  package: cdloh/provider-cloudflare:v0.1.0
+  package: ghcr.io/cdloh/provider-cloudflare:v0.1.0
 EOF
 ```
 
