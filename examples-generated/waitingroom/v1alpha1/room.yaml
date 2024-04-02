@@ -1,0 +1,18 @@
+apiVersion: waitingroom.cloudflare.upbound.io/v1alpha1
+kind: Room
+metadata:
+  annotations:
+    meta.upbound.io/example-id: waitingroom/v1alpha1/room
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    host: foo.example.com
+    name: foo
+    newUsersPerMinute: 200
+    path: /
+    totalActiveUsers: 200
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

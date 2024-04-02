@@ -1,0 +1,15 @@
+apiVersion: waf.cloudflare.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: waf/v1alpha1/group
+  labels:
+    testing.upbound.io/example-name: honey_pot
+  name: honey-pot
+spec:
+  forProvider:
+    groupId: de677e5818985db1285d0e80225f06e5
+    mode: "on"
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

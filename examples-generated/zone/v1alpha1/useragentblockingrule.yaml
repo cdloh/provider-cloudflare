@@ -1,0 +1,19 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: UserAgentBlockingRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/useragentblockingrule
+  labels:
+    testing.upbound.io/example-name: example_1
+  name: example-1
+spec:
+  forProvider:
+    configuration:
+    - target: ua
+      value: Chrome
+    description: My description 1
+    mode: js_challenge
+    paused: false
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

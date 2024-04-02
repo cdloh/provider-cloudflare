@@ -124,6 +124,108 @@ func (mg *LoadBalancer) ResolveReferences(ctx context.Context, c client.Reader) 
 	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
 
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.CountryPools); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.CountryPools[i3].PoolIds),
+			Extract:       reference.ExternalName(),
+			References:    mg.Spec.InitProvider.CountryPools[i3].PoolIdsRefs,
+			Selector:      mg.Spec.InitProvider.CountryPools[i3].PoolIdsSelector,
+			To: reference.To{
+				List:    &PoolList{},
+				Managed: &Pool{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.CountryPools[i3].PoolIds")
+		}
+		mg.Spec.InitProvider.CountryPools[i3].PoolIds = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.CountryPools[i3].PoolIdsRefs = mrsp.ResolvedReferences
+
+	}
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.DefaultPoolIds),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.DefaultPoolIdsRefs,
+		Selector:      mg.Spec.InitProvider.DefaultPoolIdsSelector,
+		To: reference.To{
+			List:    &PoolList{},
+			Managed: &Pool{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.DefaultPoolIds")
+	}
+	mg.Spec.InitProvider.DefaultPoolIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.DefaultPoolIdsRefs = mrsp.ResolvedReferences
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.FallbackPoolID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.FallbackPoolIDRef,
+		Selector:     mg.Spec.InitProvider.FallbackPoolIDSelector,
+		To: reference.To{
+			List:    &PoolList{},
+			Managed: &Pool{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.FallbackPoolID")
+	}
+	mg.Spec.InitProvider.FallbackPoolID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.FallbackPoolIDRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.PopPools); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.PopPools[i3].PoolIds),
+			Extract:       reference.ExternalName(),
+			References:    mg.Spec.InitProvider.PopPools[i3].PoolIdsRefs,
+			Selector:      mg.Spec.InitProvider.PopPools[i3].PoolIdsSelector,
+			To: reference.To{
+				List:    &PoolList{},
+				Managed: &Pool{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.PopPools[i3].PoolIds")
+		}
+		mg.Spec.InitProvider.PopPools[i3].PoolIds = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.PopPools[i3].PoolIdsRefs = mrsp.ResolvedReferences
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.RegionPools); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.RegionPools[i3].PoolIds),
+			Extract:       reference.ExternalName(),
+			References:    mg.Spec.InitProvider.RegionPools[i3].PoolIdsRefs,
+			Selector:      mg.Spec.InitProvider.RegionPools[i3].PoolIdsSelector,
+			To: reference.To{
+				List:    &PoolList{},
+				Managed: &Pool{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.RegionPools[i3].PoolIds")
+		}
+		mg.Spec.InitProvider.RegionPools[i3].PoolIds = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.RegionPools[i3].PoolIdsRefs = mrsp.ResolvedReferences
+
+	}
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ZoneIDRef,
+		Selector:     mg.Spec.InitProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.ZoneList{},
+			Managed: &v1alpha1.Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ZoneID")
+	}
+	mg.Spec.InitProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ZoneIDRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -149,6 +251,22 @@ func (mg *Monitor) ResolveReferences(ctx context.Context, c client.Reader) error
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -191,6 +309,38 @@ func (mg *Pool) ResolveReferences(ctx context.Context, c client.Reader) error {
 	}
 	mg.Spec.ForProvider.Monitor = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.MonitorRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Monitor),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.MonitorRef,
+		Selector:     mg.Spec.InitProvider.MonitorSelector,
+		To: reference.To{
+			List:    &MonitorList{},
+			Managed: &Monitor{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Monitor")
+	}
+	mg.Spec.InitProvider.Monitor = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.MonitorRef = rsp.ResolvedReference
 
 	return nil
 }

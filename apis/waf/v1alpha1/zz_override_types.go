@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,35 +17,115 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type OverrideInitParameters struct {
+
+	// Description of what the WAF override does.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Similar to rules; which WAF groups you want to alter.
+	// +mapType=granular
+	Groups map[string]*string `json:"groups,omitempty" tf:"groups,omitempty"`
+
+	// Whether this package is currently paused.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// Relative priority of this configuration when multiple configurations match a single URL.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// When a WAF rule matches, substitute its configured action for a different action specified by this definition.
+	// +mapType=granular
+	RewriteAction map[string]*string `json:"rewriteAction,omitempty" tf:"rewrite_action,omitempty"`
+
+	// A list of WAF rule ID to rule action you intend to apply.
+	// +mapType=granular
+	Rules map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// An array of URLs to apply the WAF override to.
+	Urls []*string `json:"urls,omitempty" tf:"urls,omitempty"`
+
+	// The DNS zone to which the WAF override condition should be added.
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type OverrideObservation struct {
+
+	// Description of what the WAF override does.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Similar to rules; which WAF groups you want to alter.
+	// +mapType=granular
+	Groups map[string]*string `json:"groups,omitempty" tf:"groups,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	OverrideID *string `json:"overrideId,omitempty" tf:"override_id,omitempty"`
+
+	// Whether this package is currently paused.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// Relative priority of this configuration when multiple configurations match a single URL.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// When a WAF rule matches, substitute its configured action for a different action specified by this definition.
+	// +mapType=granular
+	RewriteAction map[string]*string `json:"rewriteAction,omitempty" tf:"rewrite_action,omitempty"`
+
+	// A list of WAF rule ID to rule action you intend to apply.
+	// +mapType=granular
+	Rules map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// An array of URLs to apply the WAF override to.
+	Urls []*string `json:"urls,omitempty" tf:"urls,omitempty"`
+
+	// The DNS zone to which the WAF override condition should be added.
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type OverrideParameters struct {
 
+	// Description of what the WAF override does.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Similar to rules; which WAF groups you want to alter.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Groups map[string]*string `json:"groups,omitempty" tf:"groups,omitempty"`
 
+	// Whether this package is currently paused.
 	// +kubebuilder:validation:Optional
 	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
 
+	// Relative priority of this configuration when multiple configurations match a single URL.
 	// +kubebuilder:validation:Optional
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
+	// When a WAF rule matches, substitute its configured action for a different action specified by this definition.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	RewriteAction map[string]*string `json:"rewriteAction,omitempty" tf:"rewrite_action,omitempty"`
 
+	// A list of WAF rule ID to rule action you intend to apply.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Rules map[string]*string `json:"rules,omitempty" tf:"rules,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Urls []*string `json:"urls" tf:"urls,omitempty"`
+	// An array of URLs to apply the WAF override to.
+	// +kubebuilder:validation:Optional
+	Urls []*string `json:"urls,omitempty" tf:"urls,omitempty"`
 
+	// The DNS zone to which the WAF override condition should be added.
 	// The zone identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -60,6 +144,17 @@ type OverrideParameters struct {
 type OverrideSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OverrideParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OverrideInitParameters `json:"initProvider,omitempty"`
 }
 
 // OverrideStatus defines the observed state of Override.
@@ -69,19 +164,21 @@ type OverrideStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Override is the Schema for the Overrides API. <no value>
+// Override is the Schema for the Overrides API. Provides a Cloudflare WAF Override resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Override struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              OverrideSpec   `json:"spec"`
-	Status            OverrideStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.urls) || (has(self.initProvider) && has(self.initProvider.urls))",message="spec.forProvider.urls is a required parameter"
+	Spec   OverrideSpec   `json:"spec"`
+	Status OverrideStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

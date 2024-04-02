@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,36 +17,122 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ConfigInitParameters struct {
+
+	// The third-party API's URL.
+	APIURL *string `json:"apiUrl,omitempty" tf:"api_url,omitempty"`
+
+	// The third-party authorization API URL.
+	AuthURL *string `json:"authUrl,omitempty" tf:"auth_url,omitempty"`
+
+	// The client identifier for authenticating API calls.
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// The customer identifier for authenticating API calls.
+	CustomerID *string `json:"customerId,omitempty" tf:"customer_id,omitempty"`
+}
+
 type ConfigObservation struct {
+
+	// The third-party API's URL.
+	APIURL *string `json:"apiUrl,omitempty" tf:"api_url,omitempty"`
+
+	// The third-party authorization API URL.
+	AuthURL *string `json:"authUrl,omitempty" tf:"auth_url,omitempty"`
+
+	// The client identifier for authenticating API calls.
+	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
+
+	// The customer identifier for authenticating API calls.
+	CustomerID *string `json:"customerId,omitempty" tf:"customer_id,omitempty"`
 }
 
 type ConfigParameters struct {
 
+	// The third-party API's URL.
 	// +kubebuilder:validation:Optional
 	APIURL *string `json:"apiUrl,omitempty" tf:"api_url,omitempty"`
 
+	// The third-party authorization API URL.
 	// +kubebuilder:validation:Optional
 	AuthURL *string `json:"authUrl,omitempty" tf:"auth_url,omitempty"`
 
+	// The client identifier for authenticating API calls.
 	// +kubebuilder:validation:Optional
 	ClientID *string `json:"clientId,omitempty" tf:"client_id,omitempty"`
 
+	// The client key for authenticating API calls.
 	// +kubebuilder:validation:Optional
 	ClientKeySecretRef *v1.SecretKeySelector `json:"clientKeySecretRef,omitempty" tf:"-"`
 
+	// The client secret for authenticating API calls.
 	// +kubebuilder:validation:Optional
 	ClientSecretSecretRef *v1.SecretKeySelector `json:"clientSecretSecretRef,omitempty" tf:"-"`
 
+	// The customer identifier for authenticating API calls.
 	// +kubebuilder:validation:Optional
 	CustomerID *string `json:"customerId,omitempty" tf:"customer_id,omitempty"`
 }
 
+type DevicePostureIntegrationInitParameters struct {
+
+	// The account to which the device posture integration should be added.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// The device posture integration's connection authorization parameters.
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+
+	Identifier *string `json:"identifier,omitempty" tf:"identifier,omitempty"`
+
+	// Indicates the frequency with which to poll the third-party API.
+	// Must be in the format "1h" or "30m". Valid units are h and m.
+	Interval *string `json:"interval,omitempty" tf:"interval,omitempty"`
+
+	// Name of the device posture integration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The device posture integration type. Valid values are workspace_one.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type DevicePostureIntegrationObservation struct {
+
+	// The account to which the device posture integration should be added.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The device posture integration's connection authorization parameters.
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+
+	// ID of the device posture integration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Identifier *string `json:"identifier,omitempty" tf:"identifier,omitempty"`
+
+	// Indicates the frequency with which to poll the third-party API.
+	// Must be in the format "1h" or "30m". Valid units are h and m.
+	Interval *string `json:"interval,omitempty" tf:"interval,omitempty"`
+
+	// Name of the device posture integration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The device posture integration type. Valid values are workspace_one.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type DevicePostureIntegrationParameters struct {
 
+	// The account to which the device posture integration should be added.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -56,26 +146,42 @@ type DevicePostureIntegrationParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// The device posture integration's connection authorization parameters.
 	// +kubebuilder:validation:Optional
 	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Identifier *string `json:"identifier,omitempty" tf:"identifier,omitempty"`
 
+	// Indicates the frequency with which to poll the third-party API.
+	// Must be in the format "1h" or "30m". Valid units are h and m.
 	// +kubebuilder:validation:Optional
 	Interval *string `json:"interval,omitempty" tf:"interval,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// Name of the device posture integration.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// The device posture integration type. Valid values are workspace_one.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // DevicePostureIntegrationSpec defines the desired state of DevicePostureIntegration
 type DevicePostureIntegrationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DevicePostureIntegrationParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DevicePostureIntegrationInitParameters `json:"initProvider,omitempty"`
 }
 
 // DevicePostureIntegrationStatus defines the observed state of DevicePostureIntegration.
@@ -85,19 +191,22 @@ type DevicePostureIntegrationStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// DevicePostureIntegration is the Schema for the DevicePostureIntegrations API. <no value>
+// DevicePostureIntegration is the Schema for the DevicePostureIntegrations API. Provides a Cloudflare Device Posture Integration resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type DevicePostureIntegration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DevicePostureIntegrationSpec   `json:"spec"`
-	Status            DevicePostureIntegrationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	Spec   DevicePostureIntegrationSpec   `json:"spec"`
+	Status DevicePostureIntegrationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

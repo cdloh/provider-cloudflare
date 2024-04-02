@@ -1,0 +1,27 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: SettingsOverride
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/settingsoverride
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    settings:
+    - automaticHttpsRewrites: "on"
+      brotli: "on"
+      challengeTtl: 2700
+      minify:
+      - css: "on"
+        html: "off"
+        js: "off"
+      mirage: "on"
+      opportunisticEncryption: "on"
+      securityHeader:
+      - enabled: true
+      securityLevel: high
+      waf: "on"
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

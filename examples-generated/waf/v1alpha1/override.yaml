@@ -1,0 +1,23 @@
+apiVersion: waf.cloudflare.upbound.io/v1alpha1
+kind: Override
+metadata:
+  annotations:
+    meta.upbound.io/example-id: waf/v1alpha1/override
+  labels:
+    testing.upbound.io/example-name: shop_ecxample
+  name: shop-ecxample
+spec:
+  forProvider:
+    groups:
+      ea8687e59929c1fd05ba97574ad43f77: default
+    rewriteAction:
+      challenge: block
+      default: block
+    rules:
+      "100015": disable
+    urls:
+    - example.com/no-waf-here
+    - example.com/another/path/*
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

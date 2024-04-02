@@ -1,0 +1,24 @@
+apiVersion: magic.cloudflare.upbound.io/v1alpha1
+kind: FirewallRuleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: magic/v1alpha1/firewallruleset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Global mitigations
+    name: Magic Transit Ruleset
+    rules:
+    - action: allow
+      description: Allow TCP Ephemeral Ports
+      enabled: "true"
+      expression: tcp.dstport in { 32768..65535 }
+    - action: block
+      description: Block all
+      enabled: "true"
+      expression: ip.len >= 0

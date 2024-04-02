@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,28 +17,69 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CustomSSLOptionsInitParameters struct {
+
+	// Method of building intermediate certificate chain. A ubiquitous bundle has the highest probability of being verified everywhere, even by clients using outdated or unusual trust stores. An optimal bundle uses the shortest chain and newest intermediates. And the force bundle verifies the chain, but does not otherwise modify it. Valid values are ubiquitous (default), optimal, force.
+	BundleMethod *string `json:"bundleMethod,omitempty" tf:"bundle_method,omitempty"`
+
+	// Certificate certificate and the intermediate(s)
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// Specifies the region where your private key can be held locally. Valid values are us, eu, highest_security.
+	GeoRestrictions *string `json:"geoRestrictions,omitempty" tf:"geo_restrictions,omitempty"`
+
+	// Whether to enable support for legacy clients which do not include SNI in the TLS handshake. Valid values are legacy_custom (default), sni_custom.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type CustomSSLOptionsObservation struct {
+
+	// Method of building intermediate certificate chain. A ubiquitous bundle has the highest probability of being verified everywhere, even by clients using outdated or unusual trust stores. An optimal bundle uses the shortest chain and newest intermediates. And the force bundle verifies the chain, but does not otherwise modify it. Valid values are ubiquitous (default), optimal, force.
+	BundleMethod *string `json:"bundleMethod,omitempty" tf:"bundle_method,omitempty"`
+
+	// Certificate certificate and the intermediate(s)
+	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// Specifies the region where your private key can be held locally. Valid values are us, eu, highest_security.
+	GeoRestrictions *string `json:"geoRestrictions,omitempty" tf:"geo_restrictions,omitempty"`
+
+	// Whether to enable support for legacy clients which do not include SNI in the TLS handshake. Valid values are legacy_custom (default), sni_custom.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type CustomSSLOptionsParameters struct {
 
+	// Method of building intermediate certificate chain. A ubiquitous bundle has the highest probability of being verified everywhere, even by clients using outdated or unusual trust stores. An optimal bundle uses the shortest chain and newest intermediates. And the force bundle verifies the chain, but does not otherwise modify it. Valid values are ubiquitous (default), optimal, force.
 	// +kubebuilder:validation:Optional
 	BundleMethod *string `json:"bundleMethod,omitempty" tf:"bundle_method,omitempty"`
 
+	// Certificate certificate and the intermediate(s)
 	// +kubebuilder:validation:Optional
 	Certificate *string `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
+	// Specifies the region where your private key can be held locally. Valid values are us, eu, highest_security.
 	// +kubebuilder:validation:Optional
 	GeoRestrictions *string `json:"geoRestrictions,omitempty" tf:"geo_restrictions,omitempty"`
 
+	// Certificate's private key
 	// +kubebuilder:validation:Optional
 	PrivateKeySecretRef *v1.SecretKeySelector `json:"privateKeySecretRef,omitempty" tf:"-"`
 
+	// Whether to enable support for legacy clients which do not include SNI in the TLS handshake. Valid values are legacy_custom (default), sni_custom.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
+type CustomSSLPriorityInitParameters struct {
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+}
+
 type CustomSSLPriorityObservation struct {
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
 type CustomSSLPriorityParameters struct {
@@ -46,7 +91,36 @@ type CustomSSLPriorityParameters struct {
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 }
 
+type SSLInitParameters struct {
+
+	// The certificate, private key and associated optional parameters, such as bundle_method, geo_restrictions, and type.
+	// **Modifying this attribute will force creation of a new resource.**
+	CustomSSLOptions []CustomSSLOptionsInitParameters `json:"customSslOptions,omitempty" tf:"custom_ssl_options,omitempty"`
+
+	CustomSSLPriority []CustomSSLPriorityInitParameters `json:"customSslPriority,omitempty" tf:"custom_ssl_priority,omitempty"`
+
+	// The DNS zone id to the custom ssl cert should be added.
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type SSLObservation struct {
+
+	// The certificate, private key and associated optional parameters, such as bundle_method, geo_restrictions, and type.
+	// **Modifying this attribute will force creation of a new resource.**
+	CustomSSLOptions []CustomSSLOptionsObservation `json:"customSslOptions,omitempty" tf:"custom_ssl_options,omitempty"`
+
+	CustomSSLPriority []CustomSSLPriorityObservation `json:"customSslPriority,omitempty" tf:"custom_ssl_priority,omitempty"`
+
 	ExpiresOn *string `json:"expiresOn,omitempty" tf:"expires_on,omitempty"`
 
 	Hosts []*string `json:"hosts,omitempty" tf:"hosts,omitempty"`
@@ -64,10 +138,15 @@ type SSLObservation struct {
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	UploadedOn *string `json:"uploadedOn,omitempty" tf:"uploaded_on,omitempty"`
+
+	// The DNS zone id to the custom ssl cert should be added.
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type SSLParameters struct {
 
+	// The certificate, private key and associated optional parameters, such as bundle_method, geo_restrictions, and type.
 	// **Modifying this attribute will force creation of a new resource.**
 	// +kubebuilder:validation:Optional
 	CustomSSLOptions []CustomSSLOptionsParameters `json:"customSslOptions,omitempty" tf:"custom_ssl_options,omitempty"`
@@ -75,6 +154,7 @@ type SSLParameters struct {
 	// +kubebuilder:validation:Optional
 	CustomSSLPriority []CustomSSLPriorityParameters `json:"customSslPriority,omitempty" tf:"custom_ssl_priority,omitempty"`
 
+	// The DNS zone id to the custom ssl cert should be added.
 	// The zone identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -93,6 +173,17 @@ type SSLParameters struct {
 type SSLSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     SSLParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider SSLInitParameters `json:"initProvider,omitempty"`
 }
 
 // SSLStatus defines the observed state of SSL.
@@ -102,13 +193,14 @@ type SSLStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// SSL is the Schema for the SSLs API. <no value>
+// SSL is the Schema for the SSLs API. Provides a Cloudflare custom SSL resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type SSL struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,16 +17,194 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ApplicationInitParameters struct {
+
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (Set of String) The identity providers selected for the application.
+	// The identity providers selected for the application.
+	// +listType=set
+	AllowedIdps []*string `json:"allowedIdps,omitempty" tf:"allowed_idps,omitempty"`
+
+	// (Boolean) Option to show/hide applications in App Launcher. Defaults to true.
+	// Option to show/hide applications in App Launcher. Defaults to `true`.
+	AppLauncherVisible *bool `json:"appLauncherVisible,omitempty" tf:"app_launcher_visible,omitempty"`
+
+	// (Boolean) Option to skip identity provider selection if only one is configured in allowed_idps. Defaults to false.
+	// Option to skip identity provider selection if only one is configured in `allowed_idps`. Defaults to `false`.
+	AutoRedirectToIdentity *bool `json:"autoRedirectToIdentity,omitempty" tf:"auto_redirect_to_identity,omitempty"`
+
+	// (Block List) CORS configuration for the Access Application. See below for reference structure. (see below for nested schema)
+	// CORS configuration for the Access Application. See below for reference structure.
+	CorsHeaders []CorsHeadersInitParameters `json:"corsHeaders,omitempty" tf:"cors_headers,omitempty"`
+
+	// (String) Option that returns a custom error message when a user is denied access to the application.
+	// Option that returns a custom error message when a user is denied access to the application.
+	CustomDenyMessage *string `json:"customDenyMessage,omitempty" tf:"custom_deny_message,omitempty"`
+
+	// (String) Option that redirects to a custom URL when a user is denied access to the application.
+	// Option that redirects to a custom URL when a user is denied access to the application.
+	CustomDenyURL *string `json:"customDenyUrl,omitempty" tf:"custom_deny_url,omitempty"`
+
+	// (String) The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+	// The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (Boolean) Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to false.
+	// Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to `false`.
+	EnableBindingCookie *bool `json:"enableBindingCookie,omitempty" tf:"enable_binding_cookie,omitempty"`
+
+	// (Boolean) Option to add the HttpOnly cookie flag to access tokens.
+	// Option to add the `HttpOnly` cookie flag to access tokens.
+	HTTPOnlyCookieAttribute *bool `json:"httpOnlyCookieAttribute,omitempty" tf:"http_only_cookie_attribute,omitempty"`
+
+	// (String) Image URL for the logo shown in the app launcher dashboard.
+	// Image URL for the logo shown in the app launcher dashboard.
+	LogoURL *string `json:"logoUrl,omitempty" tf:"logo_url,omitempty"`
+
+	// (String) Friendly name of the Access Application.
+	// Friendly name of the Access Application.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Max: 1) SaaS configuration for the Access Application. (see below for nested schema)
+	// SaaS configuration for the Access Application.
+	SaasApp []SaasAppInitParameters `json:"saasApp,omitempty" tf:"saas_app,omitempty"`
+
+	// site cookie setting for access tokens. Available values: none, lax, strict.
+	// Defines the same-site cookie setting for access tokens. Available values: `none`, `lax`, `strict`.
+	SameSiteCookieAttribute *string `json:"sameSiteCookieAttribute,omitempty" tf:"same_site_cookie_attribute,omitempty"`
+
+	// (Boolean) Option to return a 401 status code in service authentication rules on failed requests. Defaults to false.
+	// Option to return a 401 status code in service authentication rules on failed requests. Defaults to `false`.
+	ServiceAuth401Redirect *bool `json:"serviceAuth401Redirect,omitempty" tf:"service_auth_401_redirect,omitempty"`
+
+	// authorise. Must be in the format 48h or 2h45m. Defaults to 24h.
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// (Boolean) Option to skip the authorization interstitial when using the CLI. Defaults to false.
+	// Option to skip the authorization interstitial when using the CLI. Defaults to `false`.
+	SkipInterstitial *bool `json:"skipInterstitial,omitempty" tf:"skip_interstitial,omitempty"`
+
+	// (String) The application type. Available values: app_launcher, bookmark, biso, dash_sso, saas, self_hosted, ssh, vnc, warp. Defaults to self_hosted.
+	// The application type. Available values: `app_launcher`, `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`, `vnc`, `warp`. Defaults to `self_hosted`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type ApplicationObservation struct {
 
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (Set of String) The identity providers selected for the application.
+	// The identity providers selected for the application.
+	// +listType=set
+	AllowedIdps []*string `json:"allowedIdps,omitempty" tf:"allowed_idps,omitempty"`
+
+	// (Boolean) Option to show/hide applications in App Launcher. Defaults to true.
+	// Option to show/hide applications in App Launcher. Defaults to `true`.
+	AppLauncherVisible *bool `json:"appLauncherVisible,omitempty" tf:"app_launcher_visible,omitempty"`
+
+	// (String) Application Audience (AUD) Tag of the application.
 	// Application Audience (AUD) Tag of the application.
 	Aud *string `json:"aud,omitempty" tf:"aud,omitempty"`
 
+	// (Boolean) Option to skip identity provider selection if only one is configured in allowed_idps. Defaults to false.
+	// Option to skip identity provider selection if only one is configured in `allowed_idps`. Defaults to `false`.
+	AutoRedirectToIdentity *bool `json:"autoRedirectToIdentity,omitempty" tf:"auto_redirect_to_identity,omitempty"`
+
+	// (Block List) CORS configuration for the Access Application. See below for reference structure. (see below for nested schema)
+	// CORS configuration for the Access Application. See below for reference structure.
+	CorsHeaders []CorsHeadersObservation `json:"corsHeaders,omitempty" tf:"cors_headers,omitempty"`
+
+	// (String) Option that returns a custom error message when a user is denied access to the application.
+	// Option that returns a custom error message when a user is denied access to the application.
+	CustomDenyMessage *string `json:"customDenyMessage,omitempty" tf:"custom_deny_message,omitempty"`
+
+	// (String) Option that redirects to a custom URL when a user is denied access to the application.
+	// Option that redirects to a custom URL when a user is denied access to the application.
+	CustomDenyURL *string `json:"customDenyUrl,omitempty" tf:"custom_deny_url,omitempty"`
+
+	// (String) The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+	// The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (Boolean) Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to false.
+	// Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to `false`.
+	EnableBindingCookie *bool `json:"enableBindingCookie,omitempty" tf:"enable_binding_cookie,omitempty"`
+
+	// (Boolean) Option to add the HttpOnly cookie flag to access tokens.
+	// Option to add the `HttpOnly` cookie flag to access tokens.
+	HTTPOnlyCookieAttribute *bool `json:"httpOnlyCookieAttribute,omitempty" tf:"http_only_cookie_attribute,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Image URL for the logo shown in the app launcher dashboard.
+	// Image URL for the logo shown in the app launcher dashboard.
+	LogoURL *string `json:"logoUrl,omitempty" tf:"logo_url,omitempty"`
+
+	// (String) Friendly name of the Access Application.
+	// Friendly name of the Access Application.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List, Max: 1) SaaS configuration for the Access Application. (see below for nested schema)
+	// SaaS configuration for the Access Application.
+	SaasApp []SaasAppObservation `json:"saasApp,omitempty" tf:"saas_app,omitempty"`
+
+	// site cookie setting for access tokens. Available values: none, lax, strict.
+	// Defines the same-site cookie setting for access tokens. Available values: `none`, `lax`, `strict`.
+	SameSiteCookieAttribute *string `json:"sameSiteCookieAttribute,omitempty" tf:"same_site_cookie_attribute,omitempty"`
+
+	// (Boolean) Option to return a 401 status code in service authentication rules on failed requests. Defaults to false.
+	// Option to return a 401 status code in service authentication rules on failed requests. Defaults to `false`.
+	ServiceAuth401Redirect *bool `json:"serviceAuth401Redirect,omitempty" tf:"service_auth_401_redirect,omitempty"`
+
+	// authorise. Must be in the format 48h or 2h45m. Defaults to 24h.
+	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// (Boolean) Option to skip the authorization interstitial when using the CLI. Defaults to false.
+	// Option to skip the authorization interstitial when using the CLI. Defaults to `false`.
+	SkipInterstitial *bool `json:"skipInterstitial,omitempty" tf:"skip_interstitial,omitempty"`
+
+	// (String) The application type. Available values: app_launcher, bookmark, biso, dash_sso, saas, self_hosted, ssh, vnc, warp. Defaults to self_hosted.
+	// The application type. Available values: `app_launcher`, `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`, `vnc`, `warp`. Defaults to `self_hosted`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type ApplicationParameters struct {
 
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -36,74 +218,93 @@ type ApplicationParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (Set of String) The identity providers selected for the application.
 	// The identity providers selected for the application.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedIdps []*string `json:"allowedIdps,omitempty" tf:"allowed_idps,omitempty"`
 
+	// (Boolean) Option to show/hide applications in App Launcher. Defaults to true.
 	// Option to show/hide applications in App Launcher. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	AppLauncherVisible *bool `json:"appLauncherVisible,omitempty" tf:"app_launcher_visible,omitempty"`
 
+	// (Boolean) Option to skip identity provider selection if only one is configured in allowed_idps. Defaults to false.
 	// Option to skip identity provider selection if only one is configured in `allowed_idps`. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	AutoRedirectToIdentity *bool `json:"autoRedirectToIdentity,omitempty" tf:"auto_redirect_to_identity,omitempty"`
 
+	// (Block List) CORS configuration for the Access Application. See below for reference structure. (see below for nested schema)
 	// CORS configuration for the Access Application. See below for reference structure.
 	// +kubebuilder:validation:Optional
 	CorsHeaders []CorsHeadersParameters `json:"corsHeaders,omitempty" tf:"cors_headers,omitempty"`
 
+	// (String) Option that returns a custom error message when a user is denied access to the application.
 	// Option that returns a custom error message when a user is denied access to the application.
 	// +kubebuilder:validation:Optional
 	CustomDenyMessage *string `json:"customDenyMessage,omitempty" tf:"custom_deny_message,omitempty"`
 
+	// (String) Option that redirects to a custom URL when a user is denied access to the application.
 	// Option that redirects to a custom URL when a user is denied access to the application.
 	// +kubebuilder:validation:Optional
 	CustomDenyURL *string `json:"customDenyUrl,omitempty" tf:"custom_deny_url,omitempty"`
 
+	// (String) The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
 	// The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
 	// +kubebuilder:validation:Optional
 	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
 
+	// (Boolean) Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to false.
 	// Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	EnableBindingCookie *bool `json:"enableBindingCookie,omitempty" tf:"enable_binding_cookie,omitempty"`
 
+	// (Boolean) Option to add the HttpOnly cookie flag to access tokens.
 	// Option to add the `HttpOnly` cookie flag to access tokens.
 	// +kubebuilder:validation:Optional
 	HTTPOnlyCookieAttribute *bool `json:"httpOnlyCookieAttribute,omitempty" tf:"http_only_cookie_attribute,omitempty"`
 
+	// (String) Image URL for the logo shown in the app launcher dashboard.
 	// Image URL for the logo shown in the app launcher dashboard.
 	// +kubebuilder:validation:Optional
 	LogoURL *string `json:"logoUrl,omitempty" tf:"logo_url,omitempty"`
 
+	// (String) Friendly name of the Access Application.
 	// Friendly name of the Access Application.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Max: 1) SaaS configuration for the Access Application. (see below for nested schema)
 	// SaaS configuration for the Access Application.
 	// +kubebuilder:validation:Optional
 	SaasApp []SaasAppParameters `json:"saasApp,omitempty" tf:"saas_app,omitempty"`
 
+	// site cookie setting for access tokens. Available values: none, lax, strict.
 	// Defines the same-site cookie setting for access tokens. Available values: `none`, `lax`, `strict`.
 	// +kubebuilder:validation:Optional
 	SameSiteCookieAttribute *string `json:"sameSiteCookieAttribute,omitempty" tf:"same_site_cookie_attribute,omitempty"`
 
+	// (Boolean) Option to return a 401 status code in service authentication rules on failed requests. Defaults to false.
 	// Option to return a 401 status code in service authentication rules on failed requests. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	ServiceAuth401Redirect *bool `json:"serviceAuth401Redirect,omitempty" tf:"service_auth_401_redirect,omitempty"`
 
+	// authorise. Must be in the format 48h or 2h45m. Defaults to 24h.
 	// How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
 	// +kubebuilder:validation:Optional
 	SessionDuration *string `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
 
+	// (Boolean) Option to skip the authorization interstitial when using the CLI. Defaults to false.
 	// Option to skip the authorization interstitial when using the CLI. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	SkipInterstitial *bool `json:"skipInterstitial,omitempty" tf:"skip_interstitial,omitempty"`
 
+	// (String) The application type. Available values: app_launcher, bookmark, biso, dash_sso, saas, self_hosted, ssh, vnc, warp. Defaults to self_hosted.
 	// The application type. Available values: `app_launcher`, `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`, `vnc`, `warp`. Defaults to `self_hosted`.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -118,59 +319,173 @@ type ApplicationParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type CorsHeadersInitParameters struct {
+
+	// (Boolean) Value to determine whether all HTTP headers are exposed.
+	// Value to determine whether all HTTP headers are exposed.
+	AllowAllHeaders *bool `json:"allowAllHeaders,omitempty" tf:"allow_all_headers,omitempty"`
+
+	// (Boolean) Value to determine whether all methods are exposed.
+	// Value to determine whether all methods are exposed.
+	AllowAllMethods *bool `json:"allowAllMethods,omitempty" tf:"allow_all_methods,omitempty"`
+
+	// (Boolean) Value to determine whether all origins are permitted to make CORS requests.
+	// Value to determine whether all origins are permitted to make CORS requests.
+	AllowAllOrigins *bool `json:"allowAllOrigins,omitempty" tf:"allow_all_origins,omitempty"`
+
+	// (Boolean) Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+	// Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+	AllowCredentials *bool `json:"allowCredentials,omitempty" tf:"allow_credentials,omitempty"`
+
+	// (Set of String) List of HTTP headers to expose via CORS.
+	// List of HTTP headers to expose via CORS.
+	// +listType=set
+	AllowedHeaders []*string `json:"allowedHeaders,omitempty" tf:"allowed_headers,omitempty"`
+
+	// (Set of String) List of methods to expose via CORS.
+	// List of methods to expose via CORS.
+	// +listType=set
+	AllowedMethods []*string `json:"allowedMethods,omitempty" tf:"allowed_methods,omitempty"`
+
+	// (Set of String) List of origins permitted to make CORS requests.
+	// List of origins permitted to make CORS requests.
+	// +listType=set
+	AllowedOrigins []*string `json:"allowedOrigins,omitempty" tf:"allowed_origins,omitempty"`
+
+	// (Number) The maximum time a preflight request will be cached.
+	// The maximum time a preflight request will be cached.
+	MaxAge *float64 `json:"maxAge,omitempty" tf:"max_age,omitempty"`
+}
+
 type CorsHeadersObservation struct {
+
+	// (Boolean) Value to determine whether all HTTP headers are exposed.
+	// Value to determine whether all HTTP headers are exposed.
+	AllowAllHeaders *bool `json:"allowAllHeaders,omitempty" tf:"allow_all_headers,omitempty"`
+
+	// (Boolean) Value to determine whether all methods are exposed.
+	// Value to determine whether all methods are exposed.
+	AllowAllMethods *bool `json:"allowAllMethods,omitempty" tf:"allow_all_methods,omitempty"`
+
+	// (Boolean) Value to determine whether all origins are permitted to make CORS requests.
+	// Value to determine whether all origins are permitted to make CORS requests.
+	AllowAllOrigins *bool `json:"allowAllOrigins,omitempty" tf:"allow_all_origins,omitempty"`
+
+	// (Boolean) Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+	// Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+	AllowCredentials *bool `json:"allowCredentials,omitempty" tf:"allow_credentials,omitempty"`
+
+	// (Set of String) List of HTTP headers to expose via CORS.
+	// List of HTTP headers to expose via CORS.
+	// +listType=set
+	AllowedHeaders []*string `json:"allowedHeaders,omitempty" tf:"allowed_headers,omitempty"`
+
+	// (Set of String) List of methods to expose via CORS.
+	// List of methods to expose via CORS.
+	// +listType=set
+	AllowedMethods []*string `json:"allowedMethods,omitempty" tf:"allowed_methods,omitempty"`
+
+	// (Set of String) List of origins permitted to make CORS requests.
+	// List of origins permitted to make CORS requests.
+	// +listType=set
+	AllowedOrigins []*string `json:"allowedOrigins,omitempty" tf:"allowed_origins,omitempty"`
+
+	// (Number) The maximum time a preflight request will be cached.
+	// The maximum time a preflight request will be cached.
+	MaxAge *float64 `json:"maxAge,omitempty" tf:"max_age,omitempty"`
 }
 
 type CorsHeadersParameters struct {
 
+	// (Boolean) Value to determine whether all HTTP headers are exposed.
 	// Value to determine whether all HTTP headers are exposed.
 	// +kubebuilder:validation:Optional
 	AllowAllHeaders *bool `json:"allowAllHeaders,omitempty" tf:"allow_all_headers,omitempty"`
 
+	// (Boolean) Value to determine whether all methods are exposed.
 	// Value to determine whether all methods are exposed.
 	// +kubebuilder:validation:Optional
 	AllowAllMethods *bool `json:"allowAllMethods,omitempty" tf:"allow_all_methods,omitempty"`
 
+	// (Boolean) Value to determine whether all origins are permitted to make CORS requests.
 	// Value to determine whether all origins are permitted to make CORS requests.
 	// +kubebuilder:validation:Optional
 	AllowAllOrigins *bool `json:"allowAllOrigins,omitempty" tf:"allow_all_origins,omitempty"`
 
+	// (Boolean) Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
 	// Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
 	// +kubebuilder:validation:Optional
 	AllowCredentials *bool `json:"allowCredentials,omitempty" tf:"allow_credentials,omitempty"`
 
+	// (Set of String) List of HTTP headers to expose via CORS.
 	// List of HTTP headers to expose via CORS.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedHeaders []*string `json:"allowedHeaders,omitempty" tf:"allowed_headers,omitempty"`
 
+	// (Set of String) List of methods to expose via CORS.
 	// List of methods to expose via CORS.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedMethods []*string `json:"allowedMethods,omitempty" tf:"allowed_methods,omitempty"`
 
+	// (Set of String) List of origins permitted to make CORS requests.
 	// List of origins permitted to make CORS requests.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AllowedOrigins []*string `json:"allowedOrigins,omitempty" tf:"allowed_origins,omitempty"`
 
+	// (Number) The maximum time a preflight request will be cached.
 	// The maximum time a preflight request will be cached.
 	// +kubebuilder:validation:Optional
 	MaxAge *float64 `json:"maxAge,omitempty" tf:"max_age,omitempty"`
 }
 
+type SaasAppInitParameters struct {
+
+	// (String) The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+	// The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+	ConsumerServiceURL *string `json:"consumerServiceUrl,omitempty" tf:"consumer_service_url,omitempty"`
+
+	// (String) The format of the name identifier sent to the SaaS application. Defaults to email.
+	// The format of the name identifier sent to the SaaS application. Defaults to `email`.
+	NameIDFormat *string `json:"nameIdFormat,omitempty" tf:"name_id_format,omitempty"`
+
+	// (String) A globally unique name for an identity or service provider.
+	// A globally unique name for an identity or service provider.
+	SpEntityID *string `json:"spEntityId,omitempty" tf:"sp_entity_id,omitempty"`
+}
+
 type SaasAppObservation struct {
+
+	// (String) The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+	// The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+	ConsumerServiceURL *string `json:"consumerServiceUrl,omitempty" tf:"consumer_service_url,omitempty"`
+
+	// (String) The format of the name identifier sent to the SaaS application. Defaults to email.
+	// The format of the name identifier sent to the SaaS application. Defaults to `email`.
+	NameIDFormat *string `json:"nameIdFormat,omitempty" tf:"name_id_format,omitempty"`
+
+	// (String) A globally unique name for an identity or service provider.
+	// A globally unique name for an identity or service provider.
+	SpEntityID *string `json:"spEntityId,omitempty" tf:"sp_entity_id,omitempty"`
 }
 
 type SaasAppParameters struct {
 
+	// (String) The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
 	// The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ConsumerServiceURL *string `json:"consumerServiceUrl" tf:"consumer_service_url,omitempty"`
 
+	// (String) The format of the name identifier sent to the SaaS application. Defaults to email.
 	// The format of the name identifier sent to the SaaS application. Defaults to `email`.
 	// +kubebuilder:validation:Optional
 	NameIDFormat *string `json:"nameIdFormat,omitempty" tf:"name_id_format,omitempty"`
 
+	// (String) A globally unique name for an identity or service provider.
 	// A globally unique name for an identity or service provider.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	SpEntityID *string `json:"spEntityId" tf:"sp_entity_id,omitempty"`
 }
 
@@ -178,6 +493,17 @@ type SaasAppParameters struct {
 type ApplicationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ApplicationParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ApplicationInitParameters `json:"initProvider,omitempty"`
 }
 
 // ApplicationStatus defines the observed state of Application.
@@ -187,19 +513,21 @@ type ApplicationStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Application is the Schema for the Applications API. <no value>
+// Application is the Schema for the Applications API. Provides a Cloudflare Access Application resource. Access Applications are used to restrict access to a whole application using an authorisation gateway managed by Cloudflare.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Application struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ApplicationSpec   `json:"spec"`
-	Status            ApplicationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   ApplicationSpec   `json:"spec"`
+	Status ApplicationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

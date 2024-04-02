@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,59 +17,213 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BisoAdminControlsInitParameters struct {
+
+	// (Boolean) Disable copy-paste.
+	DisableCopyPaste *bool `json:"disableCopyPaste,omitempty" tf:"disable_copy_paste,omitempty"`
+
+	// (Boolean) Disable download.
+	DisableDownload *bool `json:"disableDownload,omitempty" tf:"disable_download,omitempty"`
+
+	// (Boolean) Disable keyboard usage.
+	DisableKeyboard *bool `json:"disableKeyboard,omitempty" tf:"disable_keyboard,omitempty"`
+
+	// (Boolean) Disable printing.
+	DisablePrinting *bool `json:"disablePrinting,omitempty" tf:"disable_printing,omitempty"`
+
+	// (Boolean) Disable upload.
+	DisableUpload *bool `json:"disableUpload,omitempty" tf:"disable_upload,omitempty"`
+}
+
 type BisoAdminControlsObservation struct {
+
+	// (Boolean) Disable copy-paste.
+	DisableCopyPaste *bool `json:"disableCopyPaste,omitempty" tf:"disable_copy_paste,omitempty"`
+
+	// (Boolean) Disable download.
+	DisableDownload *bool `json:"disableDownload,omitempty" tf:"disable_download,omitempty"`
+
+	// (Boolean) Disable keyboard usage.
+	DisableKeyboard *bool `json:"disableKeyboard,omitempty" tf:"disable_keyboard,omitempty"`
+
+	// (Boolean) Disable printing.
+	DisablePrinting *bool `json:"disablePrinting,omitempty" tf:"disable_printing,omitempty"`
+
+	// (Boolean) Disable upload.
+	DisableUpload *bool `json:"disableUpload,omitempty" tf:"disable_upload,omitempty"`
 }
 
 type BisoAdminControlsParameters struct {
 
+	// (Boolean) Disable copy-paste.
 	// +kubebuilder:validation:Optional
 	DisableCopyPaste *bool `json:"disableCopyPaste,omitempty" tf:"disable_copy_paste,omitempty"`
 
+	// (Boolean) Disable download.
 	// +kubebuilder:validation:Optional
 	DisableDownload *bool `json:"disableDownload,omitempty" tf:"disable_download,omitempty"`
 
+	// (Boolean) Disable keyboard usage.
 	// +kubebuilder:validation:Optional
 	DisableKeyboard *bool `json:"disableKeyboard,omitempty" tf:"disable_keyboard,omitempty"`
 
+	// (Boolean) Disable printing.
 	// +kubebuilder:validation:Optional
 	DisablePrinting *bool `json:"disablePrinting,omitempty" tf:"disable_printing,omitempty"`
 
+	// (Boolean) Disable upload.
 	// +kubebuilder:validation:Optional
 	DisableUpload *bool `json:"disableUpload,omitempty" tf:"disable_upload,omitempty"`
 }
 
+type CheckSessionInitParameters struct {
+
+	// Configure how fresh the session needs to be to be considered valid.
+	Duration *string `json:"duration,omitempty" tf:"duration,omitempty"`
+
+	// Enable session enforcement for this rule.
+	Enforce *bool `json:"enforce,omitempty" tf:"enforce,omitempty"`
+}
+
 type CheckSessionObservation struct {
+
+	// Configure how fresh the session needs to be to be considered valid.
+	Duration *string `json:"duration,omitempty" tf:"duration,omitempty"`
+
+	// Enable session enforcement for this rule.
+	Enforce *bool `json:"enforce,omitempty" tf:"enforce,omitempty"`
 }
 
 type CheckSessionParameters struct {
 
-	// +kubebuilder:validation:Required
+	// Configure how fresh the session needs to be to be considered valid.
+	// +kubebuilder:validation:Optional
 	Duration *string `json:"duration" tf:"duration,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// Enable session enforcement for this rule.
+	// +kubebuilder:validation:Optional
 	Enforce *bool `json:"enforce" tf:"enforce,omitempty"`
 }
 
+type L4OverrideInitParameters struct {
+
+	// Override IP to forward traffic to.
+	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// Override Port to forward traffic to.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
+}
+
 type L4OverrideObservation struct {
+
+	// Override IP to forward traffic to.
+	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// Override Port to forward traffic to.
+	Port *float64 `json:"port,omitempty" tf:"port,omitempty"`
 }
 
 type L4OverrideParameters struct {
 
-	// +kubebuilder:validation:Required
+	// Override IP to forward traffic to.
+	// +kubebuilder:validation:Optional
 	IP *string `json:"ip" tf:"ip,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// Override Port to forward traffic to.
+	// +kubebuilder:validation:Optional
 	Port *float64 `json:"port" tf:"port,omitempty"`
 }
 
+type RuleInitParameters struct {
+
+	// The account to which the teams rule should be added.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// The action executed by matched teams rule.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// The description of the teams rule.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The wirefilter expression to be used for device_posture check matching.
+	DevicePosture *string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// Indicator of rule enablement.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// The protocol or layer to evaluate the traffic and identity expressions.
+	Filters []*string `json:"filters,omitempty" tf:"filters,omitempty"`
+
+	// The wirefilter expression to be used for identity matching.
+	Identity *string `json:"identity,omitempty" tf:"identity,omitempty"`
+
+	// The name of the teams rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The evaluation precedence of the teams rule.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// Additional rule settings (refer to the nested schema).
+	RuleSettings []RuleSettingsInitParameters `json:"ruleSettings,omitempty" tf:"rule_settings,omitempty"`
+
+	// The wirefilter expression to be used for traffic matching.
+	Traffic *string `json:"traffic,omitempty" tf:"traffic,omitempty"`
+}
+
 type RuleObservation struct {
+
+	// The account to which the teams rule should be added.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The action executed by matched teams rule.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// The description of the teams rule.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The wirefilter expression to be used for device_posture check matching.
+	DevicePosture *string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// Indicator of rule enablement.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// The protocol or layer to evaluate the traffic and identity expressions.
+	Filters []*string `json:"filters,omitempty" tf:"filters,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The wirefilter expression to be used for identity matching.
+	Identity *string `json:"identity,omitempty" tf:"identity,omitempty"`
+
+	// The name of the teams rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The evaluation precedence of the teams rule.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// Additional rule settings (refer to the nested schema).
+	RuleSettings []RuleSettingsObservation `json:"ruleSettings,omitempty" tf:"rule_settings,omitempty"`
+
+	// The wirefilter expression to be used for traffic matching.
+	Traffic *string `json:"traffic,omitempty" tf:"traffic,omitempty"`
 
 	Version *float64 `json:"version,omitempty" tf:"version,omitempty"`
 }
 
 type RuleParameters struct {
 
+	// The account to which the teams rule should be added.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -79,66 +237,145 @@ type RuleParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Required
-	Action *string `json:"action" tf:"action,omitempty"`
+	// The action executed by matched teams rule.
+	// +kubebuilder:validation:Optional
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Description *string `json:"description" tf:"description,omitempty"`
+	// The description of the teams rule.
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// The wirefilter expression to be used for device_posture check matching.
 	// +kubebuilder:validation:Optional
 	DevicePosture *string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
 
+	// Indicator of rule enablement.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// The protocol or layer to evaluate the traffic and identity expressions.
 	// +kubebuilder:validation:Optional
 	Filters []*string `json:"filters,omitempty" tf:"filters,omitempty"`
 
+	// The wirefilter expression to be used for identity matching.
 	// +kubebuilder:validation:Optional
 	Identity *string `json:"identity,omitempty" tf:"identity,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// The name of the teams rule.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Precedence *float64 `json:"precedence" tf:"precedence,omitempty"`
+	// The evaluation precedence of the teams rule.
+	// +kubebuilder:validation:Optional
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
 
+	// Additional rule settings (refer to the nested schema).
 	// +kubebuilder:validation:Optional
 	RuleSettings []RuleSettingsParameters `json:"ruleSettings,omitempty" tf:"rule_settings,omitempty"`
 
+	// The wirefilter expression to be used for traffic matching.
 	// +kubebuilder:validation:Optional
 	Traffic *string `json:"traffic,omitempty" tf:"traffic,omitempty"`
 }
 
+type RuleSettingsInitParameters struct {
+
+	// Add custom headers to allowed requests in the form of key-value pairs.
+	// +mapType=granular
+	AddHeaders map[string]*string `json:"addHeaders,omitempty" tf:"add_headers,omitempty"`
+
+	// Configure how browser isolation behaves (refer to the nested schema).
+	BisoAdminControls []BisoAdminControlsInitParameters `json:"bisoAdminControls,omitempty" tf:"biso_admin_controls,omitempty"`
+
+	// Indicator of block page enablement.
+	BlockPageEnabled *bool `json:"blockPageEnabled,omitempty" tf:"block_page_enabled,omitempty"`
+
+	// The displayed reason for a user being blocked.
+	BlockPageReason *string `json:"blockPageReason,omitempty" tf:"block_page_reason,omitempty"`
+
+	// Configure how session check behaves (refer to the nested schema).
+	CheckSession []CheckSessionInitParameters `json:"checkSession,omitempty" tf:"check_session,omitempty"`
+
+	// Disable DNSSEC validation (must be Allow rule)
+	InsecureDisableDNSSECValidation *bool `json:"insecureDisableDnssecValidation,omitempty" tf:"insecure_disable_dnssec_validation,omitempty"`
+
+	// Settings to forward layer 4 traffic (refer to the nested schema).
+	L4Override []L4OverrideInitParameters `json:"l4override,omitempty" tf:"l4override,omitempty"`
+
+	// The host to override matching DNS queries with.
+	OverrideHost *string `json:"overrideHost,omitempty" tf:"override_host,omitempty"`
+
+	// The IPs to override matching DNS queries with.
+	OverrideIps []*string `json:"overrideIps,omitempty" tf:"override_ips,omitempty"`
+}
+
 type RuleSettingsObservation struct {
+
+	// Add custom headers to allowed requests in the form of key-value pairs.
+	// +mapType=granular
+	AddHeaders map[string]*string `json:"addHeaders,omitempty" tf:"add_headers,omitempty"`
+
+	// Configure how browser isolation behaves (refer to the nested schema).
+	BisoAdminControls []BisoAdminControlsObservation `json:"bisoAdminControls,omitempty" tf:"biso_admin_controls,omitempty"`
+
+	// Indicator of block page enablement.
+	BlockPageEnabled *bool `json:"blockPageEnabled,omitempty" tf:"block_page_enabled,omitempty"`
+
+	// The displayed reason for a user being blocked.
+	BlockPageReason *string `json:"blockPageReason,omitempty" tf:"block_page_reason,omitempty"`
+
+	// Configure how session check behaves (refer to the nested schema).
+	CheckSession []CheckSessionObservation `json:"checkSession,omitempty" tf:"check_session,omitempty"`
+
+	// Disable DNSSEC validation (must be Allow rule)
+	InsecureDisableDNSSECValidation *bool `json:"insecureDisableDnssecValidation,omitempty" tf:"insecure_disable_dnssec_validation,omitempty"`
+
+	// Settings to forward layer 4 traffic (refer to the nested schema).
+	L4Override []L4OverrideObservation `json:"l4override,omitempty" tf:"l4override,omitempty"`
+
+	// The host to override matching DNS queries with.
+	OverrideHost *string `json:"overrideHost,omitempty" tf:"override_host,omitempty"`
+
+	// The IPs to override matching DNS queries with.
+	OverrideIps []*string `json:"overrideIps,omitempty" tf:"override_ips,omitempty"`
 }
 
 type RuleSettingsParameters struct {
 
+	// Add custom headers to allowed requests in the form of key-value pairs.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	AddHeaders map[string]*string `json:"addHeaders,omitempty" tf:"add_headers,omitempty"`
 
+	// Configure how browser isolation behaves (refer to the nested schema).
 	// +kubebuilder:validation:Optional
 	BisoAdminControls []BisoAdminControlsParameters `json:"bisoAdminControls,omitempty" tf:"biso_admin_controls,omitempty"`
 
+	// Indicator of block page enablement.
 	// +kubebuilder:validation:Optional
 	BlockPageEnabled *bool `json:"blockPageEnabled,omitempty" tf:"block_page_enabled,omitempty"`
 
+	// The displayed reason for a user being blocked.
 	// +kubebuilder:validation:Optional
 	BlockPageReason *string `json:"blockPageReason,omitempty" tf:"block_page_reason,omitempty"`
 
+	// Configure how session check behaves (refer to the nested schema).
 	// +kubebuilder:validation:Optional
 	CheckSession []CheckSessionParameters `json:"checkSession,omitempty" tf:"check_session,omitempty"`
 
+	// Disable DNSSEC validation (must be Allow rule)
 	// +kubebuilder:validation:Optional
 	InsecureDisableDNSSECValidation *bool `json:"insecureDisableDnssecValidation,omitempty" tf:"insecure_disable_dnssec_validation,omitempty"`
 
+	// Settings to forward layer 4 traffic (refer to the nested schema).
 	// +kubebuilder:validation:Optional
 	L4Override []L4OverrideParameters `json:"l4override,omitempty" tf:"l4override,omitempty"`
 
+	// The host to override matching DNS queries with.
 	// +kubebuilder:validation:Optional
 	OverrideHost *string `json:"overrideHost,omitempty" tf:"override_host,omitempty"`
 
+	// The IPs to override matching DNS queries with.
 	// +kubebuilder:validation:Optional
 	OverrideIps []*string `json:"overrideIps,omitempty" tf:"override_ips,omitempty"`
 }
@@ -147,6 +384,17 @@ type RuleSettingsParameters struct {
 type RuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RuleParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // RuleStatus defines the observed state of Rule.
@@ -156,19 +404,24 @@ type RuleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Rule is the Schema for the Rules API. <no value>
+// Rule is the Schema for the Rules API. Provides a Cloudflare Teams rule resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Rule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RuleSpec   `json:"spec"`
-	Status            RuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.action) || (has(self.initProvider) && has(self.initProvider.action))",message="spec.forProvider.action is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.description) || (has(self.initProvider) && has(self.initProvider.description))",message="spec.forProvider.description is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.precedence) || (has(self.initProvider) && has(self.initProvider.precedence))",message="spec.forProvider.precedence is a required parameter"
+	Spec   RuleSpec   `json:"spec"`
+	Status RuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -1,0 +1,21 @@
+apiVersion: ruleset.cloudflare.upbound.io/v1alpha1
+kind: Ruleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ruleset/v1alpha1/ruleset
+  labels:
+    testing.upbound.io/example-name: magic_transit_example
+  name: magic-transit-example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: example magic transit ruleset description
+    kind: root
+    name: account magic transit
+    phase: magic_transit
+    rules:
+    - action: allow
+      description: Allow TCP Ephemeral Ports
+      expression: tcp.dstport in { 32768..65535 }

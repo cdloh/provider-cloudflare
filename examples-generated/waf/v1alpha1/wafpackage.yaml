@@ -1,0 +1,16 @@
+apiVersion: waf.cloudflare.upbound.io/v1alpha1
+kind: WAFPackage
+metadata:
+  annotations:
+    meta.upbound.io/example-id: waf/v1alpha1/wafpackage
+  labels:
+    testing.upbound.io/example-name: owasp
+  name: owasp
+spec:
+  forProvider:
+    actionMode: simulate
+    packageId: a25a9a7e9c00afc1fb2e0245519d725b
+    sensitivity: medium
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

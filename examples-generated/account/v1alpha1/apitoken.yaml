@@ -1,0 +1,25 @@
+apiVersion: account.cloudflare.upbound.io/v1alpha1
+kind: APIToken
+metadata:
+  annotations:
+    meta.upbound.io/example-id: account/v1alpha1/apitoken
+  labels:
+    testing.upbound.io/example-name: api_token_create
+  name: api-token-create
+spec:
+  forProvider:
+    condition:
+    - requestIp:
+      - in:
+        - 192.0.2.1/32
+        notIn:
+        - 198.51.100.1/32
+    name: api_token_create
+    policy:
+    - expires_on: "2020-01-01T00:00:00Z"
+      not_before: "2018-07-01T05:20:00Z"
+      permissionGroups:
+      - ${data.cloudflare_api_token_permission_groups.all.permissions["API Tokens
+        Write"]}
+      resources:
+        com.cloudflare.api.user.${var.user_id}: '*'

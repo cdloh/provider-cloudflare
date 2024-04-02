@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: rules.page.cloudflare.upbound.io
 spec:
   group: page.cloudflare.upbound.io
@@ -35,17 +34,23 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Rule is the Schema for the Rules API. <no value>
+        description: Rule is the Schema for the Rules API. Provides a Cloudflare page
+          rule resource.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +59,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,207 +74,316 @@ spec:
               forProvider:
                 properties:
                   actions:
+                    description: The actions taken by the page rule, options given
+                      below.
                     items:
                       properties:
                         alwaysUseHttps:
-                          description: Defaults to `false`.
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
                           type: boolean
                         automaticHttpsRewrites:
+                          description: Whether this action is "on" or "off".
                           type: string
                         browserCacheTtl:
+                          description: The Time To Live for the browser cache. 0 means
+                            'Respect Existing Headers'
                           type: string
                         browserCheck:
+                          description: Whether this action is "on" or "off".
                           type: string
                         bypassCacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            bypass cache the page.
                           type: string
                         cacheByDeviceType:
+                          description: Whether this action is "on" or "off".
                           type: string
                         cacheDeceptionArmor:
+                          description: Whether this action is "on" or "off".
                           type: string
                         cacheKeyFields:
+                          description: Controls how Cloudflare creates Cache Keys
+                            used to identify files in cache. See below for full description.
                           items:
                             properties:
                               cookie:
+                                description: 'Controls what cookies go into Cache
+                                  Key:'
                                 items:
                                   properties:
                                     checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: set
                                     include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: set
                                   type: object
                                 type: array
                               header:
+                                description: 'Controls what HTTP headers go into Cache
+                                  Key:'
                                 items:
                                   properties:
                                     checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: set
                                     exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: set
                                     include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: set
                                   type: object
                                 type: array
                               host:
+                                description: 'Controls which Host header goes into
+                                  Cache Key:'
                                 items:
                                   properties:
                                     resolved:
-                                      description: Defaults to `false`.
+                                      description: |-
+                                        false (default) - includes the Host header in the HTTP request sent to the origin; true - includes the Host header that was resolved to get the origin IP for the request (e.g. changed with Resolve Override Page Rule).
+                                        Defaults to `false`.
                                       type: boolean
                                   type: object
                                 type: array
                               queryString:
+                                description: Controls which URL query string parameters
+                                  go into the Cache Key.
                                 items:
                                   properties:
                                     exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: set
                                     ignore:
+                                      description: false (default) - all query string
+                                        parameters are used for Cache Key, unless
+                                        explicitly excluded; true - all query string
+                                        parameters are ignored; value should be false
+                                        if any of exclude or include is non-empty.
                                       type: boolean
                                     include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
                                       items:
                                         type: string
                                       type: array
+                                      x-kubernetes-list-type: set
                                   type: object
                                 type: array
                               user:
+                                description: Controls which end user-related features
+                                  go into the Cache Key.
                                 items:
                                   properties:
                                     deviceType:
+                                      description: true - classifies a request as
+                                        “mobile”, “desktop”, or “tablet” based on
+                                        the User Agent; defaults to false.
                                       type: boolean
                                     geo:
+                                      description: true - includes the client’s country,
+                                        derived from the IP address; defaults to false.
                                       type: boolean
                                     lang:
+                                      description: true - includes the first language
+                                        code contained in the Accept-Language header
+                                        sent by the client; defaults to false.
                                       type: boolean
                                   type: object
                                 type: array
-                            required:
-                            - cookie
-                            - header
-                            - host
-                            - queryString
-                            - user
                             type: object
                           type: array
                         cacheLevel:
+                          description: Whether to set the cache level to "bypass",
+                            "basic", "simplified", "aggressive", or "cache_everything".
                           type: string
                         cacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            cache the page.
                           type: string
                         cacheTtlByStatus:
+                          description: Set cache TTL based on the response status
+                            from the origin web server. Can be specified multiple
+                            times. See below for full description.
                           items:
                             properties:
                               codes:
+                                description: A HTTP code (e.g. 404) or range of codes
+                                  (e.g. 400-499)
                                 type: string
                               ttl:
+                                description: Duration a resource lives in the Cloudflare
+                                  cache.
                                 type: number
-                            required:
-                            - codes
-                            - ttl
                             type: object
                           type: array
                         disableApps:
-                          description: Defaults to `false`.
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
                           type: boolean
                         disablePerformance:
-                          description: Defaults to `false`.
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
                           type: boolean
                         disableRailgun:
-                          description: Defaults to `false`.
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
                           type: boolean
                         disableSecurity:
-                          description: Defaults to `false`.
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
                           type: boolean
                         disableZaraz:
-                          description: Defaults to `false`.
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
                           type: boolean
                         edgeCacheTtl:
+                          description: The Time To Live for the edge cache.
                           type: number
                         emailObfuscation:
+                          description: Whether this action is "on" or "off".
                           type: string
                         explicitCacheControl:
+                          description: Whether origin Cache-Control action is "on"
+                            or "off".
                           type: string
                         forwardingUrl:
+                          description: The URL to forward to, and with what status.
+                            See below.
                           items:
                             properties:
                               statusCode:
+                                description: The status code to use for the redirection.
                                 type: number
                               url:
+                                description: The URL to which the page rule should
+                                  forward.
                                 type: string
-                            required:
-                            - statusCode
-                            - url
                             type: object
                           type: array
                         hostHeaderOverride:
+                          description: Value of the Host header to send.
                           type: string
                         ipGeolocation:
+                          description: Whether this action is "on" or "off".
                           type: string
                         minify:
+                          description: The configuration for HTML, CSS and JS minification.
+                            See below for full list of options.
                           items:
                             properties:
                               css:
+                                description: Whether CSS should be minified. Valid
+                                  values are "on" or "off".
                                 type: string
                               html:
+                                description: Whether HTML should be minified. Valid
+                                  values are "on" or "off".
                                 type: string
                               js:
+                                description: Whether Javascript should be minified.
+                                  Valid values are "on" or "off".
                                 type: string
-                            required:
-                            - css
-                            - html
-                            - js
                             type: object
                           type: array
                         mirage:
+                          description: Whether this action is "on" or "off".
                           type: string
                         opportunisticEncryption:
+                          description: Whether this action is "on" or "off".
                           type: string
                         originErrorPagePassThru:
+                          description: Whether this action is "on" or "off".
                           type: string
                         polish:
+                          description: Whether this action is "off", "lossless" or
+                            "lossy".
                           type: string
                         resolveOverride:
+                          description: Overridden origin server name.
                           type: string
                         respectStrongEtag:
+                          description: Whether this action is "on" or "off".
                           type: string
                         responseBuffering:
+                          description: Whether this action is "on" or "off".
                           type: string
                         rocketLoader:
+                          description: Whether to set the rocket loader to "on", "off".
                           type: string
                         securityLevel:
+                          description: Whether to set the security level to "off",
+                            "essentially_off", "low", "medium", "high", or "under_attack".
                           type: string
                         serverSideExclude:
+                          description: Whether this action is "on" or "off".
                           type: string
                         sortQueryStringForCache:
+                          description: Whether this action is "on" or "off".
                           type: string
                         ssl:
+                          description: Whether to set the SSL mode to "off", "flexible",
+                            "full", "strict", or "origin_pull".
                           type: string
                         trueClientIpHeader:
+                          description: Whether this action is "on" or "off".
                           type: string
                         waf:
+                          description: Whether this action is "on" or "off".
                           type: string
                       type: object
                     type: array
                   priority:
-                    description: Defaults to `1`.
+                    description: |-
+                      The priority of the page rule among others for this target, the higher the number the higher the priority as per API documentation.
+                      Defaults to `1`.
                     type: number
                   status:
-                    description: Defaults to `active`.
+                    description: |-
+                      Whether the page rule is active or disabled.
+                      Defaults to `active`.
                     type: string
                   target:
+                    description: The URL pattern to target with the page rule.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: |-
+                      The DNS zone ID to which the page rule should be added.
+                      The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -277,21 +396,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -304,8 +423,9 @@ spec:
                     description: Selector for a Zone in zone to populate zoneId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -318,117 +438,355 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
                             type: string
                         type: object
                     type: object
-                required:
-                - actions
-                - target
                 type: object
-              providerConfigRef:
-                default:
-                  name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
-                  name:
-                    description: Name of the referenced object.
+                  actions:
+                    description: The actions taken by the page rule, options given
+                      below.
+                    items:
+                      properties:
+                        alwaysUseHttps:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        automaticHttpsRewrites:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        browserCacheTtl:
+                          description: The Time To Live for the browser cache. 0 means
+                            'Respect Existing Headers'
+                          type: string
+                        browserCheck:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        bypassCacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            bypass cache the page.
+                          type: string
+                        cacheByDeviceType:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheDeceptionArmor:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheKeyFields:
+                          description: Controls how Cloudflare creates Cache Keys
+                            used to identify files in cache. See below for full description.
+                          items:
+                            properties:
+                              cookie:
+                                description: 'Controls what cookies go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                  type: object
+                                type: array
+                              header:
+                                description: 'Controls what HTTP headers go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                  type: object
+                                type: array
+                              host:
+                                description: 'Controls which Host header goes into
+                                  Cache Key:'
+                                items:
+                                  properties:
+                                    resolved:
+                                      description: |-
+                                        false (default) - includes the Host header in the HTTP request sent to the origin; true - includes the Host header that was resolved to get the origin IP for the request (e.g. changed with Resolve Override Page Rule).
+                                        Defaults to `false`.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              queryString:
+                                description: Controls which URL query string parameters
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    ignore:
+                                      description: false (default) - all query string
+                                        parameters are used for Cache Key, unless
+                                        explicitly excluded; true - all query string
+                                        parameters are ignored; value should be false
+                                        if any of exclude or include is non-empty.
+                                      type: boolean
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                  type: object
+                                type: array
+                              user:
+                                description: Controls which end user-related features
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    deviceType:
+                                      description: true - classifies a request as
+                                        “mobile”, “desktop”, or “tablet” based on
+                                        the User Agent; defaults to false.
+                                      type: boolean
+                                    geo:
+                                      description: true - includes the client’s country,
+                                        derived from the IP address; defaults to false.
+                                      type: boolean
+                                    lang:
+                                      description: true - includes the first language
+                                        code contained in the Accept-Language header
+                                        sent by the client; defaults to false.
+                                      type: boolean
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        cacheLevel:
+                          description: Whether to set the cache level to "bypass",
+                            "basic", "simplified", "aggressive", or "cache_everything".
+                          type: string
+                        cacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            cache the page.
+                          type: string
+                        cacheTtlByStatus:
+                          description: Set cache TTL based on the response status
+                            from the origin web server. Can be specified multiple
+                            times. See below for full description.
+                          items:
+                            properties:
+                              codes:
+                                description: A HTTP code (e.g. 404) or range of codes
+                                  (e.g. 400-499)
+                                type: string
+                              ttl:
+                                description: Duration a resource lives in the Cloudflare
+                                  cache.
+                                type: number
+                            type: object
+                          type: array
+                        disableApps:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disablePerformance:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disableRailgun:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disableSecurity:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disableZaraz:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        edgeCacheTtl:
+                          description: The Time To Live for the edge cache.
+                          type: number
+                        emailObfuscation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        explicitCacheControl:
+                          description: Whether origin Cache-Control action is "on"
+                            or "off".
+                          type: string
+                        forwardingUrl:
+                          description: The URL to forward to, and with what status.
+                            See below.
+                          items:
+                            properties:
+                              statusCode:
+                                description: The status code to use for the redirection.
+                                type: number
+                              url:
+                                description: The URL to which the page rule should
+                                  forward.
+                                type: string
+                            type: object
+                          type: array
+                        hostHeaderOverride:
+                          description: Value of the Host header to send.
+                          type: string
+                        ipGeolocation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        minify:
+                          description: The configuration for HTML, CSS and JS minification.
+                            See below for full list of options.
+                          items:
+                            properties:
+                              css:
+                                description: Whether CSS should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              html:
+                                description: Whether HTML should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              js:
+                                description: Whether Javascript should be minified.
+                                  Valid values are "on" or "off".
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        opportunisticEncryption:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        originErrorPagePassThru:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        polish:
+                          description: Whether this action is "off", "lossless" or
+                            "lossy".
+                          type: string
+                        resolveOverride:
+                          description: Overridden origin server name.
+                          type: string
+                        respectStrongEtag:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        responseBuffering:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        rocketLoader:
+                          description: Whether to set the rocket loader to "on", "off".
+                          type: string
+                        securityLevel:
+                          description: Whether to set the security level to "off",
+                            "essentially_off", "low", "medium", "high", or "under_attack".
+                          type: string
+                        serverSideExclude:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        sortQueryStringForCache:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        ssl:
+                          description: Whether to set the SSL mode to "off", "flexible",
+                            "full", "strict", or "origin_pull".
+                          type: string
+                        trueClientIpHeader:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        waf:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                      type: object
+                    type: array
+                  priority:
+                    description: |-
+                      The priority of the page rule among others for this target, the higher the number the higher the priority as per API documentation.
+                      Defaults to `1`.
+                    type: number
+                  status:
+                    description: |-
+                      Whether the page rule is active or disabled.
+                      Defaults to `active`.
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
+                  target:
+                    description: The URL pattern to target with the page rule.
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                  zoneId:
+                    description: |-
+                      The DNS zone ID to which the page rule should be added.
+                      The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+                    type: string
+                  zoneIdRef:
+                    description: Reference to a Zone in zone to populate zoneId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -438,21 +796,174 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  zoneIdSelector:
+                    description: Selector for a Zone in zone to populate zoneId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -467,21 +978,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -492,14 +1004,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -514,12 +1027,334 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.actions is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.actions)
+                || (has(self.initProvider) && has(self.initProvider.actions))'
+            - message: spec.forProvider.target is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.target)
+                || (has(self.initProvider) && has(self.initProvider.target))'
           status:
             description: RuleStatus defines the observed state of Rule.
             properties:
               atProvider:
                 properties:
+                  actions:
+                    description: The actions taken by the page rule, options given
+                      below.
+                    items:
+                      properties:
+                        alwaysUseHttps:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        automaticHttpsRewrites:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        browserCacheTtl:
+                          description: The Time To Live for the browser cache. 0 means
+                            'Respect Existing Headers'
+                          type: string
+                        browserCheck:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        bypassCacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            bypass cache the page.
+                          type: string
+                        cacheByDeviceType:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheDeceptionArmor:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        cacheKeyFields:
+                          description: Controls how Cloudflare creates Cache Keys
+                            used to identify files in cache. See below for full description.
+                          items:
+                            properties:
+                              cookie:
+                                description: 'Controls what cookies go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                  type: object
+                                type: array
+                              header:
+                                description: 'Controls what HTTP headers go into Cache
+                                  Key:'
+                                items:
+                                  properties:
+                                    checkPresence:
+                                      description: Check for presence of specified
+                                        cookies, without including their actual values.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                  type: object
+                                type: array
+                              host:
+                                description: 'Controls which Host header goes into
+                                  Cache Key:'
+                                items:
+                                  properties:
+                                    resolved:
+                                      description: |-
+                                        false (default) - includes the Host header in the HTTP request sent to the origin; true - includes the Host header that was resolved to get the origin IP for the request (e.g. changed with Resolve Override Page Rule).
+                                        Defaults to `false`.
+                                      type: boolean
+                                  type: object
+                                type: array
+                              queryString:
+                                description: Controls which URL query string parameters
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    exclude:
+                                      description: Exclude these HTTP headers from
+                                        Cache Key. Currently, only the Origin header
+                                        can be excluded.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    ignore:
+                                      description: false (default) - all query string
+                                        parameters are used for Cache Key, unless
+                                        explicitly excluded; true - all query string
+                                        parameters are ignored; value should be false
+                                        if any of exclude or include is non-empty.
+                                      type: boolean
+                                    include:
+                                      description: Use values of specified cookies
+                                        in Cache Key.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                  type: object
+                                type: array
+                              user:
+                                description: Controls which end user-related features
+                                  go into the Cache Key.
+                                items:
+                                  properties:
+                                    deviceType:
+                                      description: true - classifies a request as
+                                        “mobile”, “desktop”, or “tablet” based on
+                                        the User Agent; defaults to false.
+                                      type: boolean
+                                    geo:
+                                      description: true - includes the client’s country,
+                                        derived from the IP address; defaults to false.
+                                      type: boolean
+                                    lang:
+                                      description: true - includes the first language
+                                        code contained in the Accept-Language header
+                                        sent by the client; defaults to false.
+                                      type: boolean
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        cacheLevel:
+                          description: Whether to set the cache level to "bypass",
+                            "basic", "simplified", "aggressive", or "cache_everything".
+                          type: string
+                        cacheOnCookie:
+                          description: String value of cookie name to conditionally
+                            cache the page.
+                          type: string
+                        cacheTtlByStatus:
+                          description: Set cache TTL based on the response status
+                            from the origin web server. Can be specified multiple
+                            times. See below for full description.
+                          items:
+                            properties:
+                              codes:
+                                description: A HTTP code (e.g. 404) or range of codes
+                                  (e.g. 400-499)
+                                type: string
+                              ttl:
+                                description: Duration a resource lives in the Cloudflare
+                                  cache.
+                                type: number
+                            type: object
+                          type: array
+                        disableApps:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disablePerformance:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disableRailgun:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disableSecurity:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        disableZaraz:
+                          description: |-
+                            Boolean of whether this action is enabled. Default: false.
+                            Defaults to `false`.
+                          type: boolean
+                        edgeCacheTtl:
+                          description: The Time To Live for the edge cache.
+                          type: number
+                        emailObfuscation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        explicitCacheControl:
+                          description: Whether origin Cache-Control action is "on"
+                            or "off".
+                          type: string
+                        forwardingUrl:
+                          description: The URL to forward to, and with what status.
+                            See below.
+                          items:
+                            properties:
+                              statusCode:
+                                description: The status code to use for the redirection.
+                                type: number
+                              url:
+                                description: The URL to which the page rule should
+                                  forward.
+                                type: string
+                            type: object
+                          type: array
+                        hostHeaderOverride:
+                          description: Value of the Host header to send.
+                          type: string
+                        ipGeolocation:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        minify:
+                          description: The configuration for HTML, CSS and JS minification.
+                            See below for full list of options.
+                          items:
+                            properties:
+                              css:
+                                description: Whether CSS should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              html:
+                                description: Whether HTML should be minified. Valid
+                                  values are "on" or "off".
+                                type: string
+                              js:
+                                description: Whether Javascript should be minified.
+                                  Valid values are "on" or "off".
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        opportunisticEncryption:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        originErrorPagePassThru:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        polish:
+                          description: Whether this action is "off", "lossless" or
+                            "lossy".
+                          type: string
+                        resolveOverride:
+                          description: Overridden origin server name.
+                          type: string
+                        respectStrongEtag:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        responseBuffering:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        rocketLoader:
+                          description: Whether to set the rocket loader to "on", "off".
+                          type: string
+                        securityLevel:
+                          description: Whether to set the security level to "off",
+                            "essentially_off", "low", "medium", "high", or "under_attack".
+                          type: string
+                        serverSideExclude:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        sortQueryStringForCache:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        ssl:
+                          description: Whether to set the SSL mode to "off", "flexible",
+                            "full", "strict", or "origin_pull".
+                          type: string
+                        trueClientIpHeader:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                        waf:
+                          description: Whether this action is "on" or "off".
+                          type: string
+                      type: object
+                    type: array
                   id:
+                    description: The page rule ID.
+                    type: string
+                  priority:
+                    description: |-
+                      The priority of the page rule among others for this target, the higher the number the higher the priority as per API documentation.
+                      Defaults to `1`.
+                    type: number
+                  status:
+                    description: |-
+                      Whether the page rule is active or disabled.
+                      Defaults to `active`.
+                    type: string
+                  target:
+                    description: The URL pattern to target with the page rule.
+                    type: string
+                  zoneId:
+                    description: |-
+                      The DNS zone ID to which the page rule should be added.
+                      The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
                     type: string
                 type: object
               conditions:
@@ -528,13 +1363,15 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
                     reason:
                       description: A Reason for this condition's last transition from
@@ -545,8 +1382,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -555,6 +1393,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
             type: object
         required:
         - spec
@@ -563,9 +1404,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

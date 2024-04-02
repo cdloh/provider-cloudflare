@@ -1,0 +1,39 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: FallbackDomain
+metadata:
+  annotations:
+    meta.upbound.io/example-id: warp/v1alpha1/fallbackdomain
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    domains:
+    - description: Example domain
+      dnsServer:
+      - 192.0.2.0
+      - 192.0.2.1
+      suffix: example.com
+
+---
+
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: DeviceSettingsPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: warp/v1alpha1/fallbackdomain
+  labels:
+    testing.upbound.io/example-name: developer_warp_policy
+  name: developer-warp-policy
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    match: any(identity.groups.name[*] in {"Developers"})
+    name: Developers
+    precedence: 10
+    switchLocked: true

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,59 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type IPPrefixInitParameters struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (String) Whether or not the prefix shall be announced. A prefix can be activated or deactivated once every 15 minutes (attempting more regular updates will trigger rate limiting). Available values: on, off.
+	// Whether or not the prefix shall be announced. A prefix can be activated or deactivated once every 15 minutes (attempting more regular updates will trigger rate limiting). Available values: `on`, `off`.
+	Advertisement *string `json:"advertisement,omitempty" tf:"advertisement,omitempty"`
+
+	// (String) Description of the BYO IP prefix.
+	// Description of the BYO IP prefix.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// Your-Own-IP prefix ID. Modifying this attribute will force creation of a new resource.
+	// The assigned Bring-Your-Own-IP prefix ID. **Modifying this attribute will force creation of a new resource.**
+	PrefixID *string `json:"prefixId,omitempty" tf:"prefix_id,omitempty"`
+}
+
 type IPPrefixObservation struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String) Whether or not the prefix shall be announced. A prefix can be activated or deactivated once every 15 minutes (attempting more regular updates will trigger rate limiting). Available values: on, off.
+	// Whether or not the prefix shall be announced. A prefix can be activated or deactivated once every 15 minutes (attempting more regular updates will trigger rate limiting). Available values: `on`, `off`.
+	Advertisement *string `json:"advertisement,omitempty" tf:"advertisement,omitempty"`
+
+	// (String) Description of the BYO IP prefix.
+	// Description of the BYO IP prefix.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Your-Own-IP prefix ID. Modifying this attribute will force creation of a new resource.
+	// The assigned Bring-Your-Own-IP prefix ID. **Modifying this attribute will force creation of a new resource.**
+	PrefixID *string `json:"prefixId,omitempty" tf:"prefix_id,omitempty"`
 }
 
 type IPPrefixParameters struct {
 
+	// (String) The account identifier to target for the resource.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,23 +83,37 @@ type IPPrefixParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (String) Whether or not the prefix shall be announced. A prefix can be activated or deactivated once every 15 minutes (attempting more regular updates will trigger rate limiting). Available values: on, off.
 	// Whether or not the prefix shall be announced. A prefix can be activated or deactivated once every 15 minutes (attempting more regular updates will trigger rate limiting). Available values: `on`, `off`.
 	// +kubebuilder:validation:Optional
 	Advertisement *string `json:"advertisement,omitempty" tf:"advertisement,omitempty"`
 
+	// (String) Description of the BYO IP prefix.
 	// Description of the BYO IP prefix.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// Your-Own-IP prefix ID. Modifying this attribute will force creation of a new resource.
 	// The assigned Bring-Your-Own-IP prefix ID. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	PrefixID *string `json:"prefixId" tf:"prefix_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	PrefixID *string `json:"prefixId,omitempty" tf:"prefix_id,omitempty"`
 }
 
 // IPPrefixSpec defines the desired state of IPPrefix
 type IPPrefixSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     IPPrefixParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider IPPrefixInitParameters `json:"initProvider,omitempty"`
 }
 
 // IPPrefixStatus defines the observed state of IPPrefix.
@@ -58,19 +123,21 @@ type IPPrefixStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// IPPrefix is the Schema for the IPPrefixs API. <no value>
+// IPPrefix is the Schema for the IPPrefixs API. Provides the ability to manage Bring-Your-Own-IP prefixes (BYOIP) which are used with or without Magic Transit.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type IPPrefix struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              IPPrefixSpec   `json:"spec"`
-	Status            IPPrefixStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.prefixId) || (has(self.initProvider) && has(self.initProvider.prefixId))",message="spec.forProvider.prefixId is a required parameter"
+	Spec   IPPrefixSpec   `json:"spec"`
+	Status IPPrefixStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

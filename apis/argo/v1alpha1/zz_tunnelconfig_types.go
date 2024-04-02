@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,135 +17,418 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ConfigInitParameters struct {
+
+	// (Block List, Min: 1) Each incoming request received by cloudflared causes cloudflared to send a request to a local service. This section configures the rules that determine which requests are sent to which local services. Read more. (see below for nested schema)
+	// Each incoming request received by cloudflared causes cloudflared to send a request to a local service. This section configures the rules that determine which requests are sent to which local services. [Read more](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/local-management/ingress/).
+	IngressRule []IngressRuleInitParameters `json:"ingressRule,omitempty" tf:"ingress_rule,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	OriginRequest []OriginRequestInitParameters `json:"originRequest,omitempty" tf:"origin_request,omitempty"`
+
+	// routing key and set it to true. (see below for nested schema)
+	// If you're exposing a [private network](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/private-net/), you need to add the `warp-routing` key and set it to `true`.
+	WarpRouting []WarpRoutingInitParameters `json:"warpRouting,omitempty" tf:"warp_routing,omitempty"`
+}
+
 type ConfigObservation struct {
+
+	// (Block List, Min: 1) Each incoming request received by cloudflared causes cloudflared to send a request to a local service. This section configures the rules that determine which requests are sent to which local services. Read more. (see below for nested schema)
+	// Each incoming request received by cloudflared causes cloudflared to send a request to a local service. This section configures the rules that determine which requests are sent to which local services. [Read more](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/local-management/ingress/).
+	IngressRule []IngressRuleObservation `json:"ingressRule,omitempty" tf:"ingress_rule,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	OriginRequest []OriginRequestObservation `json:"originRequest,omitempty" tf:"origin_request,omitempty"`
+
+	// routing key and set it to true. (see below for nested schema)
+	// If you're exposing a [private network](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/private-net/), you need to add the `warp-routing` key and set it to `true`.
+	WarpRouting []WarpRoutingObservation `json:"warpRouting,omitempty" tf:"warp_routing,omitempty"`
 }
 
 type ConfigParameters struct {
 
+	// (Block List, Min: 1) Each incoming request received by cloudflared causes cloudflared to send a request to a local service. This section configures the rules that determine which requests are sent to which local services. Read more. (see below for nested schema)
 	// Each incoming request received by cloudflared causes cloudflared to send a request to a local service. This section configures the rules that determine which requests are sent to which local services. [Read more](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/local-management/ingress/).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	IngressRule []IngressRuleParameters `json:"ingressRule" tf:"ingress_rule,omitempty"`
 
+	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	OriginRequest []OriginRequestParameters `json:"originRequest,omitempty" tf:"origin_request,omitempty"`
 
+	// routing key and set it to true. (see below for nested schema)
 	// If you're exposing a [private network](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/private-net/), you need to add the `warp-routing` key and set it to `true`.
 	// +kubebuilder:validation:Optional
 	WarpRouting []WarpRoutingParameters `json:"warpRouting,omitempty" tf:"warp_routing,omitempty"`
 }
 
+type IPRulesInitParameters struct {
+
+	// (Boolean) Whether to allow the IP prefix.
+	// Whether to allow the IP prefix.
+	Allow *bool `json:"allow,omitempty" tf:"allow,omitempty"`
+
+	// (List of Number) Ports to use within the IP rule.
+	// Ports to use within the IP rule.
+	Ports []*float64 `json:"ports,omitempty" tf:"ports,omitempty"`
+
+	// (String) IP rule prefix.
+	// IP rule prefix.
+	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
+}
+
 type IPRulesObservation struct {
+
+	// (Boolean) Whether to allow the IP prefix.
+	// Whether to allow the IP prefix.
+	Allow *bool `json:"allow,omitempty" tf:"allow,omitempty"`
+
+	// (List of Number) Ports to use within the IP rule.
+	// Ports to use within the IP rule.
+	Ports []*float64 `json:"ports,omitempty" tf:"ports,omitempty"`
+
+	// (String) IP rule prefix.
+	// IP rule prefix.
+	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 }
 
 type IPRulesParameters struct {
 
+	// (Boolean) Whether to allow the IP prefix.
 	// Whether to allow the IP prefix.
 	// +kubebuilder:validation:Optional
 	Allow *bool `json:"allow,omitempty" tf:"allow,omitempty"`
 
+	// (List of Number) Ports to use within the IP rule.
 	// Ports to use within the IP rule.
 	// +kubebuilder:validation:Optional
 	Ports []*float64 `json:"ports,omitempty" tf:"ports,omitempty"`
 
+	// (String) IP rule prefix.
 	// IP rule prefix.
 	// +kubebuilder:validation:Optional
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 }
 
+type IngressRuleInitParameters struct {
+
+	// (String) Hostname to match the incoming request with. If the hostname matches, the request will be sent to the service.
+	// Hostname to match the incoming request with. If the hostname matches, the request will be sent to the service.
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// (String) Path of the incoming request. If the path matches, the request will be sent to the local service.
+	// Path of the incoming request. If the path matches, the request will be sent to the local service.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// (String) Name of the service to which the request will be sent.
+	// Name of the service to which the request will be sent.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+}
+
 type IngressRuleObservation struct {
+
+	// (String) Hostname to match the incoming request with. If the hostname matches, the request will be sent to the service.
+	// Hostname to match the incoming request with. If the hostname matches, the request will be sent to the service.
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// (String) Path of the incoming request. If the path matches, the request will be sent to the local service.
+	// Path of the incoming request. If the path matches, the request will be sent to the local service.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// (String) Name of the service to which the request will be sent.
+	// Name of the service to which the request will be sent.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 }
 
 type IngressRuleParameters struct {
 
+	// (String) Hostname to match the incoming request with. If the hostname matches, the request will be sent to the service.
 	// Hostname to match the incoming request with. If the hostname matches, the request will be sent to the service.
 	// +kubebuilder:validation:Optional
 	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
+	// (String) Path of the incoming request. If the path matches, the request will be sent to the local service.
 	// Path of the incoming request. If the path matches, the request will be sent to the local service.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// (String) Name of the service to which the request will be sent.
 	// Name of the service to which the request will be sent.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Service *string `json:"service" tf:"service,omitempty"`
 }
 
+type OriginRequestInitParameters struct {
+
+	// (Boolean) Runs as jump host.
+	// Runs as jump host.
+	BastionMode *bool `json:"bastionMode,omitempty" tf:"bastion_mode,omitempty"`
+
+	// (String) Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. Defaults to "".
+	// Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. Defaults to `""`.
+	CAPool *string `json:"caPool,omitempty" tf:"ca_pool,omitempty"`
+
+	// (String) Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by tlsTimeout. Defaults to 30s.
+	// Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by `tlsTimeout`. Defaults to `30s`.
+	ConnectTimeout *string `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
+
+	// (Boolean) Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to false.
+	// Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to `false`.
+	DisableChunkedEncoding *bool `json:"disableChunkedEncoding,omitempty" tf:"disable_chunked_encoding,omitempty"`
+
+	// (String) Sets the HTTP Host header on requests sent to the local service. Defaults to "".
+	// Sets the HTTP Host header on requests sent to the local service. Defaults to `""`.
+	HTTPHostHeader *string `json:"httpHostHeader,omitempty" tf:"http_host_header,omitempty"`
+
+	// (Block Set) IP rules for the proxy service. (see below for nested schema)
+	// IP rules for the proxy service.
+	IPRules []IPRulesInitParameters `json:"ipRules,omitempty" tf:"ip_rules,omitempty"`
+
+	// (Number) Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections. Defaults to 100.
+	// Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections. Defaults to `100`.
+	KeepAliveConnections *float64 `json:"keepAliveConnections,omitempty" tf:"keep_alive_connections,omitempty"`
+
+	// (String) Timeout after which an idle keepalive connection can be discarded. Defaults to 1m30s.
+	// Timeout after which an idle keepalive connection can be discarded. Defaults to `1m30s`.
+	KeepAliveTimeout *string `json:"keepAliveTimeout,omitempty" tf:"keep_alive_timeout,omitempty"`
+
+	// (Boolean) Disable the “happy eyeballs” algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols. Defaults to false.
+	// Disable the “happy eyeballs” algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols. Defaults to `false`.
+	NoHappyEyeballs *bool `json:"noHappyEyeballs,omitempty" tf:"no_happy_eyeballs,omitempty"`
+
+	// (Boolean) Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Defaults to false.
+	// Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Defaults to `false`.
+	NoTLSVerify *bool `json:"noTlsVerify,omitempty" tf:"no_tls_verify,omitempty"`
+
+	// (String) Hostname that cloudflared should expect from your origin server certificate. Defaults to "".
+	// Hostname that cloudflared should expect from your origin server certificate. Defaults to `""`.
+	OriginServerName *string `json:"originServerName,omitempty" tf:"origin_server_name,omitempty"`
+
+	// (String) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen address for that proxy. Defaults to 127.0.0.1.
+	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen address for that proxy. Defaults to `127.0.0.1`.
+	ProxyAddress *string `json:"proxyAddress,omitempty" tf:"proxy_address,omitempty"`
+
+	// (Number) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen port for that proxy. If set to zero, an unused port will randomly be chosen. Defaults to 0.
+	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen port for that proxy. If set to zero, an unused port will randomly be chosen. Defaults to `0`.
+	ProxyPort *float64 `json:"proxyPort,omitempty" tf:"proxy_port,omitempty"`
+
+	// (String) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: “, socks. Defaults to "".
+	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: “, `socks`. Defaults to `""`.
+	ProxyType *string `json:"proxyType,omitempty" tf:"proxy_type,omitempty"`
+
+	// (String) The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server. Defaults to 30s.
+	// The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server. Defaults to `30s`.
+	TCPKeepAlive *string `json:"tcpKeepAlive,omitempty" tf:"tcp_keep_alive,omitempty"`
+
+	// (String) Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server. Defaults to 10s.
+	// Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server. Defaults to `10s`.
+	TLSTimeout *string `json:"tlsTimeout,omitempty" tf:"tls_timeout,omitempty"`
+}
+
 type OriginRequestObservation struct {
+
+	// (Boolean) Runs as jump host.
+	// Runs as jump host.
+	BastionMode *bool `json:"bastionMode,omitempty" tf:"bastion_mode,omitempty"`
+
+	// (String) Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. Defaults to "".
+	// Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. Defaults to `""`.
+	CAPool *string `json:"caPool,omitempty" tf:"ca_pool,omitempty"`
+
+	// (String) Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by tlsTimeout. Defaults to 30s.
+	// Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by `tlsTimeout`. Defaults to `30s`.
+	ConnectTimeout *string `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
+
+	// (Boolean) Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to false.
+	// Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to `false`.
+	DisableChunkedEncoding *bool `json:"disableChunkedEncoding,omitempty" tf:"disable_chunked_encoding,omitempty"`
+
+	// (String) Sets the HTTP Host header on requests sent to the local service. Defaults to "".
+	// Sets the HTTP Host header on requests sent to the local service. Defaults to `""`.
+	HTTPHostHeader *string `json:"httpHostHeader,omitempty" tf:"http_host_header,omitempty"`
+
+	// (Block Set) IP rules for the proxy service. (see below for nested schema)
+	// IP rules for the proxy service.
+	IPRules []IPRulesObservation `json:"ipRules,omitempty" tf:"ip_rules,omitempty"`
+
+	// (Number) Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections. Defaults to 100.
+	// Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections. Defaults to `100`.
+	KeepAliveConnections *float64 `json:"keepAliveConnections,omitempty" tf:"keep_alive_connections,omitempty"`
+
+	// (String) Timeout after which an idle keepalive connection can be discarded. Defaults to 1m30s.
+	// Timeout after which an idle keepalive connection can be discarded. Defaults to `1m30s`.
+	KeepAliveTimeout *string `json:"keepAliveTimeout,omitempty" tf:"keep_alive_timeout,omitempty"`
+
+	// (Boolean) Disable the “happy eyeballs” algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols. Defaults to false.
+	// Disable the “happy eyeballs” algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols. Defaults to `false`.
+	NoHappyEyeballs *bool `json:"noHappyEyeballs,omitempty" tf:"no_happy_eyeballs,omitempty"`
+
+	// (Boolean) Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Defaults to false.
+	// Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Defaults to `false`.
+	NoTLSVerify *bool `json:"noTlsVerify,omitempty" tf:"no_tls_verify,omitempty"`
+
+	// (String) Hostname that cloudflared should expect from your origin server certificate. Defaults to "".
+	// Hostname that cloudflared should expect from your origin server certificate. Defaults to `""`.
+	OriginServerName *string `json:"originServerName,omitempty" tf:"origin_server_name,omitempty"`
+
+	// (String) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen address for that proxy. Defaults to 127.0.0.1.
+	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen address for that proxy. Defaults to `127.0.0.1`.
+	ProxyAddress *string `json:"proxyAddress,omitempty" tf:"proxy_address,omitempty"`
+
+	// (Number) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen port for that proxy. If set to zero, an unused port will randomly be chosen. Defaults to 0.
+	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen port for that proxy. If set to zero, an unused port will randomly be chosen. Defaults to `0`.
+	ProxyPort *float64 `json:"proxyPort,omitempty" tf:"proxy_port,omitempty"`
+
+	// (String) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: “, socks. Defaults to "".
+	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: “, `socks`. Defaults to `""`.
+	ProxyType *string `json:"proxyType,omitempty" tf:"proxy_type,omitempty"`
+
+	// (String) The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server. Defaults to 30s.
+	// The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server. Defaults to `30s`.
+	TCPKeepAlive *string `json:"tcpKeepAlive,omitempty" tf:"tcp_keep_alive,omitempty"`
+
+	// (String) Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server. Defaults to 10s.
+	// Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server. Defaults to `10s`.
+	TLSTimeout *string `json:"tlsTimeout,omitempty" tf:"tls_timeout,omitempty"`
 }
 
 type OriginRequestParameters struct {
 
+	// (Boolean) Runs as jump host.
 	// Runs as jump host.
 	// +kubebuilder:validation:Optional
 	BastionMode *bool `json:"bastionMode,omitempty" tf:"bastion_mode,omitempty"`
 
+	// (String) Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. Defaults to "".
 	// Path to the certificate authority (CA) for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	CAPool *string `json:"caPool,omitempty" tf:"ca_pool,omitempty"`
 
+	// (String) Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by tlsTimeout. Defaults to 30s.
 	// Timeout for establishing a new TCP connection to your origin server. This excludes the time taken to establish TLS, which is controlled by `tlsTimeout`. Defaults to `30s`.
 	// +kubebuilder:validation:Optional
 	ConnectTimeout *string `json:"connectTimeout,omitempty" tf:"connect_timeout,omitempty"`
 
+	// (Boolean) Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to false.
 	// Disables chunked transfer encoding. Useful if you are running a Web Server Gateway Interface (WSGI) server. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DisableChunkedEncoding *bool `json:"disableChunkedEncoding,omitempty" tf:"disable_chunked_encoding,omitempty"`
 
+	// (String) Sets the HTTP Host header on requests sent to the local service. Defaults to "".
 	// Sets the HTTP Host header on requests sent to the local service. Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	HTTPHostHeader *string `json:"httpHostHeader,omitempty" tf:"http_host_header,omitempty"`
 
+	// (Block Set) IP rules for the proxy service. (see below for nested schema)
 	// IP rules for the proxy service.
 	// +kubebuilder:validation:Optional
 	IPRules []IPRulesParameters `json:"ipRules,omitempty" tf:"ip_rules,omitempty"`
 
+	// (Number) Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections. Defaults to 100.
 	// Maximum number of idle keepalive connections between Tunnel and your origin. This does not restrict the total number of concurrent connections. Defaults to `100`.
 	// +kubebuilder:validation:Optional
 	KeepAliveConnections *float64 `json:"keepAliveConnections,omitempty" tf:"keep_alive_connections,omitempty"`
 
+	// (String) Timeout after which an idle keepalive connection can be discarded. Defaults to 1m30s.
 	// Timeout after which an idle keepalive connection can be discarded. Defaults to `1m30s`.
 	// +kubebuilder:validation:Optional
 	KeepAliveTimeout *string `json:"keepAliveTimeout,omitempty" tf:"keep_alive_timeout,omitempty"`
 
+	// (Boolean) Disable the “happy eyeballs” algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols. Defaults to false.
 	// Disable the “happy eyeballs” algorithm for IPv4/IPv6 fallback if your local network has misconfigured one of the protocols. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	NoHappyEyeballs *bool `json:"noHappyEyeballs,omitempty" tf:"no_happy_eyeballs,omitempty"`
 
+	// (Boolean) Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Defaults to false.
 	// Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	NoTLSVerify *bool `json:"noTlsVerify,omitempty" tf:"no_tls_verify,omitempty"`
 
+	// (String) Hostname that cloudflared should expect from your origin server certificate. Defaults to "".
 	// Hostname that cloudflared should expect from your origin server certificate. Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	OriginServerName *string `json:"originServerName,omitempty" tf:"origin_server_name,omitempty"`
 
+	// (String) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen address for that proxy. Defaults to 127.0.0.1.
 	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen address for that proxy. Defaults to `127.0.0.1`.
 	// +kubebuilder:validation:Optional
 	ProxyAddress *string `json:"proxyAddress,omitempty" tf:"proxy_address,omitempty"`
 
+	// (Number) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen port for that proxy. If set to zero, an unused port will randomly be chosen. Defaults to 0.
 	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures the listen port for that proxy. If set to zero, an unused port will randomly be chosen. Defaults to `0`.
 	// +kubebuilder:validation:Optional
 	ProxyPort *float64 `json:"proxyPort,omitempty" tf:"proxy_port,omitempty"`
 
+	// (String) cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: “, socks. Defaults to "".
 	// cloudflared starts a proxy server to translate HTTP traffic into TCP when proxying, for example, SSH or RDP. This configures what type of proxy will be started. Available values: “, `socks`. Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	ProxyType *string `json:"proxyType,omitempty" tf:"proxy_type,omitempty"`
 
+	// (String) The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server. Defaults to 30s.
 	// The timeout after which a TCP keepalive packet is sent on a connection between Tunnel and the origin server. Defaults to `30s`.
 	// +kubebuilder:validation:Optional
 	TCPKeepAlive *string `json:"tcpKeepAlive,omitempty" tf:"tcp_keep_alive,omitempty"`
 
+	// (String) Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server. Defaults to 10s.
 	// Timeout for completing a TLS handshake to your origin server, if you have chosen to connect Tunnel to an HTTPS server. Defaults to `10s`.
 	// +kubebuilder:validation:Optional
 	TLSTimeout *string `json:"tlsTimeout,omitempty" tf:"tls_timeout,omitempty"`
 }
 
+type TunnelConfigInitParameters struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (Block List, Min: 1, Max: 1) Configuration block for Tunnel Configuration. (see below for nested schema)
+	// Configuration block for Tunnel Configuration.
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+
+	// (String) Identifier of the Tunnel to target for this configuration.
+	// Identifier of the Tunnel to target for this configuration.
+	// +crossplane:generate:reference:type=Tunnel
+	TunnelID *string `json:"tunnelId,omitempty" tf:"tunnel_id,omitempty"`
+
+	// Reference to a Tunnel to populate tunnelId.
+	// +kubebuilder:validation:Optional
+	TunnelIDRef *v1.Reference `json:"tunnelIdRef,omitempty" tf:"-"`
+
+	// Selector for a Tunnel to populate tunnelId.
+	// +kubebuilder:validation:Optional
+	TunnelIDSelector *v1.Selector `json:"tunnelIdSelector,omitempty" tf:"-"`
+}
+
 type TunnelConfigObservation struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (Block List, Min: 1, Max: 1) Configuration block for Tunnel Configuration. (see below for nested schema)
+	// Configuration block for Tunnel Configuration.
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Identifier of the Tunnel to target for this configuration.
+	// Identifier of the Tunnel to target for this configuration.
+	TunnelID *string `json:"tunnelId,omitempty" tf:"tunnel_id,omitempty"`
 }
 
 type TunnelConfigParameters struct {
 
+	// (String) The account identifier to target for the resource.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -155,10 +442,12 @@ type TunnelConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (Block List, Min: 1, Max: 1) Configuration block for Tunnel Configuration. (see below for nested schema)
 	// Configuration block for Tunnel Configuration.
-	// +kubebuilder:validation:Required
-	Config []ConfigParameters `json:"config" tf:"config,omitempty"`
+	// +kubebuilder:validation:Optional
+	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
+	// (String) Identifier of the Tunnel to target for this configuration.
 	// Identifier of the Tunnel to target for this configuration.
 	// +crossplane:generate:reference:type=Tunnel
 	// +kubebuilder:validation:Optional
@@ -173,11 +462,23 @@ type TunnelConfigParameters struct {
 	TunnelIDSelector *v1.Selector `json:"tunnelIdSelector,omitempty" tf:"-"`
 }
 
+type WarpRoutingInitParameters struct {
+
+	// (Boolean) Whether WARP routing is enabled.
+	// Whether WARP routing is enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
 type WarpRoutingObservation struct {
+
+	// (Boolean) Whether WARP routing is enabled.
+	// Whether WARP routing is enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 }
 
 type WarpRoutingParameters struct {
 
+	// (Boolean) Whether WARP routing is enabled.
 	// Whether WARP routing is enabled.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
@@ -187,6 +488,17 @@ type WarpRoutingParameters struct {
 type TunnelConfigSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TunnelConfigParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider TunnelConfigInitParameters `json:"initProvider,omitempty"`
 }
 
 // TunnelConfigStatus defines the observed state of TunnelConfig.
@@ -196,19 +508,21 @@ type TunnelConfigStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// TunnelConfig is the Schema for the TunnelConfigs API. <no value>
+// TunnelConfig is the Schema for the TunnelConfigs API. Provides a Cloudflare Tunnel configuration resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type TunnelConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TunnelConfigSpec   `json:"spec"`
-	Status            TunnelConfigStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.config) || (has(self.initProvider) && has(self.initProvider.config))",message="spec.forProvider.config is a required parameter"
+	Spec   TunnelConfigSpec   `json:"spec"`
+	Status TunnelConfigStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

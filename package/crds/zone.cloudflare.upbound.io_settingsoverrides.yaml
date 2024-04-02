@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: settingsoverrides.zone.cloudflare.upbound.io
 spec:
   group: zone.cloudflare.upbound.io
@@ -36,17 +35,22 @@ spec:
     schema:
       openAPIV3Schema:
         description: SettingsOverride is the Schema for the SettingsOverrides API.
-          <no value>
+          Provides a resource which customizes Cloudflare zone settings.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -55,9 +59,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -65,164 +74,236 @@ spec:
               forProvider:
                 properties:
                   settings:
+                    description: Settings overrides that will be applied to the zone.
+                      If a setting is not specified the existing setting will be used.
+                      For a full list of available settings see below.
                     items:
                       properties:
                         alwaysOnline:
+                          description: '(default: on)'
                           type: string
                         alwaysUseHttps:
+                          description: '(default: off)'
                           type: string
                         automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         binaryAst:
+                          description: '(default: off)'
                           type: string
                         brotli:
+                          description: '(default: off)'
                           type: string
                         browserCacheTtl:
+                          description: '(default: 14400)'
                           type: number
                         browserCheck:
+                          description: '(default: on)'
                           type: string
                         cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
                           type: string
                         challengeTtl:
+                          description: '(default: 1800)'
                           type: number
                         ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
                           items:
                             type: string
                           type: array
                         cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
                           type: string
                         developmentMode:
+                          description: '(default: off)'
                           type: string
                         earlyHints:
+                          description: '(default: off)'
                           type: string
                         emailObfuscation:
+                          description: '(default: on)'
                           type: string
                         filterLogsToCloudflare:
+                          description: '(default: off)'
                           type: string
                         h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
                           type: string
                         hotlinkProtection:
+                          description: '(default: off)'
                           type: string
                         http2:
+                          description: '(default: off)'
                           type: string
                         http3:
+                          description: '(default: off)'
                           type: string
                         imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
                           type: string
                         ipGeolocation:
+                          description: '(default: on)'
                           type: string
                         ipv6:
+                          description: '(default: off)'
                           type: string
                         logToCloudflare:
+                          description: '(default: off)'
                           type: string
                         maxUpload:
+                          description: '(default: 100)'
                           type: number
                         minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
                           type: string
                         minify:
                           items:
                             properties:
                               css:
+                                description: '"on"/"off"'
                                 type: string
                               html:
+                                description: '"on"/"off"'
                                 type: string
                               js:
+                                description: '"on"/"off"'
                                 type: string
-                            required:
-                            - css
-                            - html
-                            - js
                             type: object
                           type: array
                         mirage:
+                          description: '(default: off)'
                           type: string
                         mobileRedirect:
                           items:
                             properties:
                               mobileSubdomain:
+                                description: String value
                                 type: string
                               status:
+                                description: '"on"/"off"'
                                 type: string
                               stripUri:
+                                description: true/false
                                 type: boolean
-                            required:
-                            - mobileSubdomain
-                            - status
-                            - stripUri
                             type: object
                           type: array
                         opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         opportunisticOnion:
+                          description: '(default: off)'
                           type: string
                         orangeToOrange:
+                          description: '(default: off)'
                           type: string
                         originErrorPagePassThru:
+                          description: '(default: off)'
                           type: string
                         originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
                           type: string
                         polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
                           type: string
                         prefetchPreload:
+                          description: '(default: off)'
                           type: string
                         privacyPass:
+                          description: '(default: on)'
                           type: string
                         proxyReadTimeout:
+                          description: '(default: "100")'
                           type: string
                         pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
                           type: string
                         responseBuffering:
+                          description: '(default: off)'
                           type: string
                         rocketLoader:
+                          description: '(default: off)'
                           type: string
                         securityHeader:
                           items:
                             properties:
                               enabled:
+                                description: true/false
                                 type: boolean
                               includeSubdomains:
+                                description: true/false
                                 type: boolean
                               maxAge:
+                                description: Integer
                                 type: number
                               nosniff:
+                                description: true/false
                                 type: boolean
                               preload:
+                                description: true/false
                                 type: boolean
                             type: object
                           type: array
                         securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
                           type: string
                         serverSideExclude:
+                          description: '(default: on)'
                           type: string
                         sortQueryStringForCache:
+                          description: '(default: off)'
                           type: string
                         ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
                           type: string
                         tls12Only:
                           type: string
                         tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
                           type: string
                         tlsClientAuth:
+                          description: '(default: on)'
                           type: string
                         trueClientIpHeader:
+                          description: '(default: off)'
                           type: string
                         universalSsl:
+                          description: '(default: on)'
                           type: string
                         visitorIp:
+                          description: '(default: off)'
                           type: string
                         waf:
+                          description: '(default: off)'
                           type: string
                         webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
                           type: string
                         websockets:
+                          description: '(default: off)'
                           type: string
                         zeroRtt:
+                          description: '(default: off)'
                           type: string
                       type: object
                     type: array
                   zoneId:
-                    description: The zone identifier to target for the resource. **Modifying
-                      this attribute will force creation of a new resource.**
+                    description: |-
+                      The DNS zone ID to which apply settings.
+                      The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone to populate zoneId.
@@ -235,21 +316,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -262,8 +343,9 @@ spec:
                     description: Selector for a Zone to populate zoneId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -276,21 +358,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -298,92 +380,253 @@ spec:
                         type: object
                     type: object
                 type: object
-              providerConfigRef:
-                default:
-                  name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
-                  name:
-                    description: Name of the referenced object.
+                  settings:
+                    description: Settings overrides that will be applied to the zone.
+                      If a setting is not specified the existing setting will be used.
+                      For a full list of available settings see below.
+                    items:
+                      properties:
+                        alwaysOnline:
+                          description: '(default: on)'
+                          type: string
+                        alwaysUseHttps:
+                          description: '(default: off)'
+                          type: string
+                        automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        binaryAst:
+                          description: '(default: off)'
+                          type: string
+                        brotli:
+                          description: '(default: off)'
+                          type: string
+                        browserCacheTtl:
+                          description: '(default: 14400)'
+                          type: number
+                        browserCheck:
+                          description: '(default: on)'
+                          type: string
+                        cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
+                          type: string
+                        challengeTtl:
+                          description: '(default: 1800)'
+                          type: number
+                        ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
+                          items:
+                            type: string
+                          type: array
+                        cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
+                          type: string
+                        developmentMode:
+                          description: '(default: off)'
+                          type: string
+                        earlyHints:
+                          description: '(default: off)'
+                          type: string
+                        emailObfuscation:
+                          description: '(default: on)'
+                          type: string
+                        filterLogsToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
+                          type: string
+                        hotlinkProtection:
+                          description: '(default: off)'
+                          type: string
+                        http2:
+                          description: '(default: off)'
+                          type: string
+                        http3:
+                          description: '(default: off)'
+                          type: string
+                        imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
+                          type: string
+                        ipGeolocation:
+                          description: '(default: on)'
+                          type: string
+                        ipv6:
+                          description: '(default: off)'
+                          type: string
+                        logToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        maxUpload:
+                          description: '(default: 100)'
+                          type: number
+                        minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
+                          type: string
+                        minify:
+                          items:
+                            properties:
+                              css:
+                                description: '"on"/"off"'
+                                type: string
+                              html:
+                                description: '"on"/"off"'
+                                type: string
+                              js:
+                                description: '"on"/"off"'
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: '(default: off)'
+                          type: string
+                        mobileRedirect:
+                          items:
+                            properties:
+                              mobileSubdomain:
+                                description: String value
+                                type: string
+                              status:
+                                description: '"on"/"off"'
+                                type: string
+                              stripUri:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        opportunisticOnion:
+                          description: '(default: off)'
+                          type: string
+                        orangeToOrange:
+                          description: '(default: off)'
+                          type: string
+                        originErrorPagePassThru:
+                          description: '(default: off)'
+                          type: string
+                        originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
+                          type: string
+                        polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
+                          type: string
+                        prefetchPreload:
+                          description: '(default: off)'
+                          type: string
+                        privacyPass:
+                          description: '(default: on)'
+                          type: string
+                        proxyReadTimeout:
+                          description: '(default: "100")'
+                          type: string
+                        pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
+                          type: string
+                        responseBuffering:
+                          description: '(default: off)'
+                          type: string
+                        rocketLoader:
+                          description: '(default: off)'
+                          type: string
+                        securityHeader:
+                          items:
+                            properties:
+                              enabled:
+                                description: true/false
+                                type: boolean
+                              includeSubdomains:
+                                description: true/false
+                                type: boolean
+                              maxAge:
+                                description: Integer
+                                type: number
+                              nosniff:
+                                description: true/false
+                                type: boolean
+                              preload:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
+                          type: string
+                        serverSideExclude:
+                          description: '(default: on)'
+                          type: string
+                        sortQueryStringForCache:
+                          description: '(default: off)'
+                          type: string
+                        ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
+                          type: string
+                        tls12Only:
+                          type: string
+                        tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
+                          type: string
+                        tlsClientAuth:
+                          description: '(default: on)'
+                          type: string
+                        trueClientIpHeader:
+                          description: '(default: off)'
+                          type: string
+                        universalSsl:
+                          description: '(default: on)'
+                          type: string
+                        visitorIp:
+                          description: '(default: off)'
+                          type: string
+                        waf:
+                          description: '(default: off)'
+                          type: string
+                        webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
+                          type: string
+                        websockets:
+                          description: '(default: off)'
+                          type: string
+                        zeroRtt:
+                          description: '(default: off)'
+                          type: string
+                      type: object
+                    type: array
+                  zoneId:
+                    description: |-
+                      The DNS zone ID to which apply settings.
+                      The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                  zoneIdRef:
+                    description: Reference to a Zone to populate zoneId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -393,21 +636,174 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  zoneIdSelector:
+                    description: Selector for a Zone to populate zoneId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -422,21 +818,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -447,14 +844,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -475,164 +873,485 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: The zone ID.
                     type: string
                   initialSettings:
+                    description: Settings present in the zone at the time the resource
+                      is created. This will be used to restore the original settings
+                      when this resource is destroyed. Shares the same schema as the
+                      settings attribute (Above).
                     items:
                       properties:
                         alwaysOnline:
+                          description: '(default: on)'
                           type: string
                         alwaysUseHttps:
+                          description: '(default: off)'
                           type: string
                         automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         binaryAst:
+                          description: '(default: off)'
                           type: string
                         brotli:
+                          description: '(default: off)'
                           type: string
                         browserCacheTtl:
+                          description: '(default: 14400)'
                           type: number
                         browserCheck:
+                          description: '(default: on)'
                           type: string
                         cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
                           type: string
                         challengeTtl:
+                          description: '(default: 1800)'
                           type: number
                         ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
                           items:
                             type: string
                           type: array
                         cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
                           type: string
                         developmentMode:
+                          description: '(default: off)'
                           type: string
                         earlyHints:
+                          description: '(default: off)'
                           type: string
                         emailObfuscation:
+                          description: '(default: on)'
                           type: string
                         filterLogsToCloudflare:
+                          description: '(default: off)'
                           type: string
                         h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
                           type: string
                         hotlinkProtection:
+                          description: '(default: off)'
                           type: string
                         http2:
+                          description: '(default: off)'
                           type: string
                         http3:
+                          description: '(default: off)'
                           type: string
                         imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
                           type: string
                         ipGeolocation:
+                          description: '(default: on)'
                           type: string
                         ipv6:
+                          description: '(default: off)'
                           type: string
                         logToCloudflare:
+                          description: '(default: off)'
                           type: string
                         maxUpload:
+                          description: '(default: 100)'
                           type: number
                         minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
                           type: string
                         minify:
                           items:
                             properties:
                               css:
+                                description: '"on"/"off"'
                                 type: string
                               html:
+                                description: '"on"/"off"'
                                 type: string
                               js:
+                                description: '"on"/"off"'
                                 type: string
                             type: object
                           type: array
                         mirage:
+                          description: '(default: off)'
                           type: string
                         mobileRedirect:
                           items:
                             properties:
                               mobileSubdomain:
+                                description: String value
                                 type: string
                               status:
+                                description: '"on"/"off"'
                                 type: string
                               stripUri:
+                                description: true/false
                                 type: boolean
                             type: object
                           type: array
                         opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
                           type: string
                         opportunisticOnion:
+                          description: '(default: off)'
                           type: string
                         orangeToOrange:
+                          description: '(default: off)'
                           type: string
                         originErrorPagePassThru:
+                          description: '(default: off)'
                           type: string
                         originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
                           type: string
                         polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
                           type: string
                         prefetchPreload:
+                          description: '(default: off)'
                           type: string
                         privacyPass:
+                          description: '(default: on)'
                           type: string
                         proxyReadTimeout:
+                          description: '(default: "100")'
                           type: string
                         pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
                           type: string
                         responseBuffering:
+                          description: '(default: off)'
                           type: string
                         rocketLoader:
+                          description: '(default: off)'
                           type: string
                         securityHeader:
                           items:
                             properties:
                               enabled:
+                                description: true/false
                                 type: boolean
                               includeSubdomains:
+                                description: true/false
                                 type: boolean
                               maxAge:
+                                description: Integer
                                 type: number
                               nosniff:
+                                description: true/false
                                 type: boolean
                               preload:
+                                description: true/false
                                 type: boolean
                             type: object
                           type: array
                         securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
                           type: string
                         serverSideExclude:
+                          description: '(default: on)'
                           type: string
                         sortQueryStringForCache:
+                          description: '(default: off)'
                           type: string
                         ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
                           type: string
                         tls12Only:
                           type: string
                         tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
                           type: string
                         tlsClientAuth:
+                          description: '(default: on)'
                           type: string
                         trueClientIpHeader:
+                          description: '(default: off)'
                           type: string
                         universalSsl:
+                          description: '(default: on)'
                           type: string
                         visitorIp:
+                          description: '(default: off)'
                           type: string
                         waf:
+                          description: '(default: off)'
                           type: string
                         webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
                           type: string
                         websockets:
+                          description: '(default: off)'
                           type: string
                         zeroRtt:
+                          description: '(default: off)'
                           type: string
                       type: object
                     type: array
                   initialSettingsReadAt:
+                    description: Time when this resource was created and the initial_settings
+                      were set.
                     type: string
                   readonlySettings:
+                    description: Which of the current settings are not able to be
+                      set by the user. Which settings these are is determined by plan
+                      level and user permissions.
                     items:
                       type: string
                     type: array
+                  settings:
+                    description: Settings overrides that will be applied to the zone.
+                      If a setting is not specified the existing setting will be used.
+                      For a full list of available settings see below.
+                    items:
+                      properties:
+                        alwaysOnline:
+                          description: '(default: on)'
+                          type: string
+                        alwaysUseHttps:
+                          description: '(default: off)'
+                          type: string
+                        automaticHttpsRewrites:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        binaryAst:
+                          description: '(default: off)'
+                          type: string
+                        brotli:
+                          description: '(default: off)'
+                          type: string
+                        browserCacheTtl:
+                          description: '(default: 14400)'
+                          type: number
+                        browserCheck:
+                          description: '(default: on)'
+                          type: string
+                        cacheLevel:
+                          description: 'Allowed values: "aggressive" (default) - delivers
+                            a different resource each time the query string changes,
+                            "basic" - delivers resources from cache when there is
+                            no query string, "simplified" - delivers the same resource
+                            to everyone independent of the query string.'
+                          type: string
+                        challengeTtl:
+                          description: '(default: 1800)'
+                          type: number
+                        ciphers:
+                          description: An allowlist of ciphers for TLS termination.
+                            These ciphers must be in the BoringSSL format.
+                          items:
+                            type: string
+                          type: array
+                        cnameFlattening:
+                          description: 'Allowed values: "flatten_at_root" (default),
+                            "flatten_all", "flatten_none".'
+                          type: string
+                        developmentMode:
+                          description: '(default: off)'
+                          type: string
+                        earlyHints:
+                          description: '(default: off)'
+                          type: string
+                        emailObfuscation:
+                          description: '(default: on)'
+                          type: string
+                        filterLogsToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        h2Prioritization:
+                          description: 'Allowed values: "on", "off" (default), "custom".'
+                          type: string
+                        hotlinkProtection:
+                          description: '(default: off)'
+                          type: string
+                        http2:
+                          description: '(default: off)'
+                          type: string
+                        http3:
+                          description: '(default: off)'
+                          type: string
+                        imageResizing:
+                          description: 'Allowed values: "on", "off" (default), "open".'
+                          type: string
+                        ipGeolocation:
+                          description: '(default: on)'
+                          type: string
+                        ipv6:
+                          description: '(default: off)'
+                          type: string
+                        logToCloudflare:
+                          description: '(default: off)'
+                          type: string
+                        maxUpload:
+                          description: '(default: 100)'
+                          type: number
+                        minTlsVersion:
+                          description: 'Allowed values: "1.0" (default), "1.1", "1.2",
+                            "1.3".'
+                          type: string
+                        minify:
+                          items:
+                            properties:
+                              css:
+                                description: '"on"/"off"'
+                                type: string
+                              html:
+                                description: '"on"/"off"'
+                                type: string
+                              js:
+                                description: '"on"/"off"'
+                                type: string
+                            type: object
+                          type: array
+                        mirage:
+                          description: '(default: off)'
+                          type: string
+                        mobileRedirect:
+                          items:
+                            properties:
+                              mobileSubdomain:
+                                description: String value
+                                type: string
+                              status:
+                                description: '"on"/"off"'
+                                type: string
+                              stripUri:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        opportunisticEncryption:
+                          description: (default value depends on the zone's plan level)
+                          type: string
+                        opportunisticOnion:
+                          description: '(default: off)'
+                          type: string
+                        orangeToOrange:
+                          description: '(default: off)'
+                          type: string
+                        originErrorPagePassThru:
+                          description: '(default: off)'
+                          type: string
+                        originMaxHttpVersion:
+                          description: 'Allowed values: "1" (default on Enterprise),
+                            "2" (default)'
+                          type: string
+                        polish:
+                          description: 'Allowed values: "off" (default), "lossless",
+                            "lossy".'
+                          type: string
+                        prefetchPreload:
+                          description: '(default: off)'
+                          type: string
+                        privacyPass:
+                          description: '(default: on)'
+                          type: string
+                        proxyReadTimeout:
+                          description: '(default: "100")'
+                          type: string
+                        pseudoIpv4:
+                          description: 'Allowed values: "off" (default), "add_header",
+                            "overwrite_header".'
+                          type: string
+                        responseBuffering:
+                          description: '(default: off)'
+                          type: string
+                        rocketLoader:
+                          description: '(default: off)'
+                          type: string
+                        securityHeader:
+                          items:
+                            properties:
+                              enabled:
+                                description: true/false
+                                type: boolean
+                              includeSubdomains:
+                                description: true/false
+                                type: boolean
+                              maxAge:
+                                description: Integer
+                                type: number
+                              nosniff:
+                                description: true/false
+                                type: boolean
+                              preload:
+                                description: true/false
+                                type: boolean
+                            type: object
+                          type: array
+                        securityLevel:
+                          description: 'Allowed values: "off" (Enterprise only), "essentially_off",
+                            "low", "medium" (default), "high", "under_attack".'
+                          type: string
+                        serverSideExclude:
+                          description: '(default: on)'
+                          type: string
+                        sortQueryStringForCache:
+                          description: '(default: off)'
+                          type: string
+                        ssl:
+                          description: 'Allowed values: "off" (default), "flexible",
+                            "full", "strict", "origin_pull".'
+                          type: string
+                        tls12Only:
+                          type: string
+                        tls13:
+                          description: 'Allowed values: "off" (default), "on", "zrt".'
+                          type: string
+                        tlsClientAuth:
+                          description: '(default: on)'
+                          type: string
+                        trueClientIpHeader:
+                          description: '(default: off)'
+                          type: string
+                        universalSsl:
+                          description: '(default: on)'
+                          type: string
+                        visitorIp:
+                          description: '(default: off)'
+                          type: string
+                        waf:
+                          description: '(default: off)'
+                          type: string
+                        webp:
+                          description: '(default: off). Note that the value specified
+                            will be ignored unless polish is turned on (i.e. is "lossless"
+                            or "lossy")'
+                          type: string
+                        websockets:
+                          description: '(default: off)'
+                          type: string
+                        zeroRtt:
+                          description: '(default: off)'
+                          type: string
+                      type: object
+                    type: array
+                  zoneId:
+                    description: |-
+                      The DNS zone ID to which apply settings.
+                      The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+                    type: string
                   zoneStatus:
+                    description: hosted zone or a CNAME setup.
                     type: string
                   zoneType:
+                    description: '. Status of the zone. Valid values: active, pending,
+                      initializing, moved, deleted, deactivated.'
                     type: string
                 type: object
               conditions:
@@ -641,13 +1360,15 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
                     reason:
                       description: A Reason for this condition's last transition from
@@ -658,8 +1379,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -668,6 +1390,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
             type: object
         required:
         - spec
@@ -676,9 +1401,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

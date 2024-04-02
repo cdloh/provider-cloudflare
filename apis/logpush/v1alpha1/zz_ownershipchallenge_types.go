@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,14 +17,63 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type OwnershipChallengeInitParameters struct {
+
+	// The account ID where the logpush ownership challenge should be created. Either account_id or zone_id are required.
+	// The account identifier to target for the resource. Must provide only one of `account_id`, `zone_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// Uniquely identifies a resource (such as an s3 bucket) where data will be pushed. Additional configuration parameters supported by the destination may be included. See Logpush destination documentation.
+	// **Modifying this attribute will force creation of a new resource.**
+	DestinationConf *string `json:"destinationConf,omitempty" tf:"destination_conf,omitempty"`
+
+	// The zone ID where the logpush ownership challenge should be created. Either account_id or zone_id are required.
+	// The zone identifier to target for the resource. Must provide only one of `account_id`, `zone_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type OwnershipChallengeObservation struct {
+
+	// The account ID where the logpush ownership challenge should be created. Either account_id or zone_id are required.
+	// The account identifier to target for the resource. Must provide only one of `account_id`, `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Uniquely identifies a resource (such as an s3 bucket) where data will be pushed. Additional configuration parameters supported by the destination may be included. See Logpush destination documentation.
+	// **Modifying this attribute will force creation of a new resource.**
+	DestinationConf *string `json:"destinationConf,omitempty" tf:"destination_conf,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The filename of the ownership challenge which
+	// contains the contents required for Logpush Job creation.
 	OwnershipChallengeFilename *string `json:"ownershipChallengeFilename,omitempty" tf:"ownership_challenge_filename,omitempty"`
+
+	// The zone ID where the logpush ownership challenge should be created. Either account_id or zone_id are required.
+	// The zone identifier to target for the resource. Must provide only one of `account_id`, `zone_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type OwnershipChallengeParameters struct {
 
+	// The account ID where the logpush ownership challenge should be created. Either account_id or zone_id are required.
 	// The account identifier to target for the resource. Must provide only one of `account_id`, `zone_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -34,10 +87,12 @@ type OwnershipChallengeParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Uniquely identifies a resource (such as an s3 bucket) where data will be pushed. Additional configuration parameters supported by the destination may be included. See Logpush destination documentation.
 	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	DestinationConf *string `json:"destinationConf" tf:"destination_conf,omitempty"`
+	// +kubebuilder:validation:Optional
+	DestinationConf *string `json:"destinationConf,omitempty" tf:"destination_conf,omitempty"`
 
+	// The zone ID where the logpush ownership challenge should be created. Either account_id or zone_id are required.
 	// The zone identifier to target for the resource. Must provide only one of `account_id`, `zone_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -56,6 +111,17 @@ type OwnershipChallengeParameters struct {
 type OwnershipChallengeSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OwnershipChallengeParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OwnershipChallengeInitParameters `json:"initProvider,omitempty"`
 }
 
 // OwnershipChallengeStatus defines the observed state of OwnershipChallenge.
@@ -65,19 +131,21 @@ type OwnershipChallengeStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// OwnershipChallenge is the Schema for the OwnershipChallenges API. <no value>
+// OwnershipChallenge is the Schema for the OwnershipChallenges API. Provides a resource which manages Cloudflare Logpush ownership challenges to use in a Logpush Job.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type OwnershipChallenge struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              OwnershipChallengeSpec   `json:"spec"`
-	Status            OwnershipChallengeStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.destinationConf) || (has(self.initProvider) && has(self.initProvider.destinationConf))",message="spec.forProvider.destinationConf is a required parameter"
+	Spec   OwnershipChallengeSpec   `json:"spec"`
+	Status OwnershipChallengeStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

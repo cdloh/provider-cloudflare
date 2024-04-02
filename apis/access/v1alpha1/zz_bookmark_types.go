@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,84 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BookmarkInitParameters struct {
+
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (Boolean) Option to show/hide the bookmark in the app launcher. Defaults to true.
+	// Option to show/hide the bookmark in the app launcher. Defaults to `true`.
+	AppLauncherVisible *bool `json:"appLauncherVisible,omitempty" tf:"app_launcher_visible,omitempty"`
+
+	// (String) The domain of the bookmark application. Can include subdomains, paths, or both.
+	// The domain of the bookmark application. Can include subdomains, paths, or both.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (String) The image URL for the logo shown in the app launcher dashboard.
+	// The image URL for the logo shown in the app launcher dashboard.
+	LogoURL *string `json:"logoUrl,omitempty" tf:"logo_url,omitempty"`
+
+	// (String) Name of the bookmark application.
+	// Name of the bookmark application.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type BookmarkObservation struct {
+
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (Boolean) Option to show/hide the bookmark in the app launcher. Defaults to true.
+	// Option to show/hide the bookmark in the app launcher. Defaults to `true`.
+	AppLauncherVisible *bool `json:"appLauncherVisible,omitempty" tf:"app_launcher_visible,omitempty"`
+
+	// (String) The domain of the bookmark application. Can include subdomains, paths, or both.
+	// The domain of the bookmark application. Can include subdomains, paths, or both.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The image URL for the logo shown in the app launcher dashboard.
+	// The image URL for the logo shown in the app launcher dashboard.
+	LogoURL *string `json:"logoUrl,omitempty" tf:"logo_url,omitempty"`
+
+	// (String) Name of the bookmark application.
+	// Name of the bookmark application.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type BookmarkParameters struct {
 
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,22 +108,27 @@ type BookmarkParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (Boolean) Option to show/hide the bookmark in the app launcher. Defaults to true.
 	// Option to show/hide the bookmark in the app launcher. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	AppLauncherVisible *bool `json:"appLauncherVisible,omitempty" tf:"app_launcher_visible,omitempty"`
 
+	// (String) The domain of the bookmark application. Can include subdomains, paths, or both.
 	// The domain of the bookmark application. Can include subdomains, paths, or both.
-	// +kubebuilder:validation:Required
-	Domain *string `json:"domain" tf:"domain,omitempty"`
+	// +kubebuilder:validation:Optional
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
 
+	// (String) The image URL for the logo shown in the app launcher dashboard.
 	// The image URL for the logo shown in the app launcher dashboard.
 	// +kubebuilder:validation:Optional
 	LogoURL *string `json:"logoUrl,omitempty" tf:"logo_url,omitempty"`
 
+	// (String) Name of the bookmark application.
 	// Name of the bookmark application.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -66,6 +147,17 @@ type BookmarkParameters struct {
 type BookmarkSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     BookmarkParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider BookmarkInitParameters `json:"initProvider,omitempty"`
 }
 
 // BookmarkStatus defines the observed state of Bookmark.
@@ -75,19 +167,22 @@ type BookmarkStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Bookmark is the Schema for the Bookmarks API. <no value>
+// Bookmark is the Schema for the Bookmarks API. Provides a Cloudflare Access Bookmark resource. Access Bookmark applications are not protected behind Access but are displayed in the App Launcher.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Bookmark struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              BookmarkSpec   `json:"spec"`
-	Status            BookmarkStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.domain) || (has(self.initProvider) && has(self.initProvider.domain))",message="spec.forProvider.domain is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   BookmarkSpec   `json:"spec"`
+	Status BookmarkStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

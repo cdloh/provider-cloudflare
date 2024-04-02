@@ -1,0 +1,14 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: ServiceToken
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/servicetoken
+  labels:
+    testing.upbound.io/example-name: my_app
+  name: my-app
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: CI/CD app

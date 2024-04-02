@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,58 +17,189 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ApplicationInitParameters struct {
+
+	// . Enables Argo Smart Routing. Defaults to false.
+	// Defaults to `false`.
+	ArgoSmartRouting *bool `json:"argoSmartRouting,omitempty" tf:"argo_smart_routing,omitempty"`
+
+	// The name and type of DNS record for the Spectrum application. Fields documented below.
+	DNS []DNSInitParameters `json:"dns,omitempty" tf:"dns,omitempty"`
+
+	// . Choose which types of IP addresses will be provisioned for this subdomain. Valid values are: all, ipv4, ipv6. Defaults to all.
+	EdgeIPConnectivity *string `json:"edgeIpConnectivity,omitempty" tf:"edge_ip_connectivity,omitempty"`
+
+	// . A list of edge IPs (IPv4 and/or IPv6) to configure Spectrum application to. Requires Bring Your Own IP provisioned.
+	// +listType=set
+	EdgeIps []*string `json:"edgeIps,omitempty" tf:"edge_ips,omitempty"`
+
+	// Enables the IP Firewall for this application. Defaults to true.
+	// Defaults to `true`.
+	IPFirewall *bool `json:"ipFirewall,omitempty" tf:"ip_firewall,omitempty"`
+
+	// A destination DNS addresses to the origin. Fields documented below.
+	OriginDNS []OriginDNSInitParameters `json:"originDns,omitempty" tf:"origin_dns,omitempty"`
+
+	// A list of destination addresses to the origin. e.g. tcp://192.0.2.1:22.
+	OriginDirect []*string `json:"originDirect,omitempty" tf:"origin_direct,omitempty"`
+
+	// If using origin_dns and not origin_port_range, this is a required attribute. Origin port to proxy traffice to e.g. 22.
+	// Conflicts with `origin_port_range`.
+	OriginPort *float64 `json:"originPort,omitempty" tf:"origin_port,omitempty"`
+
+	// If using origin_dns and not origin_port, this is a required attribute. Origin port range to proxy traffice to. When using a range, the protocol field must also specify a range, e.g. tcp/22-23. Fields documented below.
+	// Conflicts with `origin_port`.
+	OriginPortRange []OriginPortRangeInitParameters `json:"originPortRange,omitempty" tf:"origin_port_range,omitempty"`
+
+	// The port configuration at Cloudflare’s edge. e.g. tcp/22.
+	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
+
+	// Enables a proxy protocol to the origin. Valid values are: off, v1, v2, and simple. Defaults to off.
+	// Defaults to `off`.
+	ProxyProtocol *string `json:"proxyProtocol,omitempty" tf:"proxy_protocol,omitempty"`
+
+	// TLS configuration option for Cloudflare to connect to your origin. Valid values are: off, flexible, full and strict. Defaults to off.
+	// Defaults to `off`.
+	TLS *string `json:"tls,omitempty" tf:"tls,omitempty"`
+
+	// Sets application type. Valid values are: direct, http, https. Defaults to direct.
+	// Defaults to `direct`.
+	TrafficType *string `json:"trafficType,omitempty" tf:"traffic_type,omitempty"`
+
+	// The DNS zone ID to add the application to
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type ApplicationObservation struct {
+
+	// . Enables Argo Smart Routing. Defaults to false.
+	// Defaults to `false`.
+	ArgoSmartRouting *bool `json:"argoSmartRouting,omitempty" tf:"argo_smart_routing,omitempty"`
+
+	// The name and type of DNS record for the Spectrum application. Fields documented below.
+	DNS []DNSObservation `json:"dns,omitempty" tf:"dns,omitempty"`
+
+	// . Choose which types of IP addresses will be provisioned for this subdomain. Valid values are: all, ipv4, ipv6. Defaults to all.
+	EdgeIPConnectivity *string `json:"edgeIpConnectivity,omitempty" tf:"edge_ip_connectivity,omitempty"`
+
+	// . A list of edge IPs (IPv4 and/or IPv6) to configure Spectrum application to. Requires Bring Your Own IP provisioned.
+	// +listType=set
+	EdgeIps []*string `json:"edgeIps,omitempty" tf:"edge_ips,omitempty"`
+
+	// Unique identifier in the API for the spectrum application.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Enables the IP Firewall for this application. Defaults to true.
+	// Defaults to `true`.
+	IPFirewall *bool `json:"ipFirewall,omitempty" tf:"ip_firewall,omitempty"`
+
+	// A destination DNS addresses to the origin. Fields documented below.
+	OriginDNS []OriginDNSObservation `json:"originDns,omitempty" tf:"origin_dns,omitempty"`
+
+	// A list of destination addresses to the origin. e.g. tcp://192.0.2.1:22.
+	OriginDirect []*string `json:"originDirect,omitempty" tf:"origin_direct,omitempty"`
+
+	// If using origin_dns and not origin_port_range, this is a required attribute. Origin port to proxy traffice to e.g. 22.
+	// Conflicts with `origin_port_range`.
+	OriginPort *float64 `json:"originPort,omitempty" tf:"origin_port,omitempty"`
+
+	// If using origin_dns and not origin_port, this is a required attribute. Origin port range to proxy traffice to. When using a range, the protocol field must also specify a range, e.g. tcp/22-23. Fields documented below.
+	// Conflicts with `origin_port`.
+	OriginPortRange []OriginPortRangeObservation `json:"originPortRange,omitempty" tf:"origin_port_range,omitempty"`
+
+	// The port configuration at Cloudflare’s edge. e.g. tcp/22.
+	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
+
+	// Enables a proxy protocol to the origin. Valid values are: off, v1, v2, and simple. Defaults to off.
+	// Defaults to `off`.
+	ProxyProtocol *string `json:"proxyProtocol,omitempty" tf:"proxy_protocol,omitempty"`
+
+	// TLS configuration option for Cloudflare to connect to your origin. Valid values are: off, flexible, full and strict. Defaults to off.
+	// Defaults to `off`.
+	TLS *string `json:"tls,omitempty" tf:"tls,omitempty"`
+
+	// Sets application type. Valid values are: direct, http, https. Defaults to direct.
+	// Defaults to `direct`.
+	TrafficType *string `json:"trafficType,omitempty" tf:"traffic_type,omitempty"`
+
+	// The DNS zone ID to add the application to
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type ApplicationParameters struct {
 
+	// . Enables Argo Smart Routing. Defaults to false.
 	// Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	ArgoSmartRouting *bool `json:"argoSmartRouting,omitempty" tf:"argo_smart_routing,omitempty"`
 
-	// +kubebuilder:validation:Required
-	DNS []DNSParameters `json:"dns" tf:"dns,omitempty"`
+	// The name and type of DNS record for the Spectrum application. Fields documented below.
+	// +kubebuilder:validation:Optional
+	DNS []DNSParameters `json:"dns,omitempty" tf:"dns,omitempty"`
 
+	// . Choose which types of IP addresses will be provisioned for this subdomain. Valid values are: all, ipv4, ipv6. Defaults to all.
 	// +kubebuilder:validation:Optional
 	EdgeIPConnectivity *string `json:"edgeIpConnectivity,omitempty" tf:"edge_ip_connectivity,omitempty"`
 
+	// . A list of edge IPs (IPv4 and/or IPv6) to configure Spectrum application to. Requires Bring Your Own IP provisioned.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	EdgeIps []*string `json:"edgeIps,omitempty" tf:"edge_ips,omitempty"`
 
+	// Enables the IP Firewall for this application. Defaults to true.
 	// Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	IPFirewall *bool `json:"ipFirewall,omitempty" tf:"ip_firewall,omitempty"`
 
+	// A destination DNS addresses to the origin. Fields documented below.
 	// +kubebuilder:validation:Optional
 	OriginDNS []OriginDNSParameters `json:"originDns,omitempty" tf:"origin_dns,omitempty"`
 
+	// A list of destination addresses to the origin. e.g. tcp://192.0.2.1:22.
 	// +kubebuilder:validation:Optional
 	OriginDirect []*string `json:"originDirect,omitempty" tf:"origin_direct,omitempty"`
 
+	// If using origin_dns and not origin_port_range, this is a required attribute. Origin port to proxy traffice to e.g. 22.
 	// Conflicts with `origin_port_range`.
 	// +kubebuilder:validation:Optional
 	OriginPort *float64 `json:"originPort,omitempty" tf:"origin_port,omitempty"`
 
+	// If using origin_dns and not origin_port, this is a required attribute. Origin port range to proxy traffice to. When using a range, the protocol field must also specify a range, e.g. tcp/22-23. Fields documented below.
 	// Conflicts with `origin_port`.
 	// +kubebuilder:validation:Optional
 	OriginPortRange []OriginPortRangeParameters `json:"originPortRange,omitempty" tf:"origin_port_range,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Protocol *string `json:"protocol" tf:"protocol,omitempty"`
+	// The port configuration at Cloudflare’s edge. e.g. tcp/22.
+	// +kubebuilder:validation:Optional
+	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
 
+	// Enables a proxy protocol to the origin. Valid values are: off, v1, v2, and simple. Defaults to off.
 	// Defaults to `off`.
 	// +kubebuilder:validation:Optional
 	ProxyProtocol *string `json:"proxyProtocol,omitempty" tf:"proxy_protocol,omitempty"`
 
+	// TLS configuration option for Cloudflare to connect to your origin. Valid values are: off, flexible, full and strict. Defaults to off.
 	// Defaults to `off`.
 	// +kubebuilder:validation:Optional
 	TLS *string `json:"tls,omitempty" tf:"tls,omitempty"`
 
+	// Sets application type. Valid values are: direct, http, https. Defaults to direct.
 	// Defaults to `direct`.
 	// +kubebuilder:validation:Optional
 	TrafficType *string `json:"trafficType,omitempty" tf:"traffic_type,omitempty"`
 
+	// The DNS zone ID to add the application to
 	// The zone identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -79,36 +214,80 @@ type ApplicationParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type DNSInitParameters struct {
+
+	// The name of the DNS record associated with the application.i.e. ssh.example.com.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of DNS record associated with the application. Valid values: CNAME.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type DNSObservation struct {
+
+	// The name of the DNS record associated with the application.i.e. ssh.example.com.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of DNS record associated with the application. Valid values: CNAME.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type DNSParameters struct {
 
-	// +kubebuilder:validation:Required
+	// The name of the DNS record associated with the application.i.e. ssh.example.com.
+	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// The type of DNS record associated with the application. Valid values: CNAME.
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
+type OriginDNSInitParameters struct {
+
+	// The name of the DNS record associated with the application.i.e. ssh.example.com.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type OriginDNSObservation struct {
+
+	// The name of the DNS record associated with the application.i.e. ssh.example.com.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type OriginDNSParameters struct {
 
-	// +kubebuilder:validation:Required
+	// The name of the DNS record associated with the application.i.e. ssh.example.com.
+	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 }
 
+type OriginPortRangeInitParameters struct {
+
+	// Upper bound of the origin port range, e.g. 2000
+	End *float64 `json:"end,omitempty" tf:"end,omitempty"`
+
+	// Lower bound of the origin port range, e.g. 1000
+	Start *float64 `json:"start,omitempty" tf:"start,omitempty"`
+}
+
 type OriginPortRangeObservation struct {
+
+	// Upper bound of the origin port range, e.g. 2000
+	End *float64 `json:"end,omitempty" tf:"end,omitempty"`
+
+	// Lower bound of the origin port range, e.g. 1000
+	Start *float64 `json:"start,omitempty" tf:"start,omitempty"`
 }
 
 type OriginPortRangeParameters struct {
 
-	// +kubebuilder:validation:Required
+	// Upper bound of the origin port range, e.g. 2000
+	// +kubebuilder:validation:Optional
 	End *float64 `json:"end" tf:"end,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// Lower bound of the origin port range, e.g. 1000
+	// +kubebuilder:validation:Optional
 	Start *float64 `json:"start" tf:"start,omitempty"`
 }
 
@@ -116,6 +295,17 @@ type OriginPortRangeParameters struct {
 type ApplicationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ApplicationParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ApplicationInitParameters `json:"initProvider,omitempty"`
 }
 
 // ApplicationStatus defines the observed state of Application.
@@ -125,19 +315,22 @@ type ApplicationStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Application is the Schema for the Applications API. <no value>
+// Application is the Schema for the Applications API. Provides a Cloudflare Spectrum Application resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Application struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ApplicationSpec   `json:"spec"`
-	Status            ApplicationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dns) || (has(self.initProvider) && has(self.initProvider.dns))",message="spec.forProvider.dns is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.protocol) || (has(self.initProvider) && has(self.initProvider.protocol))",message="spec.forProvider.protocol is a required parameter"
+	Spec   ApplicationSpec   `json:"spec"`
+	Status ApplicationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

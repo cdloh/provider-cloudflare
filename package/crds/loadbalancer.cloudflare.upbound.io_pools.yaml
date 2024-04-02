@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: pools.loadbalancer.cloudflare.upbound.io
 spec:
   group: loadbalancer.cloudflare.upbound.io
@@ -35,17 +34,23 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Pool is the Schema for the Pools API. <no value>
+        description: Pool is the Schema for the Pools API. Provides a Cloudflare Load
+          Balancer Pool resource.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +59,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,7 +74,9 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: |-
+                      The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -77,21 +89,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -104,8 +116,9 @@ spec:
                     description: Selector for a Account in account to populate accountId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -118,21 +131,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -140,43 +153,66 @@ spec:
                         type: object
                     type: object
                   checkRegions:
+                    description: A list of regions (specified by region code) from
+                      which to run health checks. Empty means every Cloudflare data
+                      center (the default), but requires an Enterprise plan. Region
+                      codes can be found here.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   description:
+                    description: Free text description.
                     type: string
                   enabled:
-                    description: Defaults to `true`.
+                    description: |-
+                      Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+                      Defaults to `true`.
                     type: boolean
                   latitude:
+                    description: The latitude this pool is physically located at;
+                      used for proximity steering. Values should be between -90 and
+                      90.
                     type: number
                   loadShedding:
+                    description: Setting for controlling load shedding for this pool.
                     items:
                       properties:
                         defaultPercent:
-                          description: Percent of traffic to shed 0 - 100. Defaults
-                            to `0`.
+                          description: |-
+                            Percent of traffic to shed 0 - 100.
+                            Percent of traffic to shed 0 - 100. Defaults to `0`.
                           type: number
                         defaultPolicy:
-                          description: 'Method of shedding traffic. Available values:
-                            “, `hash`, `random`. Defaults to `""`.'
+                          description: |-
+                            Method of shedding traffic "", "hash" or "random".
+                            Method of shedding traffic. Available values: “, `hash`, `random`. Defaults to `""`.
                           type: string
                         sessionPercent:
-                          description: Percent of session traffic to shed 0 - 100.
-                            Defaults to `0`.
+                          description: |-
+                            Percent of session traffic to shed 0 - 100.
+                            Percent of session traffic to shed 0 - 100. Defaults to `0`.
                           type: number
                         sessionPolicy:
-                          description: 'Method of shedding traffic. Available values:
-                            “, `hash`. Defaults to `""`.'
+                          description: |-
+                            Method of shedding session traffic "" or "hash".
+                            Method of shedding traffic. Available values: “, `hash`. Defaults to `""`.
                           type: string
                       type: object
                     type: array
                   longitude:
+                    description: The longitude this pool is physically located at;
+                      used for proximity steering. Values should be between -180 and
+                      180.
                     type: number
                   minimumOrigins:
-                    description: Defaults to `1`.
+                    description: |-
+                      The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Default: 1.
+                      Defaults to `1`.
                     type: number
                   monitor:
+                    description: The ID of the Monitor to use for health checking
+                      origins within this pool.
                     type: string
                   monitorRef:
                     description: Reference to a Monitor to populate monitor.
@@ -189,21 +225,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -216,8 +252,9 @@ spec:
                     description: Selector for a Monitor to populate monitor.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -230,21 +267,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -252,152 +289,97 @@ spec:
                         type: object
                     type: object
                   name:
+                    description: A short name (tag) for the pool. Only alphanumeric
+                      characters, hyphens, and underscores are allowed.
                     type: string
                   notificationEmail:
+                    description: The email address to send health status notifications
+                      to. This can be an individual mailbox or a mailing list. Multiple
+                      emails can be supplied as a comma delimited list.
                     type: string
                   originSteering:
+                    description: Set an origin steering policy to control origin selection
+                      within a pool.
                     items:
                       properties:
                         policy:
-                          description: 'Origin steering policy to be used. Available
-                            values: “, `hash`, `random`. Defaults to `random`.'
+                          description: |-
+                            Either "random" (default) or "hash".
+                            Origin steering policy to be used. Available values: “, `hash`, `random`. Defaults to `random`.
                           type: string
                       type: object
                     type: array
                   origins:
+                    description: The list of origins within this pool. Traffic directed
+                      at this pool is balanced across all currently healthy origins,
+                      provided the pool itself is healthy. It's a complex value. See
+                      description below.
                     items:
                       properties:
                         address:
-                          description: The IP address (IPv4 or IPv6) of the origin,
-                            or the publicly addressable hostname.
+                          description: |-
+                            The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname. Hostnames entered here should resolve directly to the origin, and not be a hostname proxied by Cloudflare.
+                            The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname.
                           type: string
                         enabled:
-                          description: Whether this origin is enabled. Disabled origins
-                            will not receive traffic and are excluded from health
-                            checks. Defaults to `true`.
+                          description: |-
+                            Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+                            Whether this origin is enabled. Disabled origins will not receive traffic and are excluded from health checks. Defaults to `true`.
                           type: boolean
                         header:
-                          description: HTTP request headers.
+                          description: |-
+                            The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+                            HTTP request headers.
                           items:
                             properties:
                               header:
-                                description: HTTP Header name.
+                                description: |-
+                                  The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+                                  HTTP Header name.
                                 type: string
                               values:
-                                description: Values for the HTTP headers.
+                                description: |-
+                                  A list of string values for the header.
+                                  Values for the HTTP headers.
                                 items:
                                   type: string
                                 type: array
-                            required:
-                            - header
-                            - values
+                                x-kubernetes-list-type: set
                             type: object
                           type: array
                         name:
-                          description: A human-identifiable name for the origin.
+                          description: |-
+                            A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+                            A human-identifiable name for the origin.
                           type: string
                         weight:
-                          description: The weight (0.01 - 1.00) of this origin, relative
-                            to other origins in the pool. Equal values mean equal
-                            weighting. A weight of 0 means traffic will not be sent
-                            to this origin, but health is still checked. Defaults
-                            to `1`.
+                          description: |-
+                            The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Default: 1.
+                            The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Defaults to `1`.
                           type: number
-                      required:
-                      - address
-                      - name
                       type: object
                     type: array
-                required:
-                - name
-                - origins
                 type: object
-              providerConfigRef:
-                default:
-                  name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
-                  name:
-                    description: Name of the referenced object.
+                  accountId:
+                    description: |-
+                      The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                  accountIdRef:
+                    description: Reference to a Account in account to populate accountId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -407,21 +389,381 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  accountIdSelector:
+                    description: Selector for a Account in account to populate accountId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  checkRegions:
+                    description: A list of regions (specified by region code) from
+                      which to run health checks. Empty means every Cloudflare data
+                      center (the default), but requires an Enterprise plan. Region
+                      codes can be found here.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  description:
+                    description: Free text description.
+                    type: string
+                  enabled:
+                    description: |-
+                      Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+                      Defaults to `true`.
+                    type: boolean
+                  latitude:
+                    description: The latitude this pool is physically located at;
+                      used for proximity steering. Values should be between -90 and
+                      90.
+                    type: number
+                  loadShedding:
+                    description: Setting for controlling load shedding for this pool.
+                    items:
+                      properties:
+                        defaultPercent:
+                          description: |-
+                            Percent of traffic to shed 0 - 100.
+                            Percent of traffic to shed 0 - 100. Defaults to `0`.
+                          type: number
+                        defaultPolicy:
+                          description: |-
+                            Method of shedding traffic "", "hash" or "random".
+                            Method of shedding traffic. Available values: “, `hash`, `random`. Defaults to `""`.
+                          type: string
+                        sessionPercent:
+                          description: |-
+                            Percent of session traffic to shed 0 - 100.
+                            Percent of session traffic to shed 0 - 100. Defaults to `0`.
+                          type: number
+                        sessionPolicy:
+                          description: |-
+                            Method of shedding session traffic "" or "hash".
+                            Method of shedding traffic. Available values: “, `hash`. Defaults to `""`.
+                          type: string
+                      type: object
+                    type: array
+                  longitude:
+                    description: The longitude this pool is physically located at;
+                      used for proximity steering. Values should be between -180 and
+                      180.
+                    type: number
+                  minimumOrigins:
+                    description: |-
+                      The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Default: 1.
+                      Defaults to `1`.
+                    type: number
+                  monitor:
+                    description: The ID of the Monitor to use for health checking
+                      origins within this pool.
+                    type: string
+                  monitorRef:
+                    description: Reference to a Monitor to populate monitor.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  monitorSelector:
+                    description: Selector for a Monitor to populate monitor.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  name:
+                    description: A short name (tag) for the pool. Only alphanumeric
+                      characters, hyphens, and underscores are allowed.
+                    type: string
+                  notificationEmail:
+                    description: The email address to send health status notifications
+                      to. This can be an individual mailbox or a mailing list. Multiple
+                      emails can be supplied as a comma delimited list.
+                    type: string
+                  originSteering:
+                    description: Set an origin steering policy to control origin selection
+                      within a pool.
+                    items:
+                      properties:
+                        policy:
+                          description: |-
+                            Either "random" (default) or "hash".
+                            Origin steering policy to be used. Available values: “, `hash`, `random`. Defaults to `random`.
+                          type: string
+                      type: object
+                    type: array
+                  origins:
+                    description: The list of origins within this pool. Traffic directed
+                      at this pool is balanced across all currently healthy origins,
+                      provided the pool itself is healthy. It's a complex value. See
+                      description below.
+                    items:
+                      properties:
+                        address:
+                          description: |-
+                            The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname. Hostnames entered here should resolve directly to the origin, and not be a hostname proxied by Cloudflare.
+                            The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname.
+                          type: string
+                        enabled:
+                          description: |-
+                            Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+                            Whether this origin is enabled. Disabled origins will not receive traffic and are excluded from health checks. Defaults to `true`.
+                          type: boolean
+                        header:
+                          description: |-
+                            The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+                            HTTP request headers.
+                          items:
+                            properties:
+                              header:
+                                description: |-
+                                  The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+                                  HTTP Header name.
+                                type: string
+                              values:
+                                description: |-
+                                  A list of string values for the header.
+                                  Values for the HTTP headers.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        name:
+                          description: |-
+                            A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+                            A human-identifiable name for the origin.
+                          type: string
+                        weight:
+                          description: |-
+                            The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Default: 1.
+                            The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Defaults to `1`.
+                          type: number
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -436,21 +778,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -461,14 +804,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -483,17 +827,169 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.origins is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.origins)
+                || (has(self.initProvider) && has(self.initProvider.origins))'
           status:
             description: PoolStatus defines the observed state of Pool.
             properties:
               atProvider:
                 properties:
+                  accountId:
+                    description: |-
+                      The account identifier to target for the resource.
+                      The account identifier to target for the resource.
+                    type: string
+                  checkRegions:
+                    description: A list of regions (specified by region code) from
+                      which to run health checks. Empty means every Cloudflare data
+                      center (the default), but requires an Enterprise plan. Region
+                      codes can be found here.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   createdOn:
+                    description: The RFC3339 timestamp of when the load balancer was
+                      created.
                     type: string
+                  description:
+                    description: Free text description.
+                    type: string
+                  enabled:
+                    description: |-
+                      Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+                      Defaults to `true`.
+                    type: boolean
                   id:
+                    description: ID for this load balancer pool.
                     type: string
+                  latitude:
+                    description: The latitude this pool is physically located at;
+                      used for proximity steering. Values should be between -90 and
+                      90.
+                    type: number
+                  loadShedding:
+                    description: Setting for controlling load shedding for this pool.
+                    items:
+                      properties:
+                        defaultPercent:
+                          description: |-
+                            Percent of traffic to shed 0 - 100.
+                            Percent of traffic to shed 0 - 100. Defaults to `0`.
+                          type: number
+                        defaultPolicy:
+                          description: |-
+                            Method of shedding traffic "", "hash" or "random".
+                            Method of shedding traffic. Available values: “, `hash`, `random`. Defaults to `""`.
+                          type: string
+                        sessionPercent:
+                          description: |-
+                            Percent of session traffic to shed 0 - 100.
+                            Percent of session traffic to shed 0 - 100. Defaults to `0`.
+                          type: number
+                        sessionPolicy:
+                          description: |-
+                            Method of shedding session traffic "" or "hash".
+                            Method of shedding traffic. Available values: “, `hash`. Defaults to `""`.
+                          type: string
+                      type: object
+                    type: array
+                  longitude:
+                    description: The longitude this pool is physically located at;
+                      used for proximity steering. Values should be between -180 and
+                      180.
+                    type: number
+                  minimumOrigins:
+                    description: |-
+                      The minimum number of origins that must be healthy for this pool to serve traffic. If the number of healthy origins falls below this number, the pool will be marked unhealthy and we will failover to the next available pool. Default: 1.
+                      Defaults to `1`.
+                    type: number
                   modifiedOn:
+                    description: The RFC3339 timestamp of when the load balancer was
+                      last modified.
                     type: string
+                  monitor:
+                    description: The ID of the Monitor to use for health checking
+                      origins within this pool.
+                    type: string
+                  name:
+                    description: A short name (tag) for the pool. Only alphanumeric
+                      characters, hyphens, and underscores are allowed.
+                    type: string
+                  notificationEmail:
+                    description: The email address to send health status notifications
+                      to. This can be an individual mailbox or a mailing list. Multiple
+                      emails can be supplied as a comma delimited list.
+                    type: string
+                  originSteering:
+                    description: Set an origin steering policy to control origin selection
+                      within a pool.
+                    items:
+                      properties:
+                        policy:
+                          description: |-
+                            Either "random" (default) or "hash".
+                            Origin steering policy to be used. Available values: “, `hash`, `random`. Defaults to `random`.
+                          type: string
+                      type: object
+                    type: array
+                  origins:
+                    description: The list of origins within this pool. Traffic directed
+                      at this pool is balanced across all currently healthy origins,
+                      provided the pool itself is healthy. It's a complex value. See
+                      description below.
+                    items:
+                      properties:
+                        address:
+                          description: |-
+                            The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname. Hostnames entered here should resolve directly to the origin, and not be a hostname proxied by Cloudflare.
+                            The IP address (IPv4 or IPv6) of the origin, or the publicly addressable hostname.
+                          type: string
+                        enabled:
+                          description: |-
+                            Whether to enable (the default) this pool. Disabled pools will not receive traffic and are excluded from health checks. Disabling a pool will cause any load balancers using it to failover to the next pool (if any).
+                            Whether this origin is enabled. Disabled origins will not receive traffic and are excluded from health checks. Defaults to `true`.
+                          type: boolean
+                        header:
+                          description: |-
+                            The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+                            HTTP request headers.
+                          items:
+                            properties:
+                              header:
+                                description: |-
+                                  The HTTP request headers. For security reasons, this header also needs to be a subdomain of the overall zone. Fields documented below.
+                                  HTTP Header name.
+                                type: string
+                              values:
+                                description: |-
+                                  A list of string values for the header.
+                                  Values for the HTTP headers.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        name:
+                          description: |-
+                            A short name (tag) for the pool. Only alphanumeric characters, hyphens, and underscores are allowed.
+                            A human-identifiable name for the origin.
+                          type: string
+                        weight:
+                          description: |-
+                            The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Default: 1.
+                            The weight (0.01 - 1.00) of this origin, relative to other origins in the pool. Equal values mean equal weighting. A weight of 0 means traffic will not be sent to this origin, but health is still checked. Defaults to `1`.
+                          type: number
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.
@@ -501,13 +997,15 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
                     reason:
                       description: A Reason for this condition's last transition from
@@ -518,8 +1016,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -528,6 +1027,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
             type: object
         required:
         - spec
@@ -536,9 +1038,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,20 +17,65 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RulesInitParameters struct {
+
+	// (Block List) List of rules to apply to the ruleset. (see below for nested schema)
+	// List of rules to apply to the ruleset.
+	Rules []RulesRulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// (String) The Waiting Room ID the rules should apply to. Modifying this attribute will force creation of a new resource.
+	// The Waiting Room ID the rules should apply to. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=Room
+	WaitingRoomID *string `json:"waitingRoomId,omitempty" tf:"waiting_room_id,omitempty"`
+
+	// Reference to a Room to populate waitingRoomId.
+	// +kubebuilder:validation:Optional
+	WaitingRoomIDRef *v1.Reference `json:"waitingRoomIdRef,omitempty" tf:"-"`
+
+	// Selector for a Room to populate waitingRoomId.
+	// +kubebuilder:validation:Optional
+	WaitingRoomIDSelector *v1.Selector `json:"waitingRoomIdSelector,omitempty" tf:"-"`
+
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type RulesObservation struct {
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (Block List) List of rules to apply to the ruleset. (see below for nested schema)
 	// List of rules to apply to the ruleset.
-	// +kubebuilder:validation:Optional
 	Rules []RulesRulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// (String) The Waiting Room ID the rules should apply to. Modifying this attribute will force creation of a new resource.
+	// The Waiting Room ID the rules should apply to. **Modifying this attribute will force creation of a new resource.**
+	WaitingRoomID *string `json:"waitingRoomId,omitempty" tf:"waiting_room_id,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RulesParameters struct {
 
+	// (Block List) List of rules to apply to the ruleset. (see below for nested schema)
 	// List of rules to apply to the ruleset.
 	// +kubebuilder:validation:Optional
 	Rules []RulesRulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
+	// (String) The Waiting Room ID the rules should apply to. Modifying this attribute will force creation of a new resource.
 	// The Waiting Room ID the rules should apply to. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=Room
 	// +kubebuilder:validation:Optional
@@ -40,6 +89,7 @@ type RulesParameters struct {
 	// +kubebuilder:validation:Optional
 	WaitingRoomIDSelector *v1.Selector `json:"waitingRoomIdSelector,omitempty" tf:"-"`
 
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -54,29 +104,70 @@ type RulesParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type RulesRulesInitParameters struct {
+
+	// (String) Action to perform in the ruleset rule. Available values: bypass_waiting_room.
+	// Action to perform in the ruleset rule. Available values: `bypass_waiting_room`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// (String) Brief summary of the waiting room rule and its intended use.
+	// Brief summary of the waiting room rule and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the Waiting Room Rules Docs.
+	// Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// (String) Whether the rule is enabled or disabled. Available values: enabled, disabled.
+	// Whether the rule is enabled or disabled. Available values: `enabled`, `disabled`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+}
+
 type RulesRulesObservation struct {
 
+	// (String) Action to perform in the ruleset rule. Available values: bypass_waiting_room.
+	// Action to perform in the ruleset rule. Available values: `bypass_waiting_room`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// (String) Brief summary of the waiting room rule and its intended use.
+	// Brief summary of the waiting room rule and its intended use.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the Waiting Room Rules Docs.
+	// Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// (String) The ID of this resource.
 	// Unique rule identifier.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) Whether the rule is enabled or disabled. Available values: enabled, disabled.
+	// Whether the rule is enabled or disabled. Available values: `enabled`, `disabled`.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// (String) Version of the waiting room rule.
 	// Version of the waiting room rule.
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 }
 
 type RulesRulesParameters struct {
 
+	// (String) Action to perform in the ruleset rule. Available values: bypass_waiting_room.
 	// Action to perform in the ruleset rule. Available values: `bypass_waiting_room`.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Action *string `json:"action" tf:"action,omitempty"`
 
+	// (String) Brief summary of the waiting room rule and its intended use.
 	// Brief summary of the waiting room rule and its intended use.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (String) Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the Waiting Room Rules Docs.
 	// Criteria for an HTTP request to trigger the waiting room rule action. Uses the Firewall Rules expression language based on Wireshark display filters. Refer to the [Waiting Room Rules Docs](https://developers.cloudflare.com/waiting-room/additional-options/waiting-room-rules/bypass-rules/).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Expression *string `json:"expression" tf:"expression,omitempty"`
 
+	// (String) Whether the rule is enabled or disabled. Available values: enabled, disabled.
 	// Whether the rule is enabled or disabled. Available values: `enabled`, `disabled`.
 	// +kubebuilder:validation:Optional
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
@@ -86,6 +177,17 @@ type RulesRulesParameters struct {
 type RulesSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RulesParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RulesInitParameters `json:"initProvider,omitempty"`
 }
 
 // RulesStatus defines the observed state of Rules.
@@ -95,13 +197,14 @@ type RulesStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Rules is the Schema for the Ruless API. <no value>
+// Rules is the Schema for the Ruless API. Provides a Cloudflare Waiting Room Rules resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Rules struct {
 	metav1.TypeMeta   `json:",inline"`

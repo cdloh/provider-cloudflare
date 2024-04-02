@@ -1,0 +1,25 @@
+apiVersion: notification.cloudflare.upbound.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: notification/v1alpha1/policy
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    alertType: universal_ssl_event_type
+    description: Notification policy to alert when my SSL certificates are modified
+    emailIntegration:
+    - id: myemail@example.com
+    enabled: true
+    name: Policy for SSL notification events
+    pagerdutyIntegration:
+    - id: 850129d136459401860572c5d964d27k
+    webhooksIntegration:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: example

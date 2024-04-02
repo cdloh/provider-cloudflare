@@ -1,6 +1,6 @@
 package worker
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 const (
 	shortGroupName = "worker"

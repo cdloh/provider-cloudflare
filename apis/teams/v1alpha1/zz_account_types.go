@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,80 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AccountInitParameters struct {
+
+	// The account to which the teams location should be added.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// Indicator of enablement.
+	ActivityLogEnabled *bool `json:"activityLogEnabled,omitempty" tf:"activity_log_enabled,omitempty"`
+
+	// Configuration block for antivirus traffic scanning.
+	Antivirus []AntivirusInitParameters `json:"antivirus,omitempty" tf:"antivirus,omitempty"`
+
+	// Configuration for a custom block page.
+	BlockPage []BlockPageInitParameters `json:"blockPage,omitempty" tf:"block_page,omitempty"`
+
+	// Configure compliance with Federal Information Processing Standards.
+	Fips []FipsInitParameters `json:"fips,omitempty" tf:"fips,omitempty"`
+
+	Logging []LoggingInitParameters `json:"logging,omitempty" tf:"logging,omitempty"`
+
+	// Configuration block for specifying which protocols are proxied.
+	Proxy []ProxyInitParameters `json:"proxy,omitempty" tf:"proxy,omitempty"`
+
+	// Indicator that decryption of TLS traffic is enabled.
+	TLSDecryptEnabled *bool `json:"tlsDecryptEnabled,omitempty" tf:"tls_decrypt_enabled,omitempty"`
+
+	// Safely browse websites in Browser Isolation through a URL.
+	URLBrowserIsolationEnabled *bool `json:"urlBrowserIsolationEnabled,omitempty" tf:"url_browser_isolation_enabled,omitempty"`
+}
+
 type AccountObservation struct {
+
+	// The account to which the teams location should be added.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Indicator of enablement.
+	ActivityLogEnabled *bool `json:"activityLogEnabled,omitempty" tf:"activity_log_enabled,omitempty"`
+
+	// Configuration block for antivirus traffic scanning.
+	Antivirus []AntivirusObservation `json:"antivirus,omitempty" tf:"antivirus,omitempty"`
+
+	// Configuration for a custom block page.
+	BlockPage []BlockPageObservation `json:"blockPage,omitempty" tf:"block_page,omitempty"`
+
+	// Configure compliance with Federal Information Processing Standards.
+	Fips []FipsObservation `json:"fips,omitempty" tf:"fips,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Logging []LoggingObservation `json:"logging,omitempty" tf:"logging,omitempty"`
+
+	// Configuration block for specifying which protocols are proxied.
+	Proxy []ProxyObservation `json:"proxy,omitempty" tf:"proxy,omitempty"`
+
+	// Indicator that decryption of TLS traffic is enabled.
+	TLSDecryptEnabled *bool `json:"tlsDecryptEnabled,omitempty" tf:"tls_decrypt_enabled,omitempty"`
+
+	// Safely browse websites in Browser Isolation through a URL.
+	URLBrowserIsolationEnabled *bool `json:"urlBrowserIsolationEnabled,omitempty" tf:"url_browser_isolation_enabled,omitempty"`
 }
 
 type AccountParameters struct {
 
+	// The account to which the teams location should be added.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,151 +104,317 @@ type AccountParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Indicator of enablement.
 	// +kubebuilder:validation:Optional
 	ActivityLogEnabled *bool `json:"activityLogEnabled,omitempty" tf:"activity_log_enabled,omitempty"`
 
+	// Configuration block for antivirus traffic scanning.
 	// +kubebuilder:validation:Optional
 	Antivirus []AntivirusParameters `json:"antivirus,omitempty" tf:"antivirus,omitempty"`
 
+	// Configuration for a custom block page.
 	// +kubebuilder:validation:Optional
 	BlockPage []BlockPageParameters `json:"blockPage,omitempty" tf:"block_page,omitempty"`
 
+	// Configure compliance with Federal Information Processing Standards.
 	// +kubebuilder:validation:Optional
 	Fips []FipsParameters `json:"fips,omitempty" tf:"fips,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Logging []LoggingParameters `json:"logging,omitempty" tf:"logging,omitempty"`
 
+	// Configuration block for specifying which protocols are proxied.
 	// +kubebuilder:validation:Optional
 	Proxy []ProxyParameters `json:"proxy,omitempty" tf:"proxy,omitempty"`
 
+	// Indicator that decryption of TLS traffic is enabled.
 	// +kubebuilder:validation:Optional
 	TLSDecryptEnabled *bool `json:"tlsDecryptEnabled,omitempty" tf:"tls_decrypt_enabled,omitempty"`
 
+	// Safely browse websites in Browser Isolation through a URL.
 	// +kubebuilder:validation:Optional
 	URLBrowserIsolationEnabled *bool `json:"urlBrowserIsolationEnabled,omitempty" tf:"url_browser_isolation_enabled,omitempty"`
 }
 
+type AntivirusInitParameters struct {
+
+	// Scan on file download.
+	EnabledDownloadPhase *bool `json:"enabledDownloadPhase,omitempty" tf:"enabled_download_phase,omitempty"`
+
+	// Scan on file upload.
+	EnabledUploadPhase *bool `json:"enabledUploadPhase,omitempty" tf:"enabled_upload_phase,omitempty"`
+
+	// Block requests for files that cannot be scanned.
+	FailClosed *bool `json:"failClosed,omitempty" tf:"fail_closed,omitempty"`
+}
+
 type AntivirusObservation struct {
+
+	// Scan on file download.
+	EnabledDownloadPhase *bool `json:"enabledDownloadPhase,omitempty" tf:"enabled_download_phase,omitempty"`
+
+	// Scan on file upload.
+	EnabledUploadPhase *bool `json:"enabledUploadPhase,omitempty" tf:"enabled_upload_phase,omitempty"`
+
+	// Block requests for files that cannot be scanned.
+	FailClosed *bool `json:"failClosed,omitempty" tf:"fail_closed,omitempty"`
 }
 
 type AntivirusParameters struct {
 
-	// +kubebuilder:validation:Required
+	// Scan on file download.
+	// +kubebuilder:validation:Optional
 	EnabledDownloadPhase *bool `json:"enabledDownloadPhase" tf:"enabled_download_phase,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// Scan on file upload.
+	// +kubebuilder:validation:Optional
 	EnabledUploadPhase *bool `json:"enabledUploadPhase" tf:"enabled_upload_phase,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// Block requests for files that cannot be scanned.
+	// +kubebuilder:validation:Optional
 	FailClosed *bool `json:"failClosed" tf:"fail_closed,omitempty"`
 }
 
+type BlockPageInitParameters struct {
+
+	// Hex code of block page background color.
+	BackgroundColor *string `json:"backgroundColor,omitempty" tf:"background_color,omitempty"`
+
+	// Indicator of enablement.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Block page header text.
+	FooterText *string `json:"footerText,omitempty" tf:"footer_text,omitempty"`
+
+	// Block page footer text.
+	HeaderText *string `json:"headerText,omitempty" tf:"header_text,omitempty"`
+
+	// URL of block page logo.
+	LogoPath *string `json:"logoPath,omitempty" tf:"logo_path,omitempty"`
+
+	// Name of block page configuration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type BlockPageObservation struct {
+
+	// Hex code of block page background color.
+	BackgroundColor *string `json:"backgroundColor,omitempty" tf:"background_color,omitempty"`
+
+	// Indicator of enablement.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Block page header text.
+	FooterText *string `json:"footerText,omitempty" tf:"footer_text,omitempty"`
+
+	// Block page footer text.
+	HeaderText *string `json:"headerText,omitempty" tf:"header_text,omitempty"`
+
+	// URL of block page logo.
+	LogoPath *string `json:"logoPath,omitempty" tf:"logo_path,omitempty"`
+
+	// Name of block page configuration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type BlockPageParameters struct {
 
+	// Hex code of block page background color.
 	// +kubebuilder:validation:Optional
 	BackgroundColor *string `json:"backgroundColor,omitempty" tf:"background_color,omitempty"`
 
+	// Indicator of enablement.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// Block page header text.
 	// +kubebuilder:validation:Optional
 	FooterText *string `json:"footerText,omitempty" tf:"footer_text,omitempty"`
 
+	// Block page footer text.
 	// +kubebuilder:validation:Optional
 	HeaderText *string `json:"headerText,omitempty" tf:"header_text,omitempty"`
 
+	// URL of block page logo.
 	// +kubebuilder:validation:Optional
 	LogoPath *string `json:"logoPath,omitempty" tf:"logo_path,omitempty"`
 
+	// Name of block page configuration.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
+type DNSInitParameters struct {
+	LogAll *bool `json:"logAll,omitempty" tf:"log_all,omitempty"`
+
+	LogBlocks *bool `json:"logBlocks,omitempty" tf:"log_blocks,omitempty"`
+}
+
 type DNSObservation struct {
+	LogAll *bool `json:"logAll,omitempty" tf:"log_all,omitempty"`
+
+	LogBlocks *bool `json:"logBlocks,omitempty" tf:"log_blocks,omitempty"`
 }
 
 type DNSParameters struct {
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	LogAll *bool `json:"logAll" tf:"log_all,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	LogBlocks *bool `json:"logBlocks" tf:"log_blocks,omitempty"`
 }
 
+type FipsInitParameters struct {
+
+	// Only allow FIPS-compliant TLS configuration.
+	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
+}
+
 type FipsObservation struct {
+
+	// Only allow FIPS-compliant TLS configuration.
+	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 }
 
 type FipsParameters struct {
 
+	// Only allow FIPS-compliant TLS configuration.
 	// +kubebuilder:validation:Optional
 	TLS *bool `json:"tls,omitempty" tf:"tls,omitempty"`
 }
 
+type HTTPInitParameters struct {
+	LogAll *bool `json:"logAll,omitempty" tf:"log_all,omitempty"`
+
+	LogBlocks *bool `json:"logBlocks,omitempty" tf:"log_blocks,omitempty"`
+}
+
 type HTTPObservation struct {
+	LogAll *bool `json:"logAll,omitempty" tf:"log_all,omitempty"`
+
+	LogBlocks *bool `json:"logBlocks,omitempty" tf:"log_blocks,omitempty"`
 }
 
 type HTTPParameters struct {
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	LogAll *bool `json:"logAll" tf:"log_all,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	LogBlocks *bool `json:"logBlocks" tf:"log_blocks,omitempty"`
 }
 
+type L4InitParameters struct {
+	LogAll *bool `json:"logAll,omitempty" tf:"log_all,omitempty"`
+
+	LogBlocks *bool `json:"logBlocks,omitempty" tf:"log_blocks,omitempty"`
+}
+
 type L4Observation struct {
+	LogAll *bool `json:"logAll,omitempty" tf:"log_all,omitempty"`
+
+	LogBlocks *bool `json:"logBlocks,omitempty" tf:"log_blocks,omitempty"`
 }
 
 type L4Parameters struct {
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	LogAll *bool `json:"logAll" tf:"log_all,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	LogBlocks *bool `json:"logBlocks" tf:"log_blocks,omitempty"`
 }
 
+type LoggingInitParameters struct {
+
+	// Redact personally identifiable information from activity logging (PII fields are: source IP,
+	// user email, user ID, device ID, URL, referrer, user agent).
+	RedactPii *bool `json:"redactPii,omitempty" tf:"redact_pii,omitempty"`
+
+	// Represents whether all requests are logged or only the blocked requests are
+	// logged in DNS, HTTP and L4 filters.
+	SettingsByRuleType []SettingsByRuleTypeInitParameters `json:"settingsByRuleType,omitempty" tf:"settings_by_rule_type,omitempty"`
+}
+
 type LoggingObservation struct {
+
+	// Redact personally identifiable information from activity logging (PII fields are: source IP,
+	// user email, user ID, device ID, URL, referrer, user agent).
+	RedactPii *bool `json:"redactPii,omitempty" tf:"redact_pii,omitempty"`
+
+	// Represents whether all requests are logged or only the blocked requests are
+	// logged in DNS, HTTP and L4 filters.
+	SettingsByRuleType []SettingsByRuleTypeObservation `json:"settingsByRuleType,omitempty" tf:"settings_by_rule_type,omitempty"`
 }
 
 type LoggingParameters struct {
 
-	// +kubebuilder:validation:Required
+	// Redact personally identifiable information from activity logging (PII fields are: source IP,
+	// user email, user ID, device ID, URL, referrer, user agent).
+	// +kubebuilder:validation:Optional
 	RedactPii *bool `json:"redactPii" tf:"redact_pii,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// Represents whether all requests are logged or only the blocked requests are
+	// logged in DNS, HTTP and L4 filters.
+	// +kubebuilder:validation:Optional
 	SettingsByRuleType []SettingsByRuleTypeParameters `json:"settingsByRuleType" tf:"settings_by_rule_type,omitempty"`
 }
 
+type ProxyInitParameters struct {
+
+	// Whether gateway proxy is enabled on gateway devices for tcp traffic.
+	TCP *bool `json:"tcp,omitempty" tf:"tcp,omitempty"`
+
+	// Whether gateway proxy is enabled on gateway devices for udp traffic.
+	UDP *bool `json:"udp,omitempty" tf:"udp,omitempty"`
+}
+
 type ProxyObservation struct {
+
+	// Whether gateway proxy is enabled on gateway devices for tcp traffic.
+	TCP *bool `json:"tcp,omitempty" tf:"tcp,omitempty"`
+
+	// Whether gateway proxy is enabled on gateway devices for udp traffic.
+	UDP *bool `json:"udp,omitempty" tf:"udp,omitempty"`
 }
 
 type ProxyParameters struct {
 
-	// +kubebuilder:validation:Required
+	// Whether gateway proxy is enabled on gateway devices for tcp traffic.
+	// +kubebuilder:validation:Optional
 	TCP *bool `json:"tcp" tf:"tcp,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// Whether gateway proxy is enabled on gateway devices for udp traffic.
+	// +kubebuilder:validation:Optional
 	UDP *bool `json:"udp" tf:"udp,omitempty"`
 }
 
+type SettingsByRuleTypeInitParameters struct {
+	DNS []DNSInitParameters `json:"dns,omitempty" tf:"dns,omitempty"`
+
+	HTTP []HTTPInitParameters `json:"http,omitempty" tf:"http,omitempty"`
+
+	L4 []L4InitParameters `json:"l4,omitempty" tf:"l4,omitempty"`
+}
+
 type SettingsByRuleTypeObservation struct {
+	DNS []DNSObservation `json:"dns,omitempty" tf:"dns,omitempty"`
+
+	HTTP []HTTPObservation `json:"http,omitempty" tf:"http,omitempty"`
+
+	L4 []L4Observation `json:"l4,omitempty" tf:"l4,omitempty"`
 }
 
 type SettingsByRuleTypeParameters struct {
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	DNS []DNSParameters `json:"dns" tf:"dns,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	HTTP []HTTPParameters `json:"http" tf:"http,omitempty"`
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	L4 []L4Parameters `json:"l4" tf:"l4,omitempty"`
 }
 
@@ -184,6 +422,17 @@ type SettingsByRuleTypeParameters struct {
 type AccountSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AccountParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AccountInitParameters `json:"initProvider,omitempty"`
 }
 
 // AccountStatus defines the observed state of Account.
@@ -193,13 +442,14 @@ type AccountStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Account is the Schema for the Accounts API. <no value>
+// Account is the Schema for the Accounts API. Provides a Cloudflare Teams Account resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Account struct {
 	metav1.TypeMeta   `json:",inline"`

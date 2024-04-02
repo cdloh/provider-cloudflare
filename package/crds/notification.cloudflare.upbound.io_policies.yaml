@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: policies.notification.cloudflare.upbound.io
 spec:
   group: notification.cloudflare.upbound.io
@@ -35,17 +34,24 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Policy is the Schema for the Policys API. <no value>
+        description: Policy is the Schema for the Policys API. Provides a resource,
+          that manages a notification policy for Cloudflare's products. The delivery
+          mechanisms supported are email, webhooks, and PagerDuty.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +60,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,7 +75,9 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
+                    description: |-
+                      (String) The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -77,21 +90,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -104,8 +117,9 @@ spec:
                     description: Selector for a Account in account to populate accountId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -118,21 +132,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -140,178 +154,211 @@ spec:
                         type: object
                     type: object
                   alertType:
-                    description: 'The event type that will trigger the dispatch of
-                      a notification. See the developer documentation for descriptions
-                      of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/).
-                      Available values: `billing_usage_alert`, `health_check_status_notification`,
-                      `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`,
-                      `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`,
-                      `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`,
-                      `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`,
-                      `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`,
-                      `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`,
-                      `secondary_dns_zone_successfully_updated`, `dos_attack_l7`,
-                      `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`,
-                      `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`,
-                      `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`,
-                      `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`,
-                      `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`,
-                      `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`,
-                      `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`,
-                      `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`,
-                      `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`,
-                      `stream_live_notifications`, `block_notification_new_block`,
-                      `block_notification_review_rejected`, `block_notification_review_accepted`,
-                      `web_analytics_metrics_update`, `workers_uptime`.'
+                    description: |-
+                      (String) The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of available alert types. Available values: billing_usage_alert, health_check_status_notification, g6_pool_toggle_alert, real_origin_monitoring, universal_ssl_event_type, dedicated_ssl_certificate_event_type, custom_ssl_certificate_event_type, access_custom_certificate_expiration_type, zone_aop_custom_certificate_expiration_type, bgp_hijack_notification, http_alert_origin_error, workers_alert, weekly_account_overview, expiring_service_token_alert, secondary_dns_all_primaries_failing, secondary_dns_zone_validation_warning, secondary_dns_primaries_failing, secondary_dns_zone_successfully_updated, dos_attack_l7, dos_attack_l4, advanced_ddos_attack_l7_alert, advanced_ddos_attack_l4_alert, fbm_volumetric_attack, fbm_auto_advertisement, load_balancing_pool_enablement_alert, load_balancing_health_alert, g6_health_alert, http_alert_edge_error, clickhouse_alert_fw_anomaly, clickhouse_alert_fw_ent_anomaly, failing_logpush_job_disabled_alert, scriptmonitor_alert_new_hosts, scriptmonitor_alert_new_scripts, scriptmonitor_alert_new_malicious_scripts, scriptmonitor_alert_new_malicious_url, scriptmonitor_alert_new_code_change_detections, scriptmonitor_alert_new_max_length_script_url, scriptmonitor_alert_new_malicious_hosts, sentinel_alert, hostname_aop_custom_certificate_expiration_type, stream_live_notifications, block_notification_new_block, block_notification_review_rejected, block_notification_review_accepted, web_analytics_metrics_update, workers_uptime.
+                      The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `billing_usage_alert`, `health_check_status_notification`, `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`, `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`, `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`, `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`, `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`, `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `dos_attack_l7`, `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`, `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`, `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`, `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`, `stream_live_notifications`, `block_notification_new_block`, `block_notification_review_rejected`, `block_notification_review_accepted`, `web_analytics_metrics_update`, `workers_uptime`.
                     type: string
                   description:
-                    description: Description of the notification policy.
+                    description: |-
+                      (String) Description of the notification policy.
+                      Description of the notification policy.
                     type: string
                   emailIntegration:
-                    description: The email id to which the notification should be
-                      dispatched. One of email, webhooks, or PagerDuty mechanisms
-                      is required.
+                    description: |-
+                      (Block Set) The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
                     items:
                       properties:
                         id:
+                          description: (String) The ID of this resource.
                           type: string
                         name:
+                          description: (String) The name of the notification policy.
                           type: string
-                      required:
-                      - id
                       type: object
                     type: array
                   enabled:
-                    description: The status of the notification policy.
+                    description: |-
+                      (Boolean) The status of the notification policy.
+                      The status of the notification policy.
                     type: boolean
                   filters:
-                    description: An optional nested block of filters that applies
-                      to the selected `alert_type`. A key-value map that specifies
-                      the type of filter and the values to match against (refer to
-                      the alert type block for available fields).
+                    description: |-
+                      value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields). (see below for nested schema)
+                      An optional nested block of filters that applies to the selected `alert_type`. A key-value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields).
                     items:
                       properties:
                         enabled:
-                          description: State of the pool to alert on.
+                          description: |-
+                            (Boolean) The status of the notification policy.
+                            State of the pool to alert on.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         eventSource:
-                          description: Source configuration to alert on for pool or
-                            origin.
+                          description: |-
+                            (Set of String) Source configuration to alert on for pool or origin.
+                            Source configuration to alert on for pool or origin.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         eventType:
-                          description: Stream event type to alert on.
+                          description: |-
+                            (Set of String) Stream event type to alert on.
+                            Stream event type to alert on.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         healthCheckId:
-                          description: Identifier health check. Required when using
-                            `filters.0.status`.
+                          description: |-
+                            (Set of String) Identifier health check. Required when using filters.0.status.
+                            Identifier health check. Required when using `filters.0.status`.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         inputId:
-                          description: Stream input id to alert on.
+                          description: |-
+                            (Set of String) Stream input id to alert on.
+                            Stream input id to alert on.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         limit:
-                          description: 'A numerical limit. Example: `100`.'
+                          description: |-
+                            (Set of String) A numerical limit. Example: 100.
+                            A numerical limit. Example: `100`.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         newHealth:
-                          description: Health status to alert on for pool or origin.
+                          description: |-
+                            (Set of String) Health status to alert on for pool or origin.
+                            Health status to alert on for pool or origin.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         packetsPerSecond:
-                          description: Packets per second threshold for dos alert.
+                          description: |-
+                            (Set of String) Packets per second threshold for dos alert.
+                            Packets per second threshold for dos alert.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         poolId:
-                          description: Load balancer pool identifier.
+                          description: |-
+                            (Set of String) Load balancer pool identifier.
+                            Load balancer pool identifier.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         product:
-                          description: 'Product name. Available values: `worker_requests`,
-                            `worker_durable_objects_requests`, `worker_durable_objects_duration`,
-                            `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`,
-                            `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`,
-                            `worker_durable_objects_storage_reads`.'
+                          description: |-
+                            (Set of String) Product name. Available values: worker_requests, worker_durable_objects_requests, worker_durable_objects_duration, worker_durable_objects_data_transfer, worker_durable_objects_stored_data, worker_durable_objects_storage_deletes, worker_durable_objects_storage_writes, worker_durable_objects_storage_reads.
+                            Product name. Available values: `worker_requests`, `worker_durable_objects_requests`, `worker_durable_objects_duration`, `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`, `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`, `worker_durable_objects_storage_reads`.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         protocol:
-                          description: Protocol to alert on for dos.
+                          description: |-
+                            (Set of String) Protocol to alert on for dos.
+                            Protocol to alert on for dos.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         requestsPerSecond:
-                          description: Requests per second threshold for dos alert.
+                          description: |-
+                            (Set of String) Requests per second threshold for dos alert.
+                            Requests per second threshold for dos alert.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         services:
+                          description: (Set of String)
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         slo:
-                          description: 'A numerical limit. Example: `99.9`.'
+                          description: |-
+                            (Set of String) A numerical limit. Example: 99.9.
+                            A numerical limit. Example: `99.9`.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         status:
-                          description: Status to alert on.
+                          description: |-
+                            (Set of String) Status to alert on.
+                            Status to alert on.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         targetHost:
-                          description: Target host to alert on for dos.
+                          description: |-
+                            (Set of String) Target host to alert on for dos.
+                            Target host to alert on for dos.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         targetZoneName:
-                          description: Target domain to alert on.
+                          description: |-
+                            (Set of String) Target domain to alert on.
+                            Target domain to alert on.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         zones:
-                          description: A list of zone identifiers.
+                          description: |-
+                            (Set of String) A list of zone identifiers.
+                            A list of zone identifiers.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                       type: object
                     type: array
                   name:
-                    description: The name of the notification policy.
+                    description: |-
+                      (String) The name of the notification policy.
+                      The name of the notification policy.
                     type: string
                   pagerdutyIntegration:
-                    description: The unique id of a configured pagerduty endpoint
-                      to which the notification should be dispatched. One of email,
-                      webhooks, or PagerDuty mechanisms is required.
+                    description: |-
+                      (Block Set) The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
                     items:
                       properties:
                         id:
+                          description: (String) The ID of this resource.
                           type: string
                         name:
+                          description: (String) The name of the notification policy.
                           type: string
-                      required:
-                      - id
                       type: object
                     type: array
                   webhooksIntegration:
-                    description: The unique id of a configured webhooks endpoint to
-                      which the notification should be dispatched. One of email, webhooks,
-                      or PagerDuty mechanisms is required.
+                    description: |-
+                      (Block Set) The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
                     items:
                       properties:
                         id:
+                          description: (String) The ID of this resource.
                           type: string
                         idRef:
                           description: Reference to a PolicyWebhooks to populate id.
@@ -324,22 +371,21 @@ spec:
                               properties:
                                 resolution:
                                   default: Required
-                                  description: Resolution specifies whether resolution
-                                    of this reference is required. The default is
-                                    'Required', which means the reconcile will fail
-                                    if the reference cannot be resolved. 'Optional'
-                                    means this reference will be a no-op if it cannot
-                                    be resolved.
+                                  description: |-
+                                    Resolution specifies whether resolution of this reference is required.
+                                    The default is 'Required', which means the reconcile will fail if the
+                                    reference cannot be resolved. 'Optional' means this reference will be
+                                    a no-op if it cannot be resolved.
                                   enum:
                                   - Required
                                   - Optional
                                   type: string
                                 resolve:
-                                  description: Resolve specifies when this reference
-                                    should be resolved. The default is 'IfNotPresent',
-                                    which will attempt to resolve the reference only
-                                    when the corresponding field is not present. Use
-                                    'Always' to resolve the reference on every reconcile.
+                                  description: |-
+                                    Resolve specifies when this reference should be resolved. The default
+                                    is 'IfNotPresent', which will attempt to resolve the reference only when
+                                    the corresponding field is not present. Use 'Always' to resolve the
+                                    reference on every reconcile.
                                   enum:
                                   - Always
                                   - IfNotPresent
@@ -352,9 +398,9 @@ spec:
                           description: Selector for a PolicyWebhooks to populate id.
                           properties:
                             matchControllerRef:
-                              description: MatchControllerRef ensures an object with
-                                the same controller reference as the selecting object
-                                is selected.
+                              description: |-
+                                MatchControllerRef ensures an object with the same controller reference
+                                as the selecting object is selected.
                               type: boolean
                             matchLabels:
                               additionalProperties:
@@ -367,22 +413,21 @@ spec:
                               properties:
                                 resolution:
                                   default: Required
-                                  description: Resolution specifies whether resolution
-                                    of this reference is required. The default is
-                                    'Required', which means the reconcile will fail
-                                    if the reference cannot be resolved. 'Optional'
-                                    means this reference will be a no-op if it cannot
-                                    be resolved.
+                                  description: |-
+                                    Resolution specifies whether resolution of this reference is required.
+                                    The default is 'Required', which means the reconcile will fail if the
+                                    reference cannot be resolved. 'Optional' means this reference will be
+                                    a no-op if it cannot be resolved.
                                   enum:
                                   - Required
                                   - Optional
                                   type: string
                                 resolve:
-                                  description: Resolve specifies when this reference
-                                    should be resolved. The default is 'IfNotPresent',
-                                    which will attempt to resolve the reference only
-                                    when the corresponding field is not present. Use
-                                    'Always' to resolve the reference on every reconcile.
+                                  description: |-
+                                    Resolve specifies when this reference should be resolved. The default
+                                    is 'IfNotPresent', which will attempt to resolve the reference only when
+                                    the corresponding field is not present. Use 'Always' to resolve the
+                                    reference on every reconcile.
                                   enum:
                                   - Always
                                   - IfNotPresent
@@ -390,100 +435,31 @@ spec:
                               type: object
                           type: object
                         name:
+                          description: (String) The name of the notification policy.
                           type: string
                       type: object
                     type: array
-                required:
-                - alertType
-                - enabled
-                - name
                 type: object
-              providerConfigRef:
-                default:
-                  name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
-                  name:
-                    description: Name of the referenced object.
+                  accountId:
+                    description: |-
+                      (String) The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                  accountIdRef:
+                    description: Reference to a Account in account to populate accountId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -493,21 +469,460 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  accountIdSelector:
+                    description: Selector for a Account in account to populate accountId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  alertType:
+                    description: |-
+                      (String) The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of available alert types. Available values: billing_usage_alert, health_check_status_notification, g6_pool_toggle_alert, real_origin_monitoring, universal_ssl_event_type, dedicated_ssl_certificate_event_type, custom_ssl_certificate_event_type, access_custom_certificate_expiration_type, zone_aop_custom_certificate_expiration_type, bgp_hijack_notification, http_alert_origin_error, workers_alert, weekly_account_overview, expiring_service_token_alert, secondary_dns_all_primaries_failing, secondary_dns_zone_validation_warning, secondary_dns_primaries_failing, secondary_dns_zone_successfully_updated, dos_attack_l7, dos_attack_l4, advanced_ddos_attack_l7_alert, advanced_ddos_attack_l4_alert, fbm_volumetric_attack, fbm_auto_advertisement, load_balancing_pool_enablement_alert, load_balancing_health_alert, g6_health_alert, http_alert_edge_error, clickhouse_alert_fw_anomaly, clickhouse_alert_fw_ent_anomaly, failing_logpush_job_disabled_alert, scriptmonitor_alert_new_hosts, scriptmonitor_alert_new_scripts, scriptmonitor_alert_new_malicious_scripts, scriptmonitor_alert_new_malicious_url, scriptmonitor_alert_new_code_change_detections, scriptmonitor_alert_new_max_length_script_url, scriptmonitor_alert_new_malicious_hosts, sentinel_alert, hostname_aop_custom_certificate_expiration_type, stream_live_notifications, block_notification_new_block, block_notification_review_rejected, block_notification_review_accepted, web_analytics_metrics_update, workers_uptime.
+                      The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `billing_usage_alert`, `health_check_status_notification`, `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`, `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`, `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`, `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`, `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`, `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `dos_attack_l7`, `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`, `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`, `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`, `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`, `stream_live_notifications`, `block_notification_new_block`, `block_notification_review_rejected`, `block_notification_review_accepted`, `web_analytics_metrics_update`, `workers_uptime`.
+                    type: string
+                  description:
+                    description: |-
+                      (String) Description of the notification policy.
+                      Description of the notification policy.
+                    type: string
+                  emailIntegration:
+                    description: |-
+                      (Block Set) The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          description: (String) The ID of this resource.
+                          type: string
+                        name:
+                          description: (String) The name of the notification policy.
+                          type: string
+                      type: object
+                    type: array
+                  enabled:
+                    description: |-
+                      (Boolean) The status of the notification policy.
+                      The status of the notification policy.
+                    type: boolean
+                  filters:
+                    description: |-
+                      value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields). (see below for nested schema)
+                      An optional nested block of filters that applies to the selected `alert_type`. A key-value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields).
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) The status of the notification policy.
+                            State of the pool to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        eventSource:
+                          description: |-
+                            (Set of String) Source configuration to alert on for pool or origin.
+                            Source configuration to alert on for pool or origin.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        eventType:
+                          description: |-
+                            (Set of String) Stream event type to alert on.
+                            Stream event type to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        healthCheckId:
+                          description: |-
+                            (Set of String) Identifier health check. Required when using filters.0.status.
+                            Identifier health check. Required when using `filters.0.status`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        inputId:
+                          description: |-
+                            (Set of String) Stream input id to alert on.
+                            Stream input id to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        limit:
+                          description: |-
+                            (Set of String) A numerical limit. Example: 100.
+                            A numerical limit. Example: `100`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        newHealth:
+                          description: |-
+                            (Set of String) Health status to alert on for pool or origin.
+                            Health status to alert on for pool or origin.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        packetsPerSecond:
+                          description: |-
+                            (Set of String) Packets per second threshold for dos alert.
+                            Packets per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        poolId:
+                          description: |-
+                            (Set of String) Load balancer pool identifier.
+                            Load balancer pool identifier.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        product:
+                          description: |-
+                            (Set of String) Product name. Available values: worker_requests, worker_durable_objects_requests, worker_durable_objects_duration, worker_durable_objects_data_transfer, worker_durable_objects_stored_data, worker_durable_objects_storage_deletes, worker_durable_objects_storage_writes, worker_durable_objects_storage_reads.
+                            Product name. Available values: `worker_requests`, `worker_durable_objects_requests`, `worker_durable_objects_duration`, `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`, `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`, `worker_durable_objects_storage_reads`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        protocol:
+                          description: |-
+                            (Set of String) Protocol to alert on for dos.
+                            Protocol to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        requestsPerSecond:
+                          description: |-
+                            (Set of String) Requests per second threshold for dos alert.
+                            Requests per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        services:
+                          description: (Set of String)
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        slo:
+                          description: |-
+                            (Set of String) A numerical limit. Example: 99.9.
+                            A numerical limit. Example: `99.9`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        status:
+                          description: |-
+                            (Set of String) Status to alert on.
+                            Status to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        targetHost:
+                          description: |-
+                            (Set of String) Target host to alert on for dos.
+                            Target host to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        targetZoneName:
+                          description: |-
+                            (Set of String) Target domain to alert on.
+                            Target domain to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        zones:
+                          description: |-
+                            (Set of String) A list of zone identifiers.
+                            A list of zone identifiers.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                      type: object
+                    type: array
+                  name:
+                    description: |-
+                      (String) The name of the notification policy.
+                      The name of the notification policy.
+                    type: string
+                  pagerdutyIntegration:
+                    description: |-
+                      (Block Set) The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          description: (String) The ID of this resource.
+                          type: string
+                        name:
+                          description: (String) The name of the notification policy.
+                          type: string
+                      type: object
+                    type: array
+                  webhooksIntegration:
+                    description: |-
+                      (Block Set) The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          description: (String) The ID of this resource.
+                          type: string
+                        idRef:
+                          description: Reference to a PolicyWebhooks to populate id.
+                          properties:
+                            name:
+                              description: Name of the referenced object.
+                              type: string
+                            policy:
+                              description: Policies for referencing.
+                              properties:
+                                resolution:
+                                  default: Required
+                                  description: |-
+                                    Resolution specifies whether resolution of this reference is required.
+                                    The default is 'Required', which means the reconcile will fail if the
+                                    reference cannot be resolved. 'Optional' means this reference will be
+                                    a no-op if it cannot be resolved.
+                                  enum:
+                                  - Required
+                                  - Optional
+                                  type: string
+                                resolve:
+                                  description: |-
+                                    Resolve specifies when this reference should be resolved. The default
+                                    is 'IfNotPresent', which will attempt to resolve the reference only when
+                                    the corresponding field is not present. Use 'Always' to resolve the
+                                    reference on every reconcile.
+                                  enum:
+                                  - Always
+                                  - IfNotPresent
+                                  type: string
+                              type: object
+                          required:
+                          - name
+                          type: object
+                        idSelector:
+                          description: Selector for a PolicyWebhooks to populate id.
+                          properties:
+                            matchControllerRef:
+                              description: |-
+                                MatchControllerRef ensures an object with the same controller reference
+                                as the selecting object is selected.
+                              type: boolean
+                            matchLabels:
+                              additionalProperties:
+                                type: string
+                              description: MatchLabels ensures an object with matching
+                                labels is selected.
+                              type: object
+                            policy:
+                              description: Policies for selection.
+                              properties:
+                                resolution:
+                                  default: Required
+                                  description: |-
+                                    Resolution specifies whether resolution of this reference is required.
+                                    The default is 'Required', which means the reconcile will fail if the
+                                    reference cannot be resolved. 'Optional' means this reference will be
+                                    a no-op if it cannot be resolved.
+                                  enum:
+                                  - Required
+                                  - Optional
+                                  type: string
+                                resolve:
+                                  description: |-
+                                    Resolve specifies when this reference should be resolved. The default
+                                    is 'IfNotPresent', which will attempt to resolve the reference only when
+                                    the corresponding field is not present. Use 'Always' to resolve the
+                                    reference on every reconcile.
+                                  enum:
+                                  - Always
+                                  - IfNotPresent
+                                  type: string
+                              type: object
+                          type: object
+                        name:
+                          description: (String) The name of the notification policy.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -522,21 +937,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -547,14 +963,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -569,19 +986,254 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.alertType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.alertType)
+                || (has(self.initProvider) && has(self.initProvider.alertType))'
+            - message: spec.forProvider.enabled is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.enabled)
+                || (has(self.initProvider) && has(self.initProvider.enabled))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: PolicyStatus defines the observed state of Policy.
             properties:
               atProvider:
                 properties:
-                  created:
-                    description: When the notification policy was created.
+                  accountId:
+                    description: |-
+                      (String) The account identifier to target for the resource.
+                      The account identifier to target for the resource.
                     type: string
+                  alertType:
+                    description: |-
+                      (String) The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of available alert types. Available values: billing_usage_alert, health_check_status_notification, g6_pool_toggle_alert, real_origin_monitoring, universal_ssl_event_type, dedicated_ssl_certificate_event_type, custom_ssl_certificate_event_type, access_custom_certificate_expiration_type, zone_aop_custom_certificate_expiration_type, bgp_hijack_notification, http_alert_origin_error, workers_alert, weekly_account_overview, expiring_service_token_alert, secondary_dns_all_primaries_failing, secondary_dns_zone_validation_warning, secondary_dns_primaries_failing, secondary_dns_zone_successfully_updated, dos_attack_l7, dos_attack_l4, advanced_ddos_attack_l7_alert, advanced_ddos_attack_l4_alert, fbm_volumetric_attack, fbm_auto_advertisement, load_balancing_pool_enablement_alert, load_balancing_health_alert, g6_health_alert, http_alert_edge_error, clickhouse_alert_fw_anomaly, clickhouse_alert_fw_ent_anomaly, failing_logpush_job_disabled_alert, scriptmonitor_alert_new_hosts, scriptmonitor_alert_new_scripts, scriptmonitor_alert_new_malicious_scripts, scriptmonitor_alert_new_malicious_url, scriptmonitor_alert_new_code_change_detections, scriptmonitor_alert_new_max_length_script_url, scriptmonitor_alert_new_malicious_hosts, sentinel_alert, hostname_aop_custom_certificate_expiration_type, stream_live_notifications, block_notification_new_block, block_notification_review_rejected, block_notification_review_accepted, web_analytics_metrics_update, workers_uptime.
+                      The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `billing_usage_alert`, `health_check_status_notification`, `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`, `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`, `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`, `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`, `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`, `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `dos_attack_l7`, `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`, `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`, `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`, `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`, `stream_live_notifications`, `block_notification_new_block`, `block_notification_review_rejected`, `block_notification_review_accepted`, `web_analytics_metrics_update`, `workers_uptime`.
+                    type: string
+                  created:
+                    description: |-
+                      (String) When the notification policy was created.
+                      When the notification policy was created.
+                    type: string
+                  description:
+                    description: |-
+                      (String) Description of the notification policy.
+                      Description of the notification policy.
+                    type: string
+                  emailIntegration:
+                    description: |-
+                      (Block Set) The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          description: (String) The ID of this resource.
+                          type: string
+                        name:
+                          description: (String) The name of the notification policy.
+                          type: string
+                      type: object
+                    type: array
+                  enabled:
+                    description: |-
+                      (Boolean) The status of the notification policy.
+                      The status of the notification policy.
+                    type: boolean
+                  filters:
+                    description: |-
+                      value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields). (see below for nested schema)
+                      An optional nested block of filters that applies to the selected `alert_type`. A key-value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields).
+                    items:
+                      properties:
+                        enabled:
+                          description: |-
+                            (Boolean) The status of the notification policy.
+                            State of the pool to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        eventSource:
+                          description: |-
+                            (Set of String) Source configuration to alert on for pool or origin.
+                            Source configuration to alert on for pool or origin.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        eventType:
+                          description: |-
+                            (Set of String) Stream event type to alert on.
+                            Stream event type to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        healthCheckId:
+                          description: |-
+                            (Set of String) Identifier health check. Required when using filters.0.status.
+                            Identifier health check. Required when using `filters.0.status`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        inputId:
+                          description: |-
+                            (Set of String) Stream input id to alert on.
+                            Stream input id to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        limit:
+                          description: |-
+                            (Set of String) A numerical limit. Example: 100.
+                            A numerical limit. Example: `100`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        newHealth:
+                          description: |-
+                            (Set of String) Health status to alert on for pool or origin.
+                            Health status to alert on for pool or origin.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        packetsPerSecond:
+                          description: |-
+                            (Set of String) Packets per second threshold for dos alert.
+                            Packets per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        poolId:
+                          description: |-
+                            (Set of String) Load balancer pool identifier.
+                            Load balancer pool identifier.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        product:
+                          description: |-
+                            (Set of String) Product name. Available values: worker_requests, worker_durable_objects_requests, worker_durable_objects_duration, worker_durable_objects_data_transfer, worker_durable_objects_stored_data, worker_durable_objects_storage_deletes, worker_durable_objects_storage_writes, worker_durable_objects_storage_reads.
+                            Product name. Available values: `worker_requests`, `worker_durable_objects_requests`, `worker_durable_objects_duration`, `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`, `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`, `worker_durable_objects_storage_reads`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        protocol:
+                          description: |-
+                            (Set of String) Protocol to alert on for dos.
+                            Protocol to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        requestsPerSecond:
+                          description: |-
+                            (Set of String) Requests per second threshold for dos alert.
+                            Requests per second threshold for dos alert.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        services:
+                          description: (Set of String)
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        slo:
+                          description: |-
+                            (Set of String) A numerical limit. Example: 99.9.
+                            A numerical limit. Example: `99.9`.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        status:
+                          description: |-
+                            (Set of String) Status to alert on.
+                            Status to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        targetHost:
+                          description: |-
+                            (Set of String) Target host to alert on for dos.
+                            Target host to alert on for dos.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        targetZoneName:
+                          description: |-
+                            (Set of String) Target domain to alert on.
+                            Target domain to alert on.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        zones:
+                          description: |-
+                            (Set of String) A list of zone identifiers.
+                            A list of zone identifiers.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                      type: object
+                    type: array
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   modified:
-                    description: When the notification policy was last modified.
+                    description: |-
+                      (String) When the notification policy was last modified.
+                      When the notification policy was last modified.
                     type: string
+                  name:
+                    description: |-
+                      (String) The name of the notification policy.
+                      The name of the notification policy.
+                    type: string
+                  pagerdutyIntegration:
+                    description: |-
+                      (Block Set) The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          description: (String) The ID of this resource.
+                          type: string
+                        name:
+                          description: (String) The name of the notification policy.
+                          type: string
+                      type: object
+                    type: array
+                  webhooksIntegration:
+                    description: |-
+                      (Block Set) The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+                      The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+                    items:
+                      properties:
+                        id:
+                          description: (String) The ID of this resource.
+                          type: string
+                        name:
+                          description: (String) The name of the notification policy.
+                          type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.
@@ -589,13 +1241,15 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
                     reason:
                       description: A Reason for this condition's last transition from
@@ -606,8 +1260,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -616,6 +1271,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
             type: object
         required:
         - spec
@@ -624,9 +1282,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

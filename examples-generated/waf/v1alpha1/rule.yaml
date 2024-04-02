@@ -1,0 +1,15 @@
+apiVersion: waf.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: waf/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: rule_100000
+  name: rule-100000
+spec:
+  forProvider:
+    mode: simulate
+    ruleId: "100000"
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

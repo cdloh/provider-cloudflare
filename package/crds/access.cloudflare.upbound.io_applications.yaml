@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.14.0
   name: applications.access.cloudflare.upbound.io
 spec:
   group: access.cloudflare.upbound.io
@@ -35,17 +34,25 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Application is the Schema for the Applications API. <no value>
+        description: Application is the Schema for the Applications API. Provides
+          a Cloudflare Access Application resource. Access Applications are used to
+          restrict access to a whole application using an authorisation gateway managed
+          by Cloudflare.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -54,9 +61,14 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
                 enum:
                 - Orphan
                 - Delete
@@ -64,8 +76,9 @@ spec:
               forProvider:
                 properties:
                   accountId:
-                    description: The account identifier to target for the resource.
-                      Conflicts with `zone_id`.
+                    description: |-
+                      (String) The account identifier to target for the resource. Conflicts with zone_id.
+                      The account identifier to target for the resource. Conflicts with `zone_id`.
                     type: string
                   accountIdRef:
                     description: Reference to a Account in account to populate accountId.
@@ -78,21 +91,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -105,8 +118,9 @@ spec:
                     description: Selector for a Account in account to populate accountId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -119,21 +133,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -141,134 +155,167 @@ spec:
                         type: object
                     type: object
                   allowedIdps:
-                    description: The identity providers selected for the application.
+                    description: |-
+                      (Set of String) The identity providers selected for the application.
+                      The identity providers selected for the application.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   appLauncherVisible:
-                    description: Option to show/hide applications in App Launcher.
-                      Defaults to `true`.
+                    description: |-
+                      (Boolean) Option to show/hide applications in App Launcher. Defaults to true.
+                      Option to show/hide applications in App Launcher. Defaults to `true`.
                     type: boolean
                   autoRedirectToIdentity:
-                    description: Option to skip identity provider selection if only
-                      one is configured in `allowed_idps`. Defaults to `false`.
+                    description: |-
+                      (Boolean) Option to skip identity provider selection if only one is configured in allowed_idps. Defaults to false.
+                      Option to skip identity provider selection if only one is configured in `allowed_idps`. Defaults to `false`.
                     type: boolean
                   corsHeaders:
-                    description: CORS configuration for the Access Application. See
-                      below for reference structure.
+                    description: |-
+                      (Block List) CORS configuration for the Access Application. See below for reference structure. (see below for nested schema)
+                      CORS configuration for the Access Application. See below for reference structure.
                     items:
                       properties:
                         allowAllHeaders:
-                          description: Value to determine whether all HTTP headers
-                            are exposed.
+                          description: |-
+                            (Boolean) Value to determine whether all HTTP headers are exposed.
+                            Value to determine whether all HTTP headers are exposed.
                           type: boolean
                         allowAllMethods:
-                          description: Value to determine whether all methods are
-                            exposed.
+                          description: |-
+                            (Boolean) Value to determine whether all methods are exposed.
+                            Value to determine whether all methods are exposed.
                           type: boolean
                         allowAllOrigins:
-                          description: Value to determine whether all origins are
-                            permitted to make CORS requests.
+                          description: |-
+                            (Boolean) Value to determine whether all origins are permitted to make CORS requests.
+                            Value to determine whether all origins are permitted to make CORS requests.
                           type: boolean
                         allowCredentials:
-                          description: Value to determine if credentials (cookies,
-                            authorization headers, or TLS client certificates) are
-                            included with requests.
+                          description: |-
+                            (Boolean) Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+                            Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
                           type: boolean
                         allowedHeaders:
-                          description: List of HTTP headers to expose via CORS.
+                          description: |-
+                            (Set of String) List of HTTP headers to expose via CORS.
+                            List of HTTP headers to expose via CORS.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         allowedMethods:
-                          description: List of methods to expose via CORS.
+                          description: |-
+                            (Set of String) List of methods to expose via CORS.
+                            List of methods to expose via CORS.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         allowedOrigins:
-                          description: List of origins permitted to make CORS requests.
+                          description: |-
+                            (Set of String) List of origins permitted to make CORS requests.
+                            List of origins permitted to make CORS requests.
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: set
                         maxAge:
-                          description: The maximum time a preflight request will be
-                            cached.
+                          description: |-
+                            (Number) The maximum time a preflight request will be cached.
+                            The maximum time a preflight request will be cached.
                           type: number
                       type: object
                     type: array
                   customDenyMessage:
-                    description: Option that returns a custom error message when a
-                      user is denied access to the application.
+                    description: |-
+                      (String) Option that returns a custom error message when a user is denied access to the application.
+                      Option that returns a custom error message when a user is denied access to the application.
                     type: string
                   customDenyUrl:
-                    description: Option that redirects to a custom URL when a user
-                      is denied access to the application.
+                    description: |-
+                      (String) Option that redirects to a custom URL when a user is denied access to the application.
+                      Option that redirects to a custom URL when a user is denied access to the application.
                     type: string
                   domain:
-                    description: The complete URL of the asset you wish to put Cloudflare
-                      Access in front of. Can include subdomains or paths. Or both.
+                    description: |-
+                      (String) The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+                      The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
                     type: string
                   enableBindingCookie:
-                    description: Option to provide increased security against compromised
-                      authorization tokens and CSRF attacks by requiring an additional
-                      "binding" cookie on requests. Defaults to `false`.
+                    description: |-
+                      (Boolean) Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to false.
+                      Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to `false`.
                     type: boolean
                   httpOnlyCookieAttribute:
-                    description: Option to add the `HttpOnly` cookie flag to access
-                      tokens.
+                    description: |-
+                      (Boolean) Option to add the HttpOnly cookie flag to access tokens.
+                      Option to add the `HttpOnly` cookie flag to access tokens.
                     type: boolean
                   logoUrl:
-                    description: Image URL for the logo shown in the app launcher
-                      dashboard.
+                    description: |-
+                      (String) Image URL for the logo shown in the app launcher dashboard.
+                      Image URL for the logo shown in the app launcher dashboard.
                     type: string
                   name:
-                    description: Friendly name of the Access Application.
+                    description: |-
+                      (String) Friendly name of the Access Application.
+                      Friendly name of the Access Application.
                     type: string
                   saasApp:
-                    description: SaaS configuration for the Access Application.
+                    description: |-
+                      (Block List, Max: 1) SaaS configuration for the Access Application. (see below for nested schema)
+                      SaaS configuration for the Access Application.
                     items:
                       properties:
                         consumerServiceUrl:
-                          description: The service provider's endpoint that is responsible
-                            for receiving and parsing a SAML assertion.
+                          description: |-
+                            (String) The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+                            The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
                           type: string
                         nameIdFormat:
-                          description: The format of the name identifier sent to the
-                            SaaS application. Defaults to `email`.
+                          description: |-
+                            (String) The format of the name identifier sent to the SaaS application. Defaults to email.
+                            The format of the name identifier sent to the SaaS application. Defaults to `email`.
                           type: string
                         spEntityId:
-                          description: A globally unique name for an identity or service
-                            provider.
+                          description: |-
+                            (String) A globally unique name for an identity or service provider.
+                            A globally unique name for an identity or service provider.
                           type: string
-                      required:
-                      - consumerServiceUrl
-                      - spEntityId
                       type: object
                     type: array
                   sameSiteCookieAttribute:
-                    description: 'Defines the same-site cookie setting for access
-                      tokens. Available values: `none`, `lax`, `strict`.'
+                    description: |-
+                      site cookie setting for access tokens. Available values: none, lax, strict.
+                      Defines the same-site cookie setting for access tokens. Available values: `none`, `lax`, `strict`.
                     type: string
                   serviceAuth401Redirect:
-                    description: Option to return a 401 status code in service authentication
-                      rules on failed requests. Defaults to `false`.
+                    description: |-
+                      (Boolean) Option to return a 401 status code in service authentication rules on failed requests. Defaults to false.
+                      Option to return a 401 status code in service authentication rules on failed requests. Defaults to `false`.
                     type: boolean
                   sessionDuration:
-                    description: How often a user will be forced to re-authorise.
-                      Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    description: |-
+                      authorise. Must be in the format 48h or 2h45m. Defaults to 24h.
+                      How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
                     type: string
                   skipInterstitial:
-                    description: Option to skip the authorization interstitial when
-                      using the CLI. Defaults to `false`.
+                    description: |-
+                      (Boolean) Option to skip the authorization interstitial when using the CLI. Defaults to false.
+                      Option to skip the authorization interstitial when using the CLI. Defaults to `false`.
                     type: boolean
                   type:
-                    description: 'The application type. Available values: `app_launcher`,
-                      `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`,
-                      `vnc`, `warp`. Defaults to `self_hosted`.'
+                    description: |-
+                      (String) The application type. Available values: app_launcher, bookmark, biso, dash_sso, saas, self_hosted, ssh, vnc, warp. Defaults to self_hosted.
+                      The application type. Available values: `app_launcher`, `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`, `vnc`, `warp`. Defaults to `self_hosted`.
                     type: string
                   zoneId:
-                    description: The zone identifier to target for the resource. Conflicts
-                      with `account_id`.
+                    description: |-
+                      (String) The zone identifier to target for the resource. Conflicts with account_id.
+                      The zone identifier to target for the resource. Conflicts with `account_id`.
                     type: string
                   zoneIdRef:
                     description: Reference to a Zone in zone to populate zoneId.
@@ -281,21 +328,21 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -308,8 +355,9 @@ spec:
                     description: Selector for a Zone in zone to populate zoneId.
                     properties:
                       matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
                         type: boolean
                       matchLabels:
                         additionalProperties:
@@ -322,116 +370,48 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
                             type: string
                         type: object
                     type: object
-                required:
-                - name
                 type: object
-              providerConfigRef:
-                default:
-                  name: default
-                description: ProviderConfigReference specifies how the provider that
-                  will be used to create, observe, update, and delete this managed
-                  resource should be configured.
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
                 properties:
-                  name:
-                    description: Name of the referenced object.
+                  accountId:
+                    description: |-
+                      (String) The account identifier to target for the resource. Conflicts with zone_id.
+                      The account identifier to target for the resource. Conflicts with `zone_id`.
                     type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              publishConnectionDetailsTo:
-                description: PublishConnectionDetailsTo specifies the connection secret
-                  config which contains a name, metadata and a reference to secret
-                  store config to which any connection details for this managed resource
-                  should be written. Connection details frequently include the endpoint,
-                  username, and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: SecretStoreConfigRef specifies which secret store
-                      config should be used for this ConnectionSecret.
+                  accountIdRef:
+                    description: Reference to a Account in account to populate accountId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -441,21 +421,411 @@ spec:
                         properties:
                           resolution:
                             default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
                             enum:
                             - Required
                             - Optional
                             type: string
                           resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  accountIdSelector:
+                    description: Selector for a Account in account to populate accountId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  allowedIdps:
+                    description: |-
+                      (Set of String) The identity providers selected for the application.
+                      The identity providers selected for the application.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  appLauncherVisible:
+                    description: |-
+                      (Boolean) Option to show/hide applications in App Launcher. Defaults to true.
+                      Option to show/hide applications in App Launcher. Defaults to `true`.
+                    type: boolean
+                  autoRedirectToIdentity:
+                    description: |-
+                      (Boolean) Option to skip identity provider selection if only one is configured in allowed_idps. Defaults to false.
+                      Option to skip identity provider selection if only one is configured in `allowed_idps`. Defaults to `false`.
+                    type: boolean
+                  corsHeaders:
+                    description: |-
+                      (Block List) CORS configuration for the Access Application. See below for reference structure. (see below for nested schema)
+                      CORS configuration for the Access Application. See below for reference structure.
+                    items:
+                      properties:
+                        allowAllHeaders:
+                          description: |-
+                            (Boolean) Value to determine whether all HTTP headers are exposed.
+                            Value to determine whether all HTTP headers are exposed.
+                          type: boolean
+                        allowAllMethods:
+                          description: |-
+                            (Boolean) Value to determine whether all methods are exposed.
+                            Value to determine whether all methods are exposed.
+                          type: boolean
+                        allowAllOrigins:
+                          description: |-
+                            (Boolean) Value to determine whether all origins are permitted to make CORS requests.
+                            Value to determine whether all origins are permitted to make CORS requests.
+                          type: boolean
+                        allowCredentials:
+                          description: |-
+                            (Boolean) Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+                            Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+                          type: boolean
+                        allowedHeaders:
+                          description: |-
+                            (Set of String) List of HTTP headers to expose via CORS.
+                            List of HTTP headers to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        allowedMethods:
+                          description: |-
+                            (Set of String) List of methods to expose via CORS.
+                            List of methods to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        allowedOrigins:
+                          description: |-
+                            (Set of String) List of origins permitted to make CORS requests.
+                            List of origins permitted to make CORS requests.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        maxAge:
+                          description: |-
+                            (Number) The maximum time a preflight request will be cached.
+                            The maximum time a preflight request will be cached.
+                          type: number
+                      type: object
+                    type: array
+                  customDenyMessage:
+                    description: |-
+                      (String) Option that returns a custom error message when a user is denied access to the application.
+                      Option that returns a custom error message when a user is denied access to the application.
+                    type: string
+                  customDenyUrl:
+                    description: |-
+                      (String) Option that redirects to a custom URL when a user is denied access to the application.
+                      Option that redirects to a custom URL when a user is denied access to the application.
+                    type: string
+                  domain:
+                    description: |-
+                      (String) The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+                      The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+                    type: string
+                  enableBindingCookie:
+                    description: |-
+                      (Boolean) Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to false.
+                      Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to `false`.
+                    type: boolean
+                  httpOnlyCookieAttribute:
+                    description: |-
+                      (Boolean) Option to add the HttpOnly cookie flag to access tokens.
+                      Option to add the `HttpOnly` cookie flag to access tokens.
+                    type: boolean
+                  logoUrl:
+                    description: |-
+                      (String) Image URL for the logo shown in the app launcher dashboard.
+                      Image URL for the logo shown in the app launcher dashboard.
+                    type: string
+                  name:
+                    description: |-
+                      (String) Friendly name of the Access Application.
+                      Friendly name of the Access Application.
+                    type: string
+                  saasApp:
+                    description: |-
+                      (Block List, Max: 1) SaaS configuration for the Access Application. (see below for nested schema)
+                      SaaS configuration for the Access Application.
+                    items:
+                      properties:
+                        consumerServiceUrl:
+                          description: |-
+                            (String) The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+                            The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+                          type: string
+                        nameIdFormat:
+                          description: |-
+                            (String) The format of the name identifier sent to the SaaS application. Defaults to email.
+                            The format of the name identifier sent to the SaaS application. Defaults to `email`.
+                          type: string
+                        spEntityId:
+                          description: |-
+                            (String) A globally unique name for an identity or service provider.
+                            A globally unique name for an identity or service provider.
+                          type: string
+                      type: object
+                    type: array
+                  sameSiteCookieAttribute:
+                    description: |-
+                      site cookie setting for access tokens. Available values: none, lax, strict.
+                      Defines the same-site cookie setting for access tokens. Available values: `none`, `lax`, `strict`.
+                    type: string
+                  serviceAuth401Redirect:
+                    description: |-
+                      (Boolean) Option to return a 401 status code in service authentication rules on failed requests. Defaults to false.
+                      Option to return a 401 status code in service authentication rules on failed requests. Defaults to `false`.
+                    type: boolean
+                  sessionDuration:
+                    description: |-
+                      authorise. Must be in the format 48h or 2h45m. Defaults to 24h.
+                      How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    type: string
+                  skipInterstitial:
+                    description: |-
+                      (Boolean) Option to skip the authorization interstitial when using the CLI. Defaults to false.
+                      Option to skip the authorization interstitial when using the CLI. Defaults to `false`.
+                    type: boolean
+                  type:
+                    description: |-
+                      (String) The application type. Available values: app_launcher, bookmark, biso, dash_sso, saas, self_hosted, ssh, vnc, warp. Defaults to self_hosted.
+                      The application type. Available values: `app_launcher`, `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`, `vnc`, `warp`. Defaults to `self_hosted`.
+                    type: string
+                  zoneId:
+                    description: |-
+                      (String) The zone identifier to target for the resource. Conflicts with account_id.
+                      The zone identifier to target for the resource. Conflicts with `account_id`.
+                    type: string
+                  zoneIdRef:
+                    description: Reference to a Zone in zone to populate zoneId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  zoneIdSelector:
+                    description: Selector for a Zone in zone to populate zoneId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: |-
+                  PublishConnectionDetailsTo specifies the connection secret config which
+                  contains a name, metadata and a reference to secret store config to
+                  which any connection details for this managed resource should be written.
+                  Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: |-
+                      SecretStoreConfigRef specifies which secret store config should be used
+                      for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
                             enum:
                             - Always
                             - IfNotPresent
@@ -470,21 +840,22 @@ spec:
                       annotations:
                         additionalProperties:
                           type: string
-                        description: Annotations are the annotations to be added to
-                          connection secret. - For Kubernetes secrets, this will be
-                          used as "metadata.annotations". - It is up to Secret Store
-                          implementation for others store types.
+                        description: |-
+                          Annotations are the annotations to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.annotations".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       labels:
                         additionalProperties:
                           type: string
-                        description: Labels are the labels/tags to be added to connection
-                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store
-                          types.
+                        description: |-
+                          Labels are the labels/tags to be added to connection secret.
+                          - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store types.
                         type: object
                       type:
-                        description: Type is the SecretType for the connection secret.
+                        description: |-
+                          Type is the SecretType for the connection secret.
                           - Only valid for Kubernetes Secret Stores.
                         type: string
                     type: object
@@ -495,14 +866,15 @@ spec:
                 - name
                 type: object
               writeConnectionSecretToRef:
-                description: WriteConnectionSecretToReference specifies the namespace
-                  and name of a Secret to which any connection details for this managed
-                  resource should be written. Connection details frequently include
-                  the endpoint, username, and password required to connect to the
-                  managed resource. This field is planned to be replaced in a future
-                  release in favor of PublishConnectionDetailsTo. Currently, both
-                  could be set independently and connection details would be published
-                  to both without affecting each other.
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                  This field is planned to be replaced in a future release in favor of
+                  PublishConnectionDetailsTo. Currently, both could be set independently
+                  and connection details would be published to both without affecting
+                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -517,15 +889,191 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
             description: ApplicationStatus defines the observed state of Application.
             properties:
               atProvider:
                 properties:
-                  aud:
-                    description: Application Audience (AUD) Tag of the application.
+                  accountId:
+                    description: |-
+                      (String) The account identifier to target for the resource. Conflicts with zone_id.
+                      The account identifier to target for the resource. Conflicts with `zone_id`.
                     type: string
+                  allowedIdps:
+                    description: |-
+                      (Set of String) The identity providers selected for the application.
+                      The identity providers selected for the application.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  appLauncherVisible:
+                    description: |-
+                      (Boolean) Option to show/hide applications in App Launcher. Defaults to true.
+                      Option to show/hide applications in App Launcher. Defaults to `true`.
+                    type: boolean
+                  aud:
+                    description: |-
+                      (String) Application Audience (AUD) Tag of the application.
+                      Application Audience (AUD) Tag of the application.
+                    type: string
+                  autoRedirectToIdentity:
+                    description: |-
+                      (Boolean) Option to skip identity provider selection if only one is configured in allowed_idps. Defaults to false.
+                      Option to skip identity provider selection if only one is configured in `allowed_idps`. Defaults to `false`.
+                    type: boolean
+                  corsHeaders:
+                    description: |-
+                      (Block List) CORS configuration for the Access Application. See below for reference structure. (see below for nested schema)
+                      CORS configuration for the Access Application. See below for reference structure.
+                    items:
+                      properties:
+                        allowAllHeaders:
+                          description: |-
+                            (Boolean) Value to determine whether all HTTP headers are exposed.
+                            Value to determine whether all HTTP headers are exposed.
+                          type: boolean
+                        allowAllMethods:
+                          description: |-
+                            (Boolean) Value to determine whether all methods are exposed.
+                            Value to determine whether all methods are exposed.
+                          type: boolean
+                        allowAllOrigins:
+                          description: |-
+                            (Boolean) Value to determine whether all origins are permitted to make CORS requests.
+                            Value to determine whether all origins are permitted to make CORS requests.
+                          type: boolean
+                        allowCredentials:
+                          description: |-
+                            (Boolean) Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+                            Value to determine if credentials (cookies, authorization headers, or TLS client certificates) are included with requests.
+                          type: boolean
+                        allowedHeaders:
+                          description: |-
+                            (Set of String) List of HTTP headers to expose via CORS.
+                            List of HTTP headers to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        allowedMethods:
+                          description: |-
+                            (Set of String) List of methods to expose via CORS.
+                            List of methods to expose via CORS.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        allowedOrigins:
+                          description: |-
+                            (Set of String) List of origins permitted to make CORS requests.
+                            List of origins permitted to make CORS requests.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        maxAge:
+                          description: |-
+                            (Number) The maximum time a preflight request will be cached.
+                            The maximum time a preflight request will be cached.
+                          type: number
+                      type: object
+                    type: array
+                  customDenyMessage:
+                    description: |-
+                      (String) Option that returns a custom error message when a user is denied access to the application.
+                      Option that returns a custom error message when a user is denied access to the application.
+                    type: string
+                  customDenyUrl:
+                    description: |-
+                      (String) Option that redirects to a custom URL when a user is denied access to the application.
+                      Option that redirects to a custom URL when a user is denied access to the application.
+                    type: string
+                  domain:
+                    description: |-
+                      (String) The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+                      The complete URL of the asset you wish to put Cloudflare Access in front of. Can include subdomains or paths. Or both.
+                    type: string
+                  enableBindingCookie:
+                    description: |-
+                      (Boolean) Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to false.
+                      Option to provide increased security against compromised authorization tokens and CSRF attacks by requiring an additional "binding" cookie on requests. Defaults to `false`.
+                    type: boolean
+                  httpOnlyCookieAttribute:
+                    description: |-
+                      (Boolean) Option to add the HttpOnly cookie flag to access tokens.
+                      Option to add the `HttpOnly` cookie flag to access tokens.
+                    type: boolean
                   id:
+                    description: (String) The ID of this resource.
+                    type: string
+                  logoUrl:
+                    description: |-
+                      (String) Image URL for the logo shown in the app launcher dashboard.
+                      Image URL for the logo shown in the app launcher dashboard.
+                    type: string
+                  name:
+                    description: |-
+                      (String) Friendly name of the Access Application.
+                      Friendly name of the Access Application.
+                    type: string
+                  saasApp:
+                    description: |-
+                      (Block List, Max: 1) SaaS configuration for the Access Application. (see below for nested schema)
+                      SaaS configuration for the Access Application.
+                    items:
+                      properties:
+                        consumerServiceUrl:
+                          description: |-
+                            (String) The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+                            The service provider's endpoint that is responsible for receiving and parsing a SAML assertion.
+                          type: string
+                        nameIdFormat:
+                          description: |-
+                            (String) The format of the name identifier sent to the SaaS application. Defaults to email.
+                            The format of the name identifier sent to the SaaS application. Defaults to `email`.
+                          type: string
+                        spEntityId:
+                          description: |-
+                            (String) A globally unique name for an identity or service provider.
+                            A globally unique name for an identity or service provider.
+                          type: string
+                      type: object
+                    type: array
+                  sameSiteCookieAttribute:
+                    description: |-
+                      site cookie setting for access tokens. Available values: none, lax, strict.
+                      Defines the same-site cookie setting for access tokens. Available values: `none`, `lax`, `strict`.
+                    type: string
+                  serviceAuth401Redirect:
+                    description: |-
+                      (Boolean) Option to return a 401 status code in service authentication rules on failed requests. Defaults to false.
+                      Option to return a 401 status code in service authentication rules on failed requests. Defaults to `false`.
+                    type: boolean
+                  sessionDuration:
+                    description: |-
+                      authorise. Must be in the format 48h or 2h45m. Defaults to 24h.
+                      How often a user will be forced to re-authorise. Must be in the format `48h` or `2h45m`. Defaults to `24h`.
+                    type: string
+                  skipInterstitial:
+                    description: |-
+                      (Boolean) Option to skip the authorization interstitial when using the CLI. Defaults to false.
+                      Option to skip the authorization interstitial when using the CLI. Defaults to `false`.
+                    type: boolean
+                  type:
+                    description: |-
+                      (String) The application type. Available values: app_launcher, bookmark, biso, dash_sso, saas, self_hosted, ssh, vnc, warp. Defaults to self_hosted.
+                      The application type. Available values: `app_launcher`, `bookmark`, `biso`, `dash_sso`, `saas`, `self_hosted`, `ssh`, `vnc`, `warp`. Defaults to `self_hosted`.
+                    type: string
+                  zoneId:
+                    description: |-
+                      (String) The zone identifier to target for the resource. Conflicts with account_id.
+                      The zone identifier to target for the resource. Conflicts with `account_id`.
                     type: string
                 type: object
               conditions:
@@ -534,13 +1082,15 @@ spec:
                   description: A Condition that may apply to a resource.
                   properties:
                     lastTransitionTime:
-                      description: LastTransitionTime is the last time this condition
-                        transitioned from one status to another.
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
                       format: date-time
                       type: string
                     message:
-                      description: A Message containing details about this condition's
-                        last transition from one status to another, if any.
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
                       type: string
                     reason:
                       description: A Reason for this condition's last transition from
@@ -551,8 +1101,9 @@ spec:
                         False, or Unknown?
                       type: string
                     type:
-                      description: Type of this condition. At most one of each condition
-                        type may apply to a resource at any point in time.
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
                       type: string
                   required:
                   - lastTransitionTime
@@ -561,6 +1112,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
             type: object
         required:
         - spec
@@ -569,9 +1123,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

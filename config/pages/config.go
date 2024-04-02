@@ -1,6 +1,6 @@
 package pages
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure adds configurations for pages group.
 func Configure(p *config.Provider) {

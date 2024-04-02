@@ -1,6 +1,6 @@
 package access
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure adds configurations for access group.
 func Configure(p *config.Provider) {

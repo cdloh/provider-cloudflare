@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,23 +17,71 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type GroupInitParameters struct {
+
+	// The WAF Rule Group ID.
+	// **Modifying this attribute will force creation of a new resource.**
+	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
+
+	// The mode of the group, can be one of ["on", "off"].
+	// Defaults to `on`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The ID of the WAF Rule Package that contains the group.
+	PackageID *string `json:"packageId,omitempty" tf:"package_id,omitempty"`
+
+	// The DNS zone ID to apply to.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type GroupObservation struct {
+
+	// The WAF Rule Group ID.
+	// **Modifying this attribute will force creation of a new resource.**
+	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
+
+	// The WAF Rule Group ID, the same as group_id.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The mode of the group, can be one of ["on", "off"].
+	// Defaults to `on`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// The ID of the WAF Rule Package that contains the group.
+	PackageID *string `json:"packageId,omitempty" tf:"package_id,omitempty"`
+
+	// The DNS zone ID to apply to.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type GroupParameters struct {
 
+	// The WAF Rule Group ID.
 	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	GroupID *string `json:"groupId" tf:"group_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	GroupID *string `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
+	// The mode of the group, can be one of ["on", "off"].
 	// Defaults to `on`.
 	// +kubebuilder:validation:Optional
 	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 
+	// The ID of the WAF Rule Package that contains the group.
 	// +kubebuilder:validation:Optional
 	PackageID *string `json:"packageId,omitempty" tf:"package_id,omitempty"`
 
+	// The DNS zone ID to apply to.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -48,6 +100,17 @@ type GroupParameters struct {
 type GroupSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     GroupParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider GroupInitParameters `json:"initProvider,omitempty"`
 }
 
 // GroupStatus defines the observed state of Group.
@@ -57,19 +120,21 @@ type GroupStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Group is the Schema for the Groups API. <no value>
+// Group is the Schema for the Groups API. Provides a Cloudflare WAF rule group resource for a particular zone.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Group struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              GroupSpec   `json:"spec"`
-	Status            GroupStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.groupId) || (has(self.initProvider) && has(self.initProvider.groupId))",message="spec.forProvider.groupId is a required parameter"
+	Spec   GroupSpec   `json:"spec"`
+	Status GroupStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

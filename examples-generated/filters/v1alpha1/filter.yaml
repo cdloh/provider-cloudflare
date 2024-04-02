@@ -1,0 +1,16 @@
+apiVersion: filters.cloudflare.upbound.io/v1alpha1
+kind: Filter
+metadata:
+  annotations:
+    meta.upbound.io/example-id: filters/v1alpha1/filter
+  labels:
+    testing.upbound.io/example-name: wordpress
+  name: wordpress
+spec:
+  forProvider:
+    description: Wordpress break-in attempts that are outside of the office
+    expression: (http.request.uri.path ~ ".*wp-login.php" or http.request.uri.path
+      ~ ".*xmlrpc.php") and ip.src ne 192.0.2.1
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

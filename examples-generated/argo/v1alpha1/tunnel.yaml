@@ -1,0 +1,18 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: Tunnel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: argo/v1alpha1/tunnel
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: my-tunnel
+    secretSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

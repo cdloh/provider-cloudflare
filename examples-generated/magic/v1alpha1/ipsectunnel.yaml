@@ -1,0 +1,26 @@
+apiVersion: magic.cloudflare.upbound.io/v1alpha1
+kind: IPsecTunnel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: magic/v1alpha1/ipsectunnel
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    allowNullCipher: false
+    cloudflareEndpoint: 203.0.113.1
+    customerEndpoint: 203.0.113.1
+    description: Tunnel for ISP X
+    healthCheckEnabled: true
+    healthCheckTarget: 203.0.113.1
+    healthCheckType: reply
+    interfaceAddress: 192.0.2.0/31
+    name: IPsec_1
+    pskSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

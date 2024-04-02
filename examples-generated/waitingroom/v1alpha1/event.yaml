@@ -1,0 +1,19 @@
+apiVersion: waitingroom.cloudflare.upbound.io/v1alpha1
+kind: Event
+metadata:
+  annotations:
+    meta.upbound.io/example-id: waitingroom/v1alpha1/event
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    eventEndTime: "2006-01-02T20:04:05Z"
+    eventStartTime: "2006-01-02T15:04:05Z"
+    name: foo
+    waitingRoomIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

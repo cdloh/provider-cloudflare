@@ -17,17 +17,14 @@ func (mg *FirewallRuleset) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this FirewallRuleset.
+func (mg *FirewallRuleset) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this FirewallRuleset.
 func (mg *FirewallRuleset) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this FirewallRuleset.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *FirewallRuleset) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this FirewallRuleset.
@@ -50,17 +47,14 @@ func (mg *FirewallRuleset) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this FirewallRuleset.
+func (mg *FirewallRuleset) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this FirewallRuleset.
 func (mg *FirewallRuleset) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this FirewallRuleset.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *FirewallRuleset) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this FirewallRuleset.
@@ -83,17 +77,14 @@ func (mg *GRETunnel) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this GRETunnel.
+func (mg *GRETunnel) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this GRETunnel.
 func (mg *GRETunnel) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this GRETunnel.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *GRETunnel) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this GRETunnel.
@@ -116,17 +107,14 @@ func (mg *GRETunnel) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this GRETunnel.
+func (mg *GRETunnel) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this GRETunnel.
 func (mg *GRETunnel) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this GRETunnel.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *GRETunnel) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this GRETunnel.
@@ -149,17 +137,14 @@ func (mg *IPsecTunnel) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this IPsecTunnel.
+func (mg *IPsecTunnel) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this IPsecTunnel.
 func (mg *IPsecTunnel) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this IPsecTunnel.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *IPsecTunnel) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this IPsecTunnel.
@@ -182,17 +167,14 @@ func (mg *IPsecTunnel) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this IPsecTunnel.
+func (mg *IPsecTunnel) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this IPsecTunnel.
 func (mg *IPsecTunnel) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this IPsecTunnel.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *IPsecTunnel) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this IPsecTunnel.
@@ -215,17 +197,14 @@ func (mg *StaticRoute) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this StaticRoute.
+func (mg *StaticRoute) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this StaticRoute.
 func (mg *StaticRoute) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this StaticRoute.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *StaticRoute) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this StaticRoute.
@@ -248,17 +227,14 @@ func (mg *StaticRoute) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this StaticRoute.
+func (mg *StaticRoute) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this StaticRoute.
 func (mg *StaticRoute) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this StaticRoute.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *StaticRoute) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this StaticRoute.

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,16 +17,48 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type TunnelInitParameters struct {
+
+	// The Cloudflare account ID that you wish to manage the Argo Tunnel on.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// A user-friendly name chosen when the tunnel is created. Cannot be empty.
+	// **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type TunnelObservation struct {
+
+	// The Cloudflare account ID that you wish to manage the Argo Tunnel on.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Usable CNAME for accessing the Argo Tunnel.
 	Cname *string `json:"cname,omitempty" tf:"cname,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// A user-friendly name chosen when the tunnel is created. Cannot be empty.
+	// **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Token used by a connector to authenticate and run the tunnel.
 	TunnelToken *string `json:"tunnelToken,omitempty" tf:"tunnel_token,omitempty"`
 }
 
 type TunnelParameters struct {
 
+	// The Cloudflare account ID that you wish to manage the Argo Tunnel on.
 	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -36,12 +72,14 @@ type TunnelParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// A user-friendly name chosen when the tunnel is created. Cannot be empty.
 	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// 32 or more bytes, encoded as a base64 string. The Create Argo Tunnel endpoint sets this as the tunnel's password. Anyone wishing to run the tunnel needs this password.
 	// **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	SecretSecretRef v1.SecretKeySelector `json:"secretSecretRef" tf:"-"`
 }
 
@@ -49,6 +87,17 @@ type TunnelParameters struct {
 type TunnelSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TunnelParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider TunnelInitParameters `json:"initProvider,omitempty"`
 }
 
 // TunnelStatus defines the observed state of Tunnel.
@@ -58,19 +107,22 @@ type TunnelStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Tunnel is the Schema for the Tunnels API. <no value>
+// Tunnel is the Schema for the Tunnels API. Provides the ability to manage Cloudflare Argo Tunnels.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Tunnel struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TunnelSpec   `json:"spec"`
-	Status            TunnelStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.secretSecretRef)",message="spec.forProvider.secretSecretRef is a required parameter"
+	Spec   TunnelSpec   `json:"spec"`
+	Status TunnelStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

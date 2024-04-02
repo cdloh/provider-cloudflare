@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,20 +17,61 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ArgoInitParameters struct {
+
+	// (String) Whether smart routing is enabled. Available values: on, off.
+	// Whether smart routing is enabled. Available values: `on`, `off`.
+	SmartRouting *string `json:"smartRouting,omitempty" tf:"smart_routing,omitempty"`
+
+	// (String) Whether tiered caching is enabled. Available values: on, off.
+	// Whether tiered caching is enabled. Available values: `on`, `off`.
+	TieredCaching *string `json:"tieredCaching,omitempty" tf:"tiered_caching,omitempty"`
+
+	// (String) The zone identifier to target for the resource.
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type ArgoObservation struct {
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Whether smart routing is enabled. Available values: on, off.
+	// Whether smart routing is enabled. Available values: `on`, `off`.
+	SmartRouting *string `json:"smartRouting,omitempty" tf:"smart_routing,omitempty"`
+
+	// (String) Whether tiered caching is enabled. Available values: on, off.
+	// Whether tiered caching is enabled. Available values: `on`, `off`.
+	TieredCaching *string `json:"tieredCaching,omitempty" tf:"tiered_caching,omitempty"`
+
+	// (String) The zone identifier to target for the resource.
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type ArgoParameters struct {
 
+	// (String) Whether smart routing is enabled. Available values: on, off.
 	// Whether smart routing is enabled. Available values: `on`, `off`.
 	// +kubebuilder:validation:Optional
 	SmartRouting *string `json:"smartRouting,omitempty" tf:"smart_routing,omitempty"`
 
+	// (String) Whether tiered caching is enabled. Available values: on, off.
 	// Whether tiered caching is enabled. Available values: `on`, `off`.
 	// +kubebuilder:validation:Optional
 	TieredCaching *string `json:"tieredCaching,omitempty" tf:"tiered_caching,omitempty"`
 
+	// (String) The zone identifier to target for the resource.
 	// The zone identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -45,6 +90,17 @@ type ArgoParameters struct {
 type ArgoSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ArgoParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ArgoInitParameters `json:"initProvider,omitempty"`
 }
 
 // ArgoStatus defines the observed state of Argo.
@@ -54,13 +110,14 @@ type ArgoStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Argo is the Schema for the Argos API. <no value>
+// Argo is the Schema for the Argos API. Cloudflare Argo controls the routing to your origin and tiered caching options to speed up your website browsing experience.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Argo struct {
 	metav1.TypeMeta   `json:",inline"`

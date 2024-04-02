@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,172 +17,552 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type BuildConfigInitParameters struct {
+
+	// (String) Command used to build project.
+	// Command used to build project.
+	BuildCommand *string `json:"buildCommand,omitempty" tf:"build_command,omitempty"`
+
+	// (String) Output directory of the build.
+	// Output directory of the build.
+	DestinationDir *string `json:"destinationDir,omitempty" tf:"destination_dir,omitempty"`
+
+	// (String) Directory to run the command.
+	// Directory to run the command.
+	RootDir *string `json:"rootDir,omitempty" tf:"root_dir,omitempty"`
+
+	// (String) The classifying tag for analytics.
+	// The classifying tag for analytics.
+	WebAnalyticsTag *string `json:"webAnalyticsTag,omitempty" tf:"web_analytics_tag,omitempty"`
+
+	// (String) The auth token for analytics.
+	// The auth token for analytics.
+	WebAnalyticsToken *string `json:"webAnalyticsToken,omitempty" tf:"web_analytics_token,omitempty"`
+}
+
 type BuildConfigObservation struct {
+
+	// (String) Command used to build project.
+	// Command used to build project.
+	BuildCommand *string `json:"buildCommand,omitempty" tf:"build_command,omitempty"`
+
+	// (String) Output directory of the build.
+	// Output directory of the build.
+	DestinationDir *string `json:"destinationDir,omitempty" tf:"destination_dir,omitempty"`
+
+	// (String) Directory to run the command.
+	// Directory to run the command.
+	RootDir *string `json:"rootDir,omitempty" tf:"root_dir,omitempty"`
+
+	// (String) The classifying tag for analytics.
+	// The classifying tag for analytics.
+	WebAnalyticsTag *string `json:"webAnalyticsTag,omitempty" tf:"web_analytics_tag,omitempty"`
+
+	// (String) The auth token for analytics.
+	// The auth token for analytics.
+	WebAnalyticsToken *string `json:"webAnalyticsToken,omitempty" tf:"web_analytics_token,omitempty"`
 }
 
 type BuildConfigParameters struct {
 
+	// (String) Command used to build project.
 	// Command used to build project.
 	// +kubebuilder:validation:Optional
 	BuildCommand *string `json:"buildCommand,omitempty" tf:"build_command,omitempty"`
 
+	// (String) Output directory of the build.
 	// Output directory of the build.
 	// +kubebuilder:validation:Optional
 	DestinationDir *string `json:"destinationDir,omitempty" tf:"destination_dir,omitempty"`
 
+	// (String) Directory to run the command.
 	// Directory to run the command.
 	// +kubebuilder:validation:Optional
 	RootDir *string `json:"rootDir,omitempty" tf:"root_dir,omitempty"`
 
+	// (String) The classifying tag for analytics.
 	// The classifying tag for analytics.
 	// +kubebuilder:validation:Optional
 	WebAnalyticsTag *string `json:"webAnalyticsTag,omitempty" tf:"web_analytics_tag,omitempty"`
 
+	// (String) The auth token for analytics.
 	// The auth token for analytics.
 	// +kubebuilder:validation:Optional
 	WebAnalyticsToken *string `json:"webAnalyticsToken,omitempty" tf:"web_analytics_token,omitempty"`
 }
 
+type ConfigInitParameters struct {
+
+	// (Boolean) Toggle deployments on this repo. Defaults to true.
+	// Toggle deployments on this repo. Defaults to `true`.
+	DeploymentsEnabled *bool `json:"deploymentsEnabled,omitempty" tf:"deployments_enabled,omitempty"`
+
+	// (String) Project owner username.
+	// Project owner username.
+	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
+
+	// (Boolean) Enable Pages to comment on Pull Requests. Defaults to true.
+	// Enable Pages to comment on Pull Requests. Defaults to `true`.
+	PrCommentsEnabled *bool `json:"prCommentsEnabled,omitempty" tf:"pr_comments_enabled,omitempty"`
+
+	// (List of String) Branches will be excluded from automatic deployment.
+	// Branches will be excluded from automatic deployment.
+	PreviewBranchExcludes []*string `json:"previewBranchExcludes,omitempty" tf:"preview_branch_excludes,omitempty"`
+
+	// (List of String) Branches will be included for automatic deployment.
+	// Branches will be included for automatic deployment.
+	PreviewBranchIncludes []*string `json:"previewBranchIncludes,omitempty" tf:"preview_branch_includes,omitempty"`
+
+	// (String) Preview Deployment Setting. Defaults to all.
+	// Preview Deployment Setting. Defaults to `all`.
+	PreviewDeploymentSetting *string `json:"previewDeploymentSetting,omitempty" tf:"preview_deployment_setting,omitempty"`
+
+	// (String) The name of the branch that is used for the production environment.
+	// Project production branch name.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// (Boolean) Enable production deployments. Defaults to true.
+	// Enable production deployments. Defaults to `true`.
+	ProductionDeploymentEnabled *bool `json:"productionDeploymentEnabled,omitempty" tf:"production_deployment_enabled,omitempty"`
+
+	// (String) Project repository name.
+	// Project repository name.
+	RepoName *string `json:"repoName,omitempty" tf:"repo_name,omitempty"`
+}
+
 type ConfigObservation struct {
+
+	// (Boolean) Toggle deployments on this repo. Defaults to true.
+	// Toggle deployments on this repo. Defaults to `true`.
+	DeploymentsEnabled *bool `json:"deploymentsEnabled,omitempty" tf:"deployments_enabled,omitempty"`
+
+	// (String) Project owner username.
+	// Project owner username.
+	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
+
+	// (Boolean) Enable Pages to comment on Pull Requests. Defaults to true.
+	// Enable Pages to comment on Pull Requests. Defaults to `true`.
+	PrCommentsEnabled *bool `json:"prCommentsEnabled,omitempty" tf:"pr_comments_enabled,omitempty"`
+
+	// (List of String) Branches will be excluded from automatic deployment.
+	// Branches will be excluded from automatic deployment.
+	PreviewBranchExcludes []*string `json:"previewBranchExcludes,omitempty" tf:"preview_branch_excludes,omitempty"`
+
+	// (List of String) Branches will be included for automatic deployment.
+	// Branches will be included for automatic deployment.
+	PreviewBranchIncludes []*string `json:"previewBranchIncludes,omitempty" tf:"preview_branch_includes,omitempty"`
+
+	// (String) Preview Deployment Setting. Defaults to all.
+	// Preview Deployment Setting. Defaults to `all`.
+	PreviewDeploymentSetting *string `json:"previewDeploymentSetting,omitempty" tf:"preview_deployment_setting,omitempty"`
+
+	// (String) The name of the branch that is used for the production environment.
+	// Project production branch name.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// (Boolean) Enable production deployments. Defaults to true.
+	// Enable production deployments. Defaults to `true`.
+	ProductionDeploymentEnabled *bool `json:"productionDeploymentEnabled,omitempty" tf:"production_deployment_enabled,omitempty"`
+
+	// (String) Project repository name.
+	// Project repository name.
+	RepoName *string `json:"repoName,omitempty" tf:"repo_name,omitempty"`
 }
 
 type ConfigParameters struct {
 
+	// (Boolean) Toggle deployments on this repo. Defaults to true.
 	// Toggle deployments on this repo. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	DeploymentsEnabled *bool `json:"deploymentsEnabled,omitempty" tf:"deployments_enabled,omitempty"`
 
+	// (String) Project owner username.
 	// Project owner username.
 	// +kubebuilder:validation:Optional
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
+	// (Boolean) Enable Pages to comment on Pull Requests. Defaults to true.
 	// Enable Pages to comment on Pull Requests. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	PrCommentsEnabled *bool `json:"prCommentsEnabled,omitempty" tf:"pr_comments_enabled,omitempty"`
 
+	// (List of String) Branches will be excluded from automatic deployment.
 	// Branches will be excluded from automatic deployment.
 	// +kubebuilder:validation:Optional
 	PreviewBranchExcludes []*string `json:"previewBranchExcludes,omitempty" tf:"preview_branch_excludes,omitempty"`
 
+	// (List of String) Branches will be included for automatic deployment.
 	// Branches will be included for automatic deployment.
 	// +kubebuilder:validation:Optional
 	PreviewBranchIncludes []*string `json:"previewBranchIncludes,omitempty" tf:"preview_branch_includes,omitempty"`
 
+	// (String) Preview Deployment Setting. Defaults to all.
 	// Preview Deployment Setting. Defaults to `all`.
 	// +kubebuilder:validation:Optional
 	PreviewDeploymentSetting *string `json:"previewDeploymentSetting,omitempty" tf:"preview_deployment_setting,omitempty"`
 
+	// (String) The name of the branch that is used for the production environment.
 	// Project production branch name.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ProductionBranch *string `json:"productionBranch" tf:"production_branch,omitempty"`
 
+	// (Boolean) Enable production deployments. Defaults to true.
 	// Enable production deployments. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	ProductionDeploymentEnabled *bool `json:"productionDeploymentEnabled,omitempty" tf:"production_deployment_enabled,omitempty"`
 
+	// (String) Project repository name.
 	// Project repository name.
 	// +kubebuilder:validation:Optional
 	RepoName *string `json:"repoName,omitempty" tf:"repo_name,omitempty"`
 }
 
+type DeploymentConfigsInitParameters struct {
+
+	// (Block List, Max: 1) Configuration for preview deploys. (see below for nested schema)
+	// Configuration for preview deploys.
+	Preview []PreviewInitParameters `json:"preview,omitempty" tf:"preview,omitempty"`
+
+	// (Block List, Max: 1) Configuration for production deploys. (see below for nested schema)
+	// Configuration for production deploys.
+	Production []ProductionInitParameters `json:"production,omitempty" tf:"production,omitempty"`
+}
+
 type DeploymentConfigsObservation struct {
+
+	// (Block List, Max: 1) Configuration for preview deploys. (see below for nested schema)
+	// Configuration for preview deploys.
+	Preview []PreviewObservation `json:"preview,omitempty" tf:"preview,omitempty"`
+
+	// (Block List, Max: 1) Configuration for production deploys. (see below for nested schema)
+	// Configuration for production deploys.
+	Production []ProductionObservation `json:"production,omitempty" tf:"production,omitempty"`
 }
 
 type DeploymentConfigsParameters struct {
 
+	// (Block List, Max: 1) Configuration for preview deploys. (see below for nested schema)
 	// Configuration for preview deploys.
 	// +kubebuilder:validation:Optional
 	Preview []PreviewParameters `json:"preview,omitempty" tf:"preview,omitempty"`
 
+	// (Block List, Max: 1) Configuration for production deploys. (see below for nested schema)
 	// Configuration for production deploys.
 	// +kubebuilder:validation:Optional
 	Production []ProductionParameters `json:"production,omitempty" tf:"production,omitempty"`
 }
 
+type PreviewInitParameters struct {
+
+	// (String) Compatibility date used for Pages Functions.
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// (List of String) Compatibility flags used for Pages Functions.
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// (Map of String) D1 Databases used for Pages Functions.
+	// D1 Databases used for Pages Functions.
+	// +mapType=granular
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// (Map of String) Durable Object namespaces used for Pages Functions.
+	// Durable Object namespaces used for Pages Functions.
+	// +mapType=granular
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// (Map of String) Environment variables for Pages Functions.
+	// Environment variables for Pages Functions.
+	// +mapType=granular
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// (Map of String) KV namespaces used for Pages Functions.
+	// KV namespaces used for Pages Functions.
+	// +mapType=granular
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// (Map of String) R2 Buckets used for Pages Functions.
+	// R2 Buckets used for Pages Functions.
+	// +mapType=granular
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+}
+
 type PreviewObservation struct {
+
+	// (String) Compatibility date used for Pages Functions.
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// (List of String) Compatibility flags used for Pages Functions.
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// (Map of String) D1 Databases used for Pages Functions.
+	// D1 Databases used for Pages Functions.
+	// +mapType=granular
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// (Map of String) Durable Object namespaces used for Pages Functions.
+	// Durable Object namespaces used for Pages Functions.
+	// +mapType=granular
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// (Map of String) Environment variables for Pages Functions.
+	// Environment variables for Pages Functions.
+	// +mapType=granular
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// (Map of String) KV namespaces used for Pages Functions.
+	// KV namespaces used for Pages Functions.
+	// +mapType=granular
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// (Map of String) R2 Buckets used for Pages Functions.
+	// R2 Buckets used for Pages Functions.
+	// +mapType=granular
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
 }
 
 type PreviewParameters struct {
 
+	// (String) Compatibility date used for Pages Functions.
 	// Compatibility date used for Pages Functions.
 	// +kubebuilder:validation:Optional
 	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
 
+	// (List of String) Compatibility flags used for Pages Functions.
 	// Compatibility flags used for Pages Functions.
 	// +kubebuilder:validation:Optional
 	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
 
+	// (Map of String) D1 Databases used for Pages Functions.
 	// D1 Databases used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
 
+	// (Map of String) Durable Object namespaces used for Pages Functions.
 	// Durable Object namespaces used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
 
+	// (Map of String) Environment variables for Pages Functions.
 	// Environment variables for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
 
+	// (Map of String) KV namespaces used for Pages Functions.
 	// KV namespaces used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
 
+	// (Map of String) R2 Buckets used for Pages Functions.
 	// R2 Buckets used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+}
+
+type ProductionInitParameters struct {
+
+	// (String) Compatibility date used for Pages Functions.
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// (List of String) Compatibility flags used for Pages Functions.
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// (Map of String) D1 Databases used for Pages Functions.
+	// D1 Databases used for Pages Functions.
+	// +mapType=granular
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// (Map of String) Durable Object namespaces used for Pages Functions.
+	// Durable Object namespaces used for Pages Functions.
+	// +mapType=granular
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// (Map of String) Environment variables for Pages Functions.
+	// Environment variables for Pages Functions.
+	// +mapType=granular
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// (Map of String) KV namespaces used for Pages Functions.
+	// KV namespaces used for Pages Functions.
+	// +mapType=granular
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// (Map of String) R2 Buckets used for Pages Functions.
+	// R2 Buckets used for Pages Functions.
+	// +mapType=granular
 	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
 }
 
 type ProductionObservation struct {
+
+	// (String) Compatibility date used for Pages Functions.
+	// Compatibility date used for Pages Functions.
+	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
+
+	// (List of String) Compatibility flags used for Pages Functions.
+	// Compatibility flags used for Pages Functions.
+	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
+
+	// (Map of String) D1 Databases used for Pages Functions.
+	// D1 Databases used for Pages Functions.
+	// +mapType=granular
+	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
+
+	// (Map of String) Durable Object namespaces used for Pages Functions.
+	// Durable Object namespaces used for Pages Functions.
+	// +mapType=granular
+	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
+
+	// (Map of String) Environment variables for Pages Functions.
+	// Environment variables for Pages Functions.
+	// +mapType=granular
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
+
+	// (Map of String) KV namespaces used for Pages Functions.
+	// KV namespaces used for Pages Functions.
+	// +mapType=granular
+	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
+
+	// (Map of String) R2 Buckets used for Pages Functions.
+	// R2 Buckets used for Pages Functions.
+	// +mapType=granular
+	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
 }
 
 type ProductionParameters struct {
 
+	// (String) Compatibility date used for Pages Functions.
 	// Compatibility date used for Pages Functions.
 	// +kubebuilder:validation:Optional
 	CompatibilityDate *string `json:"compatibilityDate,omitempty" tf:"compatibility_date,omitempty"`
 
+	// (List of String) Compatibility flags used for Pages Functions.
 	// Compatibility flags used for Pages Functions.
 	// +kubebuilder:validation:Optional
 	CompatibilityFlags []*string `json:"compatibilityFlags,omitempty" tf:"compatibility_flags,omitempty"`
 
+	// (Map of String) D1 Databases used for Pages Functions.
 	// D1 Databases used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	D1Databases map[string]*string `json:"d1Databases,omitempty" tf:"d1_databases,omitempty"`
 
+	// (Map of String) Durable Object namespaces used for Pages Functions.
 	// Durable Object namespaces used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	DurableObjectNamespaces map[string]*string `json:"durableObjectNamespaces,omitempty" tf:"durable_object_namespaces,omitempty"`
 
+	// (Map of String) Environment variables for Pages Functions.
 	// Environment variables for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty" tf:"environment_variables,omitempty"`
 
+	// (Map of String) KV namespaces used for Pages Functions.
 	// KV namespaces used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	KvNamespaces map[string]*string `json:"kvNamespaces,omitempty" tf:"kv_namespaces,omitempty"`
 
+	// (Map of String) R2 Buckets used for Pages Functions.
 	// R2 Buckets used for Pages Functions.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	R2Buckets map[string]*string `json:"r2Buckets,omitempty" tf:"r2_buckets,omitempty"`
+}
+
+type ProjectInitParameters struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (Block List, Max: 1) Configuration for the project build process. (see below for nested schema)
+	// Configuration for the project build process.
+	BuildConfig []BuildConfigInitParameters `json:"buildConfig,omitempty" tf:"build_config,omitempty"`
+
+	// (Block List, Max: 1) Configuration for deployments in a project. (see below for nested schema)
+	// Configuration for deployments in a project.
+	DeploymentConfigs []DeploymentConfigsInitParameters `json:"deploymentConfigs,omitempty" tf:"deployment_configs,omitempty"`
+
+	// (String) Name of the project.
+	// Name of the project.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) The name of the branch that is used for the production environment.
+	// The name of the branch that is used for the production environment.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// (Block List, Max: 1) Configuration for the project source. (see below for nested schema)
+	// Configuration for the project source.
+	Source []SourceInitParameters `json:"source,omitempty" tf:"source,omitempty"`
 }
 
 type ProjectObservation struct {
 
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (Block List, Max: 1) Configuration for the project build process. (see below for nested schema)
+	// Configuration for the project build process.
+	BuildConfig []BuildConfigObservation `json:"buildConfig,omitempty" tf:"build_config,omitempty"`
+
+	// (String) When the project was created.
 	// When the project was created.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
 
+	// (Block List, Max: 1) Configuration for deployments in a project. (see below for nested schema)
+	// Configuration for deployments in a project.
+	DeploymentConfigs []DeploymentConfigsObservation `json:"deploymentConfigs,omitempty" tf:"deployment_configs,omitempty"`
+
+	// (List of String) A list of associated custom domains for the project.
 	// A list of associated custom domains for the project.
 	Domains []*string `json:"domains,omitempty" tf:"domains,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) Name of the project.
+	// Name of the project.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) The name of the branch that is used for the production environment.
+	// The name of the branch that is used for the production environment.
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
+
+	// (Block List, Max: 1) Configuration for the project source. (see below for nested schema)
+	// Configuration for the project source.
+	Source []SourceObservation `json:"source,omitempty" tf:"source,omitempty"`
+
+	// (String) The Cloudflare subdomain associated with the project.
 	// The Cloudflare subdomain associated with the project.
 	Subdomain *string `json:"subdomain,omitempty" tf:"subdomain,omitempty"`
 }
 
 type ProjectParameters struct {
 
+	// (String) The account identifier to target for the resource.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -192,36 +576,62 @@ type ProjectParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (Block List, Max: 1) Configuration for the project build process. (see below for nested schema)
 	// Configuration for the project build process.
 	// +kubebuilder:validation:Optional
 	BuildConfig []BuildConfigParameters `json:"buildConfig,omitempty" tf:"build_config,omitempty"`
 
+	// (Block List, Max: 1) Configuration for deployments in a project. (see below for nested schema)
 	// Configuration for deployments in a project.
 	// +kubebuilder:validation:Optional
 	DeploymentConfigs []DeploymentConfigsParameters `json:"deploymentConfigs,omitempty" tf:"deployment_configs,omitempty"`
 
+	// (String) Name of the project.
 	// Name of the project.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) The name of the branch that is used for the production environment.
 	// The name of the branch that is used for the production environment.
-	// +kubebuilder:validation:Required
-	ProductionBranch *string `json:"productionBranch" tf:"production_branch,omitempty"`
+	// +kubebuilder:validation:Optional
+	ProductionBranch *string `json:"productionBranch,omitempty" tf:"production_branch,omitempty"`
 
+	// (Block List, Max: 1) Configuration for the project source. (see below for nested schema)
 	// Configuration for the project source.
 	// +kubebuilder:validation:Optional
 	Source []SourceParameters `json:"source,omitempty" tf:"source,omitempty"`
 }
 
+type SourceInitParameters struct {
+
+	// (Block List, Max: 1) Configuration for the source of the Cloudflare Pages project. (see below for nested schema)
+	// Configuration for the source of the Cloudflare Pages project.
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+
+	// (String) Project host type.
+	// Project host type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type SourceObservation struct {
+
+	// (Block List, Max: 1) Configuration for the source of the Cloudflare Pages project. (see below for nested schema)
+	// Configuration for the source of the Cloudflare Pages project.
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+
+	// (String) Project host type.
+	// Project host type.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type SourceParameters struct {
 
+	// (Block List, Max: 1) Configuration for the source of the Cloudflare Pages project. (see below for nested schema)
 	// Configuration for the source of the Cloudflare Pages project.
 	// +kubebuilder:validation:Optional
 	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
+	// (String) Project host type.
 	// Project host type.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -231,6 +641,17 @@ type SourceParameters struct {
 type ProjectSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ProjectParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ProjectInitParameters `json:"initProvider,omitempty"`
 }
 
 // ProjectStatus defines the observed state of Project.
@@ -240,19 +661,22 @@ type ProjectStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Project is the Schema for the Projects API. <no value>
+// Project is the Schema for the Projects API. Provides a resource which manages Cloudflare Pages projects.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Project struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ProjectSpec   `json:"spec"`
-	Status            ProjectStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.productionBranch) || (has(self.initProvider) && has(self.initProvider.productionBranch))",message="spec.forProvider.productionBranch is a required parameter"
+	Spec   ProjectSpec   `json:"spec"`
+	Status ProjectStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

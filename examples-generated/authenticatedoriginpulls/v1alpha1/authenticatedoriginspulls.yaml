@@ -1,0 +1,58 @@
+apiVersion: authenticatedoriginpulls.cloudflare.upbound.io/v1alpha1
+kind: AuthenticatedOriginsPulls
+metadata:
+  annotations:
+    meta.upbound.io/example-id: authenticatedoriginpulls/v1alpha1/authenticatedoriginspulls
+  labels:
+    testing.upbound.io/example-name: my_aop
+  name: my-aop
+spec:
+  forProvider:
+    enabled: true
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: authenticatedoriginpulls.cloudflare.upbound.io/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: authenticatedoriginpulls/v1alpha1/authenticatedoriginspulls
+  labels:
+    testing.upbound.io/example-name: my_per_hostname_aop_cert
+  name: my-per-hostname-aop-cert
+spec:
+  forProvider:
+    certificate: '-----INSERT CERTIFICATE-----'
+    privateKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    type: per-hostname
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: authenticatedoriginpulls.cloudflare.upbound.io/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: authenticatedoriginpulls/v1alpha1/authenticatedoriginspulls
+  labels:
+    testing.upbound.io/example-name: my_per_zone_aop_cert
+  name: my-per-zone-aop-cert
+spec:
+  forProvider:
+    certificate: '-----INSERT CERTIFICATE-----'
+    privateKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    type: per-zone
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

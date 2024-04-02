@@ -1,0 +1,15 @@
+apiVersion: pages.cloudflare.upbound.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: pages/v1alpha1/project
+  labels:
+    testing.upbound.io/example-name: basic_project
+  name: basic-project
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: this-is-my-project-01
+    productionBranch: main

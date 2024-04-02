@@ -1,0 +1,18 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: tor_exit_nodes
+  name: tor-exit-nodes
+spec:
+  forProvider:
+    configuration:
+    - target: country
+      value: T1
+    mode: challenge
+    notes: Requests coming from known Tor exit nodes
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

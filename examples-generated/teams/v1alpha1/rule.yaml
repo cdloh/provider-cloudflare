@@ -1,0 +1,23 @@
+apiVersion: teams.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: teams/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: rule1
+  name: rule1
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    action: block
+    description: desc
+    filters:
+    - http
+    name: office
+    precedence: 1
+    ruleSettings:
+    - blockPageEnabled: true
+      blockPageReason: access not permitted
+    traffic: http.request.uri == "https://www.example.com/malicious"

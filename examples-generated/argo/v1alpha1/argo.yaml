@@ -1,0 +1,15 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: Argo
+metadata:
+  annotations:
+    meta.upbound.io/example-id: argo/v1alpha1/argo
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    smartRouting: "on"
+    tieredCaching: "on"
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

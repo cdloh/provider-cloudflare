@@ -1,0 +1,17 @@
+apiVersion: pages.cloudflare.upbound.io/v1alpha1
+kind: Domain
+metadata:
+  annotations:
+    meta.upbound.io/example-id: pages/v1alpha1/domain
+  labels:
+    testing.upbound.io/example-name: my-domain
+  name: my-domain
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    domain: example.com
+    projectNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

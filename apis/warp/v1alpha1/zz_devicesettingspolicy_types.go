@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,155 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DeviceSettingsPolicyInitParameters struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (Boolean) Whether to allow mode switch for this policy.
+	// Whether to allow mode switch for this policy.
+	AllowModeSwitch *bool `json:"allowModeSwitch,omitempty" tf:"allow_mode_switch,omitempty"`
+
+	// (Boolean) Whether to allow updates under this policy.
+	// Whether to allow updates under this policy.
+	AllowUpdates *bool `json:"allowUpdates,omitempty" tf:"allow_updates,omitempty"`
+
+	// (Boolean) Whether to allow devices to leave the organization. Defaults to true.
+	// Whether to allow devices to leave the organization. Defaults to `true`.
+	AllowedToLeave *bool `json:"allowedToLeave,omitempty" tf:"allowed_to_leave,omitempty"`
+
+	// (Number) The amount of time in minutes to reconnect after having been disabled.
+	// The amount of time in minutes to reconnect after having been disabled.
+	AutoConnect *float64 `json:"autoConnect,omitempty" tf:"auto_connect,omitempty"`
+
+	// (Number) The captive portal value for this policy. Defaults to 180.
+	// The captive portal value for this policy. Defaults to `180`.
+	CaptivePortal *float64 `json:"captivePortal,omitempty" tf:"captive_portal,omitempty"`
+
+	// (Boolean) Whether the policy refers to the default account policy.
+	// Whether the policy refers to the default account policy.
+	Default *bool `json:"default,omitempty" tf:"default,omitempty"`
+
+	// (Boolean) Whether to disable auto fallback for this policy.
+	// Whether to disable auto fallback for this policy.
+	DisableAutoFallback *bool `json:"disableAutoFallback,omitempty" tf:"disable_auto_fallback,omitempty"`
+
+	// (Boolean) Whether the policy is enabled (cannot be set for default policies). Defaults to true.
+	// Whether the policy is enabled (cannot be set for default policies). Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) Wirefilter expression to match a device against when evaluating whether this policy should take effect for that device.
+	// Wirefilter expression to match a device against when evaluating whether this policy should take effect for that device.
+	Match *string `json:"match,omitempty" tf:"match,omitempty"`
+
+	// (String) Name of the policy.
+	// Name of the policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Number) The precedence of the policy. Lower values indicate higher precedence.
+	// The precedence of the policy. Lower values indicate higher precedence.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// (String) The service mode. Defaults to warp.
+	// The service mode. Defaults to `warp`.
+	ServiceModeV2Mode *string `json:"serviceModeV2Mode,omitempty" tf:"service_mode_v2_mode,omitempty"`
+
+	// (Number) The port to use for the proxy service mode. Required when using service_mode_v2_mode.
+	// The port to use for the proxy service mode. Required when using `service_mode_v2_mode`.
+	ServiceModeV2Port *float64 `json:"serviceModeV2Port,omitempty" tf:"service_mode_v2_port,omitempty"`
+
+	// (String) The support URL that will be opened when sending feedback.
+	// The support URL that will be opened when sending feedback.
+	SupportURL *string `json:"supportUrl,omitempty" tf:"support_url,omitempty"`
+
+	// (Boolean) Enablement of the ZT client switch lock.
+	// Enablement of the ZT client switch lock.
+	SwitchLocked *bool `json:"switchLocked,omitempty" tf:"switch_locked,omitempty"`
+}
+
 type DeviceSettingsPolicyObservation struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (Boolean) Whether to allow mode switch for this policy.
+	// Whether to allow mode switch for this policy.
+	AllowModeSwitch *bool `json:"allowModeSwitch,omitempty" tf:"allow_mode_switch,omitempty"`
+
+	// (Boolean) Whether to allow updates under this policy.
+	// Whether to allow updates under this policy.
+	AllowUpdates *bool `json:"allowUpdates,omitempty" tf:"allow_updates,omitempty"`
+
+	// (Boolean) Whether to allow devices to leave the organization. Defaults to true.
+	// Whether to allow devices to leave the organization. Defaults to `true`.
+	AllowedToLeave *bool `json:"allowedToLeave,omitempty" tf:"allowed_to_leave,omitempty"`
+
+	// (Number) The amount of time in minutes to reconnect after having been disabled.
+	// The amount of time in minutes to reconnect after having been disabled.
+	AutoConnect *float64 `json:"autoConnect,omitempty" tf:"auto_connect,omitempty"`
+
+	// (Number) The captive portal value for this policy. Defaults to 180.
+	// The captive portal value for this policy. Defaults to `180`.
+	CaptivePortal *float64 `json:"captivePortal,omitempty" tf:"captive_portal,omitempty"`
+
+	// (Boolean) Whether the policy refers to the default account policy.
+	// Whether the policy refers to the default account policy.
+	Default *bool `json:"default,omitempty" tf:"default,omitempty"`
+
+	// (Boolean) Whether to disable auto fallback for this policy.
+	// Whether to disable auto fallback for this policy.
+	DisableAutoFallback *bool `json:"disableAutoFallback,omitempty" tf:"disable_auto_fallback,omitempty"`
+
+	// (Boolean) Whether the policy is enabled (cannot be set for default policies). Defaults to true.
+	// Whether the policy is enabled (cannot be set for default policies). Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) Wirefilter expression to match a device against when evaluating whether this policy should take effect for that device.
+	// Wirefilter expression to match a device against when evaluating whether this policy should take effect for that device.
+	Match *string `json:"match,omitempty" tf:"match,omitempty"`
+
+	// (String) Name of the policy.
+	// Name of the policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Number) The precedence of the policy. Lower values indicate higher precedence.
+	// The precedence of the policy. Lower values indicate higher precedence.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// (String) The service mode. Defaults to warp.
+	// The service mode. Defaults to `warp`.
+	ServiceModeV2Mode *string `json:"serviceModeV2Mode,omitempty" tf:"service_mode_v2_mode,omitempty"`
+
+	// (Number) The port to use for the proxy service mode. Required when using service_mode_v2_mode.
+	// The port to use for the proxy service mode. Required when using `service_mode_v2_mode`.
+	ServiceModeV2Port *float64 `json:"serviceModeV2Port,omitempty" tf:"service_mode_v2_port,omitempty"`
+
+	// (String) The support URL that will be opened when sending feedback.
+	// The support URL that will be opened when sending feedback.
+	SupportURL *string `json:"supportUrl,omitempty" tf:"support_url,omitempty"`
+
+	// (Boolean) Enablement of the ZT client switch lock.
+	// Enablement of the ZT client switch lock.
+	SwitchLocked *bool `json:"switchLocked,omitempty" tf:"switch_locked,omitempty"`
 }
 
 type DeviceSettingsPolicyParameters struct {
 
+	// (String) The account identifier to target for the resource.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,62 +179,77 @@ type DeviceSettingsPolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (Boolean) Whether to allow mode switch for this policy.
 	// Whether to allow mode switch for this policy.
 	// +kubebuilder:validation:Optional
 	AllowModeSwitch *bool `json:"allowModeSwitch,omitempty" tf:"allow_mode_switch,omitempty"`
 
+	// (Boolean) Whether to allow updates under this policy.
 	// Whether to allow updates under this policy.
 	// +kubebuilder:validation:Optional
 	AllowUpdates *bool `json:"allowUpdates,omitempty" tf:"allow_updates,omitempty"`
 
+	// (Boolean) Whether to allow devices to leave the organization. Defaults to true.
 	// Whether to allow devices to leave the organization. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	AllowedToLeave *bool `json:"allowedToLeave,omitempty" tf:"allowed_to_leave,omitempty"`
 
+	// (Number) The amount of time in minutes to reconnect after having been disabled.
 	// The amount of time in minutes to reconnect after having been disabled.
 	// +kubebuilder:validation:Optional
 	AutoConnect *float64 `json:"autoConnect,omitempty" tf:"auto_connect,omitempty"`
 
+	// (Number) The captive portal value for this policy. Defaults to 180.
 	// The captive portal value for this policy. Defaults to `180`.
 	// +kubebuilder:validation:Optional
 	CaptivePortal *float64 `json:"captivePortal,omitempty" tf:"captive_portal,omitempty"`
 
+	// (Boolean) Whether the policy refers to the default account policy.
 	// Whether the policy refers to the default account policy.
 	// +kubebuilder:validation:Optional
 	Default *bool `json:"default,omitempty" tf:"default,omitempty"`
 
+	// (Boolean) Whether to disable auto fallback for this policy.
 	// Whether to disable auto fallback for this policy.
 	// +kubebuilder:validation:Optional
 	DisableAutoFallback *bool `json:"disableAutoFallback,omitempty" tf:"disable_auto_fallback,omitempty"`
 
+	// (Boolean) Whether the policy is enabled (cannot be set for default policies). Defaults to true.
 	// Whether the policy is enabled (cannot be set for default policies). Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (String) Wirefilter expression to match a device against when evaluating whether this policy should take effect for that device.
 	// Wirefilter expression to match a device against when evaluating whether this policy should take effect for that device.
 	// +kubebuilder:validation:Optional
 	Match *string `json:"match,omitempty" tf:"match,omitempty"`
 
+	// (String) Name of the policy.
 	// Name of the policy.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Number) The precedence of the policy. Lower values indicate higher precedence.
 	// The precedence of the policy. Lower values indicate higher precedence.
 	// +kubebuilder:validation:Optional
 	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
 
+	// (String) The service mode. Defaults to warp.
 	// The service mode. Defaults to `warp`.
 	// +kubebuilder:validation:Optional
 	ServiceModeV2Mode *string `json:"serviceModeV2Mode,omitempty" tf:"service_mode_v2_mode,omitempty"`
 
+	// (Number) The port to use for the proxy service mode. Required when using service_mode_v2_mode.
 	// The port to use for the proxy service mode. Required when using `service_mode_v2_mode`.
 	// +kubebuilder:validation:Optional
 	ServiceModeV2Port *float64 `json:"serviceModeV2Port,omitempty" tf:"service_mode_v2_port,omitempty"`
 
+	// (String) The support URL that will be opened when sending feedback.
 	// The support URL that will be opened when sending feedback.
 	// +kubebuilder:validation:Optional
 	SupportURL *string `json:"supportUrl,omitempty" tf:"support_url,omitempty"`
 
+	// (Boolean) Enablement of the ZT client switch lock.
 	// Enablement of the ZT client switch lock.
 	// +kubebuilder:validation:Optional
 	SwitchLocked *bool `json:"switchLocked,omitempty" tf:"switch_locked,omitempty"`
@@ -97,6 +259,17 @@ type DeviceSettingsPolicyParameters struct {
 type DeviceSettingsPolicySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DeviceSettingsPolicyParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DeviceSettingsPolicyInitParameters `json:"initProvider,omitempty"`
 }
 
 // DeviceSettingsPolicyStatus defines the observed state of DeviceSettingsPolicy.
@@ -106,19 +279,21 @@ type DeviceSettingsPolicyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// DeviceSettingsPolicy is the Schema for the DeviceSettingsPolicys API. <no value>
+// DeviceSettingsPolicy is the Schema for the DeviceSettingsPolicys API. Provides a Cloudflare Device Settings Policy resource. Device policies configure settings applied to WARP devices.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type DeviceSettingsPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DeviceSettingsPolicySpec   `json:"spec"`
-	Status            DeviceSettingsPolicyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   DeviceSettingsPolicySpec   `json:"spec"`
+	Status DeviceSettingsPolicyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

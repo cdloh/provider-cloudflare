@@ -37,6 +37,22 @@ func (mg *Argo) ResolveReferences(ctx context.Context, c client.Reader) error {
 	mg.Spec.ForProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.ZoneIDRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ZoneID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ZoneIDRef,
+		Selector:     mg.Spec.InitProvider.ZoneIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.ZoneList{},
+			Managed: &v1alpha1.Zone{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ZoneID")
+	}
+	mg.Spec.InitProvider.ZoneID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ZoneIDRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -62,6 +78,22 @@ func (mg *Tunnel) ResolveReferences(ctx context.Context, c client.Reader) error 
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -104,6 +136,38 @@ func (mg *TunnelConfig) ResolveReferences(ctx context.Context, c client.Reader) 
 	}
 	mg.Spec.ForProvider.TunnelID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.TunnelIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TunnelID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TunnelIDRef,
+		Selector:     mg.Spec.InitProvider.TunnelIDSelector,
+		To: reference.To{
+			List:    &TunnelList{},
+			Managed: &Tunnel{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TunnelID")
+	}
+	mg.Spec.InitProvider.TunnelID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TunnelIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -163,6 +227,54 @@ func (mg *TunnelRoute) ResolveReferences(ctx context.Context, c client.Reader) e
 	mg.Spec.ForProvider.VirtualNetworkID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.VirtualNetworkIDRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TunnelID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TunnelIDRef,
+		Selector:     mg.Spec.InitProvider.TunnelIDSelector,
+		To: reference.To{
+			List:    &TunnelList{},
+			Managed: &Tunnel{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TunnelID")
+	}
+	mg.Spec.InitProvider.TunnelID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TunnelIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VirtualNetworkID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.VirtualNetworkIDRef,
+		Selector:     mg.Spec.InitProvider.VirtualNetworkIDSelector,
+		To: reference.To{
+			List:    &TunnelVirtualNetworkList{},
+			Managed: &TunnelVirtualNetwork{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VirtualNetworkID")
+	}
+	mg.Spec.InitProvider.VirtualNetworkID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.VirtualNetworkIDRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -188,6 +300,22 @@ func (mg *TunnelVirtualNetwork) ResolveReferences(ctx context.Context, c client.
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.AccountList{},
+			Managed: &v1alpha11.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
 
 	return nil
 }

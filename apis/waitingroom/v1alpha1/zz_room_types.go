@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,68 +17,217 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type RoomInitParameters struct {
+
+	// (String) This is a templated html file that will be rendered at the edge.
+	// This is a templated html file that will be rendered at the edge.
+	CustomPageHTML *string `json:"customPageHtml,omitempty" tf:"custom_page_html,omitempty"`
+
+	// DE, es-ES, en-US, fr-FR, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, tr-TR, zh-CN, zh-TW. Defaults to en-US.
+	// The language to use for the default waiting room page. Available values: `de-DE`, `es-ES`, `en-US`, `fr-FR`, `id-ID`, `it-IT`, `ja-JP`, `ko-KR`, `nl-NL`, `pl-PL`, `pt-BR`, `tr-TR`, `zh-CN`, `zh-TW`. Defaults to `en-US`.
+	DefaultTemplateLanguage *string `json:"defaultTemplateLanguage,omitempty" tf:"default_template_language,omitempty"`
+
+	// (String) A description to add more details about the waiting room.
+	// A description to add more details about the waiting room.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Boolean) Disables automatic renewal of session cookies.
+	// Disables automatic renewal of session cookies.
+	DisableSessionRenewal *bool `json:"disableSessionRenewal,omitempty" tf:"disable_session_renewal,omitempty"`
+
+	// (String) Host name for which the waiting room will be applied (no wildcards).
+	// Host name for which the waiting room will be applied (no wildcards).
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// (Boolean) If true, requests to the waiting room with the header Accept: application/json will receive a JSON response object.
+	// If true, requests to the waiting room with the header `Accept: application/json` will receive a JSON response object.
+	JSONResponseEnabled *bool `json:"jsonResponseEnabled,omitempty" tf:"json_response_enabled,omitempty"`
+
+	// (String) A unique name to identify the waiting room. Modifying this attribute will force creation of a new resource.
+	// A unique name to identify the waiting room. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Number) The number of new users that will be let into the route every minute.
+	// The number of new users that will be let into the route every minute.
+	NewUsersPerMinute *float64 `json:"newUsersPerMinute,omitempty" tf:"new_users_per_minute,omitempty"`
+
+	// (String) The path within the host to enable the waiting room on. Defaults to /.
+	// The path within the host to enable the waiting room on. Defaults to `/`.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// (Boolean) If queue_all is true, then all traffic will be sent to the waiting room.
+	// If queue_all is true, then all traffic will be sent to the waiting room.
+	QueueAll *bool `json:"queueAll,omitempty" tf:"queue_all,omitempty"`
+
+	// (String) The queueing method used by the waiting room. Available values: fifo, random, passthrough, reject. Defaults to fifo.
+	// The queueing method used by the waiting room. Available values: `fifo`, `random`, `passthrough`, `reject`. Defaults to `fifo`.
+	QueueingMethod *string `json:"queueingMethod,omitempty" tf:"queueing_method,omitempty"`
+
+	// (Number) Lifetime of a cookie (in minutes) set by Cloudflare for users who get access to the origin. Defaults to 5.
+	// Lifetime of a cookie (in minutes) set by Cloudflare for users who get access to the origin. Defaults to `5`.
+	SessionDuration *float64 `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// (Boolean) Suspends the waiting room.
+	// Suspends the waiting room.
+	Suspended *bool `json:"suspended,omitempty" tf:"suspended,omitempty"`
+
+	// (Number) The total number of active user sessions on the route at a point in time.
+	// The total number of active user sessions on the route at a point in time.
+	TotalActiveUsers *float64 `json:"totalActiveUsers,omitempty" tf:"total_active_users,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type RoomObservation struct {
+
+	// (String) This is a templated html file that will be rendered at the edge.
+	// This is a templated html file that will be rendered at the edge.
+	CustomPageHTML *string `json:"customPageHtml,omitempty" tf:"custom_page_html,omitempty"`
+
+	// DE, es-ES, en-US, fr-FR, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, tr-TR, zh-CN, zh-TW. Defaults to en-US.
+	// The language to use for the default waiting room page. Available values: `de-DE`, `es-ES`, `en-US`, `fr-FR`, `id-ID`, `it-IT`, `ja-JP`, `ko-KR`, `nl-NL`, `pl-PL`, `pt-BR`, `tr-TR`, `zh-CN`, `zh-TW`. Defaults to `en-US`.
+	DefaultTemplateLanguage *string `json:"defaultTemplateLanguage,omitempty" tf:"default_template_language,omitempty"`
+
+	// (String) A description to add more details about the waiting room.
+	// A description to add more details about the waiting room.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Boolean) Disables automatic renewal of session cookies.
+	// Disables automatic renewal of session cookies.
+	DisableSessionRenewal *bool `json:"disableSessionRenewal,omitempty" tf:"disable_session_renewal,omitempty"`
+
+	// (String) Host name for which the waiting room will be applied (no wildcards).
+	// Host name for which the waiting room will be applied (no wildcards).
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Boolean) If true, requests to the waiting room with the header Accept: application/json will receive a JSON response object.
+	// If true, requests to the waiting room with the header `Accept: application/json` will receive a JSON response object.
+	JSONResponseEnabled *bool `json:"jsonResponseEnabled,omitempty" tf:"json_response_enabled,omitempty"`
+
+	// (String) A unique name to identify the waiting room. Modifying this attribute will force creation of a new resource.
+	// A unique name to identify the waiting room. **Modifying this attribute will force creation of a new resource.**
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Number) The number of new users that will be let into the route every minute.
+	// The number of new users that will be let into the route every minute.
+	NewUsersPerMinute *float64 `json:"newUsersPerMinute,omitempty" tf:"new_users_per_minute,omitempty"`
+
+	// (String) The path within the host to enable the waiting room on. Defaults to /.
+	// The path within the host to enable the waiting room on. Defaults to `/`.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// (Boolean) If queue_all is true, then all traffic will be sent to the waiting room.
+	// If queue_all is true, then all traffic will be sent to the waiting room.
+	QueueAll *bool `json:"queueAll,omitempty" tf:"queue_all,omitempty"`
+
+	// (String) The queueing method used by the waiting room. Available values: fifo, random, passthrough, reject. Defaults to fifo.
+	// The queueing method used by the waiting room. Available values: `fifo`, `random`, `passthrough`, `reject`. Defaults to `fifo`.
+	QueueingMethod *string `json:"queueingMethod,omitempty" tf:"queueing_method,omitempty"`
+
+	// (Number) Lifetime of a cookie (in minutes) set by Cloudflare for users who get access to the origin. Defaults to 5.
+	// Lifetime of a cookie (in minutes) set by Cloudflare for users who get access to the origin. Defaults to `5`.
+	SessionDuration *float64 `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
+
+	// (Boolean) Suspends the waiting room.
+	// Suspends the waiting room.
+	Suspended *bool `json:"suspended,omitempty" tf:"suspended,omitempty"`
+
+	// (Number) The total number of active user sessions on the route at a point in time.
+	// The total number of active user sessions on the route at a point in time.
+	TotalActiveUsers *float64 `json:"totalActiveUsers,omitempty" tf:"total_active_users,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type RoomParameters struct {
 
+	// (String) This is a templated html file that will be rendered at the edge.
 	// This is a templated html file that will be rendered at the edge.
 	// +kubebuilder:validation:Optional
 	CustomPageHTML *string `json:"customPageHtml,omitempty" tf:"custom_page_html,omitempty"`
 
+	// DE, es-ES, en-US, fr-FR, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, tr-TR, zh-CN, zh-TW. Defaults to en-US.
 	// The language to use for the default waiting room page. Available values: `de-DE`, `es-ES`, `en-US`, `fr-FR`, `id-ID`, `it-IT`, `ja-JP`, `ko-KR`, `nl-NL`, `pl-PL`, `pt-BR`, `tr-TR`, `zh-CN`, `zh-TW`. Defaults to `en-US`.
 	// +kubebuilder:validation:Optional
 	DefaultTemplateLanguage *string `json:"defaultTemplateLanguage,omitempty" tf:"default_template_language,omitempty"`
 
+	// (String) A description to add more details about the waiting room.
 	// A description to add more details about the waiting room.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (Boolean) Disables automatic renewal of session cookies.
 	// Disables automatic renewal of session cookies.
 	// +kubebuilder:validation:Optional
 	DisableSessionRenewal *bool `json:"disableSessionRenewal,omitempty" tf:"disable_session_renewal,omitempty"`
 
+	// (String) Host name for which the waiting room will be applied (no wildcards).
 	// Host name for which the waiting room will be applied (no wildcards).
-	// +kubebuilder:validation:Required
-	Host *string `json:"host" tf:"host,omitempty"`
+	// +kubebuilder:validation:Optional
+	Host *string `json:"host,omitempty" tf:"host,omitempty"`
 
+	// (Boolean) If true, requests to the waiting room with the header Accept: application/json will receive a JSON response object.
 	// If true, requests to the waiting room with the header `Accept: application/json` will receive a JSON response object.
 	// +kubebuilder:validation:Optional
 	JSONResponseEnabled *bool `json:"jsonResponseEnabled,omitempty" tf:"json_response_enabled,omitempty"`
 
+	// (String) A unique name to identify the waiting room. Modifying this attribute will force creation of a new resource.
 	// A unique name to identify the waiting room. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Number) The number of new users that will be let into the route every minute.
 	// The number of new users that will be let into the route every minute.
-	// +kubebuilder:validation:Required
-	NewUsersPerMinute *float64 `json:"newUsersPerMinute" tf:"new_users_per_minute,omitempty"`
+	// +kubebuilder:validation:Optional
+	NewUsersPerMinute *float64 `json:"newUsersPerMinute,omitempty" tf:"new_users_per_minute,omitempty"`
 
+	// (String) The path within the host to enable the waiting room on. Defaults to /.
 	// The path within the host to enable the waiting room on. Defaults to `/`.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// (Boolean) If queue_all is true, then all traffic will be sent to the waiting room.
 	// If queue_all is true, then all traffic will be sent to the waiting room.
 	// +kubebuilder:validation:Optional
 	QueueAll *bool `json:"queueAll,omitempty" tf:"queue_all,omitempty"`
 
+	// (String) The queueing method used by the waiting room. Available values: fifo, random, passthrough, reject. Defaults to fifo.
 	// The queueing method used by the waiting room. Available values: `fifo`, `random`, `passthrough`, `reject`. Defaults to `fifo`.
 	// +kubebuilder:validation:Optional
 	QueueingMethod *string `json:"queueingMethod,omitempty" tf:"queueing_method,omitempty"`
 
+	// (Number) Lifetime of a cookie (in minutes) set by Cloudflare for users who get access to the origin. Defaults to 5.
 	// Lifetime of a cookie (in minutes) set by Cloudflare for users who get access to the origin. Defaults to `5`.
 	// +kubebuilder:validation:Optional
 	SessionDuration *float64 `json:"sessionDuration,omitempty" tf:"session_duration,omitempty"`
 
+	// (Boolean) Suspends the waiting room.
 	// Suspends the waiting room.
 	// +kubebuilder:validation:Optional
 	Suspended *bool `json:"suspended,omitempty" tf:"suspended,omitempty"`
 
+	// (Number) The total number of active user sessions on the route at a point in time.
 	// The total number of active user sessions on the route at a point in time.
-	// +kubebuilder:validation:Required
-	TotalActiveUsers *float64 `json:"totalActiveUsers" tf:"total_active_users,omitempty"`
+	// +kubebuilder:validation:Optional
+	TotalActiveUsers *float64 `json:"totalActiveUsers,omitempty" tf:"total_active_users,omitempty"`
 
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -93,6 +246,17 @@ type RoomParameters struct {
 type RoomSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     RoomParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider RoomInitParameters `json:"initProvider,omitempty"`
 }
 
 // RoomStatus defines the observed state of Room.
@@ -102,19 +266,24 @@ type RoomStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Room is the Schema for the Rooms API. <no value>
+// Room is the Schema for the Rooms API. Provides a Cloudflare Waiting Room resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Room struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RoomSpec   `json:"spec"`
-	Status            RoomStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.host) || (has(self.initProvider) && has(self.initProvider.host))",message="spec.forProvider.host is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.newUsersPerMinute) || (has(self.initProvider) && has(self.initProvider.newUsersPerMinute))",message="spec.forProvider.newUsersPerMinute is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.totalActiveUsers) || (has(self.initProvider) && has(self.initProvider.totalActiveUsers))",message="spec.forProvider.totalActiveUsers is a required parameter"
+	Spec   RoomSpec   `json:"spec"`
+	Status RoomStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

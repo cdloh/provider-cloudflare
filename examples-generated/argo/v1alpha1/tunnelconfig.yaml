@@ -1,0 +1,67 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: TunnelConfig
+metadata:
+  annotations:
+    meta.upbound.io/example-id: argo/v1alpha1/tunnelconfig
+  labels:
+    testing.upbound.io/example-name: example_config
+  name: example-config
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    config:
+    - ingressRule:
+      - hostname: foo
+        path: /bar
+        service: http://10.0.0.2:8080
+      - service: https://10.0.0.3:8081
+      originRequest:
+      - bastionMode: false
+        caPool: /path/to/unsigned/ca/pool
+        connectTimeout: 1m0s
+        disableChunkedEncoding: false
+        httpHostHeader: baz
+        ipRules:
+        - allow: false
+          ports:
+          - 80
+          - 443
+          prefix: /web
+        keepAliveConnections: 1024
+        keepAliveTimeout: 1m0s
+        noHappyEyeballs: false
+        noTlsVerify: false
+        originServerName: foobar
+        proxyAddress: 10.0.0.1
+        proxyPort: "8123"
+        proxyType: socks
+        tcpKeepAlive: 1m0s
+        tlsTimeout: 1m0s
+      warpRouting:
+      - enabled: true
+    tunnelIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example_tunnel
+
+---
+
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: Tunnel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: argo/v1alpha1/tunnelconfig
+  labels:
+    testing.upbound.io/example-name: example_tunnel
+  name: example-tunnel
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: example_tunnel
+    secretSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

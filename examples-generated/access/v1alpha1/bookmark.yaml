@@ -1,0 +1,17 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Bookmark
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/bookmark
+  labels:
+    testing.upbound.io/example-name: my_bookmark_app
+  name: my-bookmark-app
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    appLauncherVisible: true
+    domain: example.com
+    logoUrl: https://example.com/example.png
+    name: My Bookmark App

@@ -1,0 +1,20 @@
+apiVersion: dlp.cloudflare.upbound.io/v1alpha1
+kind: Profile
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dlp/v1alpha1/profile
+  labels:
+    testing.upbound.io/example-name: example_predefined
+  name: example-predefined
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    entry:
+    - enabled: true
+      name: Mastercard Card Number
+    - enabled: false
+      name: Union Pay Card Number
+    name: Example Predefined Profile
+    type: predefined

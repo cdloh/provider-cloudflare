@@ -36,6 +36,22 @@ func (mg *FirewallRuleset) ResolveReferences(ctx context.Context, c client.Reade
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.AccountList{},
+			Managed: &v1alpha1.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -61,6 +77,22 @@ func (mg *GRETunnel) ResolveReferences(ctx context.Context, c client.Reader) err
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.AccountList{},
+			Managed: &v1alpha1.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -88,6 +120,22 @@ func (mg *IPsecTunnel) ResolveReferences(ctx context.Context, c client.Reader) e
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.AccountList{},
+			Managed: &v1alpha1.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -113,6 +161,22 @@ func (mg *StaticRoute) ResolveReferences(ctx context.Context, c client.Reader) e
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.AccountList{},
+			Managed: &v1alpha1.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
 
 	return nil
 }

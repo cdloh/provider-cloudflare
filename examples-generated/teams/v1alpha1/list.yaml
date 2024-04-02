@@ -1,0 +1,20 @@
+apiVersion: teams.cloudflare.upbound.io/v1alpha1
+kind: List
+metadata:
+  annotations:
+    meta.upbound.io/example-id: teams/v1alpha1/list
+  labels:
+    testing.upbound.io/example-name: corporate_devices
+  name: corporate-devices
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Serial numbers for all corporate devices.
+    items:
+    - 8GE8721REF
+    - 5RE8543EGG
+    - 1YE2880LNP
+    name: Corporate devices
+    type: SERIAL

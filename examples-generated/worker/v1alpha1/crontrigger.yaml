@@ -1,0 +1,35 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: CronTrigger
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/crontrigger
+  labels:
+    testing.upbound.io/example-name: example_trigger
+  name: example-trigger
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    schedules:
+    - '*/5 * * * *'
+    - 10 7 * * mon-fri
+    scriptNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example_script
+
+---
+
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: Script
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/crontrigger
+  labels:
+    testing.upbound.io/example-name: example_script
+  name: example-script
+spec:
+  forProvider:
+    accountId: f037e56e89293a057740de681ac9abbe
+    content: ${file("path/to/my.js")}
+    name: example-script

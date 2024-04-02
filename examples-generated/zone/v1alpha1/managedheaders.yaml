@@ -1,0 +1,19 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: ManagedHeaders
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/managedheaders
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    managedRequestHeaders:
+    - enabled: true
+      id: add_true_client_ip_headers
+    managedResponseHeaders:
+    - enabled: true
+      id: remove_x-powered-by_header
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

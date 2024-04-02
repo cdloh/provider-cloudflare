@@ -1,0 +1,14 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: KVNamespace
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/kvnamespace
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    title: test-namespace

@@ -1,0 +1,21 @@
+apiVersion: certificate.cloudflare.upbound.io/v1alpha1
+kind: Pack
+metadata:
+  annotations:
+    meta.upbound.io/example-id: certificate/v1alpha1/pack
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    certificateAuthority: digicert
+    cloudflareBranding: false
+    hosts:
+    - example.com
+    - sub.example.com
+    type: advanced
+    validationMethod: txt
+    validityDays: 30
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

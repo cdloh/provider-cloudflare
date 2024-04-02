@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,120 +17,459 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type EmailIntegrationInitParameters struct {
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type EmailIntegrationObservation struct {
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type EmailIntegrationParameters struct {
 
-	// +kubebuilder:validation:Required
+	// (String) The ID of this resource.
+	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
 
+	// (String) The name of the notification policy.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
+type FiltersInitParameters struct {
+
+	// (Boolean) The status of the notification policy.
+	// State of the pool to alert on.
+	// +listType=set
+	Enabled []*string `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Set of String) Source configuration to alert on for pool or origin.
+	// Source configuration to alert on for pool or origin.
+	// +listType=set
+	EventSource []*string `json:"eventSource,omitempty" tf:"event_source,omitempty"`
+
+	// (Set of String) Stream event type to alert on.
+	// Stream event type to alert on.
+	// +listType=set
+	EventType []*string `json:"eventType,omitempty" tf:"event_type,omitempty"`
+
+	// (Set of String) Identifier health check. Required when using filters.0.status.
+	// Identifier health check. Required when using `filters.0.status`.
+	// +listType=set
+	HealthCheckID []*string `json:"healthCheckId,omitempty" tf:"health_check_id,omitempty"`
+
+	// (Set of String) Stream input id to alert on.
+	// Stream input id to alert on.
+	// +listType=set
+	InputID []*string `json:"inputId,omitempty" tf:"input_id,omitempty"`
+
+	// (Set of String) A numerical limit. Example: 100.
+	// A numerical limit. Example: `100`.
+	// +listType=set
+	Limit []*string `json:"limit,omitempty" tf:"limit,omitempty"`
+
+	// (Set of String) Health status to alert on for pool or origin.
+	// Health status to alert on for pool or origin.
+	// +listType=set
+	NewHealth []*string `json:"newHealth,omitempty" tf:"new_health,omitempty"`
+
+	// (Set of String) Packets per second threshold for dos alert.
+	// Packets per second threshold for dos alert.
+	// +listType=set
+	PacketsPerSecond []*string `json:"packetsPerSecond,omitempty" tf:"packets_per_second,omitempty"`
+
+	// (Set of String) Load balancer pool identifier.
+	// Load balancer pool identifier.
+	// +listType=set
+	PoolID []*string `json:"poolId,omitempty" tf:"pool_id,omitempty"`
+
+	// (Set of String) Product name. Available values: worker_requests, worker_durable_objects_requests, worker_durable_objects_duration, worker_durable_objects_data_transfer, worker_durable_objects_stored_data, worker_durable_objects_storage_deletes, worker_durable_objects_storage_writes, worker_durable_objects_storage_reads.
+	// Product name. Available values: `worker_requests`, `worker_durable_objects_requests`, `worker_durable_objects_duration`, `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`, `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`, `worker_durable_objects_storage_reads`.
+	// +listType=set
+	Product []*string `json:"product,omitempty" tf:"product,omitempty"`
+
+	// (Set of String) Protocol to alert on for dos.
+	// Protocol to alert on for dos.
+	// +listType=set
+	Protocol []*string `json:"protocol,omitempty" tf:"protocol,omitempty"`
+
+	// (Set of String) Requests per second threshold for dos alert.
+	// Requests per second threshold for dos alert.
+	// +listType=set
+	RequestsPerSecond []*string `json:"requestsPerSecond,omitempty" tf:"requests_per_second,omitempty"`
+
+	// (Set of String) A numerical limit. Example: 99.9.
+	// A numerical limit. Example: `99.9`.
+	// +listType=set
+	SLO []*string `json:"slo,omitempty" tf:"slo,omitempty"`
+
+	// (Set of String)
+	// +listType=set
+	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
+	// (Set of String) Status to alert on.
+	// Status to alert on.
+	// +listType=set
+	Status []*string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// (Set of String) Target host to alert on for dos.
+	// Target host to alert on for dos.
+	// +listType=set
+	TargetHost []*string `json:"targetHost,omitempty" tf:"target_host,omitempty"`
+
+	// (Set of String) Target domain to alert on.
+	// Target domain to alert on.
+	// +listType=set
+	TargetZoneName []*string `json:"targetZoneName,omitempty" tf:"target_zone_name,omitempty"`
+
+	// (Set of String) A list of zone identifiers.
+	// A list of zone identifiers.
+	// +listType=set
+	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
+}
+
 type FiltersObservation struct {
+
+	// (Boolean) The status of the notification policy.
+	// State of the pool to alert on.
+	// +listType=set
+	Enabled []*string `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Set of String) Source configuration to alert on for pool or origin.
+	// Source configuration to alert on for pool or origin.
+	// +listType=set
+	EventSource []*string `json:"eventSource,omitempty" tf:"event_source,omitempty"`
+
+	// (Set of String) Stream event type to alert on.
+	// Stream event type to alert on.
+	// +listType=set
+	EventType []*string `json:"eventType,omitempty" tf:"event_type,omitempty"`
+
+	// (Set of String) Identifier health check. Required when using filters.0.status.
+	// Identifier health check. Required when using `filters.0.status`.
+	// +listType=set
+	HealthCheckID []*string `json:"healthCheckId,omitempty" tf:"health_check_id,omitempty"`
+
+	// (Set of String) Stream input id to alert on.
+	// Stream input id to alert on.
+	// +listType=set
+	InputID []*string `json:"inputId,omitempty" tf:"input_id,omitempty"`
+
+	// (Set of String) A numerical limit. Example: 100.
+	// A numerical limit. Example: `100`.
+	// +listType=set
+	Limit []*string `json:"limit,omitempty" tf:"limit,omitempty"`
+
+	// (Set of String) Health status to alert on for pool or origin.
+	// Health status to alert on for pool or origin.
+	// +listType=set
+	NewHealth []*string `json:"newHealth,omitempty" tf:"new_health,omitempty"`
+
+	// (Set of String) Packets per second threshold for dos alert.
+	// Packets per second threshold for dos alert.
+	// +listType=set
+	PacketsPerSecond []*string `json:"packetsPerSecond,omitempty" tf:"packets_per_second,omitempty"`
+
+	// (Set of String) Load balancer pool identifier.
+	// Load balancer pool identifier.
+	// +listType=set
+	PoolID []*string `json:"poolId,omitempty" tf:"pool_id,omitempty"`
+
+	// (Set of String) Product name. Available values: worker_requests, worker_durable_objects_requests, worker_durable_objects_duration, worker_durable_objects_data_transfer, worker_durable_objects_stored_data, worker_durable_objects_storage_deletes, worker_durable_objects_storage_writes, worker_durable_objects_storage_reads.
+	// Product name. Available values: `worker_requests`, `worker_durable_objects_requests`, `worker_durable_objects_duration`, `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`, `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`, `worker_durable_objects_storage_reads`.
+	// +listType=set
+	Product []*string `json:"product,omitempty" tf:"product,omitempty"`
+
+	// (Set of String) Protocol to alert on for dos.
+	// Protocol to alert on for dos.
+	// +listType=set
+	Protocol []*string `json:"protocol,omitempty" tf:"protocol,omitempty"`
+
+	// (Set of String) Requests per second threshold for dos alert.
+	// Requests per second threshold for dos alert.
+	// +listType=set
+	RequestsPerSecond []*string `json:"requestsPerSecond,omitempty" tf:"requests_per_second,omitempty"`
+
+	// (Set of String) A numerical limit. Example: 99.9.
+	// A numerical limit. Example: `99.9`.
+	// +listType=set
+	SLO []*string `json:"slo,omitempty" tf:"slo,omitempty"`
+
+	// (Set of String)
+	// +listType=set
+	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
+	// (Set of String) Status to alert on.
+	// Status to alert on.
+	// +listType=set
+	Status []*string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// (Set of String) Target host to alert on for dos.
+	// Target host to alert on for dos.
+	// +listType=set
+	TargetHost []*string `json:"targetHost,omitempty" tf:"target_host,omitempty"`
+
+	// (Set of String) Target domain to alert on.
+	// Target domain to alert on.
+	// +listType=set
+	TargetZoneName []*string `json:"targetZoneName,omitempty" tf:"target_zone_name,omitempty"`
+
+	// (Set of String) A list of zone identifiers.
+	// A list of zone identifiers.
+	// +listType=set
+	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
 type FiltersParameters struct {
 
+	// (Boolean) The status of the notification policy.
 	// State of the pool to alert on.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Enabled []*string `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Set of String) Source configuration to alert on for pool or origin.
 	// Source configuration to alert on for pool or origin.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	EventSource []*string `json:"eventSource,omitempty" tf:"event_source,omitempty"`
 
+	// (Set of String) Stream event type to alert on.
 	// Stream event type to alert on.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	EventType []*string `json:"eventType,omitempty" tf:"event_type,omitempty"`
 
+	// (Set of String) Identifier health check. Required when using filters.0.status.
 	// Identifier health check. Required when using `filters.0.status`.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	HealthCheckID []*string `json:"healthCheckId,omitempty" tf:"health_check_id,omitempty"`
 
+	// (Set of String) Stream input id to alert on.
 	// Stream input id to alert on.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	InputID []*string `json:"inputId,omitempty" tf:"input_id,omitempty"`
 
+	// (Set of String) A numerical limit. Example: 100.
 	// A numerical limit. Example: `100`.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Limit []*string `json:"limit,omitempty" tf:"limit,omitempty"`
 
+	// (Set of String) Health status to alert on for pool or origin.
 	// Health status to alert on for pool or origin.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	NewHealth []*string `json:"newHealth,omitempty" tf:"new_health,omitempty"`
 
+	// (Set of String) Packets per second threshold for dos alert.
 	// Packets per second threshold for dos alert.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	PacketsPerSecond []*string `json:"packetsPerSecond,omitempty" tf:"packets_per_second,omitempty"`
 
+	// (Set of String) Load balancer pool identifier.
 	// Load balancer pool identifier.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	PoolID []*string `json:"poolId,omitempty" tf:"pool_id,omitempty"`
 
+	// (Set of String) Product name. Available values: worker_requests, worker_durable_objects_requests, worker_durable_objects_duration, worker_durable_objects_data_transfer, worker_durable_objects_stored_data, worker_durable_objects_storage_deletes, worker_durable_objects_storage_writes, worker_durable_objects_storage_reads.
 	// Product name. Available values: `worker_requests`, `worker_durable_objects_requests`, `worker_durable_objects_duration`, `worker_durable_objects_data_transfer`, `worker_durable_objects_stored_data`, `worker_durable_objects_storage_deletes`, `worker_durable_objects_storage_writes`, `worker_durable_objects_storage_reads`.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Product []*string `json:"product,omitempty" tf:"product,omitempty"`
 
+	// (Set of String) Protocol to alert on for dos.
 	// Protocol to alert on for dos.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Protocol []*string `json:"protocol,omitempty" tf:"protocol,omitempty"`
 
+	// (Set of String) Requests per second threshold for dos alert.
 	// Requests per second threshold for dos alert.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	RequestsPerSecond []*string `json:"requestsPerSecond,omitempty" tf:"requests_per_second,omitempty"`
 
+	// (Set of String) A numerical limit. Example: 99.9.
 	// A numerical limit. Example: `99.9`.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	SLO []*string `json:"slo,omitempty" tf:"slo,omitempty"`
 
+	// (Set of String)
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
 
+	// (Set of String) Status to alert on.
 	// Status to alert on.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Status []*string `json:"status,omitempty" tf:"status,omitempty"`
 
+	// (Set of String) Target host to alert on for dos.
 	// Target host to alert on for dos.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TargetHost []*string `json:"targetHost,omitempty" tf:"target_host,omitempty"`
 
+	// (Set of String) Target domain to alert on.
 	// Target domain to alert on.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	TargetZoneName []*string `json:"targetZoneName,omitempty" tf:"target_zone_name,omitempty"`
 
+	// (Set of String) A list of zone identifiers.
 	// A list of zone identifiers.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Zones []*string `json:"zones,omitempty" tf:"zones,omitempty"`
 }
 
+type PagerdutyIntegrationInitParameters struct {
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type PagerdutyIntegrationObservation struct {
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PagerdutyIntegrationParameters struct {
 
-	// +kubebuilder:validation:Required
+	// (String) The ID of this resource.
+	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
 
+	// (String) The name of the notification policy.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
+type PolicyInitParameters struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (String) The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of available alert types. Available values: billing_usage_alert, health_check_status_notification, g6_pool_toggle_alert, real_origin_monitoring, universal_ssl_event_type, dedicated_ssl_certificate_event_type, custom_ssl_certificate_event_type, access_custom_certificate_expiration_type, zone_aop_custom_certificate_expiration_type, bgp_hijack_notification, http_alert_origin_error, workers_alert, weekly_account_overview, expiring_service_token_alert, secondary_dns_all_primaries_failing, secondary_dns_zone_validation_warning, secondary_dns_primaries_failing, secondary_dns_zone_successfully_updated, dos_attack_l7, dos_attack_l4, advanced_ddos_attack_l7_alert, advanced_ddos_attack_l4_alert, fbm_volumetric_attack, fbm_auto_advertisement, load_balancing_pool_enablement_alert, load_balancing_health_alert, g6_health_alert, http_alert_edge_error, clickhouse_alert_fw_anomaly, clickhouse_alert_fw_ent_anomaly, failing_logpush_job_disabled_alert, scriptmonitor_alert_new_hosts, scriptmonitor_alert_new_scripts, scriptmonitor_alert_new_malicious_scripts, scriptmonitor_alert_new_malicious_url, scriptmonitor_alert_new_code_change_detections, scriptmonitor_alert_new_max_length_script_url, scriptmonitor_alert_new_malicious_hosts, sentinel_alert, hostname_aop_custom_certificate_expiration_type, stream_live_notifications, block_notification_new_block, block_notification_review_rejected, block_notification_review_accepted, web_analytics_metrics_update, workers_uptime.
+	// The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `billing_usage_alert`, `health_check_status_notification`, `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`, `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`, `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`, `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`, `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`, `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `dos_attack_l7`, `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`, `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`, `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`, `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`, `stream_live_notifications`, `block_notification_new_block`, `block_notification_review_rejected`, `block_notification_review_accepted`, `web_analytics_metrics_update`, `workers_uptime`.
+	AlertType *string `json:"alertType,omitempty" tf:"alert_type,omitempty"`
+
+	// (String) Description of the notification policy.
+	// Description of the notification policy.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Block Set) The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+	// The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+	EmailIntegration []EmailIntegrationInitParameters `json:"emailIntegration,omitempty" tf:"email_integration,omitempty"`
+
+	// (Boolean) The status of the notification policy.
+	// The status of the notification policy.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields). (see below for nested schema)
+	// An optional nested block of filters that applies to the selected `alert_type`. A key-value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields).
+	Filters []FiltersInitParameters `json:"filters,omitempty" tf:"filters,omitempty"`
+
+	// (String) The name of the notification policy.
+	// The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block Set) The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+	// The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+	PagerdutyIntegration []PagerdutyIntegrationInitParameters `json:"pagerdutyIntegration,omitempty" tf:"pagerduty_integration,omitempty"`
+
+	// (Block Set) The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+	// The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+	WebhooksIntegration []WebhooksIntegrationInitParameters `json:"webhooksIntegration,omitempty" tf:"webhooks_integration,omitempty"`
+}
+
 type PolicyObservation struct {
 
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String) The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of available alert types. Available values: billing_usage_alert, health_check_status_notification, g6_pool_toggle_alert, real_origin_monitoring, universal_ssl_event_type, dedicated_ssl_certificate_event_type, custom_ssl_certificate_event_type, access_custom_certificate_expiration_type, zone_aop_custom_certificate_expiration_type, bgp_hijack_notification, http_alert_origin_error, workers_alert, weekly_account_overview, expiring_service_token_alert, secondary_dns_all_primaries_failing, secondary_dns_zone_validation_warning, secondary_dns_primaries_failing, secondary_dns_zone_successfully_updated, dos_attack_l7, dos_attack_l4, advanced_ddos_attack_l7_alert, advanced_ddos_attack_l4_alert, fbm_volumetric_attack, fbm_auto_advertisement, load_balancing_pool_enablement_alert, load_balancing_health_alert, g6_health_alert, http_alert_edge_error, clickhouse_alert_fw_anomaly, clickhouse_alert_fw_ent_anomaly, failing_logpush_job_disabled_alert, scriptmonitor_alert_new_hosts, scriptmonitor_alert_new_scripts, scriptmonitor_alert_new_malicious_scripts, scriptmonitor_alert_new_malicious_url, scriptmonitor_alert_new_code_change_detections, scriptmonitor_alert_new_max_length_script_url, scriptmonitor_alert_new_malicious_hosts, sentinel_alert, hostname_aop_custom_certificate_expiration_type, stream_live_notifications, block_notification_new_block, block_notification_review_rejected, block_notification_review_accepted, web_analytics_metrics_update, workers_uptime.
+	// The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `billing_usage_alert`, `health_check_status_notification`, `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`, `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`, `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`, `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`, `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`, `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `dos_attack_l7`, `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`, `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`, `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`, `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`, `stream_live_notifications`, `block_notification_new_block`, `block_notification_review_rejected`, `block_notification_review_accepted`, `web_analytics_metrics_update`, `workers_uptime`.
+	AlertType *string `json:"alertType,omitempty" tf:"alert_type,omitempty"`
+
+	// (String) When the notification policy was created.
 	// When the notification policy was created.
 	Created *string `json:"created,omitempty" tf:"created,omitempty"`
 
+	// (String) Description of the notification policy.
+	// Description of the notification policy.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Block Set) The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+	// The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+	EmailIntegration []EmailIntegrationObservation `json:"emailIntegration,omitempty" tf:"email_integration,omitempty"`
+
+	// (Boolean) The status of the notification policy.
+	// The status of the notification policy.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields). (see below for nested schema)
+	// An optional nested block of filters that applies to the selected `alert_type`. A key-value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields).
+	Filters []FiltersObservation `json:"filters,omitempty" tf:"filters,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) When the notification policy was last modified.
 	// When the notification policy was last modified.
 	Modified *string `json:"modified,omitempty" tf:"modified,omitempty"`
+
+	// (String) The name of the notification policy.
+	// The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block Set) The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+	// The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+	PagerdutyIntegration []PagerdutyIntegrationObservation `json:"pagerdutyIntegration,omitempty" tf:"pagerduty_integration,omitempty"`
+
+	// (Block Set) The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
+	// The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
+	WebhooksIntegration []WebhooksIntegrationObservation `json:"webhooksIntegration,omitempty" tf:"webhooks_integration,omitempty"`
 }
 
 type PolicyParameters struct {
 
+	// (String) The account identifier to target for the resource.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -140,44 +483,77 @@ type PolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (String) The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of available alert types. Available values: billing_usage_alert, health_check_status_notification, g6_pool_toggle_alert, real_origin_monitoring, universal_ssl_event_type, dedicated_ssl_certificate_event_type, custom_ssl_certificate_event_type, access_custom_certificate_expiration_type, zone_aop_custom_certificate_expiration_type, bgp_hijack_notification, http_alert_origin_error, workers_alert, weekly_account_overview, expiring_service_token_alert, secondary_dns_all_primaries_failing, secondary_dns_zone_validation_warning, secondary_dns_primaries_failing, secondary_dns_zone_successfully_updated, dos_attack_l7, dos_attack_l4, advanced_ddos_attack_l7_alert, advanced_ddos_attack_l4_alert, fbm_volumetric_attack, fbm_auto_advertisement, load_balancing_pool_enablement_alert, load_balancing_health_alert, g6_health_alert, http_alert_edge_error, clickhouse_alert_fw_anomaly, clickhouse_alert_fw_ent_anomaly, failing_logpush_job_disabled_alert, scriptmonitor_alert_new_hosts, scriptmonitor_alert_new_scripts, scriptmonitor_alert_new_malicious_scripts, scriptmonitor_alert_new_malicious_url, scriptmonitor_alert_new_code_change_detections, scriptmonitor_alert_new_max_length_script_url, scriptmonitor_alert_new_malicious_hosts, sentinel_alert, hostname_aop_custom_certificate_expiration_type, stream_live_notifications, block_notification_new_block, block_notification_review_rejected, block_notification_review_accepted, web_analytics_metrics_update, workers_uptime.
 	// The event type that will trigger the dispatch of a notification. See the developer documentation for descriptions of [available alert types](https://developers.cloudflare.com/fundamentals/notifications/notification-available/). Available values: `billing_usage_alert`, `health_check_status_notification`, `g6_pool_toggle_alert`, `real_origin_monitoring`, `universal_ssl_event_type`, `dedicated_ssl_certificate_event_type`, `custom_ssl_certificate_event_type`, `access_custom_certificate_expiration_type`, `zone_aop_custom_certificate_expiration_type`, `bgp_hijack_notification`, `http_alert_origin_error`, `workers_alert`, `weekly_account_overview`, `expiring_service_token_alert`, `secondary_dns_all_primaries_failing`, `secondary_dns_zone_validation_warning`, `secondary_dns_primaries_failing`, `secondary_dns_zone_successfully_updated`, `dos_attack_l7`, `dos_attack_l4`, `advanced_ddos_attack_l7_alert`, `advanced_ddos_attack_l4_alert`, `fbm_volumetric_attack`, `fbm_auto_advertisement`, `load_balancing_pool_enablement_alert`, `load_balancing_health_alert`, `g6_health_alert`, `http_alert_edge_error`, `clickhouse_alert_fw_anomaly`, `clickhouse_alert_fw_ent_anomaly`, `failing_logpush_job_disabled_alert`, `scriptmonitor_alert_new_hosts`, `scriptmonitor_alert_new_scripts`, `scriptmonitor_alert_new_malicious_scripts`, `scriptmonitor_alert_new_malicious_url`, `scriptmonitor_alert_new_code_change_detections`, `scriptmonitor_alert_new_max_length_script_url`, `scriptmonitor_alert_new_malicious_hosts`, `sentinel_alert`, `hostname_aop_custom_certificate_expiration_type`, `stream_live_notifications`, `block_notification_new_block`, `block_notification_review_rejected`, `block_notification_review_accepted`, `web_analytics_metrics_update`, `workers_uptime`.
-	// +kubebuilder:validation:Required
-	AlertType *string `json:"alertType" tf:"alert_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	AlertType *string `json:"alertType,omitempty" tf:"alert_type,omitempty"`
 
+	// (String) Description of the notification policy.
 	// Description of the notification policy.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (Block Set) The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
 	// The email id to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
 	// +kubebuilder:validation:Optional
 	EmailIntegration []EmailIntegrationParameters `json:"emailIntegration,omitempty" tf:"email_integration,omitempty"`
 
+	// (Boolean) The status of the notification policy.
 	// The status of the notification policy.
-	// +kubebuilder:validation:Required
-	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields). (see below for nested schema)
 	// An optional nested block of filters that applies to the selected `alert_type`. A key-value map that specifies the type of filter and the values to match against (refer to the alert type block for available fields).
 	// +kubebuilder:validation:Optional
 	Filters []FiltersParameters `json:"filters,omitempty" tf:"filters,omitempty"`
 
+	// (String) The name of the notification policy.
 	// The name of the notification policy.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block Set) The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
 	// The unique id of a configured pagerduty endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
 	// +kubebuilder:validation:Optional
 	PagerdutyIntegration []PagerdutyIntegrationParameters `json:"pagerdutyIntegration,omitempty" tf:"pagerduty_integration,omitempty"`
 
+	// (Block Set) The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required. (see below for nested schema)
 	// The unique id of a configured webhooks endpoint to which the notification should be dispatched. One of email, webhooks, or PagerDuty mechanisms is required.
 	// +kubebuilder:validation:Optional
 	WebhooksIntegration []WebhooksIntegrationParameters `json:"webhooksIntegration,omitempty" tf:"webhooks_integration,omitempty"`
 }
 
+type WebhooksIntegrationInitParameters struct {
+
+	// (String) The ID of this resource.
+	// +crossplane:generate:reference:type=PolicyWebhooks
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Reference to a PolicyWebhooks to populate id.
+	// +kubebuilder:validation:Optional
+	IDRef *v1.Reference `json:"idRef,omitempty" tf:"-"`
+
+	// Selector for a PolicyWebhooks to populate id.
+	// +kubebuilder:validation:Optional
+	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
+
+	// (String) The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type WebhooksIntegrationObservation struct {
+
+	// (String) The ID of this resource.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The name of the notification policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type WebhooksIntegrationParameters struct {
 
+	// (String) The ID of this resource.
 	// +crossplane:generate:reference:type=PolicyWebhooks
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -190,6 +566,7 @@ type WebhooksIntegrationParameters struct {
 	// +kubebuilder:validation:Optional
 	IDSelector *v1.Selector `json:"idSelector,omitempty" tf:"-"`
 
+	// (String) The name of the notification policy.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
@@ -198,6 +575,17 @@ type WebhooksIntegrationParameters struct {
 type PolicySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PolicyParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PolicyInitParameters `json:"initProvider,omitempty"`
 }
 
 // PolicyStatus defines the observed state of Policy.
@@ -207,19 +595,23 @@ type PolicyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Policy is the Schema for the Policys API. <no value>
+// Policy is the Schema for the Policys API. Provides a resource, that manages a notification policy for Cloudflare's products. The delivery mechanisms supported are email, webhooks, and PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Policy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PolicySpec   `json:"spec"`
-	Status            PolicyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.alertType) || (has(self.initProvider) && has(self.initProvider.alertType))",message="spec.forProvider.alertType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.enabled) || (has(self.initProvider) && has(self.initProvider.enabled))",message="spec.forProvider.enabled is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   PolicySpec   `json:"spec"`
+	Status PolicyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

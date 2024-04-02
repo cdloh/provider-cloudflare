@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,18 +17,60 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type HostnameInitParameters struct {
+
+	// An optional description of the hostname.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// DNSLink value used if the target is ipfs.
+	Dnslink *string `json:"dnslink,omitempty" tf:"dnslink,omitempty"`
+
+	// The hostname that will point to the target gateway via CNAME.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Target gateway of the hostname.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type HostnameObservation struct {
 
 	// Creation time.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
+
+	// An optional description of the hostname.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// DNSLink value used if the target is ipfs.
+	Dnslink *string `json:"dnslink,omitempty" tf:"dnslink,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Last modification time.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
 
+	// The hostname that will point to the target gateway via CNAME.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// Status of the hostname's activation.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// Target gateway of the hostname.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type HostnameParameters struct {
@@ -38,12 +84,12 @@ type HostnameParameters struct {
 	Dnslink *string `json:"dnslink,omitempty" tf:"dnslink,omitempty"`
 
 	// The hostname that will point to the target gateway via CNAME.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Target gateway of the hostname.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
 	// The zone identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
@@ -63,6 +109,17 @@ type HostnameParameters struct {
 type HostnameSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     HostnameParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider HostnameInitParameters `json:"initProvider,omitempty"`
 }
 
 // HostnameStatus defines the observed state of Hostname.
@@ -72,19 +129,22 @@ type HostnameStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Hostname is the Schema for the Hostnames API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Hostname struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              HostnameSpec   `json:"spec"`
-	Status            HostnameStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.target) || (has(self.initProvider) && has(self.initProvider.target))",message="spec.forProvider.target is a required parameter"
+	Spec   HostnameSpec   `json:"spec"`
+	Status HostnameStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
