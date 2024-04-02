@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,78 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type StaticRouteInitParameters struct {
+
+	// The ID of the account where the static route is being created.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// Optional list of Cloudflare colocation names for this static route.
+	ColoNames []*string `json:"coloNames,omitempty" tf:"colo_names,omitempty"`
+
+	// Optional list of Cloudflare colocation regions for this static route.
+	ColoRegions []*string `json:"coloRegions,omitempty" tf:"colo_regions,omitempty"`
+
+	// Description of the static route.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The nexthop IP address where traffic will be routed to.
+	Nexthop *string `json:"nexthop,omitempty" tf:"nexthop,omitempty"`
+
+	// Your network prefix using CIDR notation.
+	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
+
+	// The priority for the static route.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// The optional weight for ECMP routes.
+	// **Modifying this attribute will force creation of a new resource.**
+	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
+}
+
 type StaticRouteObservation struct {
+
+	// The ID of the account where the static route is being created.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Optional list of Cloudflare colocation names for this static route.
+	ColoNames []*string `json:"coloNames,omitempty" tf:"colo_names,omitempty"`
+
+	// Optional list of Cloudflare colocation regions for this static route.
+	ColoRegions []*string `json:"coloRegions,omitempty" tf:"colo_regions,omitempty"`
+
+	// Description of the static route.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The nexthop IP address where traffic will be routed to.
+	Nexthop *string `json:"nexthop,omitempty" tf:"nexthop,omitempty"`
+
+	// Your network prefix using CIDR notation.
+	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
+
+	// The priority for the static route.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// The optional weight for ECMP routes.
+	// **Modifying this attribute will force creation of a new resource.**
+	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
 type StaticRouteParameters struct {
 
+	// The ID of the account where the static route is being created.
 	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,24 +102,31 @@ type StaticRouteParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Optional list of Cloudflare colocation names for this static route.
 	// +kubebuilder:validation:Optional
 	ColoNames []*string `json:"coloNames,omitempty" tf:"colo_names,omitempty"`
 
+	// Optional list of Cloudflare colocation regions for this static route.
 	// +kubebuilder:validation:Optional
 	ColoRegions []*string `json:"coloRegions,omitempty" tf:"colo_regions,omitempty"`
 
+	// Description of the static route.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Nexthop *string `json:"nexthop" tf:"nexthop,omitempty"`
+	// The nexthop IP address where traffic will be routed to.
+	// +kubebuilder:validation:Optional
+	Nexthop *string `json:"nexthop,omitempty" tf:"nexthop,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Prefix *string `json:"prefix" tf:"prefix,omitempty"`
+	// Your network prefix using CIDR notation.
+	// +kubebuilder:validation:Optional
+	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Priority *float64 `json:"priority" tf:"priority,omitempty"`
+	// The priority for the static route.
+	// +kubebuilder:validation:Optional
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
+	// The optional weight for ECMP routes.
 	// **Modifying this attribute will force creation of a new resource.**
 	// +kubebuilder:validation:Optional
 	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
@@ -59,6 +136,17 @@ type StaticRouteParameters struct {
 type StaticRouteSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     StaticRouteParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider StaticRouteInitParameters `json:"initProvider,omitempty"`
 }
 
 // StaticRouteStatus defines the observed state of StaticRoute.
@@ -68,19 +156,23 @@ type StaticRouteStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// StaticRoute is the Schema for the StaticRoutes API. <no value>
+// StaticRoute is the Schema for the StaticRoutes API. Provides a resource which manages Cloudflare static routes for Magic Transit or Magic WAN.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type StaticRoute struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              StaticRouteSpec   `json:"spec"`
-	Status            StaticRouteStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.nexthop) || (has(self.initProvider) && has(self.initProvider.nexthop))",message="spec.forProvider.nexthop is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.prefix) || (has(self.initProvider) && has(self.initProvider.prefix))",message="spec.forProvider.prefix is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.priority) || (has(self.initProvider) && has(self.initProvider.priority))",message="spec.forProvider.priority is a required parameter"
+	Spec   StaticRouteSpec   `json:"spec"`
+	Status StaticRouteStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,7 +17,39 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type PolicyWebhooksInitParameters struct {
+
+	// The ID of the account for which the webhook destination has to be connected.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// The name of the webhook destination.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// An optional secret can be provided that will be passed in the cf-webhook-auth header when dispatching a webhook notification.
+	// Secrets are not returned in any API response body.
+	// Refer to the documentation for more details - https://api.cloudflare.com/#notification-webhooks-create-webhook.
+	Secret *string `json:"secret,omitempty" tf:"secret,omitempty"`
+
+	// The URL of the webhook destinations.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+}
+
 type PolicyWebhooksObservation struct {
+
+	// The ID of the account for which the webhook destination has to be connected.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -22,11 +58,23 @@ type PolicyWebhooksObservation struct {
 
 	LastSuccess *string `json:"lastSuccess,omitempty" tf:"last_success,omitempty"`
 
+	// The name of the webhook destination.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// An optional secret can be provided that will be passed in the cf-webhook-auth header when dispatching a webhook notification.
+	// Secrets are not returned in any API response body.
+	// Refer to the documentation for more details - https://api.cloudflare.com/#notification-webhooks-create-webhook.
+	Secret *string `json:"secret,omitempty" tf:"secret,omitempty"`
+
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The URL of the webhook destinations.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
 
 type PolicyWebhooksParameters struct {
 
+	// The ID of the account for which the webhook destination has to be connected.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -40,12 +88,17 @@ type PolicyWebhooksParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// The name of the webhook destination.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// An optional secret can be provided that will be passed in the cf-webhook-auth header when dispatching a webhook notification.
+	// Secrets are not returned in any API response body.
+	// Refer to the documentation for more details - https://api.cloudflare.com/#notification-webhooks-create-webhook.
 	// +kubebuilder:validation:Optional
 	Secret *string `json:"secret,omitempty" tf:"secret,omitempty"`
 
+	// The URL of the webhook destinations.
 	// +kubebuilder:validation:Optional
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
@@ -54,6 +107,17 @@ type PolicyWebhooksParameters struct {
 type PolicyWebhooksSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PolicyWebhooksParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PolicyWebhooksInitParameters `json:"initProvider,omitempty"`
 }
 
 // PolicyWebhooksStatus defines the observed state of PolicyWebhooks.
@@ -63,19 +127,21 @@ type PolicyWebhooksStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// PolicyWebhooks is the Schema for the PolicyWebhookss API. <no value>
+// PolicyWebhooks is the Schema for the PolicyWebhookss API. Provides a resource to create and manage webhooks destinations for Cloudflare's notification policies.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type PolicyWebhooks struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PolicyWebhooksSpec   `json:"spec"`
-	Status            PolicyWebhooksStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   PolicyWebhooksSpec   `json:"spec"`
+	Status PolicyWebhooksStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

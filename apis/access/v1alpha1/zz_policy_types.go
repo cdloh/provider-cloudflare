@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,311 +17,976 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ApprovalGroupInitParameters struct {
+
+	// (Number) Number of approvals needed.
+	// Number of approvals needed.
+	ApprovalsNeeded *float64 `json:"approvalsNeeded,omitempty" tf:"approvals_needed,omitempty"`
+
+	// (List of String) List of emails to request approval from.
+	// List of emails to request approval from.
+	EmailAddresses []*string `json:"emailAddresses,omitempty" tf:"email_addresses,omitempty"`
+
+	// (String)
+	EmailListUUID *string `json:"emailListUuid,omitempty" tf:"email_list_uuid,omitempty"`
+}
+
 type ApprovalGroupObservation struct {
+
+	// (Number) Number of approvals needed.
+	// Number of approvals needed.
+	ApprovalsNeeded *float64 `json:"approvalsNeeded,omitempty" tf:"approvals_needed,omitempty"`
+
+	// (List of String) List of emails to request approval from.
+	// List of emails to request approval from.
+	EmailAddresses []*string `json:"emailAddresses,omitempty" tf:"email_addresses,omitempty"`
+
+	// (String)
+	EmailListUUID *string `json:"emailListUuid,omitempty" tf:"email_list_uuid,omitempty"`
 }
 
 type ApprovalGroupParameters struct {
 
+	// (Number) Number of approvals needed.
 	// Number of approvals needed.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ApprovalsNeeded *float64 `json:"approvalsNeeded" tf:"approvals_needed,omitempty"`
 
+	// (List of String) List of emails to request approval from.
 	// List of emails to request approval from.
 	// +kubebuilder:validation:Optional
 	EmailAddresses []*string `json:"emailAddresses,omitempty" tf:"email_addresses,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	EmailListUUID *string `json:"emailListUuid,omitempty" tf:"email_list_uuid,omitempty"`
 }
 
+type ExcludeAzureInitParameters struct {
+
+	// (String) The ID of this resource.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type ExcludeAzureObservation struct {
+
+	// (String) The ID of this resource.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type ExcludeAzureParameters struct {
 
+	// (String) The ID of this resource.
 	// +kubebuilder:validation:Optional
 	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type ExcludeExternalEvaluationInitParameters struct {
+
+	// (String)
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	// (String)
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type ExcludeExternalEvaluationObservation struct {
+
+	// (String)
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	// (String)
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type ExcludeExternalEvaluationParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type ExcludeGithubInitParameters struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (List of String)
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type ExcludeGithubObservation struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (List of String)
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type ExcludeGithubParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 
+	// (String) Friendly name of the Access Policy.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type ExcludeGsuiteInitParameters struct {
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type ExcludeGsuiteObservation struct {
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type ExcludeGsuiteParameters struct {
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type ExcludeOktaInitParameters struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type ExcludeOktaObservation struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type ExcludeOktaParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 
+	// (String) Friendly name of the Access Policy.
 	// +kubebuilder:validation:Optional
 	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
+type ExcludeSAMLInitParameters struct {
+
+	// (String)
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	// (String)
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type ExcludeSAMLObservation struct {
+
+	// (String)
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	// (String)
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type ExcludeSAMLParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyExcludeInitParameters struct {
+
+	// (Boolean)
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// (String)
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Azure []ExcludeAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// (Boolean)
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// (String)
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	// (List of String)
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (List of String)
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	// (Boolean)
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ExternalEvaluation []ExcludeExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	// (List of String)
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Github []ExcludeGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	// (List of String)
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Gsuite []ExcludeGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// (List of String)
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// (List of String)
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Okta []ExcludeOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	SAML []ExcludeSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	// (List of String)
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type PolicyExcludeObservation struct {
+
+	// (Boolean)
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// (String)
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Azure []ExcludeAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// (Boolean)
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// (String)
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	// (List of String)
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (List of String)
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	// (Boolean)
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ExternalEvaluation []ExcludeExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	// (List of String)
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Github []ExcludeGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	// (List of String)
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Gsuite []ExcludeGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// (List of String)
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// (List of String)
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Okta []ExcludeOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	SAML []ExcludeSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	// (List of String)
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
 type PolicyExcludeParameters struct {
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Azure []ExcludeAzureParameters `json:"azure,omitempty" tf:"azure,omitempty"`
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
 
+	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ExternalEvaluation []ExcludeExternalEvaluationParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Github []ExcludeGithubParameters `json:"github,omitempty" tf:"github,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Gsuite []ExcludeGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Okta []ExcludeOktaParameters `json:"okta,omitempty" tf:"okta,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	SAML []ExcludeSAMLParameters `json:"saml,omitempty" tf:"saml,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type PolicyIncludeAzureInitParameters struct {
+
+	// (String) The ID of this resource.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyIncludeAzureObservation struct {
+
+	// (String) The ID of this resource.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyIncludeAzureParameters struct {
 
+	// (String) The ID of this resource.
 	// +kubebuilder:validation:Optional
 	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyIncludeExternalEvaluationInitParameters struct {
+
+	// (String)
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	// (String)
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type PolicyIncludeExternalEvaluationObservation struct {
+
+	// (String)
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	// (String)
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type PolicyIncludeExternalEvaluationParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type PolicyIncludeGithubInitParameters struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (List of String)
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type PolicyIncludeGithubObservation struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (List of String)
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type PolicyIncludeGithubParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 
+	// (String) Friendly name of the Access Policy.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type PolicyIncludeGsuiteInitParameters struct {
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyIncludeGsuiteObservation struct {
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyIncludeGsuiteParameters struct {
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyIncludeInitParameters struct {
+
+	// (Boolean)
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// (String)
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Azure []PolicyIncludeAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// (Boolean)
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// (String)
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	// (List of String)
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (List of String)
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	// (Boolean)
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ExternalEvaluation []PolicyIncludeExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	// (List of String)
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Github []PolicyIncludeGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	// (List of String)
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Gsuite []PolicyIncludeGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// (List of String)
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// (List of String)
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Okta []PolicyIncludeOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	SAML []PolicyIncludeSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	// (List of String)
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type PolicyIncludeObservation struct {
+
+	// (Boolean)
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// (String)
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Azure []PolicyIncludeAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// (Boolean)
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// (String)
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	// (List of String)
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (List of String)
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	// (Boolean)
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ExternalEvaluation []PolicyIncludeExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	// (List of String)
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Github []PolicyIncludeGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	// (List of String)
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Gsuite []PolicyIncludeGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// (List of String)
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// (List of String)
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Okta []PolicyIncludeOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	SAML []PolicyIncludeSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	// (List of String)
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
+type PolicyIncludeOktaInitParameters struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyIncludeOktaObservation struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyIncludeOktaParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 
+	// (String) Friendly name of the Access Policy.
 	// +kubebuilder:validation:Optional
 	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyIncludeParameters struct {
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Azure []PolicyIncludeAzureParameters `json:"azure,omitempty" tf:"azure,omitempty"`
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
 
+	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ExternalEvaluation []PolicyIncludeExternalEvaluationParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Github []PolicyIncludeGithubParameters `json:"github,omitempty" tf:"github,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Gsuite []PolicyIncludeGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Okta []PolicyIncludeOktaParameters `json:"okta,omitempty" tf:"okta,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	SAML []PolicyIncludeSAMLParameters `json:"saml,omitempty" tf:"saml,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type PolicyIncludeSAMLInitParameters struct {
+
+	// (String)
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	// (String)
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyIncludeSAMLObservation struct {
+
+	// (String)
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	// (String)
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyIncludeSAMLParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyInitParameters struct {
+
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (String) The ID of the application the policy is associated with.
+	// The ID of the application the policy is associated with.
+	// +crossplane:generate:reference:type=Application
+	ApplicationID *string `json:"applicationId,omitempty" tf:"application_id,omitempty"`
+
+	// Reference to a Application to populate applicationId.
+	// +kubebuilder:validation:Optional
+	ApplicationIDRef *v1.Reference `json:"applicationIdRef,omitempty" tf:"-"`
+
+	// Selector for a Application to populate applicationId.
+	// +kubebuilder:validation:Optional
+	ApplicationIDSelector *v1.Selector `json:"applicationIdSelector,omitempty" tf:"-"`
+
+	// (Block List) (see below for nested schema)
+	ApprovalGroup []ApprovalGroupInitParameters `json:"approvalGroup,omitempty" tf:"approval_group,omitempty"`
+
+	// (Boolean)
+	ApprovalRequired *bool `json:"approvalRequired,omitempty" tf:"approval_required,omitempty"`
+
+	// (String) Defines the action Access will take if the policy matches the user. Available values: allow, deny, non_identity, bypass.
+	// Defines the action Access will take if the policy matches the user. Available values: `allow`, `deny`, `non_identity`, `bypass`.
+	Decision *string `json:"decision,omitempty" tf:"decision,omitempty"`
+
+	// (Block List) A series of access conditions, see Access Groups. (see below for nested schema)
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Exclude []PolicyExcludeInitParameters `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// (Block List, Min: 1) A series of access conditions, see Access Groups. (see below for nested schema)
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Include []PolicyIncludeInitParameters `json:"include,omitempty" tf:"include,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	// Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Number) The unique precedence for policies on a single application.
+	// The unique precedence for policies on a single application.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// (String) The prompt to display to the user for a justification for accessing the resource. Required when using purpose_justification_required.
+	// The prompt to display to the user for a justification for accessing the resource. Required when using `purpose_justification_required`.
+	PurposeJustificationPrompt *string `json:"purposeJustificationPrompt,omitempty" tf:"purpose_justification_prompt,omitempty"`
+
+	// (Boolean) Whether to prompt the user for a justification for accessing the resource.
+	// Whether to prompt the user for a justification for accessing the resource.
+	PurposeJustificationRequired *bool `json:"purposeJustificationRequired,omitempty" tf:"purpose_justification_required,omitempty"`
+
+	// (Block List) A series of access conditions, see Access Groups. (see below for nested schema)
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Require []PolicyRequireInitParameters `json:"require,omitempty" tf:"require,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type PolicyObservation struct {
+
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String) The ID of the application the policy is associated with.
+	// The ID of the application the policy is associated with.
+	ApplicationID *string `json:"applicationId,omitempty" tf:"application_id,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	ApprovalGroup []ApprovalGroupObservation `json:"approvalGroup,omitempty" tf:"approval_group,omitempty"`
+
+	// (Boolean)
+	ApprovalRequired *bool `json:"approvalRequired,omitempty" tf:"approval_required,omitempty"`
+
+	// (String) Defines the action Access will take if the policy matches the user. Available values: allow, deny, non_identity, bypass.
+	// Defines the action Access will take if the policy matches the user. Available values: `allow`, `deny`, `non_identity`, `bypass`.
+	Decision *string `json:"decision,omitempty" tf:"decision,omitempty"`
+
+	// (Block List) A series of access conditions, see Access Groups. (see below for nested schema)
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Exclude []PolicyExcludeObservation `json:"exclude,omitempty" tf:"exclude,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Block List, Min: 1) A series of access conditions, see Access Groups. (see below for nested schema)
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Include []PolicyIncludeObservation `json:"include,omitempty" tf:"include,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	// Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Number) The unique precedence for policies on a single application.
+	// The unique precedence for policies on a single application.
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
+
+	// (String) The prompt to display to the user for a justification for accessing the resource. Required when using purpose_justification_required.
+	// The prompt to display to the user for a justification for accessing the resource. Required when using `purpose_justification_required`.
+	PurposeJustificationPrompt *string `json:"purposeJustificationPrompt,omitempty" tf:"purpose_justification_prompt,omitempty"`
+
+	// (Boolean) Whether to prompt the user for a justification for accessing the resource.
+	// Whether to prompt the user for a justification for accessing the resource.
+	PurposeJustificationRequired *bool `json:"purposeJustificationRequired,omitempty" tf:"purpose_justification_required,omitempty"`
+
+	// (Block List) A series of access conditions, see Access Groups. (see below for nested schema)
+	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
+	Require []PolicyRequireObservation `json:"require,omitempty" tf:"require,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type PolicyParameters struct {
 
+	// (String) The account identifier to target for the resource. Conflicts with zone_id.
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -331,6 +1000,7 @@ type PolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (String) The ID of the application the policy is associated with.
 	// The ID of the application the policy is associated with.
 	// +crossplane:generate:reference:type=Application
 	// +kubebuilder:validation:Optional
@@ -344,44 +1014,55 @@ type PolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	ApplicationIDSelector *v1.Selector `json:"applicationIdSelector,omitempty" tf:"-"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ApprovalGroup []ApprovalGroupParameters `json:"approvalGroup,omitempty" tf:"approval_group,omitempty"`
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	ApprovalRequired *bool `json:"approvalRequired,omitempty" tf:"approval_required,omitempty"`
 
+	// (String) Defines the action Access will take if the policy matches the user. Available values: allow, deny, non_identity, bypass.
 	// Defines the action Access will take if the policy matches the user. Available values: `allow`, `deny`, `non_identity`, `bypass`.
-	// +kubebuilder:validation:Required
-	Decision *string `json:"decision" tf:"decision,omitempty"`
+	// +kubebuilder:validation:Optional
+	Decision *string `json:"decision,omitempty" tf:"decision,omitempty"`
 
+	// (Block List) A series of access conditions, see Access Groups. (see below for nested schema)
 	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
 	// +kubebuilder:validation:Optional
 	Exclude []PolicyExcludeParameters `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
+	// (Block List, Min: 1) A series of access conditions, see Access Groups. (see below for nested schema)
 	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
-	// +kubebuilder:validation:Required
-	Include []PolicyIncludeParameters `json:"include" tf:"include,omitempty"`
+	// +kubebuilder:validation:Optional
+	Include []PolicyIncludeParameters `json:"include,omitempty" tf:"include,omitempty"`
 
+	// (String) Friendly name of the Access Policy.
 	// Friendly name of the Access Policy.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Number) The unique precedence for policies on a single application.
 	// The unique precedence for policies on a single application.
-	// +kubebuilder:validation:Required
-	Precedence *float64 `json:"precedence" tf:"precedence,omitempty"`
+	// +kubebuilder:validation:Optional
+	Precedence *float64 `json:"precedence,omitempty" tf:"precedence,omitempty"`
 
+	// (String) The prompt to display to the user for a justification for accessing the resource. Required when using purpose_justification_required.
 	// The prompt to display to the user for a justification for accessing the resource. Required when using `purpose_justification_required`.
 	// +kubebuilder:validation:Optional
 	PurposeJustificationPrompt *string `json:"purposeJustificationPrompt,omitempty" tf:"purpose_justification_prompt,omitempty"`
 
+	// (Boolean) Whether to prompt the user for a justification for accessing the resource.
 	// Whether to prompt the user for a justification for accessing the resource.
 	// +kubebuilder:validation:Optional
 	PurposeJustificationRequired *bool `json:"purposeJustificationRequired,omitempty" tf:"purpose_justification_required,omitempty"`
 
+	// (Block List) A series of access conditions, see Access Groups. (see below for nested schema)
 	// A series of access conditions, see [Access Groups](https://registry.io/providers/cloudflare/cloudflare/latest/docs/resources/access_group#conditions).
 	// +kubebuilder:validation:Optional
 	Require []PolicyRequireParameters `json:"require,omitempty" tf:"require,omitempty"`
 
+	// (String) The zone identifier to target for the resource. Conflicts with account_id.
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -396,143 +1077,395 @@ type PolicyParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type PolicyRequireAzureInitParameters struct {
+
+	// (String) The ID of this resource.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyRequireAzureObservation struct {
+
+	// (String) The ID of this resource.
+	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyRequireAzureParameters struct {
 
+	// (String) The ID of this resource.
 	// +kubebuilder:validation:Optional
 	ID []*string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyRequireExternalEvaluationInitParameters struct {
+
+	// (String)
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	// (String)
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
+}
+
 type PolicyRequireExternalEvaluationObservation struct {
+
+	// (String)
+	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
+
+	// (String)
+	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
 type PolicyRequireExternalEvaluationParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	EvaluateURL *string `json:"evaluateUrl,omitempty" tf:"evaluate_url,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	KeysURL *string `json:"keysUrl,omitempty" tf:"keys_url,omitempty"`
 }
 
+type PolicyRequireGithubInitParameters struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (List of String)
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+}
+
 type PolicyRequireGithubObservation struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (List of String)
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type PolicyRequireGithubParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 
+	// (String) Friendly name of the Access Policy.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type PolicyRequireGsuiteInitParameters struct {
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyRequireGsuiteObservation struct {
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyRequireGsuiteParameters struct {
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
+type PolicyRequireInitParameters struct {
+
+	// (Boolean)
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// (String)
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Azure []PolicyRequireAzureInitParameters `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// (Boolean)
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// (String)
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	// (List of String)
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (List of String)
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	// (Boolean)
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ExternalEvaluation []PolicyRequireExternalEvaluationInitParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	// (List of String)
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Github []PolicyRequireGithubInitParameters `json:"github,omitempty" tf:"github,omitempty"`
+
+	// (List of String)
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Gsuite []PolicyRequireGsuiteInitParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// (List of String)
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// (List of String)
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Okta []PolicyRequireOktaInitParameters `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	SAML []PolicyRequireSAMLInitParameters `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	// (List of String)
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
 type PolicyRequireObservation struct {
+
+	// (Boolean)
+	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
+
+	// (String)
+	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Azure []PolicyRequireAzureObservation `json:"azure,omitempty" tf:"azure,omitempty"`
+
+	// (Boolean)
+	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
+
+	// (String)
+	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
+
+	// (List of String)
+	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
+
+	// (List of String)
+	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
+
+	// (List of String)
+	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
+
+	// (Boolean)
+	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
+
+	// (Block List, Max: 1) (see below for nested schema)
+	ExternalEvaluation []PolicyRequireExternalEvaluationObservation `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
+
+	// (List of String)
+	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Github []PolicyRequireGithubObservation `json:"github,omitempty" tf:"github,omitempty"`
+
+	// (List of String)
+	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Gsuite []PolicyRequireGsuiteObservation `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
+
+	// (List of String)
+	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
+
+	// (List of String)
+	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Okta []PolicyRequireOktaObservation `json:"okta,omitempty" tf:"okta,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	SAML []PolicyRequireSAMLObservation `json:"saml,omitempty" tf:"saml,omitempty"`
+
+	// (List of String)
+	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
+}
+
+type PolicyRequireOktaInitParameters struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyRequireOktaObservation struct {
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+
+	// (String) Friendly name of the Access Policy.
+	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyRequireOktaParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 
+	// (String) Friendly name of the Access Policy.
 	// +kubebuilder:validation:Optional
 	Name []*string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type PolicyRequireParameters struct {
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	AnyValidServiceToken *bool `json:"anyValidServiceToken,omitempty" tf:"any_valid_service_token,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AuthMethod *string `json:"authMethod,omitempty" tf:"auth_method,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Azure []PolicyRequireAzureParameters `json:"azure,omitempty" tf:"azure,omitempty"`
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	Certificate *bool `json:"certificate,omitempty" tf:"certificate,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	CommonName *string `json:"commonName,omitempty" tf:"common_name,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	DevicePosture []*string `json:"devicePosture,omitempty" tf:"device_posture,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Email []*string `json:"email,omitempty" tf:"email,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	EmailDomain []*string `json:"emailDomain,omitempty" tf:"email_domain,omitempty"`
 
+	// (Boolean)
 	// +kubebuilder:validation:Optional
 	Everyone *bool `json:"everyone,omitempty" tf:"everyone,omitempty"`
 
+	// (Block List, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	ExternalEvaluation []PolicyRequireExternalEvaluationParameters `json:"externalEvaluation,omitempty" tf:"external_evaluation,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Geo []*string `json:"geo,omitempty" tf:"geo,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Github []PolicyRequireGithubParameters `json:"github,omitempty" tf:"github,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	Group []*string `json:"group,omitempty" tf:"group,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Gsuite []PolicyRequireGsuiteParameters `json:"gsuite,omitempty" tf:"gsuite,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	IP []*string `json:"ip,omitempty" tf:"ip,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	LoginMethod []*string `json:"loginMethod,omitempty" tf:"login_method,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Okta []PolicyRequireOktaParameters `json:"okta,omitempty" tf:"okta,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	SAML []PolicyRequireSAMLParameters `json:"saml,omitempty" tf:"saml,omitempty"`
 
+	// (List of String)
 	// +kubebuilder:validation:Optional
 	ServiceToken []*string `json:"serviceToken,omitempty" tf:"service_token,omitempty"`
 }
 
+type PolicyRequireSAMLInitParameters struct {
+
+	// (String)
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	// (String)
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
+}
+
 type PolicyRequireSAMLObservation struct {
+
+	// (String)
+	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
+
+	// (String)
+	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
+
+	// (String)
+	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
 
 type PolicyRequireSAMLParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AttributeName *string `json:"attributeName,omitempty" tf:"attribute_name,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	AttributeValue *string `json:"attributeValue,omitempty" tf:"attribute_value,omitempty"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	IdentityProviderID *string `json:"identityProviderId,omitempty" tf:"identity_provider_id,omitempty"`
 }
@@ -541,6 +1474,17 @@ type PolicyRequireSAMLParameters struct {
 type PolicySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PolicyParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PolicyInitParameters `json:"initProvider,omitempty"`
 }
 
 // PolicyStatus defines the observed state of Policy.
@@ -550,19 +1494,24 @@ type PolicyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Policy is the Schema for the Policys API. <no value>
+// Policy is the Schema for the Policys API. Provides a Cloudflare Access Policy resource. Access Policies are used in conjunction with Access Applications to restrict access to a particular resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Policy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PolicySpec   `json:"spec"`
-	Status            PolicyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.decision) || (has(self.initProvider) && has(self.initProvider.decision))",message="spec.forProvider.decision is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.include) || (has(self.initProvider) && has(self.initProvider.include))",message="spec.forProvider.include is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.precedence) || (has(self.initProvider) && has(self.initProvider.precedence))",message="spec.forProvider.precedence is a required parameter"
+	Spec   PolicySpec   `json:"spec"`
+	Status PolicyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

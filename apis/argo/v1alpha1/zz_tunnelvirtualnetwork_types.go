@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,59 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type TunnelVirtualNetworkInitParameters struct {
+
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (String) Description of the tunnel virtual network.
+	// Description of the tunnel virtual network.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	// (Boolean) Whether this virtual network is the default one for the account. This means IP Routes belong to this virtual network and Teams Clients in the account route through this virtual network, unless specified otherwise for each case.
+	// Whether this virtual network is the default one for the account. This means IP Routes belong to this virtual network and Teams Clients in the account route through this virtual network, unless specified otherwise for each case.
+	IsDefaultNetwork *bool `json:"isDefaultNetwork,omitempty" tf:"is_default_network,omitempty"`
+
+	// friendly name chosen when the virtual network is created.
+	// A user-friendly name chosen when the virtual network is created.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
 type TunnelVirtualNetworkObservation struct {
+
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String) Description of the tunnel virtual network.
+	// Description of the tunnel virtual network.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Boolean) Whether this virtual network is the default one for the account. This means IP Routes belong to this virtual network and Teams Clients in the account route through this virtual network, unless specified otherwise for each case.
+	// Whether this virtual network is the default one for the account. This means IP Routes belong to this virtual network and Teams Clients in the account route through this virtual network, unless specified otherwise for each case.
+	IsDefaultNetwork *bool `json:"isDefaultNetwork,omitempty" tf:"is_default_network,omitempty"`
+
+	// friendly name chosen when the virtual network is created.
+	// A user-friendly name chosen when the virtual network is created.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type TunnelVirtualNetworkParameters struct {
 
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
 	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,23 +83,37 @@ type TunnelVirtualNetworkParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (String) Description of the tunnel virtual network.
 	// Description of the tunnel virtual network.
 	// +kubebuilder:validation:Optional
 	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
 
+	// (Boolean) Whether this virtual network is the default one for the account. This means IP Routes belong to this virtual network and Teams Clients in the account route through this virtual network, unless specified otherwise for each case.
 	// Whether this virtual network is the default one for the account. This means IP Routes belong to this virtual network and Teams Clients in the account route through this virtual network, unless specified otherwise for each case.
 	// +kubebuilder:validation:Optional
 	IsDefaultNetwork *bool `json:"isDefaultNetwork,omitempty" tf:"is_default_network,omitempty"`
 
+	// friendly name chosen when the virtual network is created.
 	// A user-friendly name chosen when the virtual network is created.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 // TunnelVirtualNetworkSpec defines the desired state of TunnelVirtualNetwork
 type TunnelVirtualNetworkSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TunnelVirtualNetworkParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider TunnelVirtualNetworkInitParameters `json:"initProvider,omitempty"`
 }
 
 // TunnelVirtualNetworkStatus defines the observed state of TunnelVirtualNetwork.
@@ -58,19 +123,21 @@ type TunnelVirtualNetworkStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// TunnelVirtualNetwork is the Schema for the TunnelVirtualNetworks API. <no value>
+// TunnelVirtualNetwork is the Schema for the TunnelVirtualNetworks API. Provides a resource, that manages Cloudflare tunnel virtual networks for Zero Trust. Tunnel virtual networks are used for segregation of Tunnel IP Routes via Virtualized Networks to handle overlapping private IPs in your origins.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type TunnelVirtualNetwork struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TunnelVirtualNetworkSpec   `json:"spec"`
-	Status            TunnelVirtualNetworkStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   TunnelVirtualNetworkSpec   `json:"spec"`
+	Status TunnelVirtualNetworkStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,87 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DevicePostureRuleInitParameters struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (String)
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Expire posture results after the specified amount of time. Must be in the format 1h or 30m. Valid units are h and m.
+	// Expire posture results after the specified amount of time. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Expiration *string `json:"expiration,omitempty" tf:"expiration,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Input []InputInitParameters `json:"input,omitempty" tf:"input,omitempty"`
+
+	// (Block List) The conditions that the client must match to run the rule. (see below for nested schema)
+	// The conditions that the client must match to run the rule.
+	Match []MatchInitParameters `json:"match,omitempty" tf:"match,omitempty"`
+
+	// (String) Name of the device posture rule.
+	// Name of the device posture rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) Tells the client when to run the device posture check. Must be in the format 1h or 30m. Valid units are h and m.
+	// Tells the client when to run the device posture check. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Schedule *string `json:"schedule,omitempty" tf:"schedule,omitempty"`
+
+	// (String) The device posture rule type. Available values: serial_number, file, application, gateway, warp, domain_joined, os_version, disk_encryption, firewall, workspace_one, unique_client_id.
+	// The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `workspace_one`, `unique_client_id`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type DevicePostureRuleObservation struct {
+
+	// (String) The account identifier to target for the resource.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String)
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (String) Expire posture results after the specified amount of time. Must be in the format 1h or 30m. Valid units are h and m.
+	// Expire posture results after the specified amount of time. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Expiration *string `json:"expiration,omitempty" tf:"expiration,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Block List) (see below for nested schema)
+	Input []InputObservation `json:"input,omitempty" tf:"input,omitempty"`
+
+	// (Block List) The conditions that the client must match to run the rule. (see below for nested schema)
+	// The conditions that the client must match to run the rule.
+	Match []MatchObservation `json:"match,omitempty" tf:"match,omitempty"`
+
+	// (String) Name of the device posture rule.
+	// Name of the device posture rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) Tells the client when to run the device posture check. Must be in the format 1h or 30m. Valid units are h and m.
+	// Tells the client when to run the device posture check. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
+	Schedule *string `json:"schedule,omitempty" tf:"schedule,omitempty"`
+
+	// (String) The device posture rule type. Available values: serial_number, file, application, gateway, warp, domain_joined, os_version, disk_encryption, firewall, workspace_one, unique_client_id.
+	// The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `workspace_one`, `unique_client_id`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type DevicePostureRuleParameters struct {
 
+	// (String) The account identifier to target for the resource.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,104 +111,261 @@ type DevicePostureRuleParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (String) Expire posture results after the specified amount of time. Must be in the format 1h or 30m. Valid units are h and m.
 	// Expire posture results after the specified amount of time. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
 	// +kubebuilder:validation:Optional
 	Expiration *string `json:"expiration,omitempty" tf:"expiration,omitempty"`
 
+	// (Block List) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Input []InputParameters `json:"input,omitempty" tf:"input,omitempty"`
 
+	// (Block List) The conditions that the client must match to run the rule. (see below for nested schema)
 	// The conditions that the client must match to run the rule.
 	// +kubebuilder:validation:Optional
 	Match []MatchParameters `json:"match,omitempty" tf:"match,omitempty"`
 
+	// (String) Name of the device posture rule.
 	// Name of the device posture rule.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) Tells the client when to run the device posture check. Must be in the format 1h or 30m. Valid units are h and m.
 	// Tells the client when to run the device posture check. Must be in the format `1h` or `30m`. Valid units are `h` and `m`.
 	// +kubebuilder:validation:Optional
 	Schedule *string `json:"schedule,omitempty" tf:"schedule,omitempty"`
 
+	// (String) The device posture rule type. Available values: serial_number, file, application, gateway, warp, domain_joined, os_version, disk_encryption, firewall, workspace_one, unique_client_id.
 	// The device posture rule type. Available values: `serial_number`, `file`, `application`, `gateway`, `warp`, `domain_joined`, `os_version`, `disk_encryption`, `firewall`, `workspace_one`, `unique_client_id`.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type InputInitParameters struct {
+
+	// (String) The workspace one device compliance status.
+	// The workspace one device compliance status.
+	ComplianceStatus *string `json:"complianceStatus,omitempty" tf:"compliance_status,omitempty"`
+
+	// (String) The workspace one connection id.
+	// The workspace one connection id.
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+
+	// (String) The domain that the client must join.
+	// The domain that the client must join.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (Boolean) True if the firewall must be enabled.
+	// True if the firewall must be enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Boolean) Checks if the file should exist.
+	// Checks if the file should exist.
+	Exists *bool `json:"exists,omitempty" tf:"exists,omitempty"`
+
+	// (String) The ID of this resource.
+	// The Teams List id.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The version comparison operator.
+	// The version comparison operator.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (String) The operating system excluding version information.
+	// The operating system excluding version information.
+	OsDistroName *string `json:"osDistroName,omitempty" tf:"os_distro_name,omitempty"`
+
+	// (String) The operating system version excluding OS name information or release name.
+	// The operating system version excluding OS name information or release name.
+	OsDistroRevision *string `json:"osDistroRevision,omitempty" tf:"os_distro_revision,omitempty"`
+
+	// (String) The path to the file.
+	// The path to the file.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// (Boolean) True if all drives must be encrypted.
+	// True if all drives must be encrypted.
+	RequireAll *bool `json:"requireAll,omitempty" tf:"require_all,omitempty"`
+
+	// (Boolean) Checks if the application should be running.
+	// Checks if the application should be running.
+	Running *bool `json:"running,omitempty" tf:"running,omitempty"`
+
+	// (String) The sha256 hash of the file.
+	// The sha256 hash of the file.
+	Sha256 *string `json:"sha256,omitempty" tf:"sha256,omitempty"`
+
+	// (String) The thumbprint of the file certificate.
+	// The thumbprint of the file certificate.
+	Thumbprint *string `json:"thumbprint,omitempty" tf:"thumbprint,omitempty"`
+
+	// (String) The operating system semantic version.
+	// The operating system semantic version.
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 }
 
 type InputObservation struct {
+
+	// (String) The workspace one device compliance status.
+	// The workspace one device compliance status.
+	ComplianceStatus *string `json:"complianceStatus,omitempty" tf:"compliance_status,omitempty"`
+
+	// (String) The workspace one connection id.
+	// The workspace one connection id.
+	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
+
+	// (String) The domain that the client must join.
+	// The domain that the client must join.
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (Boolean) True if the firewall must be enabled.
+	// True if the firewall must be enabled.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Boolean) Checks if the file should exist.
+	// Checks if the file should exist.
+	Exists *bool `json:"exists,omitempty" tf:"exists,omitempty"`
+
+	// (String) The ID of this resource.
+	// The Teams List id.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The version comparison operator.
+	// The version comparison operator.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// (String) The operating system excluding version information.
+	// The operating system excluding version information.
+	OsDistroName *string `json:"osDistroName,omitempty" tf:"os_distro_name,omitempty"`
+
+	// (String) The operating system version excluding OS name information or release name.
+	// The operating system version excluding OS name information or release name.
+	OsDistroRevision *string `json:"osDistroRevision,omitempty" tf:"os_distro_revision,omitempty"`
+
+	// (String) The path to the file.
+	// The path to the file.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// (Boolean) True if all drives must be encrypted.
+	// True if all drives must be encrypted.
+	RequireAll *bool `json:"requireAll,omitempty" tf:"require_all,omitempty"`
+
+	// (Boolean) Checks if the application should be running.
+	// Checks if the application should be running.
+	Running *bool `json:"running,omitempty" tf:"running,omitempty"`
+
+	// (String) The sha256 hash of the file.
+	// The sha256 hash of the file.
+	Sha256 *string `json:"sha256,omitempty" tf:"sha256,omitempty"`
+
+	// (String) The thumbprint of the file certificate.
+	// The thumbprint of the file certificate.
+	Thumbprint *string `json:"thumbprint,omitempty" tf:"thumbprint,omitempty"`
+
+	// (String) The operating system semantic version.
+	// The operating system semantic version.
+	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 }
 
 type InputParameters struct {
 
+	// (String) The workspace one device compliance status.
 	// The workspace one device compliance status.
 	// +kubebuilder:validation:Optional
 	ComplianceStatus *string `json:"complianceStatus,omitempty" tf:"compliance_status,omitempty"`
 
+	// (String) The workspace one connection id.
 	// The workspace one connection id.
 	// +kubebuilder:validation:Optional
 	ConnectionID *string `json:"connectionId,omitempty" tf:"connection_id,omitempty"`
 
+	// (String) The domain that the client must join.
 	// The domain that the client must join.
 	// +kubebuilder:validation:Optional
 	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
 
+	// (Boolean) True if the firewall must be enabled.
 	// True if the firewall must be enabled.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Boolean) Checks if the file should exist.
 	// Checks if the file should exist.
 	// +kubebuilder:validation:Optional
 	Exists *bool `json:"exists,omitempty" tf:"exists,omitempty"`
 
+	// (String) The ID of this resource.
 	// The Teams List id.
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) The version comparison operator.
 	// The version comparison operator.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The operating system excluding version information.
 	// The operating system excluding version information.
 	// +kubebuilder:validation:Optional
 	OsDistroName *string `json:"osDistroName,omitempty" tf:"os_distro_name,omitempty"`
 
+	// (String) The operating system version excluding OS name information or release name.
 	// The operating system version excluding OS name information or release name.
 	// +kubebuilder:validation:Optional
 	OsDistroRevision *string `json:"osDistroRevision,omitempty" tf:"os_distro_revision,omitempty"`
 
+	// (String) The path to the file.
 	// The path to the file.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// (Boolean) True if all drives must be encrypted.
 	// True if all drives must be encrypted.
 	// +kubebuilder:validation:Optional
 	RequireAll *bool `json:"requireAll,omitempty" tf:"require_all,omitempty"`
 
+	// (Boolean) Checks if the application should be running.
 	// Checks if the application should be running.
 	// +kubebuilder:validation:Optional
 	Running *bool `json:"running,omitempty" tf:"running,omitempty"`
 
+	// (String) The sha256 hash of the file.
 	// The sha256 hash of the file.
 	// +kubebuilder:validation:Optional
 	Sha256 *string `json:"sha256,omitempty" tf:"sha256,omitempty"`
 
+	// (String) The thumbprint of the file certificate.
 	// The thumbprint of the file certificate.
 	// +kubebuilder:validation:Optional
 	Thumbprint *string `json:"thumbprint,omitempty" tf:"thumbprint,omitempty"`
 
+	// (String) The operating system semantic version.
 	// The operating system semantic version.
 	// +kubebuilder:validation:Optional
 	Version *string `json:"version,omitempty" tf:"version,omitempty"`
 }
 
+type MatchInitParameters struct {
+
+	// (String) The platform of the device. Available values: windows, mac, linux, android, ios, chromeos.
+	// The platform of the device. Available values: `windows`, `mac`, `linux`, `android`, `ios`, `chromeos`.
+	Platform *string `json:"platform,omitempty" tf:"platform,omitempty"`
+}
+
 type MatchObservation struct {
+
+	// (String) The platform of the device. Available values: windows, mac, linux, android, ios, chromeos.
+	// The platform of the device. Available values: `windows`, `mac`, `linux`, `android`, `ios`, `chromeos`.
+	Platform *string `json:"platform,omitempty" tf:"platform,omitempty"`
 }
 
 type MatchParameters struct {
 
+	// (String) The platform of the device. Available values: windows, mac, linux, android, ios, chromeos.
 	// The platform of the device. Available values: `windows`, `mac`, `linux`, `android`, `ios`, `chromeos`.
 	// +kubebuilder:validation:Optional
 	Platform *string `json:"platform,omitempty" tf:"platform,omitempty"`
@@ -139,6 +375,17 @@ type MatchParameters struct {
 type DevicePostureRuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DevicePostureRuleParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DevicePostureRuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // DevicePostureRuleStatus defines the observed state of DevicePostureRule.
@@ -148,19 +395,21 @@ type DevicePostureRuleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// DevicePostureRule is the Schema for the DevicePostureRules API. <no value>
+// DevicePostureRule is the Schema for the DevicePostureRules API. Provides a Cloudflare Device Posture Rule resource. Device posture rules configure security policies for device posture checks.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type DevicePostureRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DevicePostureRuleSpec   `json:"spec"`
-	Status            DevicePostureRuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	Spec   DevicePostureRuleSpec   `json:"spec"`
+	Status DevicePostureRuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

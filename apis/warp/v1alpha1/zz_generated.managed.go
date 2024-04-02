@@ -17,17 +17,14 @@ func (mg *DevicePolicyCertificates) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this DevicePolicyCertificates.
+func (mg *DevicePolicyCertificates) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this DevicePolicyCertificates.
 func (mg *DevicePolicyCertificates) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this DevicePolicyCertificates.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *DevicePolicyCertificates) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this DevicePolicyCertificates.
@@ -50,17 +47,14 @@ func (mg *DevicePolicyCertificates) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this DevicePolicyCertificates.
+func (mg *DevicePolicyCertificates) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this DevicePolicyCertificates.
 func (mg *DevicePolicyCertificates) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this DevicePolicyCertificates.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *DevicePolicyCertificates) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this DevicePolicyCertificates.
@@ -83,17 +77,14 @@ func (mg *DevicePostureIntegration) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this DevicePostureIntegration.
+func (mg *DevicePostureIntegration) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this DevicePostureIntegration.
 func (mg *DevicePostureIntegration) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this DevicePostureIntegration.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *DevicePostureIntegration) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this DevicePostureIntegration.
@@ -116,17 +107,14 @@ func (mg *DevicePostureIntegration) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this DevicePostureIntegration.
+func (mg *DevicePostureIntegration) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this DevicePostureIntegration.
 func (mg *DevicePostureIntegration) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this DevicePostureIntegration.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *DevicePostureIntegration) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this DevicePostureIntegration.
@@ -149,17 +137,14 @@ func (mg *DevicePostureRule) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this DevicePostureRule.
+func (mg *DevicePostureRule) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this DevicePostureRule.
 func (mg *DevicePostureRule) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this DevicePostureRule.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *DevicePostureRule) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this DevicePostureRule.
@@ -182,17 +167,14 @@ func (mg *DevicePostureRule) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this DevicePostureRule.
+func (mg *DevicePostureRule) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this DevicePostureRule.
 func (mg *DevicePostureRule) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this DevicePostureRule.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *DevicePostureRule) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this DevicePostureRule.
@@ -215,17 +197,14 @@ func (mg *DeviceSettingsPolicy) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this DeviceSettingsPolicy.
+func (mg *DeviceSettingsPolicy) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this DeviceSettingsPolicy.
 func (mg *DeviceSettingsPolicy) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this DeviceSettingsPolicy.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *DeviceSettingsPolicy) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this DeviceSettingsPolicy.
@@ -248,17 +227,14 @@ func (mg *DeviceSettingsPolicy) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this DeviceSettingsPolicy.
+func (mg *DeviceSettingsPolicy) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this DeviceSettingsPolicy.
 func (mg *DeviceSettingsPolicy) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this DeviceSettingsPolicy.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *DeviceSettingsPolicy) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this DeviceSettingsPolicy.
@@ -281,17 +257,14 @@ func (mg *FallbackDomain) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this FallbackDomain.
+func (mg *FallbackDomain) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this FallbackDomain.
 func (mg *FallbackDomain) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this FallbackDomain.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *FallbackDomain) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this FallbackDomain.
@@ -314,17 +287,14 @@ func (mg *FallbackDomain) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this FallbackDomain.
+func (mg *FallbackDomain) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this FallbackDomain.
 func (mg *FallbackDomain) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this FallbackDomain.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *FallbackDomain) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this FallbackDomain.
@@ -347,17 +317,14 @@ func (mg *SplitTunnel) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this SplitTunnel.
+func (mg *SplitTunnel) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this SplitTunnel.
 func (mg *SplitTunnel) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this SplitTunnel.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *SplitTunnel) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this SplitTunnel.
@@ -380,17 +347,14 @@ func (mg *SplitTunnel) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this SplitTunnel.
+func (mg *SplitTunnel) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this SplitTunnel.
 func (mg *SplitTunnel) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this SplitTunnel.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *SplitTunnel) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this SplitTunnel.

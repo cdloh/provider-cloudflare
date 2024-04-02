@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,45 +17,126 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionInitParameters struct {
+
+	// (String) Type of supported action. Available values: drop, forward, worker.
+	// Type of supported action. Available values: `drop`, `forward`, `worker`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (List of String) A list with items in the following form.
+	// A list with items in the following form.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type ActionObservation struct {
+
+	// (String) Type of supported action. Available values: drop, forward, worker.
+	// Type of supported action. Available values: `drop`, `forward`, `worker`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (List of String) A list with items in the following form.
+	// A list with items in the following form.
+	Value []*string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type ActionParameters struct {
 
+	// (String) Type of supported action. Available values: drop, forward, worker.
 	// Type of supported action. Available values: `drop`, `forward`, `worker`.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 
+	// (List of String) A list with items in the following form.
 	// A list with items in the following form.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Value []*string `json:"value" tf:"value,omitempty"`
 }
 
+type CatchAllInitParameters struct {
+
+	// (Block Set, Min: 1) List actions patterns. (see below for nested schema)
+	// List actions patterns.
+	Action []ActionInitParameters `json:"action,omitempty" tf:"action,omitempty"`
+
+	// (Boolean) Routing rule status.
+	// Routing rule status.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (Block Set, Min: 1) Matching patterns to forward to your actions. (see below for nested schema)
+	// Matching patterns to forward to your actions.
+	Matcher []MatcherInitParameters `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// (String) Routing rule name.
+	// Routing rule name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) The zone identifier to target for the resource.
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type CatchAllObservation struct {
+
+	// (Block Set, Min: 1) List actions patterns. (see below for nested schema)
+	// List actions patterns.
+	Action []ActionObservation `json:"action,omitempty" tf:"action,omitempty"`
+
+	// (Boolean) Routing rule status.
+	// Routing rule status.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (Block Set, Min: 1) Matching patterns to forward to your actions. (see below for nested schema)
+	// Matching patterns to forward to your actions.
+	Matcher []MatcherObservation `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// (String) Routing rule name.
+	// Routing rule name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (String) Routing rule identifier.
 	// Routing rule identifier.
 	Tag *string `json:"tag,omitempty" tf:"tag,omitempty"`
+
+	// (String) The zone identifier to target for the resource.
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type CatchAllParameters struct {
 
+	// (Block Set, Min: 1) List actions patterns. (see below for nested schema)
 	// List actions patterns.
-	// +kubebuilder:validation:Required
-	Action []ActionParameters `json:"action" tf:"action,omitempty"`
+	// +kubebuilder:validation:Optional
+	Action []ActionParameters `json:"action,omitempty" tf:"action,omitempty"`
 
+	// (Boolean) Routing rule status.
 	// Routing rule status.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (Block Set, Min: 1) Matching patterns to forward to your actions. (see below for nested schema)
 	// Matching patterns to forward to your actions.
-	// +kubebuilder:validation:Required
-	Matcher []MatcherParameters `json:"matcher" tf:"matcher,omitempty"`
+	// +kubebuilder:validation:Optional
+	Matcher []MatcherParameters `json:"matcher,omitempty" tf:"matcher,omitempty"`
 
+	// (String) Routing rule name.
 	// Routing rule name.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) The zone identifier to target for the resource.
 	// The zone identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -66,13 +151,25 @@ type CatchAllParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type MatcherInitParameters struct {
+
+	// (String) Type of supported action. Available values: drop, forward, worker.
+	// Type of matcher. Available values: `all`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type MatcherObservation struct {
+
+	// (String) Type of supported action. Available values: drop, forward, worker.
+	// Type of matcher. Available values: `all`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type MatcherParameters struct {
 
+	// (String) Type of supported action. Available values: drop, forward, worker.
 	// Type of matcher. Available values: `all`.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
 
@@ -80,6 +177,17 @@ type MatcherParameters struct {
 type CatchAllSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     CatchAllParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider CatchAllInitParameters `json:"initProvider,omitempty"`
 }
 
 // CatchAllStatus defines the observed state of CatchAll.
@@ -89,19 +197,23 @@ type CatchAllStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// CatchAll is the Schema for the CatchAlls API. <no value>
+// CatchAll is the Schema for the CatchAlls API. Provides a resource for managing Email Routing Addresses catch all behaviour.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type CatchAll struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              CatchAllSpec   `json:"spec"`
-	Status            CatchAllStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.action) || (has(self.initProvider) && has(self.initProvider.action))",message="spec.forProvider.action is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.matcher) || (has(self.initProvider) && has(self.initProvider.matcher))",message="spec.forProvider.matcher is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   CatchAllSpec   `json:"spec"`
+	Status CatchAllStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

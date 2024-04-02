@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,85 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type TunnelRouteInitParameters struct {
+
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (String) Description of the tunnel route.
+	// Description of the tunnel route.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	// (String) The IPv4 or IPv6 network that should use this tunnel route, in CIDR notation.
+	// The IPv4 or IPv6 network that should use this tunnel route, in CIDR notation.
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
+
+	// (String) The ID of the tunnel that will service the tunnel route.
+	// The ID of the tunnel that will service the tunnel route.
+	// +crossplane:generate:reference:type=Tunnel
+	TunnelID *string `json:"tunnelId,omitempty" tf:"tunnel_id,omitempty"`
+
+	// Reference to a Tunnel to populate tunnelId.
+	// +kubebuilder:validation:Optional
+	TunnelIDRef *v1.Reference `json:"tunnelIdRef,omitempty" tf:"-"`
+
+	// Selector for a Tunnel to populate tunnelId.
+	// +kubebuilder:validation:Optional
+	TunnelIDSelector *v1.Selector `json:"tunnelIdSelector,omitempty" tf:"-"`
+
+	// (String) The ID of the virtual network for which this route is being added; uses the default virtual network of the account if none is provided. Modifying this attribute will force creation of a new resource.
+	// The ID of the virtual network for which this route is being added; uses the default virtual network of the account if none is provided. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=TunnelVirtualNetwork
+	VirtualNetworkID *string `json:"virtualNetworkId,omitempty" tf:"virtual_network_id,omitempty"`
+
+	// Reference to a TunnelVirtualNetwork to populate virtualNetworkId.
+	// +kubebuilder:validation:Optional
+	VirtualNetworkIDRef *v1.Reference `json:"virtualNetworkIdRef,omitempty" tf:"-"`
+
+	// Selector for a TunnelVirtualNetwork to populate virtualNetworkId.
+	// +kubebuilder:validation:Optional
+	VirtualNetworkIDSelector *v1.Selector `json:"virtualNetworkIdSelector,omitempty" tf:"-"`
+}
+
 type TunnelRouteObservation struct {
+
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String) Description of the tunnel route.
+	// Description of the tunnel route.
+	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (String) The IPv4 or IPv6 network that should use this tunnel route, in CIDR notation.
+	// The IPv4 or IPv6 network that should use this tunnel route, in CIDR notation.
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
+
+	// (String) The ID of the tunnel that will service the tunnel route.
+	// The ID of the tunnel that will service the tunnel route.
+	TunnelID *string `json:"tunnelId,omitempty" tf:"tunnel_id,omitempty"`
+
+	// (String) The ID of the virtual network for which this route is being added; uses the default virtual network of the account if none is provided. Modifying this attribute will force creation of a new resource.
+	// The ID of the virtual network for which this route is being added; uses the default virtual network of the account if none is provided. **Modifying this attribute will force creation of a new resource.**
+	VirtualNetworkID *string `json:"virtualNetworkId,omitempty" tf:"virtual_network_id,omitempty"`
 }
 
 type TunnelRouteParameters struct {
 
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
 	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,14 +109,17 @@ type TunnelRouteParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (String) Description of the tunnel route.
 	// Description of the tunnel route.
 	// +kubebuilder:validation:Optional
 	Comment *string `json:"comment,omitempty" tf:"comment,omitempty"`
 
+	// (String) The IPv4 or IPv6 network that should use this tunnel route, in CIDR notation.
 	// The IPv4 or IPv6 network that should use this tunnel route, in CIDR notation.
-	// +kubebuilder:validation:Required
-	Network *string `json:"network" tf:"network,omitempty"`
+	// +kubebuilder:validation:Optional
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 
+	// (String) The ID of the tunnel that will service the tunnel route.
 	// The ID of the tunnel that will service the tunnel route.
 	// +crossplane:generate:reference:type=Tunnel
 	// +kubebuilder:validation:Optional
@@ -53,6 +133,7 @@ type TunnelRouteParameters struct {
 	// +kubebuilder:validation:Optional
 	TunnelIDSelector *v1.Selector `json:"tunnelIdSelector,omitempty" tf:"-"`
 
+	// (String) The ID of the virtual network for which this route is being added; uses the default virtual network of the account if none is provided. Modifying this attribute will force creation of a new resource.
 	// The ID of the virtual network for which this route is being added; uses the default virtual network of the account if none is provided. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=TunnelVirtualNetwork
 	// +kubebuilder:validation:Optional
@@ -71,6 +152,17 @@ type TunnelRouteParameters struct {
 type TunnelRouteSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TunnelRouteParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider TunnelRouteInitParameters `json:"initProvider,omitempty"`
 }
 
 // TunnelRouteStatus defines the observed state of TunnelRoute.
@@ -80,19 +172,21 @@ type TunnelRouteStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// TunnelRoute is the Schema for the TunnelRoutes API. <no value>
+// TunnelRoute is the Schema for the TunnelRoutes API. Provides a resource, that manages Cloudflare tunnel routes for Zero Trust. Tunnel routes are used to direct IP traffic through Cloudflare Tunnels.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type TunnelRoute struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TunnelRouteSpec   `json:"spec"`
-	Status            TunnelRouteStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.network) || (has(self.initProvider) && has(self.initProvider.network))",message="spec.forProvider.network is a required parameter"
+	Spec   TunnelRouteSpec   `json:"spec"`
+	Status TunnelRouteStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,61 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ListInitParameters struct {
+
+	// The account to which the teams list should be added.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// The description of the teams list.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The items of the teams list.
+	// +listType=set
+	Items []*string `json:"items,omitempty" tf:"items,omitempty"`
+
+	// Name of the teams list.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The teams list type. Valid values are IP, SERIAL, URL, DOMAIN, and EMAIL.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type ListObservation struct {
+
+	// The account to which the teams list should be added.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The description of the teams list.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// ID of the teams list.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The items of the teams list.
+	// +listType=set
+	Items []*string `json:"items,omitempty" tf:"items,omitempty"`
+
+	// Name of the teams list.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The teams list type. Valid values are IP, SERIAL, URL, DOMAIN, and EMAIL.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ListParameters struct {
 
+	// The account to which the teams list should be added.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,23 +85,39 @@ type ListParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// The description of the teams list.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// The items of the teams list.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Items []*string `json:"items,omitempty" tf:"items,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// Name of the teams list.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// The teams list type. Valid values are IP, SERIAL, URL, DOMAIN, and EMAIL.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // ListSpec defines the desired state of List
 type ListSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ListParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ListInitParameters `json:"initProvider,omitempty"`
 }
 
 // ListStatus defines the observed state of List.
@@ -58,19 +127,22 @@ type ListStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// List is the Schema for the Lists API. <no value>
+// List is the Schema for the Lists API. Provides a Cloudflare Teams List resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type List struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ListSpec   `json:"spec"`
-	Status            ListStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	Spec   ListSpec   `json:"spec"`
+	Status ListStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

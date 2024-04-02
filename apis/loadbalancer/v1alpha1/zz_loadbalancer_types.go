@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,25 +17,67 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AdaptiveRoutingInitParameters struct {
+
+	// downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set false, zero-downtime failover will only occur between origins within the same pool. Defaults to false.
+	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool. Defaults to `false`.
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
+}
+
 type AdaptiveRoutingObservation struct {
+
+	// downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set false, zero-downtime failover will only occur between origins within the same pool. Defaults to false.
+	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool. Defaults to `false`.
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
 type AdaptiveRoutingParameters struct {
 
+	// downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set false, zero-downtime failover will only occur between origins within the same pool. Defaults to false.
 	// Extends zero-downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set `false`, zero-downtime failover will only occur between origins within the same pool. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
+type CountryPoolsInitParameters struct {
+
+	// (String) A country code which can be determined with the Load Balancing Regions API described here. Multiple entries should not be specified with the same country.
+	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// A list of pool IDs in failover priority to use in the given country.
+	// +crossplane:generate:reference:type=Pool
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// References to Pool to populate poolIds.
+	// +kubebuilder:validation:Optional
+	PoolIdsRefs []v1.Reference `json:"poolIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Pool to populate poolIds.
+	// +kubebuilder:validation:Optional
+	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
+}
+
 type CountryPoolsObservation struct {
+
+	// (String) A country code which can be determined with the Load Balancing Regions API described here. Multiple entries should not be specified with the same country.
+	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// A list of pool IDs in failover priority to use in the given country.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
 }
 
 type CountryPoolsParameters struct {
 
+	// (String) A country code which can be determined with the Load Balancing Regions API described here. Multiple entries should not be specified with the same country.
 	// A country code which can be determined with the Load Balancing Regions API described [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/). Multiple entries should not be specified with the same country.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Country *string `json:"country" tf:"country,omitempty"`
 
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
 	// A list of pool IDs in failover priority to use in the given country.
 	// +crossplane:generate:reference:type=Pool
 	// +kubebuilder:validation:Optional
@@ -46,49 +92,278 @@ type CountryPoolsParameters struct {
 	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
 }
 
+type FixedResponseInitParameters struct {
+
+	// type header for this fixed response.
+	// The value of the HTTP context-type header for this fixed response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// (String) The value of the HTTP location header for this fixed response.
+	// The value of the HTTP location header for this fixed response.
+	Location *string `json:"location,omitempty" tf:"location,omitempty"`
+
+	// (String) The text used as the html body for this fixed response.
+	// The text used as the html body for this fixed response.
+	MessageBody *string `json:"messageBody,omitempty" tf:"message_body,omitempty"`
+
+	// (Number) The HTTP status code used for this fixed response.
+	// The HTTP status code used for this fixed response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
+}
+
 type FixedResponseObservation struct {
+
+	// type header for this fixed response.
+	// The value of the HTTP context-type header for this fixed response.
+	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
+
+	// (String) The value of the HTTP location header for this fixed response.
+	// The value of the HTTP location header for this fixed response.
+	Location *string `json:"location,omitempty" tf:"location,omitempty"`
+
+	// (String) The text used as the html body for this fixed response.
+	// The text used as the html body for this fixed response.
+	MessageBody *string `json:"messageBody,omitempty" tf:"message_body,omitempty"`
+
+	// (Number) The HTTP status code used for this fixed response.
+	// The HTTP status code used for this fixed response.
+	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 }
 
 type FixedResponseParameters struct {
 
+	// type header for this fixed response.
 	// The value of the HTTP context-type header for this fixed response.
 	// +kubebuilder:validation:Optional
 	ContentType *string `json:"contentType,omitempty" tf:"content_type,omitempty"`
 
+	// (String) The value of the HTTP location header for this fixed response.
 	// The value of the HTTP location header for this fixed response.
 	// +kubebuilder:validation:Optional
 	Location *string `json:"location,omitempty" tf:"location,omitempty"`
 
+	// (String) The text used as the html body for this fixed response.
 	// The text used as the html body for this fixed response.
 	// +kubebuilder:validation:Optional
 	MessageBody *string `json:"messageBody,omitempty" tf:"message_body,omitempty"`
 
+	// (Number) The HTTP status code used for this fixed response.
 	// The HTTP status code used for this fixed response.
 	// +kubebuilder:validation:Optional
 	StatusCode *float64 `json:"statusCode,omitempty" tf:"status_code,omitempty"`
 }
 
+type LoadBalancerInitParameters struct {
+
+	// (Block Set) Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests. (see below for nested schema)
+	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
+	AdaptiveRouting []AdaptiveRoutingInitParameters `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// (Block Set) A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country. (see below for nested schema)
+	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
+	CountryPools []CountryPoolsInitParameters `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
+
+	// (List of String) A list of pool IDs ordered by their failover priority. Used whenever pop_pools/country_pools/region_pools are not defined.
+	// A list of pool IDs ordered by their failover priority. Used whenever [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) are not defined.
+	// +crossplane:generate:reference:type=Pool
+	DefaultPoolIds []*string `json:"defaultPoolIds,omitempty" tf:"default_pool_ids,omitempty"`
+
+	// References to Pool to populate defaultPoolIds.
+	// +kubebuilder:validation:Optional
+	DefaultPoolIdsRefs []v1.Reference `json:"defaultPoolIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Pool to populate defaultPoolIds.
+	// +kubebuilder:validation:Optional
+	DefaultPoolIdsSelector *v1.Selector `json:"defaultPoolIdsSelector,omitempty" tf:"-"`
+
+	// (String) Free text description.
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Boolean) Enable or disable the load balancer. Defaults to true.
+	// Enable or disable the load balancer. Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The pool ID to use when all other pools are detected as unhealthy.
+	// The pool ID to use when all other pools are detected as unhealthy.
+	// +crossplane:generate:reference:type=Pool
+	FallbackPoolID *string `json:"fallbackPoolId,omitempty" tf:"fallback_pool_id,omitempty"`
+
+	// Reference to a Pool to populate fallbackPoolId.
+	// +kubebuilder:validation:Optional
+	FallbackPoolIDRef *v1.Reference `json:"fallbackPoolIdRef,omitempty" tf:"-"`
+
+	// Selector for a Pool to populate fallbackPoolId.
+	// +kubebuilder:validation:Optional
+	FallbackPoolIDSelector *v1.Selector `json:"fallbackPoolIdSelector,omitempty" tf:"-"`
+
+	// based steering for non-proxied requests. (see below for nested schema)
+	// Controls location-based steering for non-proxied requests.
+	LocationStrategy []LocationStrategyInitParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
+
+	// (String) The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	// The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers. (see below for nested schema)
+	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
+	PopPools []PopPoolsInitParameters `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// (Boolean) Whether the hostname gets Cloudflare's origin protection. Defaults to false. Conflicts with ttl.
+	// Whether the hostname gets Cloudflare's origin protection. Defaults to `false`. Conflicts with `ttl`.
+	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
+
+	// (Block Set) Configures pool weights for random steering. When the steering_policy="random", a random pool is selected with probability proportional to these pool weights. (see below for nested schema)
+	// Configures pool weights for random steering. When the [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to these pool weights.
+	RandomSteering []RandomSteeringInitParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// (Block Set) A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region. (see below for nested schema)
+	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
+	RegionPools []RegionPoolsInitParameters `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// (Block List) A list of rules for this load balancer to execute. (see below for nested schema)
+	// A list of rules for this load balancer to execute.
+	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// (String) Specifies the type of session affinity the load balancer should use unless specified as none or "" (default). With value cookie, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value ip_cookie behaves the same as cookie except the initial origin selection is stable and based on the client's IP address. Available values: "", none, cookie, ip_cookie. Defaults to none.
+	// Specifies the type of session affinity the load balancer should use unless specified as `none` or `""` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `""`, `none`, `cookie`, `ip_cookie`. Defaults to `none`.
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// (Map of String) See session_affinity_attributes.
+	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes).
+	// +mapType=granular
+	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// (Number) Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of 82800 (23 hours) will be used unless session_affinity_ttl is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between 1800 and 604800.
+	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// proxied requests, the country for country_pools is determined by location_strategy. Value random selects a pool randomly. Value dynamic_latency uses round trip time to select the closest pool in default_pool_ids (requires pool health checks). Value proximity uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by location_strategy for non-proxied requests. Value "" maps to geo if you use pop_pools/country_pools/region_pools otherwise off. Available values: off, geo, dynamic_latency, random, proximity, "" Defaults to "".
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `""` Defaults to `""`.
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// (Number) Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to 30. Conflicts with proxied.
+	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`. Conflicts with `proxied`.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// (String) The zone ID to add the load balancer to. Modifying this attribute will force creation of a new resource.
+	// The zone ID to add the load balancer to. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type LoadBalancerObservation struct {
 
+	// (Block Set) Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests. (see below for nested schema)
+	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
+	AdaptiveRouting []AdaptiveRoutingObservation `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// (Block Set) A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country. (see below for nested schema)
+	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
+	CountryPools []CountryPoolsObservation `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
+
+	// (String) The RFC3339 timestamp of when the load balancer was created.
 	// The RFC3339 timestamp of when the load balancer was created.
 	CreatedOn *string `json:"createdOn,omitempty" tf:"created_on,omitempty"`
 
+	// (List of String) A list of pool IDs ordered by their failover priority. Used whenever pop_pools/country_pools/region_pools are not defined.
+	// A list of pool IDs ordered by their failover priority. Used whenever [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) are not defined.
+	DefaultPoolIds []*string `json:"defaultPoolIds,omitempty" tf:"default_pool_ids,omitempty"`
+
+	// (String) Free text description.
+	// Free text description.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// (Boolean) Enable or disable the load balancer. Defaults to true.
+	// Enable or disable the load balancer. Defaults to `true`.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The pool ID to use when all other pools are detected as unhealthy.
+	// The pool ID to use when all other pools are detected as unhealthy.
+	FallbackPoolID *string `json:"fallbackPoolId,omitempty" tf:"fallback_pool_id,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// based steering for non-proxied requests. (see below for nested schema)
+	// Controls location-based steering for non-proxied requests.
+	LocationStrategy []LocationStrategyObservation `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
+
+	// (String) The RFC3339 timestamp of when the load balancer was last modified.
 	// The RFC3339 timestamp of when the load balancer was last modified.
 	ModifiedOn *string `json:"modifiedOn,omitempty" tf:"modified_on,omitempty"`
+
+	// (String) The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	// The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers. (see below for nested schema)
+	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
+	PopPools []PopPoolsObservation `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// (Boolean) Whether the hostname gets Cloudflare's origin protection. Defaults to false. Conflicts with ttl.
+	// Whether the hostname gets Cloudflare's origin protection. Defaults to `false`. Conflicts with `ttl`.
+	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
+
+	// (Block Set) Configures pool weights for random steering. When the steering_policy="random", a random pool is selected with probability proportional to these pool weights. (see below for nested schema)
+	// Configures pool weights for random steering. When the [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to these pool weights.
+	RandomSteering []RandomSteeringObservation `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// (Block Set) A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region. (see below for nested schema)
+	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
+	RegionPools []RegionPoolsObservation `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// (Block List) A list of rules for this load balancer to execute. (see below for nested schema)
+	// A list of rules for this load balancer to execute.
+	Rules []RulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
+
+	// (String) Specifies the type of session affinity the load balancer should use unless specified as none or "" (default). With value cookie, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value ip_cookie behaves the same as cookie except the initial origin selection is stable and based on the client's IP address. Available values: "", none, cookie, ip_cookie. Defaults to none.
+	// Specifies the type of session affinity the load balancer should use unless specified as `none` or `""` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `""`, `none`, `cookie`, `ip_cookie`. Defaults to `none`.
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// (Map of String) See session_affinity_attributes.
+	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes).
+	// +mapType=granular
+	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// (Number) Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of 82800 (23 hours) will be used unless session_affinity_ttl is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between 1800 and 604800.
+	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// proxied requests, the country for country_pools is determined by location_strategy. Value random selects a pool randomly. Value dynamic_latency uses round trip time to select the closest pool in default_pool_ids (requires pool health checks). Value proximity uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by location_strategy for non-proxied requests. Value "" maps to geo if you use pop_pools/country_pools/region_pools otherwise off. Available values: off, geo, dynamic_latency, random, proximity, "" Defaults to "".
+	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `""` Defaults to `""`.
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// (Number) Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to 30. Conflicts with proxied.
+	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`. Conflicts with `proxied`.
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+
+	// (String) The zone ID to add the load balancer to. Modifying this attribute will force creation of a new resource.
+	// The zone ID to add the load balancer to. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type LoadBalancerParameters struct {
 
+	// (Block Set) Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests. (see below for nested schema)
 	// Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests.
 	// +kubebuilder:validation:Optional
 	AdaptiveRouting []AdaptiveRoutingParameters `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
 
+	// (Block Set) A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country. (see below for nested schema)
 	// A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country.
 	// +kubebuilder:validation:Optional
 	CountryPools []CountryPoolsParameters `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
 
+	// (List of String) A list of pool IDs ordered by their failover priority. Used whenever pop_pools/country_pools/region_pools are not defined.
 	// A list of pool IDs ordered by their failover priority. Used whenever [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) are not defined.
 	// +crossplane:generate:reference:type=Pool
 	// +kubebuilder:validation:Optional
@@ -102,14 +377,17 @@ type LoadBalancerParameters struct {
 	// +kubebuilder:validation:Optional
 	DefaultPoolIdsSelector *v1.Selector `json:"defaultPoolIdsSelector,omitempty" tf:"-"`
 
+	// (String) Free text description.
 	// Free text description.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// (Boolean) Enable or disable the load balancer. Defaults to true.
 	// Enable or disable the load balancer. Defaults to `true`.
 	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
+	// (String) The pool ID to use when all other pools are detected as unhealthy.
 	// The pool ID to use when all other pools are detected as unhealthy.
 	// +crossplane:generate:reference:type=Pool
 	// +kubebuilder:validation:Optional
@@ -123,54 +401,68 @@ type LoadBalancerParameters struct {
 	// +kubebuilder:validation:Optional
 	FallbackPoolIDSelector *v1.Selector `json:"fallbackPoolIdSelector,omitempty" tf:"-"`
 
+	// based steering for non-proxied requests. (see below for nested schema)
 	// Controls location-based steering for non-proxied requests.
 	// +kubebuilder:validation:Optional
 	LocationStrategy []LocationStrategyParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
 
+	// (String) The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
 	// The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers. (see below for nested schema)
 	// A set containing mappings of Cloudflare Point-of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers.
 	// +kubebuilder:validation:Optional
 	PopPools []PopPoolsParameters `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
 
+	// (Boolean) Whether the hostname gets Cloudflare's origin protection. Defaults to false. Conflicts with ttl.
 	// Whether the hostname gets Cloudflare's origin protection. Defaults to `false`. Conflicts with `ttl`.
 	// +kubebuilder:validation:Optional
 	Proxied *bool `json:"proxied,omitempty" tf:"proxied,omitempty"`
 
+	// (Block Set) Configures pool weights for random steering. When the steering_policy="random", a random pool is selected with probability proportional to these pool weights. (see below for nested schema)
 	// Configures pool weights for random steering. When the [`steering_policy="random"`](#steering_policy), a random pool is selected with probability proportional to these pool weights.
 	// +kubebuilder:validation:Optional
 	RandomSteering []RandomSteeringParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
 
+	// (Block Set) A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region. (see below for nested schema)
 	// A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region.
 	// +kubebuilder:validation:Optional
 	RegionPools []RegionPoolsParameters `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
 
+	// (Block List) A list of rules for this load balancer to execute. (see below for nested schema)
 	// A list of rules for this load balancer to execute.
 	// +kubebuilder:validation:Optional
 	Rules []RulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
+	// (String) Specifies the type of session affinity the load balancer should use unless specified as none or "" (default). With value cookie, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value ip_cookie behaves the same as cookie except the initial origin selection is stable and based on the client's IP address. Available values: "", none, cookie, ip_cookie. Defaults to none.
 	// Specifies the type of session affinity the load balancer should use unless specified as `none` or `""` (default). With value `cookie`, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value `ip_cookie` behaves the same as `cookie` except the initial origin selection is stable and based on the client's IP address. Available values: `""`, `none`, `cookie`, `ip_cookie`. Defaults to `none`.
 	// +kubebuilder:validation:Optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
 
+	// (Map of String) See session_affinity_attributes.
 	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes).
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
 
+	// (Number) Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of 82800 (23 hours) will be used unless session_affinity_ttl is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between 1800 and 604800.
 	// Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of `82800` (23 hours) will be used unless [`session_affinity_ttl`](#session_affinity_ttl) is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between `1800` and `604800`.
 	// +kubebuilder:validation:Optional
 	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
 
+	// proxied requests, the country for country_pools is determined by location_strategy. Value random selects a pool randomly. Value dynamic_latency uses round trip time to select the closest pool in default_pool_ids (requires pool health checks). Value proximity uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by location_strategy for non-proxied requests. Value "" maps to geo if you use pop_pools/country_pools/region_pools otherwise off. Available values: off, geo, dynamic_latency, random, proximity, "" Defaults to "".
 	// The method the load balancer uses to determine the route to your origin. Value `off` uses [`default_pool_ids`](#default_pool_ids). Value `geo` uses [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools). For non-proxied requests, the [`country`](#country) for [`country_pools`](#country_pools) is determined by [`location_strategy`](#location_strategy). Value `random` selects a pool randomly. Value `dynamic_latency` uses round trip time to select the closest pool in [`default_pool_ids`](#default_pool_ids) (requires pool health checks). Value `proximity` uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by [`location_strategy`](#location_strategy) for non-proxied requests. Value `""` maps to `geo` if you use [`pop_pools`](#pop_pools)/[`country_pools`](#country_pools)/[`region_pools`](#region_pools) otherwise `off`. Available values: `off`, `geo`, `dynamic_latency`, `random`, `proximity`, `""` Defaults to `""`.
 	// +kubebuilder:validation:Optional
 	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
 
+	// (Number) Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to 30. Conflicts with proxied.
 	// Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to `30`. Conflicts with `proxied`.
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
+	// (String) The zone ID to add the load balancer to. Modifying this attribute will force creation of a new resource.
 	// The zone ID to add the load balancer to. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -185,163 +477,456 @@ type LoadBalancerParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type LocationStrategyInitParameters struct {
+
+	// (String) Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value pop will use the Cloudflare PoP location. Value resolver_ip will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: pop, resolver_ip. Defaults to pop.
+	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`. Defaults to `pop`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// (String) Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value always will always prefer ECS, never will never prefer ECS, proximity will prefer ECS only when steering_policy="proximity", and geo will prefer ECS only when steering_policy="geo". Available values: always, never, proximity, geo. Defaults to proximity.
+	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`. Defaults to `proximity`.
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
+}
+
 type LocationStrategyObservation struct {
+
+	// (String) Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value pop will use the Cloudflare PoP location. Value resolver_ip will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: pop, resolver_ip. Defaults to pop.
+	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`. Defaults to `pop`.
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// (String) Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value always will always prefer ECS, never will never prefer ECS, proximity will prefer ECS only when steering_policy="proximity", and geo will prefer ECS only when steering_policy="geo". Available values: always, never, proximity, geo. Defaults to proximity.
+	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`. Defaults to `proximity`.
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
 type LocationStrategyParameters struct {
 
+	// (String) Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value pop will use the Cloudflare PoP location. Value resolver_ip will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: pop, resolver_ip. Defaults to pop.
 	// Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value `pop` will use the Cloudflare PoP location. Value `resolver_ip` will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: `pop`, `resolver_ip`. Defaults to `pop`.
 	// +kubebuilder:validation:Optional
 	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 
+	// (String) Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value always will always prefer ECS, never will never prefer ECS, proximity will prefer ECS only when steering_policy="proximity", and geo will prefer ECS only when steering_policy="geo". Available values: always, never, proximity, geo. Defaults to proximity.
 	// Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value `always` will always prefer ECS, `never` will never prefer ECS, `proximity` will prefer ECS only when [`steering_policy="proximity"`](#steering_policy), and `geo` will prefer ECS only when [`steering_policy="geo"`](#steering_policy). Available values: `always`, `never`, `proximity`, `geo`. Defaults to `proximity`.
 	// +kubebuilder:validation:Optional
 	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
+type OverridesAdaptiveRoutingInitParameters struct {
+
+	// downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set false, zero-downtime failover will only occur between origins within the same pool. Defaults to false.
+	// See [`failover_across_pools`](#failover_across_pools).
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
+}
+
 type OverridesAdaptiveRoutingObservation struct {
+
+	// downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set false, zero-downtime failover will only occur between origins within the same pool. Defaults to false.
+	// See [`failover_across_pools`](#failover_across_pools).
+	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
 type OverridesAdaptiveRoutingParameters struct {
 
+	// downtime failover of requests to healthy origins from alternate pools, when no healthy alternate exists in the same pool, according to the failover order defined by traffic and origin steering. When set false, zero-downtime failover will only occur between origins within the same pool. Defaults to false.
 	// See [`failover_across_pools`](#failover_across_pools).
 	// +kubebuilder:validation:Optional
 	FailoverAcrossPools *bool `json:"failoverAcrossPools,omitempty" tf:"failover_across_pools,omitempty"`
 }
 
+type OverridesCountryPoolsInitParameters struct {
+
+	// (String) A country code which can be determined with the Load Balancing Regions API described here. Multiple entries should not be specified with the same country.
+	// See [`country`](#country).
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// See [`pool_ids`](#pool_ids).
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+}
+
 type OverridesCountryPoolsObservation struct {
+
+	// (String) A country code which can be determined with the Load Balancing Regions API described here. Multiple entries should not be specified with the same country.
+	// See [`country`](#country).
+	Country *string `json:"country,omitempty" tf:"country,omitempty"`
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// See [`pool_ids`](#pool_ids).
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
 }
 
 type OverridesCountryPoolsParameters struct {
 
+	// (String) A country code which can be determined with the Load Balancing Regions API described here. Multiple entries should not be specified with the same country.
 	// See [`country`](#country).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Country *string `json:"country" tf:"country,omitempty"`
 
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
 	// See [`pool_ids`](#pool_ids).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PoolIds []*string `json:"poolIds" tf:"pool_ids,omitempty"`
 }
 
+type OverridesInitParameters struct {
+
+	// (Block Set) Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests. (see below for nested schema)
+	// See [`adaptive_routing`](#adaptive_routing).
+	AdaptiveRouting []OverridesAdaptiveRoutingInitParameters `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// (Block Set) A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country. (see below for nested schema)
+	// See [`country_pools`](#country_pools).
+	CountryPools []OverridesCountryPoolsInitParameters `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
+
+	// (List of String) See default_pool_ids.
+	// See [`default_pool_ids`](#default_pool_ids).
+	DefaultPools []*string `json:"defaultPools,omitempty" tf:"default_pools,omitempty"`
+
+	// (String) See fallback_pool_id.
+	// See [`fallback_pool_id`](#fallback_pool_id).
+	FallbackPool *string `json:"fallbackPool,omitempty" tf:"fallback_pool,omitempty"`
+
+	// based steering for non-proxied requests. (see below for nested schema)
+	// See [`location_strategy`](#location_strategy).
+	LocationStrategy []OverridesLocationStrategyInitParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
+
+	// of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers. (see below for nested schema)
+	// See [`pop_pools`](#pop_pools).
+	PopPools []OverridesPopPoolsInitParameters `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// (Block Set) Configures pool weights for random steering. When the steering_policy="random", a random pool is selected with probability proportional to these pool weights. (see below for nested schema)
+	// See [`random_steering`](#random_steering).
+	RandomSteering []OverridesRandomSteeringInitParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// (Block Set) A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region. (see below for nested schema)
+	// See [`region_pools`](#region_pools).
+	RegionPools []OverridesRegionPoolsInitParameters `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// (String) Specifies the type of session affinity the load balancer should use unless specified as none or "" (default). With value cookie, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value ip_cookie behaves the same as cookie except the initial origin selection is stable and based on the client's IP address. Available values: "", none, cookie, ip_cookie. Defaults to none.
+	// See [`session_affinity`](#session_affinity).
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// (Map of String) See session_affinity_attributes.
+	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes). Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.
+	// +mapType=granular
+	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// (Number) Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of 82800 (23 hours) will be used unless session_affinity_ttl is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between 1800 and 604800.
+	// See [`session_affinity_ttl`](#session_affinity_ttl).
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// proxied requests, the country for country_pools is determined by location_strategy. Value random selects a pool randomly. Value dynamic_latency uses round trip time to select the closest pool in default_pool_ids (requires pool health checks). Value proximity uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by location_strategy for non-proxied requests. Value "" maps to geo if you use pop_pools/country_pools/region_pools otherwise off. Available values: off, geo, dynamic_latency, random, proximity, "" Defaults to "".
+	// See [`steering_policy`](#steering_policy).
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// (Number) Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to 30. Conflicts with proxied.
+	// See [`ttl`](#ttl).
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
+}
+
+type OverridesLocationStrategyInitParameters struct {
+
+	// (String) Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value pop will use the Cloudflare PoP location. Value resolver_ip will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: pop, resolver_ip. Defaults to pop.
+	// See [`mode`](#mode).
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// (String) Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value always will always prefer ECS, never will never prefer ECS, proximity will prefer ECS only when steering_policy="proximity", and geo will prefer ECS only when steering_policy="geo". Available values: always, never, proximity, geo. Defaults to proximity.
+	// See [`prefer_ecs`](#prefer_ecs).
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
+}
+
 type OverridesLocationStrategyObservation struct {
+
+	// (String) Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value pop will use the Cloudflare PoP location. Value resolver_ip will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: pop, resolver_ip. Defaults to pop.
+	// See [`mode`](#mode).
+	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
+
+	// (String) Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value always will always prefer ECS, never will never prefer ECS, proximity will prefer ECS only when steering_policy="proximity", and geo will prefer ECS only when steering_policy="geo". Available values: always, never, proximity, geo. Defaults to proximity.
+	// See [`prefer_ecs`](#prefer_ecs).
+	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
 type OverridesLocationStrategyParameters struct {
 
+	// (String) Determines the authoritative location when ECS is not preferred, does not exist in the request, or its GeoIP lookup is unsuccessful. Value pop will use the Cloudflare PoP location. Value resolver_ip will use the DNS resolver GeoIP location. If the GeoIP lookup is unsuccessful, it will use the Cloudflare PoP location. Available values: pop, resolver_ip. Defaults to pop.
 	// See [`mode`](#mode).
 	// +kubebuilder:validation:Optional
 	Mode *string `json:"mode,omitempty" tf:"mode,omitempty"`
 
+	// (String) Whether the EDNS Client Subnet (ECS) GeoIP should be preferred as the authoritative location. Value always will always prefer ECS, never will never prefer ECS, proximity will prefer ECS only when steering_policy="proximity", and geo will prefer ECS only when steering_policy="geo". Available values: always, never, proximity, geo. Defaults to proximity.
 	// See [`prefer_ecs`](#prefer_ecs).
 	// +kubebuilder:validation:Optional
 	PreferEcs *string `json:"preferEcs,omitempty" tf:"prefer_ecs,omitempty"`
 }
 
 type OverridesObservation struct {
+
+	// (Block Set) Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests. (see below for nested schema)
+	// See [`adaptive_routing`](#adaptive_routing).
+	AdaptiveRouting []OverridesAdaptiveRoutingObservation `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
+
+	// (Block Set) A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country. (see below for nested schema)
+	// See [`country_pools`](#country_pools).
+	CountryPools []OverridesCountryPoolsObservation `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
+
+	// (List of String) See default_pool_ids.
+	// See [`default_pool_ids`](#default_pool_ids).
+	DefaultPools []*string `json:"defaultPools,omitempty" tf:"default_pools,omitempty"`
+
+	// (String) See fallback_pool_id.
+	// See [`fallback_pool_id`](#fallback_pool_id).
+	FallbackPool *string `json:"fallbackPool,omitempty" tf:"fallback_pool,omitempty"`
+
+	// based steering for non-proxied requests. (see below for nested schema)
+	// See [`location_strategy`](#location_strategy).
+	LocationStrategy []OverridesLocationStrategyObservation `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
+
+	// of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers. (see below for nested schema)
+	// See [`pop_pools`](#pop_pools).
+	PopPools []OverridesPopPoolsObservation `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
+
+	// (Block Set) Configures pool weights for random steering. When the steering_policy="random", a random pool is selected with probability proportional to these pool weights. (see below for nested schema)
+	// See [`random_steering`](#random_steering).
+	RandomSteering []OverridesRandomSteeringObservation `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
+
+	// (Block Set) A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region. (see below for nested schema)
+	// See [`region_pools`](#region_pools).
+	RegionPools []OverridesRegionPoolsObservation `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
+
+	// (String) Specifies the type of session affinity the load balancer should use unless specified as none or "" (default). With value cookie, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value ip_cookie behaves the same as cookie except the initial origin selection is stable and based on the client's IP address. Available values: "", none, cookie, ip_cookie. Defaults to none.
+	// See [`session_affinity`](#session_affinity).
+	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
+
+	// (Map of String) See session_affinity_attributes.
+	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes). Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.
+	// +mapType=granular
+	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
+
+	// (Number) Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of 82800 (23 hours) will be used unless session_affinity_ttl is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between 1800 and 604800.
+	// See [`session_affinity_ttl`](#session_affinity_ttl).
+	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
+
+	// proxied requests, the country for country_pools is determined by location_strategy. Value random selects a pool randomly. Value dynamic_latency uses round trip time to select the closest pool in default_pool_ids (requires pool health checks). Value proximity uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by location_strategy for non-proxied requests. Value "" maps to geo if you use pop_pools/country_pools/region_pools otherwise off. Available values: off, geo, dynamic_latency, random, proximity, "" Defaults to "".
+	// See [`steering_policy`](#steering_policy).
+	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
+
+	// (Number) Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to 30. Conflicts with proxied.
+	// See [`ttl`](#ttl).
+	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
 type OverridesParameters struct {
 
+	// (Block Set) Controls features that modify the routing of requests to pools and origins in response to dynamic conditions, such as during the interval between active health monitoring requests. (see below for nested schema)
 	// See [`adaptive_routing`](#adaptive_routing).
 	// +kubebuilder:validation:Optional
 	AdaptiveRouting []OverridesAdaptiveRoutingParameters `json:"adaptiveRouting,omitempty" tf:"adaptive_routing,omitempty"`
 
+	// (Block Set) A set containing mappings of country codes to a list of pool IDs (ordered by their failover priority) for the given country. (see below for nested schema)
 	// See [`country_pools`](#country_pools).
 	// +kubebuilder:validation:Optional
 	CountryPools []OverridesCountryPoolsParameters `json:"countryPools,omitempty" tf:"country_pools,omitempty"`
 
+	// (List of String) See default_pool_ids.
 	// See [`default_pool_ids`](#default_pool_ids).
 	// +kubebuilder:validation:Optional
 	DefaultPools []*string `json:"defaultPools,omitempty" tf:"default_pools,omitempty"`
 
+	// (String) See fallback_pool_id.
 	// See [`fallback_pool_id`](#fallback_pool_id).
 	// +kubebuilder:validation:Optional
 	FallbackPool *string `json:"fallbackPool,omitempty" tf:"fallback_pool,omitempty"`
 
+	// based steering for non-proxied requests. (see below for nested schema)
 	// See [`location_strategy`](#location_strategy).
 	// +kubebuilder:validation:Optional
 	LocationStrategy []OverridesLocationStrategyParameters `json:"locationStrategy,omitempty" tf:"location_strategy,omitempty"`
 
+	// of-Presence (PoP) identifiers to a list of pool IDs (ordered by their failover priority) for the PoP (datacenter). This feature is only available to enterprise customers. (see below for nested schema)
 	// See [`pop_pools`](#pop_pools).
 	// +kubebuilder:validation:Optional
 	PopPools []OverridesPopPoolsParameters `json:"popPools,omitempty" tf:"pop_pools,omitempty"`
 
+	// (Block Set) Configures pool weights for random steering. When the steering_policy="random", a random pool is selected with probability proportional to these pool weights. (see below for nested schema)
 	// See [`random_steering`](#random_steering).
 	// +kubebuilder:validation:Optional
 	RandomSteering []OverridesRandomSteeringParameters `json:"randomSteering,omitempty" tf:"random_steering,omitempty"`
 
+	// (Block Set) A set containing mappings of region codes to a list of pool IDs (ordered by their failover priority) for the given region. (see below for nested schema)
 	// See [`region_pools`](#region_pools).
 	// +kubebuilder:validation:Optional
 	RegionPools []OverridesRegionPoolsParameters `json:"regionPools,omitempty" tf:"region_pools,omitempty"`
 
+	// (String) Specifies the type of session affinity the load balancer should use unless specified as none or "" (default). With value cookie, on the first request to a proxied load balancer, a cookie is generated, encoding information of which origin the request will be forwarded to. Subsequent requests, by the same client to the same load balancer, will be sent to the origin server the cookie encodes, for the duration of the cookie and as long as the origin server remains healthy. If the cookie has expired or the origin server is unhealthy then a new origin server is calculated and used. Value ip_cookie behaves the same as cookie except the initial origin selection is stable and based on the client's IP address. Available values: "", none, cookie, ip_cookie. Defaults to none.
 	// See [`session_affinity`](#session_affinity).
 	// +kubebuilder:validation:Optional
 	SessionAffinity *string `json:"sessionAffinity,omitempty" tf:"session_affinity,omitempty"`
 
+	// (Map of String) See session_affinity_attributes.
 	// See [`session_affinity_attributes`](#nested-schema-for-session_affinity_attributes). Note that the property [`drain_duration`](#drain_duration) is not currently supported as a rule override.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	SessionAffinityAttributes map[string]*string `json:"sessionAffinityAttributes,omitempty" tf:"session_affinity_attributes,omitempty"`
 
+	// (Number) Time, in seconds, until this load balancer's session affinity cookie expires after being created. This parameter is ignored unless a supported session affinity policy is set. The current default of 82800 (23 hours) will be used unless session_affinity_ttl is explicitly set. Once the expiry time has been reached, subsequent requests may get sent to a different origin server. Valid values are between 1800 and 604800.
 	// See [`session_affinity_ttl`](#session_affinity_ttl).
 	// +kubebuilder:validation:Optional
 	SessionAffinityTTL *float64 `json:"sessionAffinityTtl,omitempty" tf:"session_affinity_ttl,omitempty"`
 
+	// proxied requests, the country for country_pools is determined by location_strategy. Value random selects a pool randomly. Value dynamic_latency uses round trip time to select the closest pool in default_pool_ids (requires pool health checks). Value proximity uses the pools' latitude and longitude to select the closest pool using the Cloudflare PoP location for proxied requests or the location determined by location_strategy for non-proxied requests. Value "" maps to geo if you use pop_pools/country_pools/region_pools otherwise off. Available values: off, geo, dynamic_latency, random, proximity, "" Defaults to "".
 	// See [`steering_policy`](#steering_policy).
 	// +kubebuilder:validation:Optional
 	SteeringPolicy *string `json:"steeringPolicy,omitempty" tf:"steering_policy,omitempty"`
 
+	// (Number) Time to live (TTL) of the DNS entry for the IP address returned by this load balancer. This cannot be set for proxied load balancers. Defaults to 30. Conflicts with proxied.
 	// See [`ttl`](#ttl).
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 }
 
+type OverridesPopPoolsInitParameters struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// See [`pool_ids`](#pool_ids).
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the status page. Multiple entries should not be specified with the same PoP.
+	// See [`pop`](#pop).
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
+}
+
 type OverridesPopPoolsObservation struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// See [`pool_ids`](#pool_ids).
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the status page. Multiple entries should not be specified with the same PoP.
+	// See [`pop`](#pop).
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
 }
 
 type OverridesPopPoolsParameters struct {
 
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
 	// See [`pool_ids`](#pool_ids).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PoolIds []*string `json:"poolIds" tf:"pool_ids,omitempty"`
 
+	// letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the status page. Multiple entries should not be specified with the same PoP.
 	// See [`pop`](#pop).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Pop *string `json:"pop" tf:"pop,omitempty"`
 }
 
+type OverridesRandomSteeringInitParameters struct {
+
+	// (Number) The default weight for pools in the load balancer that are not specified in the pool_weights map.
+	// See [`default_weight`](#default_weight).
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// (Map of Number) A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	// See [`pool_weights`](#pool_weights).
+	// +mapType=granular
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
+}
+
 type OverridesRandomSteeringObservation struct {
+
+	// (Number) The default weight for pools in the load balancer that are not specified in the pool_weights map.
+	// See [`default_weight`](#default_weight).
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// (Map of Number) A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	// See [`pool_weights`](#pool_weights).
+	// +mapType=granular
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
 type OverridesRandomSteeringParameters struct {
 
+	// (Number) The default weight for pools in the load balancer that are not specified in the pool_weights map.
 	// See [`default_weight`](#default_weight).
 	// +kubebuilder:validation:Optional
 	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
 
+	// (Map of Number) A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
 	// See [`pool_weights`](#pool_weights).
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
+type OverridesRegionPoolsInitParameters struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// See [`pool_ids`](#pool_ids).
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// (String) A region code which must be in the list defined here. Multiple entries should not be specified with the same region.
+	// See [`region`](#region).
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type OverridesRegionPoolsObservation struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// See [`pool_ids`](#pool_ids).
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// (String) A region code which must be in the list defined here. Multiple entries should not be specified with the same region.
+	// See [`region`](#region).
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type OverridesRegionPoolsParameters struct {
 
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
 	// See [`pool_ids`](#pool_ids).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PoolIds []*string `json:"poolIds" tf:"pool_ids,omitempty"`
 
+	// (String) A region code which must be in the list defined here. Multiple entries should not be specified with the same region.
 	// See [`region`](#region).
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Region *string `json:"region" tf:"region,omitempty"`
 }
 
+type PopPoolsInitParameters struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// A list of pool IDs in failover priority to use for traffic reaching the given PoP.
+	// +crossplane:generate:reference:type=Pool
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// References to Pool to populate poolIds.
+	// +kubebuilder:validation:Optional
+	PoolIdsRefs []v1.Reference `json:"poolIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Pool to populate poolIds.
+	// +kubebuilder:validation:Optional
+	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
+
+	// letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the status page. Multiple entries should not be specified with the same PoP.
+	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
+}
+
 type PopPoolsObservation struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// A list of pool IDs in failover priority to use for traffic reaching the given PoP.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the status page. Multiple entries should not be specified with the same PoP.
+	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
+	Pop *string `json:"pop,omitempty" tf:"pop,omitempty"`
 }
 
 type PopPoolsParameters struct {
 
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
 	// A list of pool IDs in failover priority to use for traffic reaching the given PoP.
 	// +crossplane:generate:reference:type=Pool
 	// +kubebuilder:validation:Optional
@@ -355,30 +940,84 @@ type PopPoolsParameters struct {
 	// +kubebuilder:validation:Optional
 	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
 
+	// letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the status page. Multiple entries should not be specified with the same PoP.
 	// A 3-letter code for the Point-of-Presence. Allowed values can be found in the list of datacenters on the [status page](https://www.cloudflarestatus.com/). Multiple entries should not be specified with the same PoP.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Pop *string `json:"pop" tf:"pop,omitempty"`
 }
 
+type RandomSteeringInitParameters struct {
+
+	// (Number) The default weight for pools in the load balancer that are not specified in the pool_weights map.
+	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// (Map of Number) A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	// +mapType=granular
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
+}
+
 type RandomSteeringObservation struct {
+
+	// (Number) The default weight for pools in the load balancer that are not specified in the pool_weights map.
+	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
+	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
+
+	// (Map of Number) A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
+	// +mapType=granular
+	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
 type RandomSteeringParameters struct {
 
+	// (Number) The default weight for pools in the load balancer that are not specified in the pool_weights map.
 	// The default weight for pools in the load balancer that are not specified in the [`pool_weights`](#pool_weights) map.
 	// +kubebuilder:validation:Optional
 	DefaultWeight *float64 `json:"defaultWeight,omitempty" tf:"default_weight,omitempty"`
 
+	// (Map of Number) A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
 	// A mapping of pool IDs to custom weights. The weight is relative to other pools in the load balancer.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	PoolWeights map[string]*float64 `json:"poolWeights,omitempty" tf:"pool_weights,omitempty"`
 }
 
+type RegionPoolsInitParameters struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// A list of pool IDs in failover priority to use in the given region.
+	// +crossplane:generate:reference:type=Pool
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// References to Pool to populate poolIds.
+	// +kubebuilder:validation:Optional
+	PoolIdsRefs []v1.Reference `json:"poolIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Pool to populate poolIds.
+	// +kubebuilder:validation:Optional
+	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
+
+	// (String) A region code which must be in the list defined here. Multiple entries should not be specified with the same region.
+	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+}
+
 type RegionPoolsObservation struct {
+
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
+	// A list of pool IDs in failover priority to use in the given region.
+	PoolIds []*string `json:"poolIds,omitempty" tf:"pool_ids,omitempty"`
+
+	// (String) A region code which must be in the list defined here. Multiple entries should not be specified with the same region.
+	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
+	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 }
 
 type RegionPoolsParameters struct {
 
+	// (List of String) A list of pool IDs in failover priority to use in the given country.
 	// A list of pool IDs in failover priority to use in the given region.
 	// +crossplane:generate:reference:type=Pool
 	// +kubebuilder:validation:Optional
@@ -392,40 +1031,107 @@ type RegionPoolsParameters struct {
 	// +kubebuilder:validation:Optional
 	PoolIdsSelector *v1.Selector `json:"poolIdsSelector,omitempty" tf:"-"`
 
+	// (String) A region code which must be in the list defined here. Multiple entries should not be specified with the same region.
 	// A region code which must be in the list defined [here](https://developers.cloudflare.com/load-balancing/reference/region-mapping-api/#list-of-load-balancer-regions). Multiple entries should not be specified with the same region.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Region *string `json:"region" tf:"region,omitempty"`
 }
 
+type RulesInitParameters struct {
+
+	// (String) The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See load balancing rules.
+	// The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See [load balancing rules](https://developers.cloudflare.com/load-balancing/understand-basics/load-balancing-rules).
+	Condition *string `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// (Boolean) A disabled rule will not be executed.
+	// A disabled rule will not be executed.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// (Block List, Max: 1) Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: overrides or fixed_response must be set. (see below for nested schema)
+	// Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	FixedResponse []FixedResponseInitParameters `json:"fixedResponse,omitempty" tf:"fixed_response,omitempty"`
+
+	// (String) The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	// Human readable name for this rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List) The load balancer settings to alter if this rule's condition is true. Note: overrides or fixed_response must be set. (see below for nested schema)
+	// The load balancer settings to alter if this rule's [`condition`](#condition) is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	Overrides []OverridesInitParameters `json:"overrides,omitempty" tf:"overrides,omitempty"`
+
+	// (Number) Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
+	// Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// (Boolean) Terminates indicates that if this rule is true no further rules should be executed. Note: setting a fixed_response forces this field to true.
+	// Terminates indicates that if this rule is true no further rules should be executed. Note: setting a [`fixed_response`](#fixed_response) forces this field to `true`.
+	Terminates *bool `json:"terminates,omitempty" tf:"terminates,omitempty"`
+}
+
 type RulesObservation struct {
+
+	// (String) The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See load balancing rules.
+	// The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See [load balancing rules](https://developers.cloudflare.com/load-balancing/understand-basics/load-balancing-rules).
+	Condition *string `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// (Boolean) A disabled rule will not be executed.
+	// A disabled rule will not be executed.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// (Block List, Max: 1) Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: overrides or fixed_response must be set. (see below for nested schema)
+	// Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	FixedResponse []FixedResponseObservation `json:"fixedResponse,omitempty" tf:"fixed_response,omitempty"`
+
+	// (String) The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
+	// Human readable name for this rule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// (Block List) The load balancer settings to alter if this rule's condition is true. Note: overrides or fixed_response must be set. (see below for nested schema)
+	// The load balancer settings to alter if this rule's [`condition`](#condition) is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
+	Overrides []OverridesObservation `json:"overrides,omitempty" tf:"overrides,omitempty"`
+
+	// (Number) Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
+	// Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
+	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// (Boolean) Terminates indicates that if this rule is true no further rules should be executed. Note: setting a fixed_response forces this field to true.
+	// Terminates indicates that if this rule is true no further rules should be executed. Note: setting a [`fixed_response`](#fixed_response) forces this field to `true`.
+	Terminates *bool `json:"terminates,omitempty" tf:"terminates,omitempty"`
 }
 
 type RulesParameters struct {
 
+	// (String) The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See load balancing rules.
 	// The statement to evaluate to determine if this rule's effects should be applied. An empty condition is always true. See [load balancing rules](https://developers.cloudflare.com/load-balancing/understand-basics/load-balancing-rules).
 	// +kubebuilder:validation:Optional
 	Condition *string `json:"condition,omitempty" tf:"condition,omitempty"`
 
+	// (Boolean) A disabled rule will not be executed.
 	// A disabled rule will not be executed.
 	// +kubebuilder:validation:Optional
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
+	// (Block List, Max: 1) Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: overrides or fixed_response must be set. (see below for nested schema)
 	// Settings for a HTTP response to return directly to the eyeball if the condition is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
 	// +kubebuilder:validation:Optional
 	FixedResponse []FixedResponseParameters `json:"fixedResponse,omitempty" tf:"fixed_response,omitempty"`
 
+	// (String) The DNS hostname to associate with your load balancer. If this hostname already exists as a DNS record in Cloudflare's DNS, the load balancer will take precedence and the DNS record will not be used.
 	// Human readable name for this rule.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Name *string `json:"name" tf:"name,omitempty"`
 
+	// (Block List) The load balancer settings to alter if this rule's condition is true. Note: overrides or fixed_response must be set. (see below for nested schema)
 	// The load balancer settings to alter if this rule's [`condition`](#condition) is true. Note: [`overrides`](#overrides) or [`fixed_response`](#fixed_response) must be set.
 	// +kubebuilder:validation:Optional
 	Overrides []OverridesParameters `json:"overrides,omitempty" tf:"overrides,omitempty"`
 
+	// (Number) Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
 	// Priority used when determining the order of rule execution. Lower values are executed first. If not provided, the list order will be used.
 	// +kubebuilder:validation:Optional
 	Priority *float64 `json:"priority,omitempty" tf:"priority,omitempty"`
 
+	// (Boolean) Terminates indicates that if this rule is true no further rules should be executed. Note: setting a fixed_response forces this field to true.
 	// Terminates indicates that if this rule is true no further rules should be executed. Note: setting a [`fixed_response`](#fixed_response) forces this field to `true`.
 	// +kubebuilder:validation:Optional
 	Terminates *bool `json:"terminates,omitempty" tf:"terminates,omitempty"`
@@ -435,6 +1141,17 @@ type RulesParameters struct {
 type LoadBalancerSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     LoadBalancerParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider LoadBalancerInitParameters `json:"initProvider,omitempty"`
 }
 
 // LoadBalancerStatus defines the observed state of LoadBalancer.
@@ -444,19 +1161,21 @@ type LoadBalancerStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// LoadBalancer is the Schema for the LoadBalancers API. <no value>
+// LoadBalancer is the Schema for the LoadBalancers API. Provides a Cloudflare Load Balancer resource. This sits in front of a number of defined pools of origins and provides various options for geographically-aware load balancing. Note that the load balancing feature must be enabled in your Cloudflare account before you can use this resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type LoadBalancer struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              LoadBalancerSpec   `json:"spec"`
-	Status            LoadBalancerStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   LoadBalancerSpec   `json:"spec"`
+	Status LoadBalancerStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

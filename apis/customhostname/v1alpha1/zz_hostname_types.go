@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,47 +17,128 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type HostnameInitParameters struct {
+
+	// (Map of String) Custom metadata associated with custom hostname. Only supports primitive string values, all other values are accessible via the API directly.
+	// Custom metadata associated with custom hostname. Only supports primitive string values, all other values are accessible via the API directly.
+	// +mapType=granular
+	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
+	// (String) The custom origin server used for certificates.
+	// The custom origin server used for certificates.
+	CustomOriginServer *string `json:"customOriginServer,omitempty" tf:"custom_origin_server,omitempty"`
+
+	// (String) The custom origin SNI used for certificates.
+	// The [custom origin SNI](https://developers.cloudflare.com/ssl/ssl-for-saas/hostname-specific-behavior/custom-origin) used for certificates.
+	CustomOriginSni *string `json:"customOriginSni,omitempty" tf:"custom_origin_sni,omitempty"`
+
+	// (String) Hostname you intend to request a certificate for. Modifying this attribute will force creation of a new resource.
+	// Hostname you intend to request a certificate for. **Modifying this attribute will force creation of a new resource.**
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// (Block List) SSL configuration of the certificate. (see below for nested schema)
+	// SSL configuration of the certificate.
+	SSL []SSLInitParameters `json:"ssl,omitempty" tf:"ssl,omitempty"`
+
+	// object to reach status pending_validation during creation. Defaults to false.
+	// Whether to wait for a custom hostname SSL sub-object to reach status `pending_validation` during creation. Defaults to `false`.
+	WaitForSSLPendingValidation *bool `json:"waitForSslPendingValidation,omitempty" tf:"wait_for_ssl_pending_validation,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type HostnameObservation struct {
+
+	// (Map of String) Custom metadata associated with custom hostname. Only supports primitive string values, all other values are accessible via the API directly.
+	// Custom metadata associated with custom hostname. Only supports primitive string values, all other values are accessible via the API directly.
+	// +mapType=granular
+	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
+
+	// (String) The custom origin server used for certificates.
+	// The custom origin server used for certificates.
+	CustomOriginServer *string `json:"customOriginServer,omitempty" tf:"custom_origin_server,omitempty"`
+
+	// (String) The custom origin SNI used for certificates.
+	// The [custom origin SNI](https://developers.cloudflare.com/ssl/ssl-for-saas/hostname-specific-behavior/custom-origin) used for certificates.
+	CustomOriginSni *string `json:"customOriginSni,omitempty" tf:"custom_origin_sni,omitempty"`
+
+	// (String) Hostname you intend to request a certificate for. Modifying this attribute will force creation of a new resource.
+	// Hostname you intend to request a certificate for. **Modifying this attribute will force creation of a new resource.**
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (Map of String)
+	// +mapType=granular
 	OwnershipVerification map[string]*string `json:"ownershipVerification,omitempty" tf:"ownership_verification,omitempty"`
 
+	// (Map of String)
+	// +mapType=granular
 	OwnershipVerificationHTTP map[string]*string `json:"ownershipVerificationHttp,omitempty" tf:"ownership_verification_http,omitempty"`
 
+	// (Block List) SSL configuration of the certificate. (see below for nested schema)
 	// SSL configuration of the certificate.
-	// +kubebuilder:validation:Optional
 	SSL []SSLObservation `json:"ssl,omitempty" tf:"ssl,omitempty"`
 
+	// (String) Status of the certificate.
 	// Status of the certificate.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	// object to reach status pending_validation during creation. Defaults to false.
+	// Whether to wait for a custom hostname SSL sub-object to reach status `pending_validation` during creation. Defaults to `false`.
+	WaitForSSLPendingValidation *bool `json:"waitForSslPendingValidation,omitempty" tf:"wait_for_ssl_pending_validation,omitempty"`
+
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type HostnameParameters struct {
 
+	// (Map of String) Custom metadata associated with custom hostname. Only supports primitive string values, all other values are accessible via the API directly.
 	// Custom metadata associated with custom hostname. Only supports primitive string values, all other values are accessible via the API directly.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	CustomMetadata map[string]*string `json:"customMetadata,omitempty" tf:"custom_metadata,omitempty"`
 
+	// (String) The custom origin server used for certificates.
 	// The custom origin server used for certificates.
 	// +kubebuilder:validation:Optional
 	CustomOriginServer *string `json:"customOriginServer,omitempty" tf:"custom_origin_server,omitempty"`
 
+	// (String) The custom origin SNI used for certificates.
 	// The [custom origin SNI](https://developers.cloudflare.com/ssl/ssl-for-saas/hostname-specific-behavior/custom-origin) used for certificates.
 	// +kubebuilder:validation:Optional
 	CustomOriginSni *string `json:"customOriginSni,omitempty" tf:"custom_origin_sni,omitempty"`
 
+	// (String) Hostname you intend to request a certificate for. Modifying this attribute will force creation of a new resource.
 	// Hostname you intend to request a certificate for. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Hostname *string `json:"hostname" tf:"hostname,omitempty"`
+	// +kubebuilder:validation:Optional
+	Hostname *string `json:"hostname,omitempty" tf:"hostname,omitempty"`
 
+	// (Block List) SSL configuration of the certificate. (see below for nested schema)
 	// SSL configuration of the certificate.
 	// +kubebuilder:validation:Optional
 	SSL []SSLParameters `json:"ssl,omitempty" tf:"ssl,omitempty"`
 
+	// object to reach status pending_validation during creation. Defaults to false.
 	// Whether to wait for a custom hostname SSL sub-object to reach status `pending_validation` during creation. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	WaitForSSLPendingValidation *bool `json:"waitForSslPendingValidation,omitempty" tf:"wait_for_ssl_pending_validation,omitempty"`
 
+	// (String) The zone identifier to target for the resource. Modifying this attribute will force creation of a new resource.
 	// The zone identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -68,90 +153,225 @@ type HostnameParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type SSLInitParameters struct {
+
+	// (String)
+	CertificateAuthority *string `json:"certificateAuthority,omitempty" tf:"certificate_authority,omitempty"`
+
+	// (String) If a custom uploaded certificate is used.
+	// If a custom uploaded certificate is used.
+	CustomCertificate *string `json:"customCertificate,omitempty" tf:"custom_certificate,omitempty"`
+
+	// (String) The key for a custom uploaded certificate.
+	// The key for a custom uploaded certificate.
+	CustomKey *string `json:"customKey,omitempty" tf:"custom_key,omitempty"`
+
+	// (String) Domain control validation (DCV) method used for this hostname. Available values: http, txt, email.
+	// Domain control validation (DCV) method used for this hostname. Available values: `http`, `txt`, `email`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+
+	// (Block List) SSL/TLS settings for the certificate. (see below for nested schema)
+	// SSL/TLS settings for the certificate.
+	Settings []SettingsInitParameters `json:"settings,omitempty" tf:"settings,omitempty"`
+
+	// (String) Level of validation to be used for this hostname. Available values: dv. Defaults to dv.
+	// Level of validation to be used for this hostname. Available values: `dv`. Defaults to `dv`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (Boolean) Indicates whether the certificate covers a wildcard.
+	// Indicates whether the certificate covers a wildcard.
+	Wildcard *bool `json:"wildcard,omitempty" tf:"wildcard,omitempty"`
+}
+
 type SSLObservation struct {
+
+	// (String)
+	CertificateAuthority *string `json:"certificateAuthority,omitempty" tf:"certificate_authority,omitempty"`
+
+	// (String) If a custom uploaded certificate is used.
+	// If a custom uploaded certificate is used.
+	CustomCertificate *string `json:"customCertificate,omitempty" tf:"custom_certificate,omitempty"`
+
+	// (String) The key for a custom uploaded certificate.
+	// The key for a custom uploaded certificate.
+	CustomKey *string `json:"customKey,omitempty" tf:"custom_key,omitempty"`
+
+	// (String) Domain control validation (DCV) method used for this hostname. Available values: http, txt, email.
+	// Domain control validation (DCV) method used for this hostname. Available values: `http`, `txt`, `email`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+
+	// (Block List) SSL/TLS settings for the certificate. (see below for nested schema)
+	// SSL/TLS settings for the certificate.
+	Settings []SettingsObservation `json:"settings,omitempty" tf:"settings,omitempty"`
+
+	// (String) Status of the certificate.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
+	// (String) Level of validation to be used for this hostname. Available values: dv. Defaults to dv.
+	// Level of validation to be used for this hostname. Available values: `dv`. Defaults to `dv`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (List of Object) (see below for nested schema)
 	ValidationErrors []ValidationErrorsObservation `json:"validationErrors,omitempty" tf:"validation_errors,omitempty"`
 
+	// (List of Object) (see below for nested schema)
 	ValidationRecords []ValidationRecordsObservation `json:"validationRecords,omitempty" tf:"validation_records,omitempty"`
+
+	// (Boolean) Indicates whether the certificate covers a wildcard.
+	// Indicates whether the certificate covers a wildcard.
+	Wildcard *bool `json:"wildcard,omitempty" tf:"wildcard,omitempty"`
 }
 
 type SSLParameters struct {
 
+	// (String)
 	// +kubebuilder:validation:Optional
 	CertificateAuthority *string `json:"certificateAuthority,omitempty" tf:"certificate_authority,omitempty"`
 
+	// (String) If a custom uploaded certificate is used.
 	// If a custom uploaded certificate is used.
 	// +kubebuilder:validation:Optional
 	CustomCertificate *string `json:"customCertificate,omitempty" tf:"custom_certificate,omitempty"`
 
+	// (String) The key for a custom uploaded certificate.
 	// The key for a custom uploaded certificate.
 	// +kubebuilder:validation:Optional
 	CustomKey *string `json:"customKey,omitempty" tf:"custom_key,omitempty"`
 
+	// (String) Domain control validation (DCV) method used for this hostname. Available values: http, txt, email.
 	// Domain control validation (DCV) method used for this hostname. Available values: `http`, `txt`, `email`.
 	// +kubebuilder:validation:Optional
 	Method *string `json:"method,omitempty" tf:"method,omitempty"`
 
+	// (Block List) SSL/TLS settings for the certificate. (see below for nested schema)
 	// SSL/TLS settings for the certificate.
 	// +kubebuilder:validation:Optional
 	Settings []SettingsParameters `json:"settings,omitempty" tf:"settings,omitempty"`
 
+	// (String) Level of validation to be used for this hostname. Available values: dv. Defaults to dv.
 	// Level of validation to be used for this hostname. Available values: `dv`. Defaults to `dv`.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// (Boolean) Indicates whether the certificate covers a wildcard.
 	// Indicates whether the certificate covers a wildcard.
 	// +kubebuilder:validation:Optional
 	Wildcard *bool `json:"wildcard,omitempty" tf:"wildcard,omitempty"`
 }
 
+type SettingsInitParameters struct {
+
+	// (Set of String) List of SSL/TLS ciphers to associate with this certificate.
+	// List of SSL/TLS ciphers to associate with this certificate.
+	// +listType=set
+	Ciphers []*string `json:"ciphers,omitempty" tf:"ciphers,omitempty"`
+
+	// (String) Whether early hints should be supported. Available values: on, off.
+	// Whether early hints should be supported. Available values: `on`, `off`.
+	EarlyHints *string `json:"earlyHints,omitempty" tf:"early_hints,omitempty"`
+
+	// (String) Whether HTTP2 should be supported. Available values: on, off.
+	// Whether HTTP2 should be supported. Available values: `on`, `off`.
+	Http2 *string `json:"http2,omitempty" tf:"http2,omitempty"`
+
+	// (String) Lowest version of TLS this certificate should support. Available values: 1.0, 1.1, 1.2, 1.3.
+	// Lowest version of TLS this certificate should support. Available values: `1.0`, `1.1`, `1.2`, `1.3`.
+	MinTLSVersion *string `json:"minTlsVersion,omitempty" tf:"min_tls_version,omitempty"`
+
+	// (String) Whether TLSv1.3 should be supported. Available values: on, off.
+	// Whether TLSv1.3 should be supported. Available values: `on`, `off`.
+	Tls13 *string `json:"tls13,omitempty" tf:"tls13,omitempty"`
+}
+
 type SettingsObservation struct {
+
+	// (Set of String) List of SSL/TLS ciphers to associate with this certificate.
+	// List of SSL/TLS ciphers to associate with this certificate.
+	// +listType=set
+	Ciphers []*string `json:"ciphers,omitempty" tf:"ciphers,omitempty"`
+
+	// (String) Whether early hints should be supported. Available values: on, off.
+	// Whether early hints should be supported. Available values: `on`, `off`.
+	EarlyHints *string `json:"earlyHints,omitempty" tf:"early_hints,omitempty"`
+
+	// (String) Whether HTTP2 should be supported. Available values: on, off.
+	// Whether HTTP2 should be supported. Available values: `on`, `off`.
+	Http2 *string `json:"http2,omitempty" tf:"http2,omitempty"`
+
+	// (String) Lowest version of TLS this certificate should support. Available values: 1.0, 1.1, 1.2, 1.3.
+	// Lowest version of TLS this certificate should support. Available values: `1.0`, `1.1`, `1.2`, `1.3`.
+	MinTLSVersion *string `json:"minTlsVersion,omitempty" tf:"min_tls_version,omitempty"`
+
+	// (String) Whether TLSv1.3 should be supported. Available values: on, off.
+	// Whether TLSv1.3 should be supported. Available values: `on`, `off`.
+	Tls13 *string `json:"tls13,omitempty" tf:"tls13,omitempty"`
 }
 
 type SettingsParameters struct {
 
+	// (Set of String) List of SSL/TLS ciphers to associate with this certificate.
 	// List of SSL/TLS ciphers to associate with this certificate.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Ciphers []*string `json:"ciphers,omitempty" tf:"ciphers,omitempty"`
 
+	// (String) Whether early hints should be supported. Available values: on, off.
 	// Whether early hints should be supported. Available values: `on`, `off`.
 	// +kubebuilder:validation:Optional
 	EarlyHints *string `json:"earlyHints,omitempty" tf:"early_hints,omitempty"`
 
+	// (String) Whether HTTP2 should be supported. Available values: on, off.
 	// Whether HTTP2 should be supported. Available values: `on`, `off`.
 	// +kubebuilder:validation:Optional
 	Http2 *string `json:"http2,omitempty" tf:"http2,omitempty"`
 
+	// (String) Lowest version of TLS this certificate should support. Available values: 1.0, 1.1, 1.2, 1.3.
 	// Lowest version of TLS this certificate should support. Available values: `1.0`, `1.1`, `1.2`, `1.3`.
 	// +kubebuilder:validation:Optional
 	MinTLSVersion *string `json:"minTlsVersion,omitempty" tf:"min_tls_version,omitempty"`
 
+	// (String) Whether TLSv1.3 should be supported. Available values: on, off.
 	// Whether TLSv1.3 should be supported. Available values: `on`, `off`.
 	// +kubebuilder:validation:Optional
 	Tls13 *string `json:"tls13,omitempty" tf:"tls13,omitempty"`
 }
 
+type ValidationErrorsInitParameters struct {
+}
+
 type ValidationErrorsObservation struct {
+
+	// (String)
 	Message *string `json:"message,omitempty" tf:"message,omitempty"`
 }
 
 type ValidationErrorsParameters struct {
 }
 
+type ValidationRecordsInitParameters struct {
+}
+
 type ValidationRecordsObservation struct {
+
+	// (String)
 	CnameName *string `json:"cnameName,omitempty" tf:"cname_name,omitempty"`
 
+	// (String)
 	CnameTarget *string `json:"cnameTarget,omitempty" tf:"cname_target,omitempty"`
 
+	// (List of String)
 	Emails []*string `json:"emails,omitempty" tf:"emails,omitempty"`
 
+	// (String)
 	HTTPBody *string `json:"httpBody,omitempty" tf:"http_body,omitempty"`
 
+	// (String)
 	HTTPURL *string `json:"httpUrl,omitempty" tf:"http_url,omitempty"`
 
+	// (String)
 	TxtName *string `json:"txtName,omitempty" tf:"txt_name,omitempty"`
 
+	// (String)
 	TxtValue *string `json:"txtValue,omitempty" tf:"txt_value,omitempty"`
 }
 
@@ -162,6 +382,17 @@ type ValidationRecordsParameters struct {
 type HostnameSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     HostnameParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider HostnameInitParameters `json:"initProvider,omitempty"`
 }
 
 // HostnameStatus defines the observed state of Hostname.
@@ -171,19 +402,21 @@ type HostnameStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Hostname is the Schema for the Hostnames API. <no value>
+// Hostname is the Schema for the Hostnames API. Provides a Cloudflare custom hostname (also known as SSL for SaaS) resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Hostname struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              HostnameSpec   `json:"spec"`
-	Status            HostnameStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.hostname) || (has(self.initProvider) && has(self.initProvider.hostname))",message="spec.forProvider.hostname is a required parameter"
+	Spec   HostnameSpec   `json:"spec"`
+	Status HostnameStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

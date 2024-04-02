@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,15 +17,64 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DomainInitParameters struct {
+
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (String) Custom domain. Modifying this attribute will force creation of a new resource.
+	// Custom domain. **Modifying this attribute will force creation of a new resource.**
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (String) Name of the Pages Project. Modifying this attribute will force creation of a new resource.
+	// Name of the Pages Project. **Modifying this attribute will force creation of a new resource.**
+	// +crossplane:generate:reference:type=Project
+	ProjectName *string `json:"projectName,omitempty" tf:"project_name,omitempty"`
+
+	// Reference to a Project to populate projectName.
+	// +kubebuilder:validation:Optional
+	ProjectNameRef *v1.Reference `json:"projectNameRef,omitempty" tf:"-"`
+
+	// Selector for a Project to populate projectName.
+	// +kubebuilder:validation:Optional
+	ProjectNameSelector *v1.Selector `json:"projectNameSelector,omitempty" tf:"-"`
+}
+
 type DomainObservation struct {
+
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
+	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String) Custom domain. Modifying this attribute will force creation of a new resource.
+	// Custom domain. **Modifying this attribute will force creation of a new resource.**
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) Name of the Pages Project. Modifying this attribute will force creation of a new resource.
+	// Name of the Pages Project. **Modifying this attribute will force creation of a new resource.**
+	ProjectName *string `json:"projectName,omitempty" tf:"project_name,omitempty"`
+
+	// (String) Status of the custom domain.
 	// Status of the custom domain.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type DomainParameters struct {
 
+	// (String) The account identifier to target for the resource. Modifying this attribute will force creation of a new resource.
 	// The account identifier to target for the resource. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -35,10 +88,12 @@ type DomainParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (String) Custom domain. Modifying this attribute will force creation of a new resource.
 	// Custom domain. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Domain *string `json:"domain" tf:"domain,omitempty"`
+	// +kubebuilder:validation:Optional
+	Domain *string `json:"domain,omitempty" tf:"domain,omitempty"`
 
+	// (String) Name of the Pages Project. Modifying this attribute will force creation of a new resource.
 	// Name of the Pages Project. **Modifying this attribute will force creation of a new resource.**
 	// +crossplane:generate:reference:type=Project
 	// +kubebuilder:validation:Optional
@@ -57,6 +112,17 @@ type DomainParameters struct {
 type DomainSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DomainParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DomainInitParameters `json:"initProvider,omitempty"`
 }
 
 // DomainStatus defines the observed state of Domain.
@@ -66,19 +132,21 @@ type DomainStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Domain is the Schema for the Domains API. <no value>
+// Domain is the Schema for the Domains API. Provides a resource for managing Cloudflare Pages domains.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Domain struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DomainSpec   `json:"spec"`
-	Status            DomainStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.domain) || (has(self.initProvider) && has(self.initProvider.domain))",message="spec.forProvider.domain is a required parameter"
+	Spec   DomainSpec   `json:"spec"`
+	Status DomainStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

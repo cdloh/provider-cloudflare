@@ -54,6 +54,40 @@ func (mg *Policy) ResolveReferences(ctx context.Context, c client.Reader) error 
 		mg.Spec.ForProvider.WebhooksIntegration[i3].IDRef = rsp.ResolvedReference
 
 	}
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.AccountList{},
+			Managed: &v1alpha1.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.WebhooksIntegration); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.WebhooksIntegration[i3].ID),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.InitProvider.WebhooksIntegration[i3].IDRef,
+			Selector:     mg.Spec.InitProvider.WebhooksIntegration[i3].IDSelector,
+			To: reference.To{
+				List:    &PolicyWebhooksList{},
+				Managed: &PolicyWebhooks{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.WebhooksIntegration[i3].ID")
+		}
+		mg.Spec.InitProvider.WebhooksIntegration[i3].ID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.WebhooksIntegration[i3].IDRef = rsp.ResolvedReference
+
+	}
 
 	return nil
 }
@@ -80,6 +114,22 @@ func (mg *PolicyWebhooks) ResolveReferences(ctx context.Context, c client.Reader
 	}
 	mg.Spec.ForProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.AccountIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AccountID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.AccountIDRef,
+		Selector:     mg.Spec.InitProvider.AccountIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.AccountList{},
+			Managed: &v1alpha1.Account{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AccountID")
+	}
+	mg.Spec.InitProvider.AccountID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AccountIDRef = rsp.ResolvedReference
 
 	return nil
 }

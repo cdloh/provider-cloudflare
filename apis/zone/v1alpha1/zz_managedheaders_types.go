@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,20 +17,61 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ManagedHeadersInitParameters struct {
+
+	// (Block Set) The list of managed request headers. (see below for nested schema)
+	// The list of managed request headers.
+	ManagedRequestHeaders []ManagedRequestHeadersInitParameters `json:"managedRequestHeaders,omitempty" tf:"managed_request_headers,omitempty"`
+
+	// (Block Set) The list of managed response headers. (see below for nested schema)
+	// The list of managed response headers.
+	ManagedResponseHeaders []ManagedResponseHeadersInitParameters `json:"managedResponseHeaders,omitempty" tf:"managed_response_headers,omitempty"`
+
+	// (String) The zone identifier to target for the resource.
+	// The zone identifier to target for the resource.
+	// +crossplane:generate:reference:type=Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type ManagedHeadersObservation struct {
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Block Set) The list of managed request headers. (see below for nested schema)
+	// The list of managed request headers.
+	ManagedRequestHeaders []ManagedRequestHeadersObservation `json:"managedRequestHeaders,omitempty" tf:"managed_request_headers,omitempty"`
+
+	// (Block Set) The list of managed response headers. (see below for nested schema)
+	// The list of managed response headers.
+	ManagedResponseHeaders []ManagedResponseHeadersObservation `json:"managedResponseHeaders,omitempty" tf:"managed_response_headers,omitempty"`
+
+	// (String) The zone identifier to target for the resource.
+	// The zone identifier to target for the resource.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type ManagedHeadersParameters struct {
 
+	// (Block Set) The list of managed request headers. (see below for nested schema)
 	// The list of managed request headers.
 	// +kubebuilder:validation:Optional
 	ManagedRequestHeaders []ManagedRequestHeadersParameters `json:"managedRequestHeaders,omitempty" tf:"managed_request_headers,omitempty"`
 
+	// (Block Set) The list of managed response headers. (see below for nested schema)
 	// The list of managed response headers.
 	// +kubebuilder:validation:Optional
 	ManagedResponseHeaders []ManagedResponseHeadersParameters `json:"managedResponseHeaders,omitempty" tf:"managed_response_headers,omitempty"`
 
+	// (String) The zone identifier to target for the resource.
 	// The zone identifier to target for the resource.
 	// +crossplane:generate:reference:type=Zone
 	// +kubebuilder:validation:Optional
@@ -41,31 +86,73 @@ type ManagedHeadersParameters struct {
 	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
 }
 
+type ManagedRequestHeadersInitParameters struct {
+
+	// (Boolean) Whether the headers rule is active.
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The ID of this resource.
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
 type ManagedRequestHeadersObservation struct {
+
+	// (Boolean) Whether the headers rule is active.
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The ID of this resource.
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ManagedRequestHeadersParameters struct {
 
+	// (Boolean) Whether the headers rule is active.
 	// Whether the headers rule is active.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
 
+	// (String) The ID of this resource.
 	// Unique headers rule identifier.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
 }
 
+type ManagedResponseHeadersInitParameters struct {
+
+	// (Boolean) Whether the headers rule is active.
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The ID of this resource.
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+}
+
 type ManagedResponseHeadersObservation struct {
+
+	// (Boolean) Whether the headers rule is active.
+	// Whether the headers rule is active.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// (String) The ID of this resource.
+	// Unique headers rule identifier.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type ManagedResponseHeadersParameters struct {
 
+	// (Boolean) Whether the headers rule is active.
 	// Whether the headers rule is active.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
 
+	// (String) The ID of this resource.
 	// Unique headers rule identifier.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
 }
 
@@ -73,6 +160,17 @@ type ManagedResponseHeadersParameters struct {
 type ManagedHeadersSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ManagedHeadersParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ManagedHeadersInitParameters `json:"initProvider,omitempty"`
 }
 
 // ManagedHeadersStatus defines the observed state of ManagedHeaders.
@@ -82,13 +180,14 @@ type ManagedHeadersStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// ManagedHeaders is the Schema for the ManagedHeaderss API. <no value>
+// ManagedHeaders is the Schema for the ManagedHeaderss API. The Cloudflare Managed Headers https://developers.cloudflare.com/rules/transform/managed-transforms/ allows you to add or remove some predefined headers to one's requests or origin responses.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type ManagedHeaders struct {
 	metav1.TypeMeta   `json:",inline"`

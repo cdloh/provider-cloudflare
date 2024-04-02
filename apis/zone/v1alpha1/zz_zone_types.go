@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,26 +17,95 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ZoneInitParameters struct {
+
+	// (String) Account ID to manage the zone resource in.
+	// Account ID to manage the zone resource in.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// (Boolean) Whether to scan for DNS records on creation. Ignored after zone is created.
+	// Whether to scan for DNS records on creation. Ignored after zone is created.
+	JumpStart *bool `json:"jumpStart,omitempty" tf:"jump_start,omitempty"`
+
+	// (Boolean) Whether this zone is paused (traffic bypasses Cloudflare). Defaults to false.
+	// Whether this zone is paused (traffic bypasses Cloudflare). Defaults to `false`.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// (String) The name of the commercial plan to apply to the zone. Available values: free, lite, pro, pro_plus, business, enterprise, partners_free, partners_pro, partners_business, partners_enterprise.
+	// The name of the commercial plan to apply to the zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`, `enterprise`, `partners_free`, `partners_pro`, `partners_business`, `partners_enterprise`.
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
+
+	// hosted zone or a CNAME setup. Available values: full, partial. Defaults to full.
+	// A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`. Defaults to `full`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (String) The DNS zone name which will be added. Modifying this attribute will force creation of a new resource.
+	// The DNS zone name which will be added. **Modifying this attribute will force creation of a new resource.**
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
+}
+
 type ZoneObservation struct {
+
+	// (String) Account ID to manage the zone resource in.
+	// Account ID to manage the zone resource in.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (Boolean) Whether to scan for DNS records on creation. Ignored after zone is created.
+	// Whether to scan for DNS records on creation. Ignored after zone is created.
+	JumpStart *bool `json:"jumpStart,omitempty" tf:"jump_start,omitempty"`
+
+	// (Map of Boolean)
+	// +mapType=granular
 	Meta map[string]*bool `json:"meta,omitempty" tf:"meta,omitempty"`
 
+	// assigned name servers. This is only populated for zones that use Cloudflare DNS.
 	// Cloudflare-assigned name servers. This is only populated for zones that use Cloudflare DNS.
 	NameServers []*string `json:"nameServers,omitempty" tf:"name_servers,omitempty"`
 
+	// (Boolean) Whether this zone is paused (traffic bypasses Cloudflare). Defaults to false.
+	// Whether this zone is paused (traffic bypasses Cloudflare). Defaults to `false`.
+	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
+
+	// (String) The name of the commercial plan to apply to the zone. Available values: free, lite, pro, pro_plus, business, enterprise, partners_free, partners_pro, partners_business, partners_enterprise.
+	// The name of the commercial plan to apply to the zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`, `enterprise`, `partners_free`, `partners_pro`, `partners_business`, `partners_enterprise`.
+	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
+
+	// (String) Status of the zone. Available values: active, pending, initializing, moved, deleted, deactivated.
 	// Status of the zone. Available values: `active`, `pending`, `initializing`, `moved`, `deleted`, `deactivated`.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
+	// hosted zone or a CNAME setup. Available values: full, partial. Defaults to full.
+	// A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`. Defaults to `full`.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// (List of String) List of Vanity Nameservers (if set).
 	// List of Vanity Nameservers (if set).
 	VanityNameServers []*string `json:"vanityNameServers,omitempty" tf:"vanity_name_servers,omitempty"`
 
+	// (String) Contains the TXT record value to validate domain ownership. This is only populated for zones of type partial.
 	// Contains the TXT record value to validate domain ownership. This is only populated for zones of type `partial`.
 	VerificationKey *string `json:"verificationKey,omitempty" tf:"verification_key,omitempty"`
+
+	// (String) The DNS zone name which will be added. Modifying this attribute will force creation of a new resource.
+	// The DNS zone name which will be added. **Modifying this attribute will force creation of a new resource.**
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 type ZoneParameters struct {
 
+	// (String) Account ID to manage the zone resource in.
 	// Account ID to manage the zone resource in.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -46,31 +119,47 @@ type ZoneParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// (Boolean) Whether to scan for DNS records on creation. Ignored after zone is created.
 	// Whether to scan for DNS records on creation. Ignored after zone is created.
 	// +kubebuilder:validation:Optional
 	JumpStart *bool `json:"jumpStart,omitempty" tf:"jump_start,omitempty"`
 
+	// (Boolean) Whether this zone is paused (traffic bypasses Cloudflare). Defaults to false.
 	// Whether this zone is paused (traffic bypasses Cloudflare). Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	Paused *bool `json:"paused,omitempty" tf:"paused,omitempty"`
 
+	// (String) The name of the commercial plan to apply to the zone. Available values: free, lite, pro, pro_plus, business, enterprise, partners_free, partners_pro, partners_business, partners_enterprise.
 	// The name of the commercial plan to apply to the zone. Available values: `free`, `lite`, `pro`, `pro_plus`, `business`, `enterprise`, `partners_free`, `partners_pro`, `partners_business`, `partners_enterprise`.
 	// +kubebuilder:validation:Optional
 	Plan *string `json:"plan,omitempty" tf:"plan,omitempty"`
 
+	// hosted zone or a CNAME setup. Available values: full, partial. Defaults to full.
 	// A full zone implies that DNS is hosted with Cloudflare. A partial zone is typically a partner-hosted zone or a CNAME setup. Available values: `full`, `partial`. Defaults to `full`.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
+	// (String) The DNS zone name which will be added. Modifying this attribute will force creation of a new resource.
 	// The DNS zone name which will be added. **Modifying this attribute will force creation of a new resource.**
-	// +kubebuilder:validation:Required
-	Zone *string `json:"zone" tf:"zone,omitempty"`
+	// +kubebuilder:validation:Optional
+	Zone *string `json:"zone,omitempty" tf:"zone,omitempty"`
 }
 
 // ZoneSpec defines the desired state of Zone
 type ZoneSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ZoneParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ZoneInitParameters `json:"initProvider,omitempty"`
 }
 
 // ZoneStatus defines the observed state of Zone.
@@ -80,19 +169,21 @@ type ZoneStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Zone is the Schema for the Zones API. <no value>
+// Zone is the Schema for the Zones API. Provides a Cloudflare Zone resource. Zone is the basic resource for working with Cloudflare and is roughly equivalent to a domain name that the user purchases.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Zone struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ZoneSpec   `json:"spec"`
-	Status            ZoneStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.zone) || (has(self.initProvider) && has(self.initProvider.zone))",message="spec.forProvider.zone is a required parameter"
+	Spec   ZoneSpec   `json:"spec"`
+	Status ZoneStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

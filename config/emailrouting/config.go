@@ -1,6 +1,6 @@
 package emailrouting
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure adds configurations for emailrouting group.
 func Configure(p *config.Provider) {

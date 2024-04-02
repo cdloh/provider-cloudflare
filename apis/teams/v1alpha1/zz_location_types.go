@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,18 +17,59 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type LocationInitParameters struct {
+
+	// The account to which the teams location should be added.
+	// The account identifier to target for the resource.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// Indicator that this is the default location.
+	ClientDefault *bool `json:"clientDefault,omitempty" tf:"client_default,omitempty"`
+
+	// Name of the teams location.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The networks CIDRs that comprise the location.
+	Networks []NetworksInitParameters `json:"networks,omitempty" tf:"networks,omitempty"`
+}
+
 type LocationObservation struct {
+
+	// The account to which the teams location should be added.
+	// The account identifier to target for the resource.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Indicator that anonymized logs are enabled.
 	AnonymizedLogsEnabled *bool `json:"anonymizedLogsEnabled,omitempty" tf:"anonymized_logs_enabled,omitempty"`
 
+	// Indicator that this is the default location.
+	ClientDefault *bool `json:"clientDefault,omitempty" tf:"client_default,omitempty"`
+
+	// The FQDN that DoH clients should be pointed at.
 	DohSubdomain *string `json:"dohSubdomain,omitempty" tf:"doh_subdomain,omitempty"`
 
+	// ID of the teams location.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Client IP address
 	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
 
+	// IP to direct all IPv4 DNS queries too.
 	IPv4Destination *string `json:"ipv4Destination,omitempty" tf:"ipv4_destination,omitempty"`
 
-	// +kubebuilder:validation:Optional
+	// Name of the teams location.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The networks CIDRs that comprise the location.
 	Networks []NetworksObservation `json:"networks,omitempty" tf:"networks,omitempty"`
 
 	PolicyIds []*string `json:"policyIds,omitempty" tf:"policy_ids,omitempty"`
@@ -32,6 +77,7 @@ type LocationObservation struct {
 
 type LocationParameters struct {
 
+	// The account to which the teams location should be added.
 	// The account identifier to target for the resource.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -45,23 +91,34 @@ type LocationParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Indicator that this is the default location.
 	// +kubebuilder:validation:Optional
 	ClientDefault *bool `json:"clientDefault,omitempty" tf:"client_default,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// Name of the teams location.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The networks CIDRs that comprise the location.
 	// +kubebuilder:validation:Optional
 	Networks []NetworksParameters `json:"networks,omitempty" tf:"networks,omitempty"`
 }
 
+type NetworksInitParameters struct {
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
+}
+
 type NetworksObservation struct {
+
+	// ID of the teams location.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Network *string `json:"network,omitempty" tf:"network,omitempty"`
 }
 
 type NetworksParameters struct {
 
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	Network *string `json:"network" tf:"network,omitempty"`
 }
 
@@ -69,6 +126,17 @@ type NetworksParameters struct {
 type LocationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     LocationParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider LocationInitParameters `json:"initProvider,omitempty"`
 }
 
 // LocationStatus defines the observed state of Location.
@@ -78,19 +146,21 @@ type LocationStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Location is the Schema for the Locations API. <no value>
+// Location is the Schema for the Locations API. Provides a Cloudflare Teams Location resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Location struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              LocationSpec   `json:"spec"`
-	Status            LocationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   LocationSpec   `json:"spec"`
+	Status LocationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

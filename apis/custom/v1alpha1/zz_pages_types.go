@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,12 +17,85 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type PagesInitParameters struct {
+
+	// The account ID where the custom pages should be
+	// updated. Either account_id or zone_id must be provided. If
+	// account_id is present, it will override the zone setting.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// Reference to a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDRef *v1.Reference `json:"accountIdRef,omitempty" tf:"-"`
+
+	// Selector for a Account in account to populate accountId.
+	// +kubebuilder:validation:Optional
+	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
+
+	// Managed state of the custom page. Must be one of
+	// default, customized.
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// The type of custom page you wish to update. Must
+	// be one of basic_challenge, waf_challenge, waf_block,
+	// ratelimit_block, country_challenge, ip_block, under_attack,
+	// 500_errors, 1000_errors, always_online, managed_challenge.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// URL of where the custom page source is located.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+
+	// The zone ID where the custom pages should be
+	// updated. Either zone_id or account_id must be provided.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
+
+	// Reference to a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDRef *v1.Reference `json:"zoneIdRef,omitempty" tf:"-"`
+
+	// Selector for a Zone in zone to populate zoneId.
+	// +kubebuilder:validation:Optional
+	ZoneIDSelector *v1.Selector `json:"zoneIdSelector,omitempty" tf:"-"`
+}
+
 type PagesObservation struct {
+
+	// The account ID where the custom pages should be
+	// updated. Either account_id or zone_id must be provided. If
+	// account_id is present, it will override the zone setting.
+	// The account identifier to target for the resource. Conflicts with `zone_id`.
+	AccountID *string `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Managed state of the custom page. Must be one of
+	// default, customized.
+	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// The type of custom page you wish to update. Must
+	// be one of basic_challenge, waf_challenge, waf_block,
+	// ratelimit_block, country_challenge, ip_block, under_attack,
+	// 500_errors, 1000_errors, always_online, managed_challenge.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// URL of where the custom page source is located.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+
+	// The zone ID where the custom pages should be
+	// updated. Either zone_id or account_id must be provided.
+	// The zone identifier to target for the resource. Conflicts with `account_id`.
+	ZoneID *string `json:"zoneId,omitempty" tf:"zone_id,omitempty"`
 }
 
 type PagesParameters struct {
 
+	// The account ID where the custom pages should be
+	// updated. Either account_id or zone_id must be provided. If
+	// account_id is present, it will override the zone setting.
 	// The account identifier to target for the resource. Conflicts with `zone_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/account/v1alpha1.Account
 	// +kubebuilder:validation:Optional
@@ -32,15 +109,24 @@ type PagesParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountIDSelector *v1.Selector `json:"accountIdSelector,omitempty" tf:"-"`
 
+	// Managed state of the custom page. Must be one of
+	// default, customized.
 	// +kubebuilder:validation:Optional
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// The type of custom page you wish to update. Must
+	// be one of basic_challenge, waf_challenge, waf_block,
+	// ratelimit_block, country_challenge, ip_block, under_attack,
+	// 500_errors, 1000_errors, always_online, managed_challenge.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// +kubebuilder:validation:Required
-	URL *string `json:"url" tf:"url,omitempty"`
+	// URL of where the custom page source is located.
+	// +kubebuilder:validation:Optional
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 
+	// The zone ID where the custom pages should be
+	// updated. Either zone_id or account_id must be provided.
 	// The zone identifier to target for the resource. Conflicts with `account_id`.
 	// +crossplane:generate:reference:type=github.com/cdloh/provider-cloudflare/apis/zone/v1alpha1.Zone
 	// +kubebuilder:validation:Optional
@@ -59,6 +145,17 @@ type PagesParameters struct {
 type PagesSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PagesParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PagesInitParameters `json:"initProvider,omitempty"`
 }
 
 // PagesStatus defines the observed state of Pages.
@@ -68,19 +165,22 @@ type PagesStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
-// Pages is the Schema for the Pagess API. <no value>
+// Pages is the Schema for the Pagess API. Provides a resource which manages Cloudflare custom pages.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,cloudflare}
 type Pages struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PagesSpec   `json:"spec"`
-	Status            PagesStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.url) || (has(self.initProvider) && has(self.initProvider.url))",message="spec.forProvider.url is a required parameter"
+	Spec   PagesSpec   `json:"spec"`
+	Status PagesStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
