@@ -1,0 +1,15 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: TunnelVirtualNetwork
+metadata:
+  annotations:
+    meta.upbound.io/example-id: argo/v1alpha1/tunnelvirtualnetwork
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    comment: New tunnel virtual network for documentation
+    name: vnet-for-documentation

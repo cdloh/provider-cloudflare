@@ -1,0 +1,17 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: MutualTLSCertificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/mutualtlscertificate
+  labels:
+    testing.upbound.io/example-name: my_cert
+  name: my-cert
+spec:
+  forProvider:
+    associatedHostnames:
+    - staging.example.com
+    certificate: ${var.ca_pem}
+    name: My Root Cert
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

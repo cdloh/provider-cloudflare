@@ -1,0 +1,18 @@
+apiVersion: teams.cloudflare.upbound.io/v1alpha1
+kind: Location
+metadata:
+  annotations:
+    meta.upbound.io/example-id: teams/v1alpha1/location
+  labels:
+    testing.upbound.io/example-name: corporate_office
+  name: corporate-office
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    clientDefault: true
+    name: office
+    networks:
+    - network: 203.0.113.1/32
+    - network: 203.0.113.2/32

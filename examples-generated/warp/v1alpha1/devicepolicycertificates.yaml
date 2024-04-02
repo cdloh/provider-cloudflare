@@ -1,0 +1,14 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: DevicePolicyCertificates
+metadata:
+  annotations:
+    meta.upbound.io/example-id: warp/v1alpha1/devicepolicycertificates
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    enabled: true
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

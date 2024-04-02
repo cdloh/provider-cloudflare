@@ -1,0 +1,23 @@
+apiVersion: lists.cloudflare.upbound.io/v1alpha1
+kind: List
+metadata:
+  annotations:
+    meta.upbound.io/example-id: lists/v1alpha1/list
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: example IPs for a list
+    item:
+    - comment: one
+      value:
+      - ip: 192.0.2.0
+    - comment: two
+      value:
+      - ip: 192.0.2.1
+    kind: ip
+    name: example list

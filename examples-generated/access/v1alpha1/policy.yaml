@@ -1,0 +1,25 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/policy
+  labels:
+    testing.upbound.io/example-name: test_policy
+  name: test-policy
+spec:
+  forProvider:
+    applicationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    decision: allow
+    include:
+    - email:
+      - test@example.com
+    name: staging policy
+    precedence: "1"
+    require:
+    - email:
+      - test@example.com
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

@@ -1,0 +1,22 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Organization
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/organization
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    authDomain: example.cloudflareaccess.com
+    isUiReadOnly: false
+    loginDesign:
+    - backgroundColor: '#ffffff'
+      footerText: My footer text
+      headerText: My header text
+      logoPath: https://example.com/logo.png
+      textColor: '#000000'
+    name: example.cloudflareaccess.com

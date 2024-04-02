@@ -1,0 +1,56 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: RateLimit
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/ratelimit
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    action:
+    - mode: simulate
+      response:
+      - body: custom response body
+        contentType: text/plain
+      timeout: 43200
+    bypassUrlPatterns:
+    - ${var.cloudflare_zone}/bypass1
+    - ${var.cloudflare_zone}/bypass2
+    correlate:
+    - by: nat
+    description: example rate limit for a zone
+    disabled: false
+    match:
+    - request:
+      - methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+        - HEAD
+        schemes:
+        - HTTP
+        - HTTPS
+        urlPattern: ${var.cloudflare_zone}/*
+      response:
+      - headers:
+        - name: Host
+          op: eq
+          value: localhost
+        - name: X-Example
+          op: ne
+          value: my-example
+        originTraffic: false
+        statuses:
+        - 200
+        - 201
+        - 202
+        - 301
+        - 429
+    period: 2
+    threshold: 2000
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

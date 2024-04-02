@@ -1,0 +1,15 @@
+apiVersion: originca.cloudflare.upbound.io/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: originca/v1alpha1/certificate
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    csr: ${tls_cert_request.example.cert_request_pem}
+    hostnames:
+    - example.com
+    requestType: origin-rsa
+    requestedValidity: 7

@@ -1,0 +1,39 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: Healthcheck
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/healthcheck
+  labels:
+    testing.upbound.io/example-name: http_health_check
+  name: http-health-check
+spec:
+  forProvider:
+    address: example.com
+    allowInsecure: false
+    checkRegions:
+    - WEU
+    - EEU
+    consecutiveFails: 3
+    consecutiveSuccesses: 2
+    description: example http health check
+    expectedBody: alive
+    expectedCodes:
+    - 2xx
+    - "301"
+    followRedirects: true
+    header:
+    - header: Host
+      values:
+      - example.com
+    interval: 60
+    method: GET
+    name: http-health-check
+    path: /health
+    port: "443"
+    retries: 2
+    suspended: false
+    timeout: 10
+    type: HTTPS
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

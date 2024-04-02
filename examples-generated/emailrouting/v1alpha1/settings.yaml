@@ -1,0 +1,14 @@
+apiVersion: emailrouting.cloudflare.upbound.io/v1alpha1
+kind: Settings
+metadata:
+  annotations:
+    meta.upbound.io/example-id: emailrouting/v1alpha1/settings
+  labels:
+    testing.upbound.io/example-name: my_zone
+  name: my-zone
+spec:
+  forProvider:
+    enabled: "true"
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

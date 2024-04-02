@@ -1,0 +1,42 @@
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: TunnelRoute
+metadata:
+  annotations:
+    meta.upbound.io/example-id: argo/v1alpha1/tunnelroute
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    comment: New tunnel route for documentation
+    network: 192.0.2.24/32
+    tunnelIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    virtualNetworkIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: argo.cloudflare.upbound.io/v1alpha1
+kind: Tunnel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: argo/v1alpha1/tunnelroute
+  labels:
+    testing.upbound.io/example-name: tunnel
+  name: tunnel
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: my_tunnel
+    secretSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

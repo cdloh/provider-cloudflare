@@ -1,0 +1,30 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: Route
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/route
+  labels:
+    testing.upbound.io/example-name: my_route
+  name: my-route
+spec:
+  forProvider:
+    pattern: example.com/*
+    scriptNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: my_script
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: Script
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/route
+  labels:
+    testing.upbound.io/example-name: my_script
+  name: my-script
+spec:
+  forProvider: {}

@@ -1,0 +1,14 @@
+apiVersion: zone.cloudflare.upbound.io/v1alpha1
+kind: TieredCache
+metadata:
+  annotations:
+    meta.upbound.io/example-id: zone/v1alpha1/tieredcache
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cacheType: smart
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

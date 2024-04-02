@@ -1,0 +1,17 @@
+apiVersion: access.cloudflare.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: access/v1alpha1/group
+  labels:
+    testing.upbound.io/example-name: test_group
+  name: test-group
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    include:
+    - email:
+      - test@example.com
+    name: staging group

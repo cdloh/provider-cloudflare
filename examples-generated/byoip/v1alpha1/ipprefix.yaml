@@ -1,0 +1,16 @@
+apiVersion: byoip.cloudflare.upbound.io/v1alpha1
+kind: IPPrefix
+metadata:
+  annotations:
+    meta.upbound.io/example-id: byoip/v1alpha1/ipprefix
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    advertisement: "on"
+    description: Example IP Prefix
+    prefixId: d41d8cd98f00b204e9800998ecf8427e

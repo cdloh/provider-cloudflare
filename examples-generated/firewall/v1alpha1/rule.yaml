@@ -1,0 +1,37 @@
+apiVersion: firewall.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: firewall/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: wordpress
+  name: wordpress
+spec:
+  forProvider:
+    action: block
+    description: Block wordpress break-in attempts
+    filterIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: wordpress
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: filters.cloudflare.upbound.io/v1alpha1
+kind: Filter
+metadata:
+  annotations:
+    meta.upbound.io/example-id: firewall/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: wordpress
+  name: wordpress
+spec:
+  forProvider:
+    description: Wordpress break-in attempts that are outside of the office
+    expression: (http.request.uri.path ~ ".*wp-login.php" or http.request.uri.path
+      ~ ".*xmlrpc.php") and ip.src ne 192.0.2.1
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

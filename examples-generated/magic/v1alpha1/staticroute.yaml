@@ -1,0 +1,22 @@
+apiVersion: magic.cloudflare.upbound.io/v1alpha1
+kind: StaticRoute
+metadata:
+  annotations:
+    meta.upbound.io/example-id: magic/v1alpha1/staticroute
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    coloNames:
+    - den01
+    coloRegions:
+    - APAC
+    description: New route for new prefix 192.0.2.0/24
+    nexthop: 10.0.0.0
+    prefix: 192.0.2.0/24
+    priority: 100
+    weight: 10

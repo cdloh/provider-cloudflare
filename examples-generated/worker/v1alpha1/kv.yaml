@@ -1,0 +1,35 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: KV
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/kv
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    key: test-key
+    namespaceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example_ns
+    value: test value
+
+---
+
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: KVNamespace
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/kv
+  labels:
+    testing.upbound.io/example-name: example_ns
+  name: example-ns
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    title: test-namespace

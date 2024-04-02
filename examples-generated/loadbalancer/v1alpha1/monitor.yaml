@@ -1,0 +1,26 @@
+apiVersion: loadbalancer.cloudflare.upbound.io/v1alpha1
+kind: Monitor
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/monitor
+  labels:
+    testing.upbound.io/example-name: http_monitor
+  name: http-monitor
+spec:
+  forProvider:
+    allowInsecure: false
+    description: example http load balancer
+    expectedBody: alive
+    expectedCodes: 2xx
+    followRedirects: true
+    header:
+    - header: Host
+      values:
+      - example.com
+    interval: 60
+    method: GET
+    path: /health
+    probeZone: example.com
+    retries: 5
+    timeout: 7
+    type: http

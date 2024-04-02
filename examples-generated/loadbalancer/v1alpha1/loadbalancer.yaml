@@ -1,0 +1,60 @@
+apiVersion: loadbalancer.cloudflare.upbound.io/v1alpha1
+kind: LoadBalancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/loadbalancer
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    countryPools:
+    - country: US
+      poolIdsRefs:
+      - name: example
+    defaultPoolIdsRefs:
+    - name: example
+    description: example load balancer using geo-balancing
+    fallbackPoolIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: example-load-balancer.example.com
+    popPools:
+    - poolIdsRefs:
+      - name: example
+      pop: LAX
+    proxied: true
+    regionPools:
+    - poolIdsRefs:
+      - name: example
+      region: WNAM
+    rules:
+    - condition: http.request.uri.path contains "testing"
+      fixedResponse:
+      - contentType: html
+        location: www.example.com
+        messageBody: hello
+        statusCode: 200
+      name: example rule
+    steeringPolicy: geo
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: loadbalancer.cloudflare.upbound.io/v1alpha1
+kind: Pool
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/loadbalancer
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-lb-pool
+    origins:
+    - address: 192.0.2.1
+      enabled: false
+      name: example-1

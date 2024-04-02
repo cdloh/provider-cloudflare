@@ -1,0 +1,26 @@
+apiVersion: warp.cloudflare.upbound.io/v1alpha1
+kind: DevicePostureRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: warp/v1alpha1/deviceposturerule
+  labels:
+    testing.upbound.io/example-name: eaxmple
+  name: eaxmple
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    description: Device posture rule for corporate devices.
+    expiration: 24h
+    input:
+    - id: ${cloudflare_teams_list.corporate_devices.id}
+      operator: <
+      osDistroName: ubuntu
+      osDistroRevision: 1.0.0
+      version: 1.0.0
+    match:
+    - platform: linux
+    name: Corporate devices posture rule
+    schedule: 24h
+    type: os_version

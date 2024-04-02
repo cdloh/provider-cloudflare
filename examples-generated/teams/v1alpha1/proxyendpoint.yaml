@@ -1,0 +1,16 @@
+apiVersion: teams.cloudflare.upbound.io/v1alpha1
+kind: ProxyEndpoint
+metadata:
+  annotations:
+    meta.upbound.io/example-id: teams/v1alpha1/proxyendpoint
+  labels:
+    testing.upbound.io/example-name: corporate_office
+  name: corporate-office
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    ips:
+    - 192.0.2.0/24
+    name: office

@@ -1,0 +1,23 @@
+apiVersion: emailrouting.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: emailrouting/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    action:
+    - type: forward
+      value:
+      - destinationaddress@example.net
+    enabled: true
+    matcher:
+    - field: to
+      type: literal
+      value: test@example.com
+    name: terraform rule
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

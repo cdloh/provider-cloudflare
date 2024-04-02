@@ -1,0 +1,22 @@
+apiVersion: page.cloudflare.upbound.io/v1alpha1
+kind: Rule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: page/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: foobar
+  name: foobar
+spec:
+  forProvider:
+    actions:
+    - emailObfuscation: "on"
+      minify:
+      - css: "on"
+        html: "off"
+        js: "on"
+      ssl: flexible
+    priority: 1
+    target: sub.${var.cloudflare_zone}/page
+    zoneIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

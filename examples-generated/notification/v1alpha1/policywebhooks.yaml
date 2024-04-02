@@ -1,0 +1,16 @@
+apiVersion: notification.cloudflare.upbound.io/v1alpha1
+kind: PolicyWebhooks
+metadata:
+  annotations:
+    meta.upbound.io/example-id: notification/v1alpha1/policywebhooks
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: Webhooks destination
+    secret: my-secret
+    url: https://example.com

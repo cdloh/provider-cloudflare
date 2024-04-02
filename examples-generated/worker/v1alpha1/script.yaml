@@ -1,0 +1,57 @@
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: Script
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/script
+  labels:
+    testing.upbound.io/example-name: my_script
+  name: my-script
+spec:
+  forProvider:
+    accountId: f037e56e89293a057740de681ac9abbe
+    analyticsEngineBinding:
+    - dataset: dataset1
+      name: MY_DATASET
+    content: ${file("script.js")}
+    kvNamespaceBinding:
+    - name: MY_EXAMPLE_KV_NAMESPACE
+      namespaceIdSelector:
+        matchLabels:
+          testing.upbound.io/example-name: my_namespace
+    name: script_1
+    plainTextBinding:
+    - name: MY_EXAMPLE_PLAIN_TEXT
+      text: foobar
+    r2BucketBinding:
+    - bucketName: MY_BUCKET_NAME
+      name: MY_BUCKET
+    secretTextBinding:
+    - name: MY_EXAMPLE_SECRET_TEXT
+      textSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+    serviceBinding:
+    - environment: production
+      name: MY_SERVICE_BINDING
+      service: MY_SERVICE
+    webassemblyBinding:
+    - module: ${filebase64("example.wasm")}
+      name: MY_EXAMPLE_WASM
+
+---
+
+apiVersion: worker.cloudflare.upbound.io/v1alpha1
+kind: KVNamespace
+metadata:
+  annotations:
+    meta.upbound.io/example-id: worker/v1alpha1/script
+  labels:
+    testing.upbound.io/example-name: my_namespace
+  name: my-namespace
+spec:
+  forProvider:
+    accountIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    title: example

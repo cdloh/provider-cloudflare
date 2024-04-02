@@ -1,0 +1,14 @@
+apiVersion: account.cloudflare.upbound.io/v1alpha1
+kind: Member
+metadata:
+  annotations:
+    meta.upbound.io/example-id: account/v1alpha1/member
+  labels:
+    testing.upbound.io/example-name: example_user
+  name: example-user
+spec:
+  forProvider:
+    emailAddress: user@example.com
+    roleIds:
+    - 68b329da9893e34099c7d8ad5cb9c940
+    - d784fa8b6d98d27699781bd9a7cf19f0
